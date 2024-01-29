@@ -2,7 +2,10 @@ import React from 'react';
 import Header from '../components/Header/Header';
 import HomeMap from '../components/Home/HomeMap';
 import '../components/Home/home.scss'
-import Homecards from '../components/Home/Homecards';
+import EducationDashboard from '../components/Home/EducationDashboard';
+import SchoolDashboard from '../components/Home/SchoolDashboard';
+import TeacherDashboard from '../components/Home/TeacherDashboard';
+import StudentDashboard from '../components/Home/StudentDashboard';
 
 export default function Home() {
   return (
@@ -19,7 +22,10 @@ export default function Home() {
             </div>
             <div className="col-md-6">
               <div className="right-content-box">
-              <Homecards/>
+              <EducationDashboard/>
+              {/* <SchoolDashboard/>
+              <TeacherDashboard/>
+              <StudentDashboard/> */}
               </div>
             </div>
           </div>
