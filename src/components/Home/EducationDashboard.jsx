@@ -665,10 +665,9 @@ export default function EducationDashboard() {
                                                                 },
                                                                 yAxis: {
                                                                     min: 0,
-                                                                    // title: {
-                                                                    //     text: 'Population (millions)',
-                                                                    //     align: 'high'
-                                                                    // },
+                                                                    title: {
+                                                                        enabled: false
+                                                                    },
                                                                     labels: {
                                                                         overflow: 'justify'
                                                                     },

@@ -160,7 +160,8 @@
                 img {
                     height: 55px;
                 }
-               .big-img {
+
+                .big-img {
                     height: 65px;
                 }
             }
@@ -285,6 +286,27 @@
         min-width: 165px;
         justify-content: end;
     }
+}
+
+@media (max-width: 991px) {
+
+    .main-card-home:after,
+    .main-card-home:before {
+        position: relative;
+    }
+
+    .map-sec-h {
+        z-index: 1;
+        position: static;
+        width: 100%;
+    }
+
+    .right-card-sec .srid-card-se {
+        padding: 20px;
+
+        .card-box{margin-bottom: 15px;}
+    }
+
 }
 
 // @media (min-width: 1200px){
