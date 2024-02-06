@@ -10,7 +10,7 @@ import std1 from '../../assets/images/student1.svg'
 import std2 from '../../assets/images/student2.svg'
 import drinkinwater from '../../assets/images/noun-drinking-water.svg'
 import power from '../../assets/images/noun-power.svg'
-import Transition from '../../assets/images/Transition.svg'
+import transition_img from '../../assets/images/Transition.svg'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 // require('highcharts/modules/exporting')(Highcharts);
@@ -98,6 +98,9 @@ export default function EducationDashboard() {
             <section className="pgicategory vision-mission-card ptb-30">
                 <div className="container">
                     <div className="row">
+                    <div className="col-md-12 mb-4 p-0">
+                            <h2 className="heading-blue">Education Dashboard</h2>
+                        </div>
                         <div className="col-md-12 col-lg-12 p-0">
                             <div className="common-content text-start right-card-sec">
                                 <div className="srid-card-se">
@@ -178,7 +181,7 @@ export default function EducationDashboard() {
 
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
-                                                {/* <img src={Transition} alt="school" className='card-img-impact' /> */}
+                                                <img src={transition_img} alt="school" className='card-img-impact' />
                                                
                                                 <div className="main-text-c m-big">Transition <br /> Rate</div>
 
@@ -236,7 +239,7 @@ export default function EducationDashboard() {
                                             </div>
                                         </div>
 
-                                        <div className="col-md-4 col-lg-4">
+                                        <div className="col-md-4 col-lg-4"> 
                                             <div className="impact-box-content">
                                                 <img src={Arrowdown} alt="school" className='card-img-impact' />
                                                 <div className="main-text-c m-big">Dropout <br /> Rate</div>
@@ -251,7 +254,7 @@ export default function EducationDashboard() {
 
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
-                                                {/* <img src={Transition} alt="school" className='card-img-impact' /> */}
+                                            <img src={transition_img} alt="school" className='card-img-impact' />
                                                
                                                 <div className="main-text-c m-big">Transition <br /> Rate</div>
 
@@ -388,12 +391,12 @@ export default function EducationDashboard() {
                                                                                 data: [
                                                                                     {
                                                                                         name: 'Government',
-                                                                                        y: 55,
+                                                                                        y: 45,
                                                                                         color: '#F5BF55'
                                                                                     },
                                                                                     {
                                                                                         name: 'Private',
-                                                                                        y: 15,
+                                                                                        y: 25,
                                                                                         color: '#E6694A'
                                                                                     },
                                                                                     {
@@ -635,7 +638,7 @@ export default function EducationDashboard() {
                                     </div>
                                 </div>
 
-                                <div className="card-box-impact tab-for-graph mt-3">
+                                <div className="card-box-impact tab-for-graph mt-4">
                                     <div className="row">
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">

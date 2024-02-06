@@ -1,10 +1,39 @@
 @import "src/styles/_mixin.scss";
 @import 'src/styles/_variables.scss';
 
-.mapindia img {
-    width: 100%;
-    margin-top: 0px;
+.map-main-card {
+    .mapindia img {
+        width: 100%;
+        margin-top: 0px;
+    }
+
+    .map-heading-map {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    .close-map-btn {
+        background: #ffffff;
+        border: 0;
+        border-radius: 30px;
+        padding: 6px 10px;
+        font-size: 12px;
+        color: #000000;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+
+        .material-icons-round {
+            font-size: 20px !important;
+            margin-right: 3px;
+        }
+
+    }
+
 }
+
 
 .right-card-sec {
 
@@ -80,8 +109,12 @@
             }
 
             img.school-graph-icon.icon-h-big {
-                width: 190px;
+                width: 220px;
                 bottom: 0;
+                right: 4%;
+
+                &.student-icon-g{width: 195px;}
+
             }
 
 
@@ -304,13 +337,106 @@
     .right-card-sec .srid-card-se {
         padding: 20px;
 
-        .card-box{margin-bottom: 15px;}
+        .card-box {
+            margin-bottom: 15px;
+        }
     }
 
 }
 
-// @media (min-width: 1200px){
-//     .container{
-//         max-width: 1250px !important;
-//     }
+button.header-dropdown-btn.open-map-btn {
+    background: #E0E0E0;
+    border-radius: 60px;
+    padding: 25px 25px;
+    font-size: 16px;
+    color: #000000;
+    font-weight: 600;
+    position: absolute;
+    display: block;
+    text-align: right;
+    top: 0;
+    left: -52px;
+    width: 175px;
+    display: none;
+    transition: all .3s ease-in-out;
+}
+
+
+// Hide/Show Map css
+
+.close_map_sec .map_hide_on_click_btn, .close_map_sec.main-card-home:after,
+.close_map_sec.main-card-home:before {
+    // display: none;
+    transform: translateX(-120%);
+    z-index: 999999;
+    // width: 100%;
+    transition: all 1s ease-in-out;
+}
+.open_map_sec .map_hide_on_click_btn, .open_map_sec.main-card-home:after,
+.open_map_sec.main-card-home:before {
+    // display: none;
+    // transform: translateX(0%);
+    // z-index: 999999;
+    // width: 100%;
+    transition: all .7s ease-in-out;
+}
+
+// .sec_full_width{transition: all .8s ease-in-out;}
+
+.open_map_sec .map_hide_on_click_btn{z-index: 99;}
+
+// .close_map_sec.main-card-home:after,
+// .close_map_sec.main-card-home:before {
+//     display: none;
 // }
+
+.open_map_sec .map-sec-h{width: 38%;}
+
+@media (min-width:768px){
+
+.close_map_sec {
+    .sec_full_width {
+        flex: 0 0 auto; 
+        width: 100%;
+        transition: all 1s ease-in-out;
+    }
+
+    .card-box-impact.tab-for-graph {
+        width: 50%;
+        float: inline-start;
+        margin-bottom: 0px;
+
+        & :first-child .impact-box-content-education {
+            margin-right: 15px;
+        }
+
+        .impact-box-content-education {
+            min-height: 540px !important;
+            margin-bottom: 0 !important;
+        }
+    }
+
+    button.header-dropdown-btn.open-map-btn {
+        display: block;
+    }
+
+    .card-box-impact .col-md-4.col-lg-4 {
+        width: 25%;
+    }
+
+    .school-graph-icon.icon-h-big.Teacher_dashboard-icon {
+        width: 300px !important;
+    }
+
+    img.school-graph-icon.icon-h-big.student-icon-g, .school-dashboard img.school-graph-icon {
+        width: 200px !important;
+    }
+    .right-card-sec .card-box-impact .impact-box-content{padding: 20px;}
+    .right-card-sec .srid-card-se .card-box img.card-img {
+        width: 100px;
+        height: 80px;
+        bottom: -4px;
+    }
+    
+}
+}
