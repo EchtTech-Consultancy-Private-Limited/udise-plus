@@ -6,6 +6,11 @@ import Teachers from '../../assets/images/teachers.svg'
 import Students from '../../assets/images/students.svg'
 import ArrowUP from '../../assets/images/arrow-upper.svg'
 import Arrowdown from '../../assets/images/arrow-lower.svg'
+import std1 from '../../assets/images/student1.svg'
+import std2 from '../../assets/images/student2.svg'
+import drinkinwater from '../../assets/images/noun-drinking-water.svg'
+import power from '../../assets/images/noun-power.svg'
+import Transition from '../../assets/images/Transition.svg'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 // require('highcharts/modules/exporting')(Highcharts);
@@ -87,7 +92,7 @@ require('highcharts/modules/accessibility')(Highcharts);
     };
 }(Highcharts));
 
-export default function Homecards() {
+export default function EducationDashboard() {
     return (
         <>
             <section className="pgicategory vision-mission-card ptb-30">
@@ -173,7 +178,8 @@ export default function Homecards() {
 
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
-                                                {/* <img src={Arrowdown} alt="school" className='card-img-impact' /> */}
+                                                {/* <img src={Transition} alt="school" className='card-img-impact' /> */}
+                                               
                                                 <div className="main-text-c m-big">Transition <br /> Rate</div>
 
                                                 <div className="main-text-c">Primary to Upper Primary</div>
@@ -186,20 +192,24 @@ export default function Homecards() {
 
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
-                                                {/* <img src={Arrowdown} alt="school" className='card-img-impact' /> */}
+                                            <div className="img-multi-box">
+                                                <img src={std1} alt="school" />
+                                                <img src={std2} alt="school" className='big-img'/>
+                                                <img src={std1} alt="school" />
+                                                </div>
                                                 <div className="main-text-c m-big">Pupil - Teacher <br /> Ratio</div>
 
-                                                <div className="main-text-c">Primary to Upper Primary</div>
+                                                <div className="main-text-c">Primary</div>
                                                 <span className="sub-text-c">100.13%</span>
 
-                                                <div className="main-text-c">Upper Primary to Secondary</div>
+                                                <div className="main-text-c">Upper Primary</div>
                                                 <span className="sub-text-c">79.86%</span>
                                             </div>
                                         </div>
 
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
-                                                {/* <img src={Arrowdown} alt="school" className='card-img-impact' /> */}
+                                                <img src={drinkinwater} alt="school" className='card-img-impact' />
                                                 <div className="main-text-c m-big">Schools with Drinking Water</div>
 
                                                 <span className="sub-text-c sub-main-text">97.6%</span>
@@ -208,12 +218,11 @@ export default function Homecards() {
 
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
-                                                {/* <img src={Arrowdown} alt="school" className='card-img-impact' /> */}
+                                                <img src={power} alt="school" className='card-img-impact' />
                                                 <div className="main-text-c m-big">Schools with Electricity Connection</div>
                                                 <span className="sub-text-c sub-main-text">97.6%</span>
                                             </div>
                                         </div>
-
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
                                                 <img src={ArrowUP} alt="school" className='card-img-impact' />
@@ -242,7 +251,8 @@ export default function Homecards() {
 
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
-                                                {/* <img src={Arrowdown} alt="school" className='card-img-impact' /> */}
+                                                {/* <img src={Transition} alt="school" className='card-img-impact' /> */}
+                                               
                                                 <div className="main-text-c m-big">Transition <br /> Rate</div>
 
                                                 <div className="main-text-c">Primary to Upper Primary</div>
@@ -255,20 +265,24 @@ export default function Homecards() {
 
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
-                                                {/* <img src={Arrowdown} alt="school" className='card-img-impact' /> */}
+                                            <div className="img-multi-box">
+                                                <img src={std1} alt="school" />
+                                                <img src={std2} alt="school" className='big-img'/>
+                                                <img src={std1} alt="school" />
+                                                </div>
                                                 <div className="main-text-c m-big">Pupil - Teacher <br /> Ratio</div>
 
-                                                <div className="main-text-c">Primary to Upper Primary</div>
+                                                <div className="main-text-c">Primary</div>
                                                 <span className="sub-text-c">100.13%</span>
 
-                                                <div className="main-text-c">Upper Primary to Secondary</div>
+                                                <div className="main-text-c">Upper Primary</div>
                                                 <span className="sub-text-c">79.86%</span>
                                             </div>
                                         </div>
 
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
-                                                {/* <img src={Arrowdown} alt="school" className='card-img-impact' /> */}
+                                                <img src={drinkinwater} alt="school" className='card-img-impact' />
                                                 <div className="main-text-c m-big">Schools with Drinking Water</div>
 
                                                 <span className="sub-text-c sub-main-text">97.6%</span>
@@ -277,7 +291,7 @@ export default function Homecards() {
 
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
-                                                {/* <img src={Arrowdown} alt="school" className='card-img-impact' /> */}
+                                                <img src={power} alt="school" className='card-img-impact' />
                                                 <div className="main-text-c m-big">Schools with Electricity Connection</div>
                                                 <span className="sub-text-c sub-main-text">97.6%</span>
                                             </div>
@@ -651,10 +665,9 @@ export default function Homecards() {
                                                                 },
                                                                 yAxis: {
                                                                     min: 0,
-                                                                    // title: {
-                                                                    //     text: 'Population (millions)',
-                                                                    //     align: 'high'
-                                                                    // },
+                                                                    title: {
+                                                                        enabled: false
+                                                                    },
                                                                     labels: {
                                                                         overflow: 'justify'
                                                                     },

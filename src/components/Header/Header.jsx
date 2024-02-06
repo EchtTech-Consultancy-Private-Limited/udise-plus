@@ -74,11 +74,11 @@ const Header = () => {
                     </li>
                   </ul>
                 </div>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation" id="header-menu-toggle-btn">
+                {/* <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation" id="header-menu-toggle-btn">
                   <span className="toggler-icon"></span>
                   <span className="toggler-icon"></span>
                   <span className="toggler-icon"></span>
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -97,7 +97,7 @@ const Header = () => {
                     <SlidingTabBar/>
                   </div>
 
-                  <div className="right-logo-header">
+                  <div className="">
                   <button className="header-dropdown-btn" title="UDISE+ Reports">UDISE+ Reports <img src={dropdownimg} alt="UDISE+ Reports" /> </button>
                   </div>                 
                 </div>
