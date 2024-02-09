@@ -415,7 +415,7 @@ export default function EducationDashboard() {
                                                                         ]
                                                                     }}
                                                                     // allowChartUpdate={true}
-                                                                    immutable={true}
+                                                                    immutable={true} 
                                                                 />
                                                             </div>
                                                         </div>
@@ -772,10 +772,27 @@ export default function EducationDashboard() {
 
                                                                         plotOptions: {
                                                                             column: {
-                                                                                stacking: 'normal'
+                                                                                stacking: 'normal',
+                                                                                dataLabels:{
+                                                                                    enabled:true,
+                                                                                    crop: false,
+                                                                                    overflow: "none",
+                                                                                    rotation:0,
+                                                                                    align: 'center',
+                                                                                    x: -2,
+                                                                                    y: -5,
+                                                                                    style: {
+                                                                                      color: 'black',
+                                                                                      font: '10px Arial, sans-serif',
+                                                                                      fontWeight: 'normal',
+                                                                                    },
+                                                                                    position:"top",
+                                                                                    formatter: function () {
+                                                                                      return this.y+ '%';
+                                                                                      },
+                                                                                  }
                                                                             }
                                                                         },
-
                                                                         legend: {
                                                                             layout: 'vertical',
                                                                             align: 'right',
@@ -787,7 +804,7 @@ export default function EducationDashboard() {
                                                                             enabled: false
                                                                         },
                                                                         series: [{
-                                                                            name: 'Not Available',
+                                                                              name: 'Not Available',
                                                                             data: [4, 9, 2, 15, 3],
                                                                             color: "#E6694A"
 
