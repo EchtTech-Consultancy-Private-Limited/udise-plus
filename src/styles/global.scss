@@ -640,6 +640,75 @@ ul {
     }
 }
 
+@media screen and (max-width:768px) {
+    .tab-for-graph .w-20 {
+        min-width: 150px;
+    }
+    .right-card-sec .card-box-impact .impact-box-content-education{padding: 15px;}
+    .filter_drodown{width: 100%;
+    padding:1px 12px 10px;
+    min-height: 60px;
+    }
+    .filter_drodown .select-box.from-control li.nav-item.position-static{padding: 0px 16px;}
+    .select-box.from-control ul.navbar-nav {
+        flex-direction: row;
+    }
+    .filter_drodown .filter-content h6 {
+        white-space: nowrap;
+        font-size: 14px;
+    }
+    .filter_drodown .select-box.from-control li.nav-item.position-static:first-child {
+        margin-right: 10px;
+    }
+    .filter_drodown .select-box.from-control a.dropdown-toggle.nav-link {
+        font-size: 14px;
+    }
+    .select-box.from-control .container-fluid {
+        padding-right: 0;
+    }
+    .close_map_sec .map_hide_on_click_btn, .close_map_sec.main-card-home:after, .close_map_sec.main-card-home:before{display: none;}
+
+    .heading-blue {
+        font-size: 1.5em;
+    }
+    .right-card-sec .srid-card-se .card-box .sub-text-c {
+        font-size: 12px;
+    }
+    .right-card-sec .srid-card-se .card-box .main-text-c.m-big {
+        font-size: 18px;
+        letter-spacing: 0;
+    }
+    .right-card-sec .srid-card-se .card-box img.card-img {
+        width: 80px;
+        height: 62px;
+        bottom: -2px;
+    }
+    .right-card-sec .srid-card-se .card-box .main-text-c{font-weight: 500;}
+    .heading-sm {font-size: 1.2em;line-height: 1.5;}
+    .map-main-card .close-map-btn{top: 40px;}
+    .close_map_sec button.header-dropdown-btn.open-map-btn {
+        display: block;
+        position: relative; 
+        padding: 12px 18px;
+        font-size: 14px;
+        width: 150px;
+        left: -50px;
+    }
+    .right-card-sec .card-box-impact .impact-box-content-education .heading-sm {
+        font-size: 16px;
+    }
+    .open_map_sec .map-sec-h {
+        width: 100%;
+    }
+    .tab-for-graph .nav-tabs .nav-link{margin-bottom: 6px;}
+    .filter_drodown ul.dropdown-menu.show.animation {
+        width: 300px !important;
+    }
+
+
+
+}
+
 @media (max-width: 991px) and (min-width:768px) {
 
     .container,
@@ -838,7 +907,7 @@ ul {
 }
 
 
-@media (min-width: 1400px) {
+@media (min-width: 1600px) {
 
     .container,
     .container-lg,
@@ -848,84 +917,176 @@ ul {
     .container-xxl {
         max-width: 1500px;
     }
-}
 
-
-
-@media (min-width: 1600px) {
     .site-header {
         top: 35px !important;
     }
+
+    .map-main-card .close-map-btn {
+        margin-right: 5%;
+    }
 }
 
-// @media (min-width: 1270px) {}
+@media (max-width:1599px) and (min-width: 1351px) {
+    button.header-dropdown-btn.open-map-btn {
+        padding: 17px 18px;
+        font-size: 14px;
+        top: 0;
+        left: -70px;
+    }
 
-@media (max-width:1350px)  and (min-width: 1024px) {
+    .close_map_sec .card-box-impact.tab-for-graph .impact-box-content-education {
+        min-height: 565px !important;
+    }
 
-    .site-header{top: 32px;}
+    .tab-for-graph .nav-tabs .nav-link {
+        margin-bottom: 10px;
+    }
+
+    .filter_drodown ul.dropdown-menu.show.animation{transform: translate(-68%, -28%) !important;}
+
+    .filter_drodown .select-box.from-control li.nav-item.position-static:first-child ul.dropdown-menu.show.animation {
+        transform: translate(-37.58%, -28%) !important;
+    }
+
+}
+
+@media (max-width:1350px) and (min-width: 1024px) {
+
+    .site-header {
+        top: 32px;
+    }
+    .filter_drodown ul.dropdown-menu.show.animation{transform: translate(-68%, -28%) !important;}
+    .filter_drodown .select-box.from-control li.nav-item.position-static:first-child ul.dropdown-menu.show.animation {
+        transform: translate(-37.58%, -28%) !important;
+    }
     .header-top-skipwrap ul li a,
     .header-top-skipwrap ul li span.text {
         font-size: 0.7em !important;
     }
-    .site-header .logo-wrap{padding: 12px 0 14px;}
+
+    .site-header .logo-wrap {
+        padding: 12px 0 14px;
+    }
+
     .header-dropdown-btn {
         font-size: 12px;
         padding: 10px 12px;
     }
+
     .logo-wrap a img {
         width: 200px;
     }
-    .header-top-skipwrap ul li:first-child{padding-left: 0px;}
-    .menu-switch-tab .nav-tabs .nav-link{font-size: 12px;padding: 7px 10px;}
+
+    .header-top-skipwrap ul li:first-child {
+        padding-left: 0px;
+    }
+
+    .menu-switch-tab .nav-tabs .nav-link {
+        font-size: 12px;
+        padding: 7px 10px;
+    }
+
     .mapindia img {
         width: 87%;
     }
-    .right-card-sec .srid-card-se .card-box .sub-text-c, .right-card-sec .card-box-impact .impact-box-content span.sub-text-c {
+
+    .right-card-sec .srid-card-se .card-box .sub-text-c,
+    .right-card-sec .card-box-impact .impact-box-content span.sub-text-c {
         font-size: 12px;
     }
+
     .right-card-sec .srid-card-se .card-box .main-text-c.m-big {
         font-size: 24px;
     }
-    .right-card-sec .card-box-impact .impact-box-content .main-text-c{font-size: 11px;}
-    .right-card-sec .srid-card-se .card-box .main-text-c{margin-bottom: 10px;}
-    .right-card-sec .srid-card-se .card-box .main-text-c, .right-card-sec .card-box-impact .impact-box-content .main-text-c.m-big {
+
+    .right-card-sec .card-box-impact .impact-box-content .main-text-c {
+        font-size: 11px;
+    }
+
+    .right-card-sec .srid-card-se .card-box .main-text-c {
+        margin-bottom: 10px;
+    }
+
+    .right-card-sec .srid-card-se .card-box .main-text-c,
+    .right-card-sec .card-box-impact .impact-box-content .main-text-c.m-big {
         font-size: 14px;
     }
+
     .right-card-sec .srid-card-se .card-box img.card-img {
         position: absolute;
         width: 45px;
         height: 36px;
         right: 11px;
     }
-    .heading-sm{font-size: 26px;}
+
+    .heading-sm {
+        font-size: 26px;
+    }
+
     .right-card-sec .card-box-impact .impact-box-content img.card-img-impact {
         position: absolute;
         bottom: 10px;
         right: 15px;
         height: 45px;
     }
+
     .card-box-impact .col-md-4 {
         padding: 0 8px;
     }
+
     .right-card-sec .card-box-impact .impact-box-content .img-multi-box img {
         height: 35px;
     }
+
     .right-card-sec .card-box-impact .impact-box-content .img-multi-box .big-img {
         height: 45px;
     }
+
     .right-card-sec .card-box-impact .impact-box-content-education .heading-sm {
         font-size: 20px;
     }
-    .heading-blue{font-size: 2em;}
-    .tab-for-graph .nav-tabs .nav-link{margin-bottom: 8px;}
+
+    .heading-blue {
+        font-size: 2em;
+    }
+
+    .tab-for-graph .nav-tabs .nav-link {
+        margin-bottom: 8px;
+    }
+
     .right-card-sec .srid-card-se.school-dashboard img.school-graph-icon {
         width: 145px;
         right: 6%;
         bottom: 0px;
     }
+
     .right-card-sec .srid-card-se.school-dashboard .card-box .col-md-6.mb-5 {
         margin-bottom: 2.5rem !important;
     }
+
     .right-card-sec .srid-card-se.school-dashboard img.school-graph-icon.icon-h-big {
-        width: 150px;}
+        width: 150px;
+    }
+    button.header-dropdown-btn.open-map-btn {
+        padding: 8px 11px;
+        font-size: 12px;
+        top: 0;
+        left: -95px;
+    }
+
+    .close_map_sec{
+        .right-card-sec .srid-card-se .card-box img.card-img {
+            position: absolute;
+            width: 100px;
+            height: 80px;
+            right: 11px;
+            bottom: -4px;
+        }
+    }
+
+    .close_map_sec .card-box-impact.tab-for-graph .impact-box-content-education {
+        min-height: 553px !important;
+    }
+
 }

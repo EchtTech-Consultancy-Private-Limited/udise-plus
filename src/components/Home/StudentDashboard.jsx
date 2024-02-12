@@ -116,7 +116,7 @@ export default function StudentDashboard() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <img src={dashboard} alt="graph icon" className='school-graph-icon icon-h-big' />
+                                        <img src={dashboard} alt="graph icon" className='school-graph-icon icon-h-big student-icon-g' />
                                     </div>
                                 </div>
 
