@@ -384,6 +384,25 @@ export default function EducationDashboard() {
                                                                             itemMarginTop: 10,
                                                                             itemMarginBottom: 10
                                                                         },
+
+                                                                        responsive: {
+                                                                            rules: [{
+                                                                              condition: {
+                                                                                maxWidth: 767
+                                                                              },
+                                                                              chartOptions: {
+                                                                                legend: {
+                                                                                    layout: 'horizontal',
+                                                                                    align: 'center',
+                                                                                    verticalAlign: 'bottom',                                                                                 
+                                                                                },
+                                                                                dataLabels: {
+                                                                                    enabled: false,
+                                                                                },
+                                                                              }
+                                                                            }]
+                                                                          },
+
                                                                         series: [
                                                                             {
                                                                                 name: 'Percentage',
