@@ -458,17 +458,16 @@ button.header-dropdown-btn.open-map-btn {
 // FilterDropdown
 
 .filter_drodown {
-    background: #2c2c2c;
+    background: rgba(34, 34, 34, 0.8);
     z-index: 99999;
     position: fixed;
     left: 50%;
-    bottom: 0;
+    bottom: 2%;
     transform: translate(-50%, 10px);
     width: 500px;
     color: #fff;
-    border-radius: 10px 10px 0 0;
-    min-height: 100px;
-    padding: 10px 25px;
+    border-radius: 0 0 10px 10px;
+    padding: 6px;
     display: flex;
     align-items: center;
 
@@ -477,16 +476,42 @@ button.header-dropdown-btn.open-map-btn {
         align-items: center;
         justify-content: space-between;
         width: 100%;
-    }
+        background: #222;
+        padding: 10px 15px;
+        border-radius: 10px;
 
+        h6{
+            background: #5555556e;
+            padding: 12px 15px;
+            border-radius: 5px;
+        }
+    }
+@keyframes smooth {
+    0%{
+        opacity: 0;
+    }
+    100%{
+opacity: 1;
+    }
+    
+}
     ul.dropdown-menu.show.animation {
         width: 500px !important;
         left: 0px !important;
         border-radius: 10px 10px 0 0 !important;
-        transform: translate(-68.5%, -28%) !important;
-        background: #2c2c2c;
-        border-bottom: 2px solid #fff;
+        // transform: translate(-68.5%, -28%) !important;
+        transform: translate(-69.2%, -28.3%) !important;
+        background: rgba(34, 34, 34, 0.8); 
+        /* border-bottom: 2px solid #fff; */
         transition: all 0.5s ease-in-out;
+        padding: 5px;
+        animation: smooth .5s ease-in-out;
+
+        .droplist{
+            background: #222;
+            padding: 10px 12px;
+            border-radius: 10px 10px 0 0 !important;
+        }
     }
 
     .list-group-item {
@@ -513,7 +538,10 @@ button.header-dropdown-btn.open-map-btn {
         li.nav-item.position-static:first-child{
             margin-right: 20px;
 
-            ul.dropdown-menu.show.animation{ transform: translate(-38%, -28%) !important;}
+            ul.dropdown-menu.show.animation{ 
+                // transform: translate(-38%, -28%) !important;
+                transform: translate(-38.8%, -28.3%) !important;
+            }
 
         }
         
@@ -546,12 +574,14 @@ button.header-dropdown-btn.open-map-btn {
         position: absolute;
         right: 17%;
         transform: translate(-20%, 20px);
+        display: none;
     }
 
     .select-box.from-control li.nav-item.position-static:first-child ul.dropdown-menu.show.animation:after{
         left: 45.5%;
         right: auto;
         transform: translate(-45%, 20px);
+        display: none;
     }
 
 }

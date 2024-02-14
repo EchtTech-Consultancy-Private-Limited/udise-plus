@@ -38,8 +38,8 @@ export default function FilterDropdown() {
                           borderTopRightRadius: '0',
                         }}
                       >
-                        <MDBContainer>
-                          <MDBRow className='my-2'>
+                        <MDBContainer className="droplist">
+                          <MDBRow className='my-1'>
                             <MDBCol md='6' lg='4' className='mb-3 mb-lg-0'>
                               <MDBListGroup flush>
                                 <MDBListGroupItem className='text-uppercase font-weight-bold' tag='a' href='#' action>
@@ -114,11 +114,10 @@ export default function FilterDropdown() {
                         className='mt-0 w-100 justify-content-center'
                         style={{
                           borderTopLeftRadius: '0',
-                          borderTopRightRadius: '0',
-                        }}
-                      >
-                        <MDBContainer>
-                          <MDBRow className='my-2'>
+                          borderTopRightRadius: '0',  
+                        }}>
+                        <MDBContainer className="droplist">
+                          <MDBRow className='my-1'>
                             <MDBCol md='6' lg='4' className='mb-3 mb-lg-0'>
                               <MDBListGroup flush>
                                 <MDBListGroupItem className='text-uppercase font-weight-bold' tag='a' href='#' action>
