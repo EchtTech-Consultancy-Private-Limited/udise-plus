@@ -1,0 +1,249 @@
+.infrastructure-main-card {
+    padding-bottom: 70px;
+
+    .tab-for-graph {
+        .heading-sm1 {
+            letter-spacing: 0.14px;
+            color: #113689;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 15px 0 0;
+
+            @media (max-width:1599px) and (min-width: 1351px) {
+                font-size: 20px;
+            }
+
+            @media (max-width:1350px) and (min-width: 1024px) {
+                font-size: 18px;
+            }
+        }
+
+        .nav-tabs .nav-link {
+            color: #212121;
+            font-size: 14px;
+            padding: 7px 15px;
+            background: #E2E2E2;
+            margin-bottom: 8px;
+            border: 1px solid #E2E2E2;
+            margin-right: 0px;
+
+            @media (max-width:1599px) and (min-width: 1351px) {
+                font-size: 12px;
+                padding: 7px 12px;
+            }
+
+            @media (max-width:1350px) and (min-width: 1024px) {
+                font-size: 10px;
+                padding: 7px 12px;
+            }
+
+        }
+
+        .nav-tabs .nav-item.show .nav-link,
+        .nav-tabs .nav-link.active {
+            color: #ffffff;
+            background-color: #2A2A2A;
+            border-color: #2A2A2A;
+        }
+
+        .customize-btn {
+            background: #E2E2E2;
+            color: #000;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 8px 20px;
+            float: right;
+            margin-top: 15px;
+
+            @media (max-width:1599px) and (min-width: 1351px) {
+                font-size: 14px;
+                margin-top: 12px;
+            }
+
+            @media (max-width:1350px) and (min-width: 1024px) {
+                font-size: 12px;
+                margin-top: 7px;
+                padding: 7px 15px;
+            }
+
+            span.material-icons-round {
+                font-size: 20px;
+                margin-right: 5px;
+                color: #254895;
+            }
+        }
+
+        .tab-text-infra.download-rep {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            span.material-icons-round {
+                border: 1px solid #444;
+                border-radius: 10px;
+                padding: 4px;
+                font-size: 20px;
+                margin-left: 5px;
+            }
+        }
+
+
+        .report-inner-tab {
+            .nav-tabs {
+                background: #fff;
+                display: inline-flex;
+                padding: 8px 15px;
+                border-radius: 40px;
+            }
+
+            .nav-tabs .nav-link {
+                background: #fff;
+                border: 1px solid #fff;
+                margin-bottom: 0px;
+                padding: 7px 20px;
+            }
+
+            .nav-tabs .nav-item.show .nav-link,
+            .nav-tabs .nav-link.active {
+                color: #ffffff;
+                background-color: #113689;
+                border-color: #113689;
+            }
+        }
+
+        .about-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .heading-sm2 {
+            font-size: 24px;
+        }
+
+        .btn-add-more {
+            background: #F7EDD6;
+            color: #FABF38;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+            width: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        table tr th {
+            color: #212121 !important;
+            font-weight: 600 !important;
+            padding: 12px 15px !important;
+        }
+
+        .text-blue {
+            color: #254895;
+        }
+
+        .heading-sm.heading-sm2 {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            @media (max-width:1599px) and (min-width: 1024px) {
+                font-size: 16px;
+            }
+        }
+    }
+
+}
+
+.custmize-filter-column {
+    position: fixed;
+    right: 0;
+    bottom: 2%;
+    background: #fff;
+    min-height: 380px;
+    width: 350px;
+    padding: 20px 20px;
+    border-radius: 10px 0px 0px 10px;
+    box-shadow: 0 10px 30px #0000001a;
+    z-index: 9999999999999999999999999;
+    opacity: 0;
+    transform-origin: right;
+    transform: rotateY(90deg);
+    transition: all 500ms ease-in-out;
+
+    @media (max-width:1599px) and (min-width: 1351px) {
+        bottom: 2%;
+    }
+
+    @media (max-width:1350px) and (min-width: 1024px) {
+        bottom: 2%;
+    }
+
+    &.show {
+        opacity: 1;
+        transform: rotateY(0deg);
+        transition: all 500ms ease-in-out;
+    }
+
+    .form-group.search .form-control {
+        background: #F2F2F2;
+        height: 50px;
+        border-radius: 50px;
+        margin-top: 15px;
+
+        @media (max-width:1599px) and (min-width: 1024px) {
+            height: 40px;
+        }
+    }
+
+    .form-group.checkbox {
+        background: #F2F2F2;
+        margin: 8px 0;
+        padding: 6px 10px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+
+        @media (max-width:1599px) and (min-width: 1351px) {
+            margin: 6px 0;
+            padding: 6px 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        @media (max-width:1350px) and (min-width: 1024px) {
+            margin: 6px 0;
+            padding: 6px 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        input {
+            margin-right: 10px;
+            height: 14px;
+            width: 14px;
+        }
+
+        button.close-btn {
+            background: #ffffff;
+            height: 35px;
+            width: 35px;
+            border: 1px solid #dadada;
+            border-radius: 50px;
+            font-size: 10px;
+            color: #000000;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+    }
+
+
+}

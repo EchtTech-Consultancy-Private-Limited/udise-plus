@@ -3,6 +3,7 @@ import "./Header.scss";
 import ministry from '../../assets/images/education_ministry.svg';
 import dropdownimg from '../../assets/images/dropdown-icon.svg'
 import SlidingTabBar from "./SlidingTabBar";
+import { Link } from "react-router-dom";
 
 
 const Header = () => {
@@ -91,14 +92,15 @@ const Header = () => {
             <div className="col-md-12">
               <nav className="navbar navbar-expand-lg">
                 <div className="logo-wrap">
-                  <a href="https://www.education.gov.in/" target="_blank"> <img src={ministry} alt="logo" className="img-fluid" /></a>
+                  <a href="https://www.education.gov.in/" target="_blank" className="top-logo"> <img src={ministry} alt="logo" className="img-fluid" /></a>
 
                   <div className="menu-switch-tab">
                     <SlidingTabBar/>
                   </div>
 
                   <div className="">
-                  <button className="header-dropdown-btn" title="UDISE+ Reports">UDISE+ Reports <img src={dropdownimg} alt="UDISE+ Reports" /> </button>
+                    
+                  <Link className="header-dropdown-btn" title="UDISE+ Reports" to="/Reports">UDISE+ Reports <img src={dropdownimg} alt="UDISE+ Reports" /> </Link>
                   </div>                 
                 </div>
 

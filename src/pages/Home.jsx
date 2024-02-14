@@ -7,10 +7,8 @@ import SchoolDashboard from '../components/Home/SchoolDashboard';
 import TeacherDashboard from '../components/Home/TeacherDashboard';
 import StudentDashboard from '../components/Home/StudentDashboard';
 import FilterDropdown from '../components/Home/FilterDropdown';
+import Reports from './Reports';
 import { useSelector } from 'react-redux';
-
-
-
 
 export default function Home() {
   const header_name = useSelector(state => state.header);
@@ -48,14 +46,12 @@ export default function Home() {
                       header_name.headerName === "Teacher Dashboard" ?
                         <TeacherDashboard /> :
                         header_name.headerName === "Student Dashboard" ?
-                          <StudentDashboard />
-                          : <EducationDashboard />
+                          <StudentDashboard /> :
+                          // header_name.headerName === "All Reports" ?  <Reports/>:
+                          <EducationDashboard/>
                 }
-
-
-
               </div>
-            </div>
+            </div>           
 
             <div className="col-sm-12 col-md-6 col-lg-4 mx-auto text-center">
               <FilterDropdown />
