@@ -4,7 +4,7 @@ import axios  from '../../services/utility';
 const fetchStateData = createAsyncThunk(
   "state/fetchStateData",
   async () => {
-    const response = await axios.get(`/state/`);
+    const response = await axios.get(`states/`);
     return response.data;
   }
 );

@@ -4,7 +4,7 @@ import axios  from '../../services/utility';
 const fetchDistrictData = createAsyncThunk(
   "district/fetchDistrictData",
   async () => {
-    const response = await axios.get(`/district/`);
+    const response = await axios.get(`districts/`);
     return response.data;
   }
 );

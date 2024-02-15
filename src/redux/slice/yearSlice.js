@@ -4,7 +4,11 @@ import { fetchYearData } from "../thunks/yearThunk";
 const yearSlice = createSlice({
   name: "year",
   initialState: {
-    data: null,
+    data: [{
+      "id": 0,
+      "report_year": "",
+      "year_id": 0
+  }],
     isLoading:false,
     isError:false
   },

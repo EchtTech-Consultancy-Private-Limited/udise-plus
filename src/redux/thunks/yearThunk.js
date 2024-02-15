@@ -4,7 +4,7 @@ import axios  from '../../services/utility';
 const fetchYearData = createAsyncThunk(
   "year/fetchYearData",
   async () => {
-    const response = await axios.get(`/year/`);
+    const response = await axios.get(`years/`);
     return response.data;
   }
 );
