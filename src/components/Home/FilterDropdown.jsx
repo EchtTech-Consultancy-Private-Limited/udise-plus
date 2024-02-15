@@ -15,10 +15,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStateData } from "../../redux/thunks/stateThunk";
 import { fetchYearData } from "../../redux/thunks/yearThunk";
+import { changeYearFilter,changeStateFilter } from "../../redux/slice/schoolFilterSlice";
+import { filterItemsStatePerPage, filterItemsYearPerPage } from "../../constants/constants";
 
 export default function FilterDropdown() {
-  const [itemsPerPage] = useState(10);
-  const [yearItemsPerPage] = useState(4);
+  const [itemsPerPage] = useState(filterItemsStatePerPage);
+  const [yearItemsPerPage] = useState(filterItemsYearPerPage);
   const dispatch = useDispatch();
   const stateData=useSelector(state=>state.state);
   const yearData=useSelector(state=>state.year);
@@ -29,6 +31,12 @@ export default function FilterDropdown() {
   },[]);
 
 
+  const handleSchoolFilterYear = (year)=>{
+    dispatch(changeYearFilter(year));
+  }
+  const handleSchoolFilterState = (state_id)=>{
+    dispatch(changeStateFilter(state_id));
+  }
 
   const renderStateListGroup = () => {
     const groups = [];
@@ -36,14 +44,14 @@ export default function FilterDropdown() {
       const groupItems = [];
       for (let j = i; j < i + itemsPerPage && j < stateData.data.length; j++) {
         groupItems.push(
-          <MDBListGroupItem key={j} tag='a' href='#' action>
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterState(stateData.data[j].state_id)}>
             {stateData.data[j].state_name}
           </MDBListGroupItem>
         );
       }
       groups.push(
         <MDBCol key={i} md='6' lg='4' className='mb-3 mb-lg-0'>
-          <MDBListGroup flush>{groupItems}</MDBListGroup>
+          <MDBListGroup >{groupItems}</MDBListGroup>
         </MDBCol>
       );
     }
@@ -56,14 +64,14 @@ export default function FilterDropdown() {
       const groupItems = [];
       for (let j = i; j < i + yearItemsPerPage && j < yearData.data.length; j++) {
         groupItems.push(
-          <MDBListGroupItem key={j} tag='a' href='#' action>
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterYear(yearData.data[j].year_id)}>
             {yearData.data[j].report_year}
           </MDBListGroupItem>
         );
       }
       yearGroups.push(
         <MDBCol key={i} md='6' lg='4' className='mb-3 mb-lg-0'>
-          <MDBListGroup flush>{groupItems}</MDBListGroup>
+          <MDBListGroup >{groupItems}</MDBListGroup>
         </MDBCol>
       );
     }
