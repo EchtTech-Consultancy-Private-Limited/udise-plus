@@ -37,7 +37,7 @@ export default function Reports() {
                                         <div className="button-group-filter mt-3 pt-1">
                                             <div className="indicator-select">
                                                 <label className="bg-grey2">Tags</label>
-                                                <select class="form-select bg-grey2">
+                                                <select className="form-select bg-grey2">
                                                     <option value="All Reports">All Reports</option>
                                                     <option value="">Report 1</option>
                                                     <option value="">Report 2</option>
@@ -48,7 +48,7 @@ export default function Reports() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 col-lg-3 mt-3 pt-1">
-                                        <button class="header-dropdown-btn">SUBMIT</button>
+                                        <button className="header-dropdown-btn">SUBMIT</button>
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@ export default function Reports() {
                                         <div className="button-group-filter mt-2 mb-2 pt-1">
                                             <div className="indicator-select">
                                                 <label className="bg-grey2">Select Year</label>
-                                                <select class="form-select bg-grey2">
+                                                <select className="form-select bg-grey2">
                                                     <option value="All Reports">2019-2020</option>
                                                     <option value="">2018-2019</option>
                                                     <option value="">2017-2018</option>
@@ -75,7 +75,7 @@ export default function Reports() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 col-lg-3 mt-2 mb-2 pt-1">
-                                        <button class="header-dropdown-btn">DOWNLOAD</button>
+                                        <button className="header-dropdown-btn">DOWNLOAD</button>
                                     </div>
                                 </div>
                             </div>
