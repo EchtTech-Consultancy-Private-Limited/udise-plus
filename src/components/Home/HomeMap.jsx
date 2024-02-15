@@ -14,7 +14,7 @@ export default function HomeMap({handleClass}) {
                         <div className="col-md-12 p-0">
                             <div className="common-content text-start map-heading-map">
                                 <h2 className="heading-blue mb-3">Welcome to UDISE+ <br/> Dashboard</h2>
-                                <button class="header-dropdown-btn close-map-btn" title="Close Map" onClick={()=>handleChangeClass('close_map_sec')}> <span class="material-icons-round">close</span> Close Map</button>
+                                <button className="header-dropdown-btn close-map-btn" title="Close Map" onClick={()=>handleChangeClass('close_map_sec')}> <span className="material-icons-round">close</span> Close Map</button>
                             </div>
                         </div>
                         <div className="col-md-10">

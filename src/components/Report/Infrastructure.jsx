@@ -16,11 +16,11 @@ export default function Infrastructure() {
 
 
     return (
-        <section className="infrastructure-main-card">
+        <section className="infrastructure-main-card p-0">
             <div className="bg-grey2 ptb-30">
                 <div className="container tab-for-graph">
                     <div className="row align-items-center">
-                        <div className="col-md-6 col-lg-6 ps-1">
+                        <div className="col-md-6 col-lg-6">
                             <div className="common-content text-start map-heading-map">
                                 <span>Reports ID: 3031</span>
                                 <h2 className="heading-sm1 mb-3">Number of Schools by Availability of Infrastructure and Facilities, School Management and School Categoryand Facilities</h2>
@@ -45,15 +45,15 @@ export default function Infrastructure() {
                         {/* Customize Filter Start*/}
 
                         <div className="col-md-2 col-lg-2 text-right pt-1 pe-0">
-                            <button className="header-dropdown-btn customize-btn" onClick={() => setShow(!show)}><span class="material-icons-round">dashboard</span> Customize</button>
+                            <button className="header-dropdown-btn customize-btn" onClick={() => setShow(!show)}><span className="material-icons-round">dashboard</span> Customize</button>
 
                             <div className={`custmize-filter-column ${show ? "show" : ""}`} id="customize_filter">
 
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div className="heading-sm heading-sm2">
-                                        <span class="material-icons-round text-blue me-2">dashboard</span> Add Column
+                                        <span className="material-icons-round text-blue me-2">dashboard</span> Add Column
                                     </div>
-                                    <button className="close-btn" onClick={() => setShow(!show)}><span class="material-icons-round">close</span></button>
+                                    <button className="close-btn" onClick={() => setShow(!show)}><span className="material-icons-round">close</span></button>
                                 </div>
 
                                 <div className="box-cont-cust">
@@ -124,7 +124,7 @@ export default function Infrastructure() {
                         {/* Customize Filter END*/}
 
                         <div className="col-md-12 col-lg-12 ps-1">
-                            <div className="tab-text-infra download-rep">Download Report <span class="material-icons-round">download</span></div>
+                            <div className="tab-text-infra download-rep">Download Report <span className="material-icons-round">download</span></div>
                         </div>
 
 
@@ -165,7 +165,7 @@ export default function Infrastructure() {
                                                     <TableCell>Drinking Water</TableCell>
                                                     <TableCell>Handwash</TableCell>
                                                     <TableCell>Ramps</TableCell>
-                                                    <TableCell> <div className="btn-add-more"><span class="material-icons-round">add</span> </div> </TableCell>
+                                                    <TableCell> <div className="btn-add-more"><span className="material-icons-round">add</span> </div> </TableCell>
 
                                                 </TableRow>
                                             </TableHead>

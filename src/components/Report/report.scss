@@ -9,11 +9,11 @@
             font-weight: 600;
             margin: 0 15px 0 0;
 
-            @media (max-width:1599px) and (min-width: 1351px) {
+            @media (max-width:1599px) and (min-width: 1361px) {
                 font-size: 20px;
             }
 
-            @media (max-width:1350px) and (min-width: 1024px) {
+            @media (max-width:1360px) and (min-width: 1024px) {
                 font-size: 18px;
             }
         }
@@ -27,12 +27,12 @@
             border: 1px solid #E2E2E2;
             margin-right: 0px;
 
-            @media (max-width:1599px) and (min-width: 1351px) {
+            @media (max-width:1599px) and (min-width: 1361px) {
                 font-size: 12px;
                 padding: 7px 12px;
             }
 
-            @media (max-width:1350px) and (min-width: 1024px) {
+            @media (max-width:1360px) and (min-width: 1024px) {
                 font-size: 10px;
                 padding: 7px 12px;
             }
@@ -55,12 +55,12 @@
             float: right;
             margin-top: 15px;
 
-            @media (max-width:1599px) and (min-width: 1351px) {
+            @media (max-width:1599px) and (min-width: 1361px) {
                 font-size: 14px;
                 margin-top: 12px;
             }
 
-            @media (max-width:1350px) and (min-width: 1024px) {
+            @media (max-width:1360px) and (min-width: 1024px) {
                 font-size: 12px;
                 margin-top: 7px;
                 padding: 7px 15px;
@@ -147,10 +147,92 @@
             font-size: 20px;
             display: flex;
             align-items: center;
+
             @media (max-width:1599px) and (min-width: 1024px) {
                 font-size: 16px;
             }
         }
+
+        .filter-card {
+            background: #fff;
+            padding: 15px 20px 20px;
+            border-radius: 20px;
+
+            input.form-control.border-only-bottom {
+                border: 0px;
+                border-bottom: 1px solid #b2b1b1 !important;
+                border-radius: 0;
+                padding-left: 0;
+            }
+
+            .heading-sm1 {
+                letter-spacing: 0.14px;
+                color: #000000;
+                font-size: 18px;
+                font-weight: 600;
+                margin: 0 15px 0 0;
+
+                @media (max-width:1599px) and (min-width: 1024px) {
+                    font-size: 15px;
+                }
+
+            }
+
+            .indicator-select {
+                label.bg-grey2 {
+                    background: transparent;
+                    top: 3px;
+                    color: #000;
+
+                    @media (max-width:1599px) and (min-width: 1024px) {
+                        left: 9px;
+                        top: 8px;
+                    }
+                }
+
+                .form-select {
+                    height: 50px;
+                    border-radius: 35px;
+                    padding-top: 12px;
+                    font-weight: 600;
+                    appearance: auto;
+                    padding-left: 25px;
+                    padding-right: 10px;
+
+                    @media (max-width:1599px) and (min-width: 1024px) {
+                        padding-left: 15px;
+                    }
+
+                }
+            }
+
+            button.header-dropdown-btn {
+                width: 100%;
+                justify-content: center;
+                font-size: 16px;
+                @media (max-width:1599px) and (min-width: 1024px) {
+                    font-size: 14px;
+                }
+            }
+        }
+
+        a.action-icon {
+            margin-right: 10px;
+            border: 1px solid #696969;
+            border-radius: 40px;
+            vertical-align: middle;
+            display: inline-block;
+            height: 30px;
+            width: 30px;
+            text-align: center;
+            line-height: 26px;
+
+            img {
+                width: 16px;
+            }
+        }
+
+
     }
 
 }
@@ -171,11 +253,11 @@
     transform: rotateY(90deg);
     transition: all 500ms ease-in-out;
 
-    @media (max-width:1599px) and (min-width: 1351px) {
+    @media (max-width:1599px) and (min-width: 1361px) {
         bottom: 2%;
     }
 
-    @media (max-width:1350px) and (min-width: 1024px) {
+    @media (max-width:1360px) and (min-width: 1024px) {
         bottom: 2%;
     }
 
@@ -205,7 +287,7 @@
         align-items: center;
         font-size: 14px;
 
-        @media (max-width:1599px) and (min-width: 1351px) {
+        @media (max-width:1599px) and (min-width: 1361px) {
             margin: 6px 0;
             padding: 6px 10px;
             border-radius: 10px;
@@ -214,7 +296,7 @@
             font-size: 12px;
         }
 
-        @media (max-width:1350px) and (min-width: 1024px) {
+        @media (max-width:1360px) and (min-width: 1024px) {
             margin: 6px 0;
             padding: 6px 10px;
             border-radius: 10px;
@@ -228,8 +310,6 @@
             height: 14px;
             width: 14px;
         }
-       
-
     }
 
     button.close-btn {
