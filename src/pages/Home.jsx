@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Header from '../components/Header/Header';
 import HomeMap from '../components/Home/HomeMap';
 import '../components/Home/home.scss'
 import EducationDashboard from '../components/Home/EducationDashboard';
