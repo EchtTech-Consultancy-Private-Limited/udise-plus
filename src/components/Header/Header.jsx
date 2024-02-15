@@ -92,7 +92,7 @@ const Header = () => {
             <div className="col-md-12">
               <nav className="navbar navbar-expand-lg">
                 <div className="logo-wrap">
-                  <a href="https://www.education.gov.in/" target="_blank" className="top-logo"> <img src={ministry} alt="logo" className="img-fluid" /></a>
+                  <a href="#" className="top-logo"> <img src={ministry} alt="logo" className="img-fluid" /></a>
 
                   <div className="menu-switch-tab">
                     <SlidingTabBar/>
@@ -100,7 +100,7 @@ const Header = () => {
 
                   <div className="">
                     
-                  <Link className="header-dropdown-btn" title="UDISE+ Reports" to="/Reports">UDISE+ Reports <img src={dropdownimg} alt="UDISE+ Reports" /> </Link>
+                  <Link className="header-dropdown-btn" title="UDISE+ Reports" to="/reports">UDISE+ Reports <img src={dropdownimg} alt="UDISE+ Reports" /> </Link>
                   </div>                 
                 </div>
 
