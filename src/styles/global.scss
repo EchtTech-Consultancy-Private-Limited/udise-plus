@@ -1149,10 +1149,14 @@ a{text-decoration: none;}
 
 table tr th{
     background: #FAF6ED;
+    border-color: #e0e0e0;
 }
 table tr td{
     background: #fff;
     padding: 8px 15px !important;
+    border-color: #e0e0e0;
 }
+
+table tr{border-color: #e0e0e0;}
 
 .form-control:focus{border-color:transparent !important; box-shadow: none !important;}

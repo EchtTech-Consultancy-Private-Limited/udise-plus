@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import '../components/Report/report.scss'
-import Infrastructure from '../components/Report/Infrastructure';
 import FilterDropdown from '../components/Home/FilterDropdown';
+import InfrastructureReport from '../components/Report/InfrastructureReport';
 
 export default function AllReport() {
     return (
-        <>    
-       
-       <FilterDropdown/>
-       <Infrastructure/>
+        <>          
+        <FilterDropdown/>
+        <InfrastructureReport/>
         </>
     )
 }

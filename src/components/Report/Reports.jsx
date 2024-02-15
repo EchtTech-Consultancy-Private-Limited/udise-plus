@@ -116,9 +116,9 @@ export default function Reports() {
                                             <TableCell>Number of Schools by Type of School and School Category</TableCell>
                                             <TableCell>School</TableCell>
                                             <TableCell>
-                                                <Link className="action-icon" to="/all-reports"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={Download} alt="" /></Link>
+                                                <Link className="action-icon" to="/school-reports"><img src={Tableicon} alt="" /></Link>
+                                                <Link className="action-icon" to="/school-reports"><img src={graph} alt="" /></Link>
+                                                <Link className="action-icon" to="/school-reports"><img src={Download} alt="" /></Link>
                                             </TableCell>                                          
                                         </TableRow>
                                         <TableRow>
@@ -127,9 +127,9 @@ export default function Reports() {
                                             <TableCell>Number of Schools by School Management and School Category</TableCell>
                                             <TableCell>School</TableCell>
                                             <TableCell>
-                                                <Link className="action-icon" to="/all-reports"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={Download} alt="" /></Link>
+                                                <Link className="action-icon" to="/school-reports"><img src={Tableicon} alt="" /></Link>
+                                                <Link className="action-icon" to="/school-reports"><img src={graph} alt="" /></Link>
+                                                <Link className="action-icon" to="/school-reports"><img src={Download} alt="" /></Link>
                                             </TableCell>                                          
                                         </TableRow>
                                         <TableRow>
@@ -138,9 +138,9 @@ export default function Reports() {
                                             <TableCell>Number of Teachers by Social Category , Gender and School Management</TableCell>
                                             <TableCell>Teacher</TableCell>
                                             <TableCell>
-                                                <Link className="action-icon" to="/all-reports"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={Download} alt="" /></Link>
+                                                <Link className="action-icon" to="/teacher-reports"><img src={Tableicon} alt="" /></Link>
+                                                <Link className="action-icon" to="/teacher-reports"><img src={graph} alt="" /></Link>
+                                                <Link className="action-icon" to="/teacher-reports"><img src={Download} alt="" /></Link>
                                             </TableCell>                                          
                                         </TableRow>
                                         <TableRow>
@@ -149,9 +149,9 @@ export default function Reports() {
                                             <TableCell>Pupil Teacher Ratio (PTR)</TableCell>
                                             <TableCell>Teacher</TableCell>
                                             <TableCell>
-                                                <Link className="action-icon" to="/all-reports"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={Download} alt="" /></Link>
+                                                <Link className="action-icon" to="/teacher-reports"><img src={Tableicon} alt="" /></Link>
+                                                <Link className="action-icon" to="/teacher-reports"><img src={graph} alt="" /></Link>
+                                                <Link className="action-icon" to="/teacher-reports"><img src={Download} alt="" /></Link>
                                             </TableCell>                                          
                                         </TableRow>
                                       
@@ -184,9 +184,9 @@ export default function Reports() {
                                             <TableCell>Number of Schools by Type of School and School Category</TableCell>
                                             <TableCell>School</TableCell>
                                             <TableCell>
-                                                <Link className="action-icon" to="/all-reports"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={Download} alt="" /></Link>
+                                                <Link className="action-icon" to="/school-reports"><img src={Tableicon} alt="" /></Link>
+                                                <Link className="action-icon" to="/school-reports"><img src={graph} alt="" /></Link>
+                                                <Link className="action-icon" to="/school-reports"><img src={Download} alt="" /></Link>
                                             </TableCell>                                          
                                         </TableRow>
                                         <TableRow>
@@ -195,9 +195,9 @@ export default function Reports() {
                                             <TableCell>Number of Schools by School Management and School Category</TableCell>
                                             <TableCell>School</TableCell>
                                             <TableCell>
-                                                <Link className="action-icon" to="/all-reports"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={Download} alt="" /></Link>
+                                                <Link className="action-icon" to="/school-reports"><img src={Tableicon} alt="" /></Link>
+                                                <Link className="action-icon" to="/school-reports"><img src={graph} alt="" /></Link>
+                                                <Link className="action-icon" to="/school-reports"><img src={Download} alt="" /></Link>
                                             </TableCell>                                          
                                         </TableRow>                                                                           
                                     </TableBody>
@@ -230,9 +230,9 @@ export default function Reports() {
                                             <TableCell>Number of Teachers by Social Category , Gender and School Management</TableCell>
                                             <TableCell>Teacher</TableCell>
                                             <TableCell>
-                                                <Link className="action-icon" to="/all-reports"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={Download} alt="" /></Link>
+                                                <Link className="action-icon" to="/teacher-reports"><img src={Tableicon} alt="" /></Link>
+                                                <Link className="action-icon" to="/teacher-reports"><img src={graph} alt="" /></Link>
+                                                <Link className="action-icon" to="/teacher-reports"><img src={Download} alt="" /></Link>
                                             </TableCell>                                          
                                         </TableRow>
                                         <TableRow>
@@ -241,9 +241,9 @@ export default function Reports() {
                                             <TableCell>Pupil Teacher Ratio (PTR)</TableCell>
                                             <TableCell>Teacher</TableCell>
                                             <TableCell>
-                                                <Link className="action-icon" to="/all-reports"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports"><img src={Download} alt="" /></Link>
+                                                <Link className="action-icon" to="/teacher-reports"><img src={Tableicon} alt="" /></Link>
+                                                <Link className="action-icon" to="/teacher-reports"><img src={graph} alt="" /></Link>
+                                                <Link className="action-icon" to="/teacher-reports"><img src={Download} alt="" /></Link>
                                             </TableCell>                                          
                                         </TableRow>
                                       

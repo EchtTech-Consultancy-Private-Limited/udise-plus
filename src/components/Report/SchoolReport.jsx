@@ -10,7 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import { useState } from "react";
 
 
-export default function Infrastructure() {
+export default function SchoolReport() {
 
     const [show, setShow] = useState(false);
 
@@ -152,26 +152,29 @@ export default function Infrastructure() {
                                 </Tab>
                                 <Tab eventKey="Table" title="Table">
                                     <TableContainer className="mt-4">
-                                        <Table>
+                                        <Table className="teble table-bordered">
                                             <TableHead>
                                                 <TableRow>
-                                                    <TableCell>School Category</TableCell>
-                                                    <TableCell>No. Of Schools</TableCell>
-                                                    <TableCell>Electricity</TableCell>
-                                                    <TableCell>Playgroud</TableCell>
-                                                    <TableCell>Furtuniture</TableCell>
-                                                    <TableCell>Boy’s Toilet</TableCell>
-                                                    <TableCell>Girl’s Toilet</TableCell>
-                                                    <TableCell>Drinking Water</TableCell>
-                                                    <TableCell>Handwash</TableCell>
-                                                    <TableCell>Ramps</TableCell>
+                                                    <TableCell>Location</TableCell>
+                                                    <TableCell>Type of School</TableCell>
+                                                    <TableCell>PS (I-V)</TableCell>
+                                                    <TableCell>UPS (I-VIII)</TableCell>
+                                                    <TableCell>HSS (I-XII)</TableCell>
+                                                    <TableCell>UPS (VI-VIII)</TableCell>
+                                                    <TableCell>HSS (VI-XII)</TableCell>
+                                                    <TableCell>SS (I-X)</TableCell>
+                                                    <TableCell>SS (VI-X)</TableCell>
+                                                    <TableCell>SS (IX-X)</TableCell>
+                                                    <TableCell>HSS (IX-XII)</TableCell>
+                                                    <TableCell>HSS (XI-XII)</TableCell>
                                                     <TableCell> <div className="btn-add-more"><span className="material-icons-round">add</span> </div> </TableCell>
 
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
                                                 <TableRow>
-                                                    <TableCell>HSS (I-XII)</TableCell>
+                                                    <TableCell>National</TableCell>
+                                                    <TableCell>Boys</TableCell>
                                                     <TableCell>64355</TableCell>
                                                     <TableCell>256955</TableCell>
                                                     <TableCell>64355</TableCell>
@@ -181,10 +184,12 @@ export default function Infrastructure() {
                                                     <TableCell>64355</TableCell>
                                                     <TableCell>256955</TableCell>
                                                     <TableCell>64355</TableCell>
-                                                    <TableCell> </TableCell>
+                                                    <TableCell>256955</TableCell>
+                                                    <TableCell>64355</TableCell>
                                                 </TableRow>
                                                 <TableRow>
-                                                    <TableCell>HSS (I-XII)</TableCell>
+                                                    <TableCell>National</TableCell>
+                                                    <TableCell>Co-Ed</TableCell>
                                                     <TableCell>64355</TableCell>
                                                     <TableCell>256955</TableCell>
                                                     <TableCell>64355</TableCell>
@@ -194,10 +199,12 @@ export default function Infrastructure() {
                                                     <TableCell>64355</TableCell>
                                                     <TableCell>256955</TableCell>
                                                     <TableCell>64355</TableCell>
-                                                    <TableCell> </TableCell>
+                                                    <TableCell>256955</TableCell>
+                                                    <TableCell>64355</TableCell>
                                                 </TableRow>
                                                 <TableRow>
-                                                    <TableCell>HSS (I-XII)</TableCell>
+                                                    <TableCell>National</TableCell>
+                                                    <TableCell>Girls</TableCell>
                                                     <TableCell>64355</TableCell>
                                                     <TableCell>256955</TableCell>
                                                     <TableCell>64355</TableCell>
@@ -207,99 +214,10 @@ export default function Infrastructure() {
                                                     <TableCell>64355</TableCell>
                                                     <TableCell>256955</TableCell>
                                                     <TableCell>64355</TableCell>
-                                                    <TableCell> </TableCell>
+                                                    <TableCell>256955</TableCell>
+                                                    <TableCell>64355</TableCell>
                                                 </TableRow>
-                                                <TableRow>
-                                                    <TableCell>HSS (I-XII)</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell> </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell>HSS (I-XII)</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell> </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell>HSS (I-XII)</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell> </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell>HSS (I-XII)</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell> </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell>HSS (I-XII)</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell> </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell>HSS (I-XII)</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell> </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell>HSS (I-XII)</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell>256955</TableCell>
-                                                    <TableCell>64355</TableCell>
-                                                    <TableCell> </TableCell>
-                                                </TableRow>
+                                                                                              
                                             </TableBody>
                                         </Table>
                                     </TableContainer>
