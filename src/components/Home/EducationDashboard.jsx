@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import school from '../../assets/images/school.svg'
@@ -13,6 +13,8 @@ import power from '../../assets/images/noun-power.svg'
 import transition_img from '../../assets/images/Transition.svg'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDistrictData } from '../../redux/thunks/districtThunk';
 // require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
@@ -93,6 +95,11 @@ require('highcharts/modules/accessibility')(Highcharts);
 }(Highcharts));
 
 export default function EducationDashboard() {
+    const districtData = useSelector(state=>state.district);
+    const dispatch = useDispatch();
+    useEffect(()=>{
+            dispatch(fetchDistrictData());
+    },[])
     return (
         <>
             <section className="pgicategory vision-mission-card ptb-30">

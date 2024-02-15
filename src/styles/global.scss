@@ -960,7 +960,7 @@ ul {
     }
 
     .site-header {
-        top: 35px !important;
+        top: 36px !important;
     }
 
     .map-main-card .close-map-btn {
@@ -968,7 +968,7 @@ ul {
     }
 }
 
-@media (max-width:1599px) and (min-width: 1351px) {
+@media (max-width:1599px) and (min-width: 1361px) {
     body{font-size: 14px;}
     button.header-dropdown-btn.open-map-btn {
         padding: 10px 18px;
@@ -999,10 +999,10 @@ ul {
 
 }
 
-@media (max-width:1350px) and (min-width: 1024px) {
+@media (max-width:1360px) and (min-width: 1024px) {
     body{font-size: 12px;}
     .site-header {
-        top: 32px;
+        top: 34px;
     }
 
     .filter_drodown ul.dropdown-menu.show.animation {
@@ -1149,9 +1149,14 @@ a{text-decoration: none;}
 
 table tr th{
     background: #FAF6ED;
+    border-color: #e0e0e0;
 }
 table tr td{
     background: #fff;
+    padding: 8px 15px !important;
+    border-color: #e0e0e0;
 }
+
+table tr{border-color: #e0e0e0;}
 
 .form-control:focus{border-color:transparent !important; box-shadow: none !important;}

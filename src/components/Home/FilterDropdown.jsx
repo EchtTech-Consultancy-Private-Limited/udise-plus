@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import {
   MDBContainer,
   MDBCol,
   MDBNavbar,
   MDBNavbarNav,
   MDBNavbarItem,
-  MDBNavbarLink,
   MDBDropdown,
   MDBDropdownToggle,
   MDBDropdownMenu,
@@ -13,8 +12,73 @@ import {
   MDBListGroupItem,
   MDBRow,
 } from 'mdb-react-ui-kit';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchStateData } from "../../redux/thunks/stateThunk";
+import { fetchYearData } from "../../redux/thunks/yearThunk";
+import { changeYearFilter,changeStateFilter } from "../../redux/slice/schoolFilterSlice";
+import { filterItemsStatePerPage, filterItemsYearPerPage } from "../../constants/constants";
 
 export default function FilterDropdown() {
+  const [itemsPerPage] = useState(filterItemsStatePerPage);
+  const [yearItemsPerPage] = useState(filterItemsYearPerPage);
+  const dispatch = useDispatch();
+  const stateData=useSelector(state=>state.state);
+  const yearData=useSelector(state=>state.year);
+
+  useEffect(()=>{
+    dispatch(fetchStateData());
+    dispatch(fetchYearData());
+  },[]);
+
+
+  const handleSchoolFilterYear = (year)=>{
+    dispatch(changeYearFilter(year));
+  }
+  const handleSchoolFilterState = (state_id)=>{
+    dispatch(changeStateFilter(state_id));
+  }
+
+  const renderStateListGroup = () => {
+    const groups = [];
+    for (let i = 0; i < stateData.data.data.length; i += itemsPerPage) {
+      const groupItems = [];
+      for (let j = i; j < i + itemsPerPage && j < stateData.data.data.length; j++) {
+        groupItems.push(
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterState(stateData.data.data[j].state_id)}>
+            {stateData.data.data[j].state_name}
+          </MDBListGroupItem>
+        );
+      }
+      groups.push(
+        <MDBCol key={i} md='6' lg='4' className='mb-3 mb-lg-0'>
+          <MDBListGroup >{groupItems}</MDBListGroup>
+        </MDBCol>
+      );
+    }
+    return groups;
+  };
+
+  const renderYearListGroup = () => {
+    const yearGroups = [];
+    for (let i = 0; i < yearData.data.data.length; i += yearItemsPerPage) {
+      const groupItems = [];
+      for (let j = i; j < i + yearItemsPerPage && j < yearData.data.data.length; j++) {
+        groupItems.push(
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterYear(yearData.data.data[j].year_id)}>
+            {yearData.data.data[j].report_year}
+          </MDBListGroupItem>
+        );
+      }
+      yearGroups.push(
+        <MDBCol key={i} md='6' lg='4' className='mb-3 mb-lg-0'>
+          <MDBListGroup >{groupItems}</MDBListGroup>
+        </MDBCol>
+      );
+    }
+    return yearGroups;
+  };
+
+
   return (
     <>
       <div className="filter_drodown">
@@ -40,63 +104,8 @@ export default function FilterDropdown() {
                       >
                         <MDBContainer className="droplist">
                           <MDBRow className='my-1'>
-                            <MDBCol md='6' lg='4' className='mb-3 mb-lg-0'>
-                              <MDBListGroup flush>
-                                <MDBListGroupItem className='text-uppercase font-weight-bold' tag='a' href='#' action>
-                                  Lorem ipsum
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Dolor sit
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Amet consectetur
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Cras justo odio
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Adipisicing elit
-                                </MDBListGroupItem>
-                              </MDBListGroup>
-                            </MDBCol>
-                            <MDBCol md='6' lg='4' className='mb-3 mb-lg-0'>
-                              <MDBListGroup flush>
-                                <MDBListGroupItem className='text-uppercase font-weight-bold' tag='a' href='#' action>
-                                  Explicabo voluptas
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Perspiciatis quo
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Cras justo odio
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Laudantium maiores
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Provident dolor
-                                </MDBListGroupItem>
-                              </MDBListGroup>
-                            </MDBCol>
-                            <MDBCol md='6' lg='4' className='mb-3 mb-md-0'>
-                              <MDBListGroup flush>
-                                <MDBListGroupItem className='text-uppercase font-weight-bold' tag='a' href='#' action>
-                                  Iste quaerato
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Cras justo odio
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Est iure
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Praesentium
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Laboriosam
-                                </MDBListGroupItem>
-                              </MDBListGroup>
-                            </MDBCol>
+                      
+                          {<>{renderStateListGroup()}</>}
                            
                           </MDBRow>
                         </MDBContainer>
@@ -118,63 +127,10 @@ export default function FilterDropdown() {
                         }}>
                         <MDBContainer className="droplist">
                           <MDBRow className='my-1'>
-                            <MDBCol md='6' lg='4' className='mb-3 mb-lg-0'>
-                              <MDBListGroup flush>
-                                <MDBListGroupItem className='text-uppercase font-weight-bold' tag='a' href='#' action>
-                                  Lorem ipsum
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Dolor sit
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Amet consectetur
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Cras justo odio
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Adipisicing elit
-                                </MDBListGroupItem>
-                              </MDBListGroup>
-                            </MDBCol>
-                            <MDBCol md='6' lg='4' className='mb-3 mb-lg-0'>
-                              <MDBListGroup flush>
-                                <MDBListGroupItem className='text-uppercase font-weight-bold' tag='a' href='#' action>
-                                  Explicabo voluptas
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Perspiciatis quo
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Cras justo odio
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Laudantium maiores
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Provident dolor
-                                </MDBListGroupItem>
-                              </MDBListGroup>
-                            </MDBCol>
-                            <MDBCol md='6' lg='4' className='mb-3 mb-md-0'>
-                              <MDBListGroup flush>
-                                <MDBListGroupItem className='text-uppercase font-weight-bold' tag='a' href='#' action>
-                                  Iste quaerato
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Cras justo odio
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Est iure
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Praesentium
-                                </MDBListGroupItem>
-                                <MDBListGroupItem tag='a' href='#' action>
-                                  Laboriosam
-                                </MDBListGroupItem>
-                              </MDBListGroup>
-                            </MDBCol>
+                           
+
+                           {<>{renderYearListGroup()}</>}
+                         
                            
                           </MDBRow>
                         </MDBContainer>

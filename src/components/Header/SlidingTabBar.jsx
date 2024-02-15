@@ -3,7 +3,6 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { useDispatch } from "react-redux";
 import {updateHeaderName} from '../../redux/slice/headerSlice'
-import { Link } from "react-router-dom";
 
 export default function SlidingTabBar() {
   const dispatch = useDispatch();
