@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios  from '../../services/utility';
 
 const fetchDistrictData = createAsyncThunk(
   "district/fetchDistrictData",

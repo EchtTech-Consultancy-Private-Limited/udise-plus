@@ -6,7 +6,8 @@ const distrcitSlice = createSlice({
   initialState: {
     data: null,
     isLoading:false,
-    isError:false
+    isError:false,
+    error:null
   },
   reducers: {},
   extraReducers: (builder) => {
