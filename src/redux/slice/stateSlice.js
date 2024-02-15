@@ -4,15 +4,20 @@ import { fetchStateData } from "../thunks/stateThunk";
 const stateSlice = createSlice({
   name: "state",
   initialState: {
-    data: [{
-      "id": 0,
-      "state_id": 0,
-      "state_code": 0,
-      "state_name": "Uttar Pradesh",
-      "inityear": "",
-      "year_id": 0
+    data: {
+      data:[{
+        "id": 0,
+        "state_id": 0,
+        "state_code": 0,
+        "state_name": "",
+        "inityear": "",
+        "year_id": 0
+      }],
+      statusCode:0,
+      message:"",
+      success:false
     },
-  ],
+
     isLoading:false,
     isError:false
   },

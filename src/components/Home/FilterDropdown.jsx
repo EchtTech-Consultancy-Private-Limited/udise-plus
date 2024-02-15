@@ -40,12 +40,12 @@ export default function FilterDropdown() {
 
   const renderStateListGroup = () => {
     const groups = [];
-    for (let i = 0; i < stateData.data.length; i += itemsPerPage) {
+    for (let i = 0; i < stateData.data.data.length; i += itemsPerPage) {
       const groupItems = [];
-      for (let j = i; j < i + itemsPerPage && j < stateData.data.length; j++) {
+      for (let j = i; j < i + itemsPerPage && j < stateData.data.data.length; j++) {
         groupItems.push(
-          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterState(stateData.data[j].state_id)}>
-            {stateData.data[j].state_name}
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterState(stateData.data.data[j].state_id)}>
+            {stateData.data.data[j].state_name}
           </MDBListGroupItem>
         );
       }
@@ -60,12 +60,12 @@ export default function FilterDropdown() {
 
   const renderYearListGroup = () => {
     const yearGroups = [];
-    for (let i = 0; i < yearData.data.length; i += yearItemsPerPage) {
+    for (let i = 0; i < yearData.data.data.length; i += yearItemsPerPage) {
       const groupItems = [];
-      for (let j = i; j < i + yearItemsPerPage && j < yearData.data.length; j++) {
+      for (let j = i; j < i + yearItemsPerPage && j < yearData.data.data.length; j++) {
         groupItems.push(
-          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterYear(yearData.data[j].year_id)}>
-            {yearData.data[j].report_year}
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterYear(yearData.data.data[j].year_id)}>
+            {yearData.data.data[j].report_year}
           </MDBListGroupItem>
         );
       }
