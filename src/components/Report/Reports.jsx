@@ -272,6 +272,17 @@ export default function Reports() {
                                     <TableBody>
                                         <TableRow>
                                             <TableCell>1</TableCell>
+                                            <TableCell>3013</TableCell>
+                                            <TableCell>Number of Schools by Availability of Infrastructure and Facilities, School Management and School Category</TableCell>
+                                            <TableCell>School</TableCell>
+                                            <TableCell>
+                                                <Link className="action-icon" to="/infrastructure-reports3013"><img src={Tableicon} alt="" /></Link>
+                                                <Link className="action-icon" to="/infrastructure-reports3013"><img src={graph} alt="" /></Link>
+                                                <Link className="action-icon" to="/infrastructure-reports3013"><img src={Download} alt="" /></Link>
+                                            </TableCell>                                          
+                                        </TableRow>                                      
+                                        <TableRow>
+                                            <TableCell>2</TableCell>
                                             <TableCell>3016</TableCell>
                                             <TableCell>Number of Schools having Electricity Connection by School Category and Management</TableCell>
                                             <TableCell>School</TableCell>
