@@ -2,7 +2,8 @@ import React from "react";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { useDispatch } from "react-redux";
-import {updateHeaderName} from '../../redux/slice/headerSlice'
+import { updateHeaderName } from '../../redux/slice/headerSlice'
+import { Link } from "react-router-dom";
 
 export default function SlidingTabBar() {
   const dispatch = useDispatch();
@@ -27,7 +28,11 @@ export default function SlidingTabBar() {
         <Tab eventKey="All Reports" title="All Reports">
         </Tab>
       </Tabs>
-    
+
+      {/* <div className="header-breadcrumb">
+        <div className="title-brd"><Link className="text-black">Reports</Link> <span class="material-icons-round">chevron_right</span> <span className="internalpagename">Infrastructure</span> </div>
+      </div> */}
+
     </>
   )
 }

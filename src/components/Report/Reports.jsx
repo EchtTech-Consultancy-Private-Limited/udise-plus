@@ -93,7 +93,7 @@ export default function Reports() {
                                         <TableRow className="">
                                             <TableCell className="bg-grey2">S.no</TableCell>
                                             <TableCell className="bg-grey2">Id</TableCell>
-                                            <TableCell className="bg-grey2">Report Name</TableCell>
+                                            <TableCell className="bg-grey2 report-name-width-50">Report Name</TableCell>
                                             <TableCell className="bg-grey2">Tags</TableCell>
                                             <TableCell className="bg-grey2">Action</TableCell>                                          
                                         </TableRow>
@@ -172,7 +172,7 @@ export default function Reports() {
                                         <TableRow className="">
                                             <TableCell className="bg-grey2">S.no</TableCell>
                                             <TableCell className="bg-grey2">Id</TableCell>
-                                            <TableCell className="bg-grey2">Report Name</TableCell>
+                                            <TableCell className="bg-grey2 report-name-width-50">Report Name</TableCell>
                                             <TableCell className="bg-grey2">Tags</TableCell>
                                             <TableCell className="bg-grey2">Action</TableCell>                                          
                                         </TableRow>
@@ -219,7 +219,7 @@ export default function Reports() {
                                         <TableRow className="">
                                             <TableCell className="bg-grey2">S.no</TableCell>
                                             <TableCell className="bg-grey2">Id</TableCell>
-                                            <TableCell className="bg-grey2">Report Name</TableCell>
+                                            <TableCell className="bg-grey2 report-name-width-50">Report Name</TableCell>
                                             <TableCell className="bg-grey2">Tags</TableCell>
                                             <TableCell className="bg-grey2">Action</TableCell>                                          
                                         </TableRow>
@@ -266,7 +266,7 @@ export default function Reports() {
                                         <TableRow className="">
                                             <TableCell className="bg-grey2">S.no</TableCell>
                                             <TableCell className="bg-grey2">Id</TableCell>
-                                            <TableCell className="bg-grey2">Report Name</TableCell>
+                                            <TableCell className="bg-grey2 report-name-width-50">Report Name</TableCell>
                                             <TableCell className="bg-grey2">Tags</TableCell>
                                             <TableCell className="bg-grey2">Action</TableCell>                                          
                                         </TableRow>
