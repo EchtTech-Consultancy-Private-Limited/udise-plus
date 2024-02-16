@@ -8,12 +8,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useState } from "react";
+import {useSearchParams} from "react-router-dom"
 
 
 export default function TeacherReport() {
 
     const [show, setShow] = useState(false);
-
+    const [queryParameters] = useSearchParams();
+    const id = queryParameters.get('id');
+    const report_name = queryParameters.get('report_name');
+    const type = queryParameters.get('type');
 
     return (
         <section className="infrastructure-main-card p-0">
@@ -22,8 +26,8 @@ export default function TeacherReport() {
                     <div className="row align-items-center">
                         <div className="col-md-6 col-lg-6">
                             <div className="common-content text-start map-heading-map">
-                                <span>Reports ID: 3031</span>
-                                <h2 className="heading-sm1 mb-3">Number of Schools by Availability of Infrastructure and Facilities, School Management and School Categoryand Facilities</h2>
+                                <span>Reports ID: {id}</span>
+                                <h2 className="heading-sm1 mb-3">{report_name}</h2>
                             </div>
                         </div>
                         <div className="col-md-4 col-lg-4">
@@ -135,8 +139,8 @@ export default function TeacherReport() {
                 <div className="container tab-for-graph">
                     <div className="row align-items-center report-inner-tab">
                         <div className="col-md-12 col-lg-12">
-                            <Tabs defaultActiveKey="About" id="uncontrolled-tab-example" className="">
-                                <Tab eventKey="About" title="About">
+                            <Tabs defaultActiveKey={type} id="uncontrolled-tab-example" className="">
+                                <Tab eventKey="about" title="About">
                                     <div className="about-card mt-4">
                                         <h2 className="heading-sm2 mb-2">About Us</h2>
                                         <p>
@@ -150,7 +154,7 @@ export default function TeacherReport() {
                                         </p>
                                     </div>
                                 </Tab>
-                                <Tab eventKey="Table" title="Table">
+                                <Tab eventKey="table" title="Table">
                                     <TableContainer className="mt-4">
                                         <Table className="teble table-bordered">
                                             <TableHead>
@@ -340,7 +344,7 @@ export default function TeacherReport() {
                                         </Table>
                                     </TableContainer>
                                 </Tab>
-                                <Tab eventKey="Chart" title="Chart" disabled>
+                                <Tab eventKey="graph" title="Chart" disabled>
                                 </Tab>
 
                             </Tabs>

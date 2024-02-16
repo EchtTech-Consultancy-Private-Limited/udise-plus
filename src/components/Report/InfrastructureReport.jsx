@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
 
-export default function Infrastructure() {
+export default function Infrastructure({id,report_name,type}) {
   const schoolFilterYear = useSelector((state) => state.schoolFilter);
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
@@ -28,26 +28,17 @@ export default function Infrastructure() {
           <div className="row align-items-center">
             <div className="col-md-6 col-lg-6">
               <div className="common-content text-start map-heading-map">
-                <span>Reports ID: 3031</span>
+                <span>Reports ID: {id}</span>
                 <h2 className="heading-sm1 mb-3">
-                  Number of Schools by Availability of Infrastructure and
-                  Facilities, School Management and School Categoryand
-                  Facilities
+                 {report_name}
                 </h2>
               </div>
             </div>
             <div className="col-md-4 col-lg-4">
               <div className="tab-text-infra mb-1">View Data By</div>
-              <Tabs
-                defaultActiveKey="School Category"
-                id="uncontrolled-tab-example"
-                className=""
-              >
+              <Tabs defaultActiveKey="School Management" id="uncontrolled-tab-example" className="">
                 <Tab eventKey="School Category" title="School Category"></Tab>
-                <Tab
-                  eventKey="School Management"
-                  title="School Management"
-                ></Tab>
+                <Tab eventKey="School Management" title="School Management" ></Tab>
                 <Tab eventKey="Urban/Rural" title="Urban / Rural"></Tab>
               </Tabs>
             </div>
@@ -213,11 +204,11 @@ export default function Infrastructure() {
           <div className="row align-items-center report-inner-tab">
             <div className="col-md-12 col-lg-12">
               <Tabs
-                defaultActiveKey="About"
+                defaultActiveKey={type}
                 id="uncontrolled-tab-example"
                 className=""
               >
-                <Tab eventKey="About" title="About">
+                <Tab eventKey="about" title="About">
                   <div className="about-card mt-4">
                     <h2 className="heading-sm2 mb-2">About Us</h2>
                     <p>
@@ -255,7 +246,7 @@ export default function Infrastructure() {
                     </p>
                   </div>
                 </Tab>
-                <Tab eventKey="Table" title="Table">
+                <Tab eventKey="table" title="Table">
                   <TableContainer className="mt-4">
                     <Table>
                       <TableHead>
@@ -314,7 +305,7 @@ export default function Infrastructure() {
                     </Table>
                   </TableContainer>
                 </Tab>
-                <Tab eventKey="Chart" title="Chart" disabled></Tab>
+                <Tab eventKey="graph" title="Chart"></Tab>
               </Tabs>
             </div>
           </div>
