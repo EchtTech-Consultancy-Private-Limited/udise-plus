@@ -3,10 +3,13 @@ import "./Header.scss";
 import ministry from '../../assets/images/education_ministry.svg';
 import dropdownimg from '../../assets/images/dropdown-icon.svg'
 import SlidingTabBar from "./SlidingTabBar";
-import { Link } from "react-router-dom";
-
+import { useSelector } from 'react-redux';
+import { urls } from "../../constants/constants";
+import { useLocation,Link } from 'react-router-dom';
 
 const Header = () => {
+  const location = useLocation();
+  const header_name = useSelector(state => state.header);
   return (
     <>
       <div className="header-top">
@@ -95,7 +98,10 @@ const Header = () => {
 
                   <div className="">
                     
-                  <Link className="header-dropdown-btn" title="UDISE+ Reports" to="/reports">UDISE+ Reports <img src={dropdownimg} alt="UDISE+ Reports" /> </Link>
+                  {header_name.headerName!=="All Reports" && !urls.includes(location.pathname)?<Link className="header-dropdown-btn" title="UDISE+ Reports" to="/reports">UDISE+ Reports <img src={dropdownimg} alt="UDISE+ Reports" /> </Link>:""}
+                  
+
+
                   </div>                 
                 </div>
 

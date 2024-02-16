@@ -10,8 +10,14 @@ import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
+import {useSearchParams} from "react-router-dom"
 
-export default function Infrastructure({id,report_name,type}) {
+
+export default function Infrastructure3013() {
+  const [queryParameters] = useSearchParams();
+    const id = queryParameters.get('id');
+    const report_name = queryParameters.get('report_name');
+    const type = queryParameters.get('type');
   const schoolFilterYear = useSelector((state) => state.schoolFilter);
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
@@ -30,15 +36,22 @@ export default function Infrastructure({id,report_name,type}) {
               <div className="common-content text-start map-heading-map">
                 <span>Reports ID: {id}</span>
                 <h2 className="heading-sm1 mb-3">
-                 {report_name}
+               {report_name}
                 </h2>
               </div>
             </div>
             <div className="col-md-4 col-lg-4">
               <div className="tab-text-infra mb-1">View Data By</div>
-              <Tabs defaultActiveKey="School Management" id="uncontrolled-tab-example" className="">
+              <Tabs
+                defaultActiveKey="School Category"
+                id="uncontrolled-tab-example"
+                className=""
+              >
                 <Tab eventKey="School Category" title="School Category"></Tab>
-                <Tab eventKey="School Management" title="School Management" ></Tab>
+                <Tab
+                  eventKey="School Management"
+                  title="School Management"
+                ></Tab>
                 <Tab eventKey="Urban/Rural" title="Urban / Rural"></Tab>
               </Tabs>
             </div>
@@ -248,59 +261,97 @@ export default function Infrastructure({id,report_name,type}) {
                 </Tab>
                 <Tab eventKey="table" title="Table">
                   <TableContainer className="mt-4">
-                    <Table>
+                    <Table className="table-responsive table-bordered">
                       <TableHead>
                         <TableRow>
-                          <TableCell>School Category</TableCell>
-                          <TableCell>PS (I-V)</TableCell>
-                            <TableCell>UPS (I-VIII)</TableCell>
-                            <TableCell>HSS (I-XII)</TableCell>
-                            <TableCell>UPS (VI-VIII)</TableCell>
-                            <TableCell>HSS (VI-XII)</TableCell>
-                            <TableCell>SS (I-X)</TableCell>
-                            <TableCell>SS (VI-X)</TableCell>
-                            <TableCell>SS (IX-X)</TableCell>
-                            <TableCell>HSS (IX-XII)</TableCell>
-                            <TableCell>HSS (XI-XII)</TableCell>
-                          <TableCell>
-                            {" "}
-                            <div className="btn-add-more">
-                              <span className="material-icons-round">add</span>{" "}
-                            </div>{" "}
-                          </TableCell>
+                            <TableCell>Location</TableCell>
+                            <TableCell>Rural/Urban</TableCell>
+                            <TableCell>School Category </TableCell>
+                            <TableCell>School Management</TableCell>
+                            <TableCell>School Type </TableCell>
+                            <TableCell>Total No. of Schools</TableCell>
+                            <TableCell>Separate Room <br /> for Headmaster</TableCell>
+                            <TableCell>Land Available</TableCell>
+                            <TableCell>Electricity </TableCell>
+                            <TableCell>Functional <br /> Electricity</TableCell>
+                            <TableCell>Solar Panel</TableCell>
+                            <TableCell>Playground</TableCell>
+                            <TableCell>Library or Reading <br /> Corner or Book Bank</TableCell>
+                            <TableCell>Librarian</TableCell>
+                            <TableCell>Newspaper</TableCell>
+                            <TableCell>Kitchen Garden</TableCell>
+                            <TableCell>Furniture</TableCell>
+                            <TableCell>Boy's Toilet</TableCell>
+                            <TableCell>Functional Boy's <br /> Toilet</TableCell>
+                            <TableCell>Girl's Toilet</TableCell>
+                            <TableCell>Functional Girl's <br /> Toilet</TableCell>
+                            <TableCell>Toilet Facility</TableCell>
+                            <TableCell>Functional Toilet <br /> Facility</TableCell>
+                            <TableCell>Functional Urinal <br /> Boy's</TableCell>
+                            <TableCell>Functional Urinal <br /> Girl's</TableCell>
+                            <TableCell>Drinking Water</TableCell>
+                            <TableCell>Functional <br /> Drinking Water </TableCell>
+                            <TableCell>Water Purifier</TableCell>
+                            <TableCell>Rain Water <br /> Harvesting</TableCell>
+                            <TableCell>Water Tested</TableCell>
+                            <TableCell>Handwash</TableCell>
+                            <TableCell>Incinerator</TableCell>
+                            <TableCell>WASH Facility(Drinking Water, <br /> Toilet and Handwash)</TableCell>
+                            <TableCell>Ramps</TableCell>
+                            <TableCell>Hand-Rails</TableCell>
+                            <TableCell>Medical <br /> Checkup</TableCell>
+                            <TableCell>Complete Medical <br /> Checkup</TableCell>
+                            <TableCell>Internet</TableCell>
+                            <TableCell>Computer <br /> Available</TableCell>                          
+                         
                         </TableRow>
                       </TableHead>
-                      <TableBody>
-                        {school_data?.data?.map((item, idx) => {
-                          return (
-                            <>
-                              <TableRow key={idx}>
-                                <TableCell>{item.schCategoryCode}</TableCell>
-                                <TableCell>{item.totalSchool}</TableCell>
-                                <TableCell>
-                                  {item.schHavingFuncElectricity}
-                                </TableCell>
+                      <TableBody>                        
+                         
+                              <TableRow>                               
+                              
                                 <TableCell>0</TableCell>
                                 <TableCell>0</TableCell>
                                 <TableCell>0</TableCell>
-                                <TableCell>
-                                  {item.schHavingFuncToiletBoys}
-                                </TableCell>
-                                <TableCell>
-                                  {item.schHavingFuncToiletGirls}
-                                </TableCell>
-                                <TableCell>
-                                  {item.schHavingFuncDrinkingWater}
-                                </TableCell>
                                 <TableCell>0</TableCell>
-                                <TableCell>
-                                  {item.schHavingRampFacility}
-                                </TableCell>
                                 <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
+                             
                               </TableRow>
-                            </>
-                          );
-                        })}
+                            
                       </TableBody>
                     </Table>
                   </TableContainer>

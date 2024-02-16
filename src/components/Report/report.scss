@@ -137,6 +137,7 @@
             color: #212121 !important;
             font-weight: 600 !important;
             padding: 12px 15px !important;
+            white-space: nowrap;
         }
 
         .text-blue {
@@ -326,4 +327,8 @@
         justify-content: center !important;
     }
 
+}
+
+th.report-name-width-50 {
+    width: 70%;
 }
