@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router , Routes,Route } from 'react-router-dom';
+import { HashRouter as Router , Routes,Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Reports from './components/Report/Reports';
 import AllReport from './pages/AllReport';
@@ -19,7 +19,7 @@ function App() {
          <Route exact path="/school-reports" element={<SchoolReport/>} />            
          <Route exact path="/teacher-reports" element={<TeacherReport/>} />            
          <Route exact path="/test-reports" element={<TestReport/>} />            
-         <Route exact path="*" element={<Home/>} />               
+         <Route exact path="/*" element={<Home/>} />               
        </Routes>
     </Router>
     

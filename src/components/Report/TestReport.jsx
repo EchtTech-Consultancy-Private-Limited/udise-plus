@@ -11,7 +11,7 @@ export default function TestReport() {
     const [show, setShow] = useState(false);
 
     const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
-    const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
+    const gridStyle = useMemo(() => ({ height: '100%', width: 800 }), []);
     const [rowData, setRowData] = useState();
     const [columnDefs, setColumnDefs] = useState([
       { field: 'athlete', filter: 'agTextColumnFilter', minWidth: 200 },
