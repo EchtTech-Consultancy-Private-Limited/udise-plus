@@ -6,8 +6,7 @@ import {useSearchParams} from "react-router-dom"
 export default function AllReport() {
     const [queryParameters] = useSearchParams();
     
-    
-    
+
     return (
         <>       
         <FilterDropdown/>
