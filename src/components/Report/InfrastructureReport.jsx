@@ -20,6 +20,7 @@ export default function Infrastructure() {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
   }, [schoolFilterYear]);
 
+  console.log(school_data,' data 123 ')
   return (
     <section className="infrastructure-main-card p-0">
       <div className="bg-grey2 ptb-30">
