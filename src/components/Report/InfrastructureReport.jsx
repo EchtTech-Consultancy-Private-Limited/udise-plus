@@ -18,6 +18,7 @@ export default function Infrastructure() {
   const school_data = useSelector((state) => state.school);
   useEffect(() => {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
+    // eslint-disable-next-line
   }, [schoolFilterYear]);
 
   return (
@@ -279,7 +280,7 @@ export default function Infrastructure() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {school_data.data.map((item, idx) => {
+                        {school_data?.data?.map((item, idx) => {
                           return (
                             <>
                               <TableRow key={idx}>

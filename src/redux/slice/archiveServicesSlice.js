@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchDistrictData } from "../thunks/districtThunk";
+import { fetchArchiveServicesSchoolData } from "../thunks/archiveServicesThunk";
 
 const archiveServicesSlice = createSlice({
   name: "archiveServices",
@@ -28,14 +28,14 @@ const archiveServicesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchDistrictData.pending, (state) => {
+      .addCase(fetchArchiveServicesSchoolData.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchDistrictData.fulfilled, (state, action) => {
+      .addCase(fetchArchiveServicesSchoolData.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
       })
-      .addCase(fetchDistrictData.rejected, (state, action) => {
+      .addCase(fetchArchiveServicesSchoolData.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });
