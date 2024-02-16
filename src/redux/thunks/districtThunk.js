@@ -8,5 +8,4 @@ const fetchDistrictData = createAsyncThunk(
     return response.data;
   }
 );
-
 export  {fetchDistrictData};
