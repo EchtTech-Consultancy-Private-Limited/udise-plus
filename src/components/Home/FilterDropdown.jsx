@@ -86,7 +86,7 @@ export default function FilterDropdown() {
           <h6 className="mb-0">Apply Filters</h6>
           <div className="select-box from-control">
             <MDBNavbar expand='lg' light>
-              <MDBContainer fluid>
+              <MDBContainer fluid className="p-0">
                 <MDBNavbarNav className='me-auto ps-lg-0'>
 
                   <MDBNavbarItem className='position-static'>
@@ -94,6 +94,30 @@ export default function FilterDropdown() {
                       <MDBDropdownToggle tag='a' className='nav-link'>
                        <div className="menu-sub-heading">Select State</div>
                        National
+                      </MDBDropdownToggle>
+                      <MDBDropdownMenu
+                        className='mt-0 w-100 justify-content-center'
+                        style={{
+                          borderTopLeftRadius: '0',
+                          borderTopRightRadius: '0',
+                        }}
+                      >
+                        <MDBContainer className="droplist">
+                          <MDBRow className='my-1'>
+                      
+                          {<>{renderStateListGroup()}</>}
+                           
+                          </MDBRow>
+                        </MDBContainer>
+                      </MDBDropdownMenu>
+                    </MDBDropdown>
+                  </MDBNavbarItem>
+
+                  <MDBNavbarItem className='position-static'>
+                    <MDBDropdown>
+                      <MDBDropdownToggle tag='a' className='nav-link'>
+                       <div className="menu-sub-heading">Select District</div>
+                       Lucknow
                       </MDBDropdownToggle>
                       <MDBDropdownMenu
                         className='mt-0 w-100 justify-content-center'
