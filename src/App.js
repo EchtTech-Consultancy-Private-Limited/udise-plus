@@ -12,12 +12,12 @@ function App() {
     <Router>
         <Header/>
        <Routes>
-         <Route exact path="/" element={<Home/>} />            
-         <Route exact path="*" element={<Home/>} />         
+         <Route exact path="/" element={<Home/>} />   
          <Route exact path="/reports" element={<Reports/>} />            
          <Route exact path="/all-reports" element={<AllReport/>} />            
          <Route exact path="/school-reports" element={<SchoolReport/>} />            
-         <Route exact path="/teacher-reports" element={<TeacherReport/>} />            
+         <Route exact path="/teacher-reports" element={<TeacherReport/>} /> 
+         <Route exact path="*" element={<Home/>} />               
        </Routes>
     </Router>
     
