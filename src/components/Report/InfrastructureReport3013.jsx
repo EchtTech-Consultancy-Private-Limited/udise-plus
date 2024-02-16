@@ -356,7 +356,7 @@ export default function Infrastructure3013() {
                     </Table>
                   </TableContainer>
                 </Tab>
-                <Tab eventKey="graph" title="Chart" disabled></Tab>
+                <Tab eventKey="graph" title="Chart"></Tab>
               </Tabs>
             </div>
           </div>
