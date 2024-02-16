@@ -260,15 +260,16 @@ export default function Infrastructure() {
                       <TableHead>
                         <TableRow>
                           <TableCell>School Category</TableCell>
-                          <TableCell>No. Of Schools</TableCell>
-                          <TableCell>Electricity</TableCell>
-                          <TableCell>Playgroud</TableCell>
-                          <TableCell>Furtuniture</TableCell>
-                          <TableCell>Boy’s Toilet</TableCell>
-                          <TableCell>Girl’s Toilet</TableCell>
-                          <TableCell>Drinking Water</TableCell>
-                          <TableCell>Handwash</TableCell>
-                          <TableCell>Ramps</TableCell>
+                          <TableCell>PS (I-V)</TableCell>
+                            <TableCell>UPS (I-VIII)</TableCell>
+                            <TableCell>HSS (I-XII)</TableCell>
+                            <TableCell>UPS (VI-VIII)</TableCell>
+                            <TableCell>HSS (VI-XII)</TableCell>
+                            <TableCell>SS (I-X)</TableCell>
+                            <TableCell>SS (VI-X)</TableCell>
+                            <TableCell>SS (IX-X)</TableCell>
+                            <TableCell>HSS (IX-XII)</TableCell>
+                            <TableCell>HSS (XI-XII)</TableCell>
                           <TableCell>
                             {" "}
                             <div className="btn-add-more">
@@ -289,6 +290,7 @@ export default function Infrastructure() {
                                 </TableCell>
                                 <TableCell>0</TableCell>
                                 <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
                                 <TableCell>
                                   {item.schHavingFuncToiletBoys}
                                 </TableCell>
@@ -302,7 +304,7 @@ export default function Infrastructure() {
                                 <TableCell>
                                   {item.schHavingRampFacility}
                                 </TableCell>
-                                <TableCell></TableCell>
+                                <TableCell>0</TableCell>
                               </TableRow>
                             </>
                           );
