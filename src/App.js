@@ -6,6 +6,7 @@ import AllReport from './pages/AllReport';
 import Header from './components/Header/Header';
 import SchoolReport from './components/Report/SchoolReport';
 import TeacherReport from './components/Report/TeacherReport';
+import TestReport from './components/Report/TestReport';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
          <Route exact path="/all-reports" element={<AllReport/>} />            
          <Route exact path="/school-reports" element={<SchoolReport/>} />            
          <Route exact path="/teacher-reports" element={<TeacherReport/>} />            
+         <Route exact path="/test-reports" element={<TestReport/>} />            
        </Routes>
     </Router>
     
