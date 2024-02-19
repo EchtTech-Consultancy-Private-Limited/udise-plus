@@ -46,13 +46,13 @@ export default function Infrastructure({id,report_name,type}) {
             {/* Customize Filter Start*/}
 
             <div className="col-md-2 col-lg-2 text-right pt-1 pe-0">
-              <button
+              {/* <button
                 className="header-dropdown-btn customize-btn"
                 onClick={() => setShow(!show)}
               >
                 <span className="material-icons-round">dashboard</span>{" "}
                 Customize
-              </button>
+              </button> */}
 
               <div
                 className={`custmize-filter-column ${show ? "show" : ""}`}

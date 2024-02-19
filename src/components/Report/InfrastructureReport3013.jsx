@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
 import {useSearchParams} from "react-router-dom"
+import FilterDropdown from "../Home/FilterDropdown";
 
 
 export default function Infrastructure3013() {
@@ -362,6 +363,7 @@ export default function Infrastructure3013() {
           </div>
         </div>
       </div>
+      <FilterDropdown />
     </section>
   );
 }
