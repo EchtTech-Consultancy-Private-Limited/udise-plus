@@ -49,7 +49,7 @@ export default function TeacherReport() {
                         {/* Customize Filter Start*/}
 
                         <div className="col-md-2 col-lg-2 text-right pt-1 pe-0">
-                            <button className="header-dropdown-btn customize-btn" onClick={() => setShow(!show)}><span className="material-icons-round">dashboard</span> Customize</button>
+                            {/* <button className="header-dropdown-btn customize-btn" onClick={() => setShow(!show)}><span className="material-icons-round">dashboard</span> Customize</button> */}
 
                             <div className={`custmize-filter-column ${show ? "show" : ""}`} id="customize_filter">
 
