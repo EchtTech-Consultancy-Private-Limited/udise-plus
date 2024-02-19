@@ -10,15 +10,15 @@ import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
-import {useSearchParams} from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import FilterDropdown from "../Home/FilterDropdown";
 
 
 export default function Infrastructure3013() {
   const [queryParameters] = useSearchParams();
-    const id = queryParameters.get('id');
-    const report_name = queryParameters.get('report_name');
-    const type = queryParameters.get('type');
+  const id = queryParameters.get('id');
+  const report_name = queryParameters.get('report_name');
+  const type = queryParameters.get('type');
   const schoolFilterYear = useSelector((state) => state.schoolFilter);
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ export default function Infrastructure3013() {
               <div className="common-content text-start map-heading-map">
                 <span>Reports ID: {id}</span>
                 <h2 className="heading-sm1 mb-3">
-               {report_name}
+                  {report_name}
                 </h2>
               </div>
             </div>
@@ -84,7 +84,7 @@ export default function Infrastructure3013() {
                   </button>
                 </div>
 
-                <div className="box-cont-cust">
+                <div className="box-cont-cust scrollable-container">
                   <form action="">
                     <div className="form-group search">
                       <input
@@ -174,6 +174,24 @@ export default function Infrastructure3013() {
                       <input
                         type="checkbox"
                         className=""
+                        id="electricity"
+                        name="electricity"
+                      />
+                      <label htmlFor="electricity">Electricity</label>
+                    </div>
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="functional_electricity"
+                        name="functional_electricity"
+                      />
+                      <label htmlFor="functional_electricity">Functional electricity</label>
+                    </div>
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
                         id="Solar_panel"
                         name="Solar_panel"
                       />
@@ -192,11 +210,285 @@ export default function Infrastructure3013() {
                       <input
                         type="checkbox"
                         className=""
-                        id="Library"
-                        name="Library"
+                        id="library_or_reading_corner"
+                        name="library_or_reading_corner"
                       />
-                      <label htmlFor="Library">Library</label>
+                      <label htmlFor="library_or_reading_corner">Library or Reading Corner</label>
                     </div>
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="Librarian"
+                        name="Librarian"
+                      />
+                      <label htmlFor="Librarian">Librarian</label>
+                    </div>
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="newspaper"
+                        name="newspaper"
+                      />
+                      <label htmlFor="newspaper">Newspaper</label>
+                    </div>
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="kitchen_garden"
+                        name="kitchen_garden"
+                      />
+                      <label htmlFor="kitchen_garden">Kitchen Garden</label>
+                    </div>
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="furniture"
+                        name="furniture"
+                      />
+                      <label htmlFor="furniture">Furniture</label>
+                    </div>
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="boys_toilet"
+                        name="boys_toilet"
+                      />
+                      <label htmlFor="boys_toilet">Boy's Toilet</label>
+                    </div>
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="functional_boys_toilet"
+                        name="functional_boys_toilet"
+                      />
+                      <label htmlFor="functional_boys_toilet">Functional Boy's Toilet</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="girls_toilet"
+                        name="girls_toilet"
+                      />
+                      <label htmlFor="girls_toilet">Girl's Toilet</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="functional_girls_toilet"
+                        name="functional_girls_toilet"
+                      />
+                      <label htmlFor="functional_girls_toilet">Functional Girl's Toilet</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="toilet_facility"
+                        name="toilet_facility"
+                      />
+                      <label htmlFor="toilet_facility">Toilet Facility</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="functional_toilet_facility"
+                        name="functional_toilet_facility"
+                      />
+                      <label htmlFor="functional_toilet_facility">Functional Toilet Facility</label>
+                    </div>
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="functional_urinal_boys"
+                        name="functional_urinal_boys"
+                      />
+                      <label htmlFor="functional_urinal_boys">Functional Urinal Boy's</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="functional_urinal_girls"
+                        name="functional_urinal_girls"
+                      />
+                      <label htmlFor="functional_urinal_girls">Functional Urinal Girl's</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="functional_urinal"
+                        name="functional_urinal"
+                      />
+                      <label htmlFor="functional_urinal">Functional Urinal</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="functional_toilet_urinal"
+                        name="functional_toilet_urinal"
+                      />
+                      <label htmlFor="functional_toilet_urinal">Functional Toilet and Urinal</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="drinking_water"
+                        name="drinking_water"
+                      />
+                      <label htmlFor="drinking_water">Drinking Water</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="functional_drinking_water"
+                        name="functional_drinking_water"
+                      />
+                      <label htmlFor="functional_drinking_water">Functional Drinking Water</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="water_purifier"
+                        name="water_purifier"
+                      />
+                      <label htmlFor="water_purifier">Water Purifier</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="rain_water_harvesting"
+                        name="rain_water_harvesting"
+                      />
+                      <label htmlFor="rain_water_harvesting">Rain Water Harvesting</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="water_tested"
+                        name="water_tested"
+                      />
+                      <label htmlFor="water_tested">Water Tested</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="handwash"
+                        name="handwash"
+                      />
+                      <label htmlFor="handwash">Handwash</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="incinerator"
+                        name="incinerator"
+                      />
+                      <label htmlFor="incinerator">Incinerator</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="wash_facility"
+                        name="wash_facility"
+                      />
+                      <label htmlFor="wash_facility">WASH Facility (Drinking Water, Toilet and Handwash)</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="ramps"
+                        name="ramps"
+                      />
+                      <label htmlFor="ramps">Ramps</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="hand_rails"
+                        name="hand_rails"
+                      />
+                      <label htmlFor="hand_rails">Hand-Rails</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="medical_checkup"
+                        name="medical_checkup"
+                      />
+                      <label htmlFor="medical_checkup">Medical Checkup</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="complete_medical_checkup"
+                        name="complete_medical_checkup"
+                      />
+                      <label htmlFor="complete_medical_checkup">Complete Medical Checkup</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="internet"
+                        name="internet"
+                      />
+                      <label htmlFor="internet">Internet</label>
+                    </div>
+
+                    <div className="form-group checkbox">
+                      <input
+                        type="checkbox"
+                        className=""
+                        id="computer_available"
+                        name="computer_available"
+                      />
+                      <label htmlFor="computer_available">Computer Available</label>
+                    </div>
+
                   </form>
                 </div>
               </div>
@@ -265,94 +557,94 @@ export default function Infrastructure3013() {
                     <Table className="table-responsive table-bordered">
                       <TableHead>
                         <TableRow>
-                            <TableCell>Location</TableCell>
-                            <TableCell>Rural/Urban</TableCell>
-                            <TableCell>School Category </TableCell>
-                            <TableCell>School Management</TableCell>
-                            <TableCell>School Type </TableCell>
-                            <TableCell>Total No. of Schools</TableCell>
-                            <TableCell>Separate Room <br /> for Headmaster</TableCell>
-                            <TableCell>Land Available</TableCell>
-                            <TableCell>Electricity </TableCell>
-                            <TableCell>Functional <br /> Electricity</TableCell>
-                            <TableCell>Solar Panel</TableCell>
-                            <TableCell>Playground</TableCell>
-                            <TableCell>Library or Reading <br /> Corner or Book Bank</TableCell>
-                            <TableCell>Librarian</TableCell>
-                            <TableCell>Newspaper</TableCell>
-                            <TableCell>Kitchen Garden</TableCell>
-                            <TableCell>Furniture</TableCell>
-                            <TableCell>Boy's Toilet</TableCell>
-                            <TableCell>Functional Boy's <br /> Toilet</TableCell>
-                            <TableCell>Girl's Toilet</TableCell>
-                            <TableCell>Functional Girl's <br /> Toilet</TableCell>
-                            <TableCell>Toilet Facility</TableCell>
-                            <TableCell>Functional Toilet <br /> Facility</TableCell>
-                            <TableCell>Functional Urinal <br /> Boy's</TableCell>
-                            <TableCell>Functional Urinal <br /> Girl's</TableCell>
-                            <TableCell>Drinking Water</TableCell>
-                            <TableCell>Functional <br /> Drinking Water </TableCell>
-                            <TableCell>Water Purifier</TableCell>
-                            <TableCell>Rain Water <br /> Harvesting</TableCell>
-                            <TableCell>Water Tested</TableCell>
-                            <TableCell>Handwash</TableCell>
-                            <TableCell>Incinerator</TableCell>
-                            <TableCell>WASH Facility(Drinking Water, <br /> Toilet and Handwash)</TableCell>
-                            <TableCell>Ramps</TableCell>
-                            <TableCell>Hand-Rails</TableCell>
-                            <TableCell>Medical <br /> Checkup</TableCell>
-                            <TableCell>Complete Medical <br /> Checkup</TableCell>
-                            <TableCell>Internet</TableCell>
-                            <TableCell>Computer <br /> Available</TableCell>                          
-                         
+                          <TableCell>Location</TableCell>
+                          <TableCell>Rural/Urban</TableCell>
+                          <TableCell>School Category </TableCell>
+                          <TableCell>School Management</TableCell>
+                          <TableCell>School Type </TableCell>
+                          <TableCell>Total No. of Schools</TableCell>
+                          <TableCell>Separate Room <br /> for Headmaster</TableCell>
+                          <TableCell>Land Available</TableCell>
+                          <TableCell>Electricity </TableCell>
+                          <TableCell>Functional <br /> Electricity</TableCell>
+                          <TableCell>Solar Panel</TableCell>
+                          <TableCell>Playground</TableCell>
+                          <TableCell>Library or Reading <br /> Corner or Book Bank</TableCell>
+                          <TableCell>Librarian</TableCell>
+                          <TableCell>Newspaper</TableCell>
+                          <TableCell>Kitchen Garden</TableCell>
+                          <TableCell>Furniture</TableCell>
+                          <TableCell>Boy's Toilet</TableCell>
+                          <TableCell>Functional Boy's <br /> Toilet</TableCell>
+                          <TableCell>Girl's Toilet</TableCell>
+                          <TableCell>Functional Girl's <br /> Toilet</TableCell>
+                          <TableCell>Toilet Facility</TableCell>
+                          <TableCell>Functional Toilet <br /> Facility</TableCell>
+                          <TableCell>Functional Urinal <br /> Boy's</TableCell>
+                          <TableCell>Functional Urinal <br /> Girl's</TableCell>
+                          <TableCell>Drinking Water</TableCell>
+                          <TableCell>Functional <br /> Drinking Water </TableCell>
+                          <TableCell>Water Purifier</TableCell>
+                          <TableCell>Rain Water <br /> Harvesting</TableCell>
+                          <TableCell>Water Tested</TableCell>
+                          <TableCell>Handwash</TableCell>
+                          <TableCell>Incinerator</TableCell>
+                          <TableCell>WASH Facility(Drinking Water, <br /> Toilet and Handwash)</TableCell>
+                          <TableCell>Ramps</TableCell>
+                          <TableCell>Hand-Rails</TableCell>
+                          <TableCell>Medical <br /> Checkup</TableCell>
+                          <TableCell>Complete Medical <br /> Checkup</TableCell>
+                          <TableCell>Internet</TableCell>
+                          <TableCell>Computer <br /> Available</TableCell>
+
                         </TableRow>
                       </TableHead>
-                      <TableBody>                        
-                         
-                              <TableRow>                               
-                              
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                                <TableCell>0</TableCell>
-                             
-                              </TableRow>
-                            
+                      <TableBody>
+
+                        <TableRow>
+
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+                          <TableCell>0</TableCell>
+
+                        </TableRow>
+
                       </TableBody>
                     </Table>
                   </TableContainer>
