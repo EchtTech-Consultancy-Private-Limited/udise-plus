@@ -618,3 +618,8 @@ opacity: 1;
   }
 
 }
+
+.scrollable-container {
+    max-height: 80vh; /* Adjust height as needed */
+    overflow-y: auto;
+}
