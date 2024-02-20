@@ -1,12 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useCallback, } from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
@@ -14,20 +8,206 @@ import { useSearchParams } from "react-router-dom"
 import FilterDropdown from "../Home/FilterDropdown";
 
 
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-enterprise";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-material.css";
+
+
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 export default function Infrastructure3013() {
+  const [gridApi, setGridApi] = useState();
+  
+  const rowData = [
+    {
+      make: "Toyota",
+      model: "Celica",
+      price: 35000,
+      date: "09-02-2022",
+      available: true,
+    },
+    {
+      make: "Ford",
+      model: "Mondeo",
+      price: 32000,
+      date: "11-02-2022",
+      available: false,
+    },
+    {
+      make: "Porsche",
+      model: "Boxter",
+      price: 72000,
+      date: "10-02-2022",
+      available: true,
+    },
+    {
+      make: "Mers",
+      model: "Mers",
+      price: 92000,
+      date: "12-02-2022",
+      available: true,
+    },
+  ];
+
+  const columns = [
+    {headerName: "Location", field: "location",},
+    {headerName: "Rural/Urban", field: "rural_urban"},
+    {headerName: "School Category", field: "school_category"},
+    {headerName: "School Management", field: "school_management"},
+    {headerName: "School Type", field: "school_type"},
+    {headerName: "Total No. of Schools", field: "no_of_school"},
+    {headerName: "Separate Room for Headmaster", field: "no_of_school"},
+    {headerName: "Land Available", field: "no_of_school"},
+    {headerName: "Electricity", field: "no_of_school"},
+    {headerName: "Functional Electricity", field: "no_of_school"},
+    {headerName: "Solar Panel", field: "no_of_school"},
+    {headerName: "Playground", field: "no_of_school"},
+    {headerName: "Library or Reading Corner or Book Bank", field: "no_of_school"},
+    {headerName: "Librarian", field: "no_of_school"},
+    {headerName: "Newspaper", field: "no_of_school"},
+    {headerName: "Kitchen Garden", field: "no_of_school"},
+    {headerName: "Furniture", field: "no_of_school"},
+    {headerName: "Boy's Toilet", field: "no_of_school"},
+    {headerName: "Functional Boy's Toilet", field: "no_of_school"},
+    {headerName: "Girl's Toilet", field: "no_of_school"},
+    {headerName: "Functional Girl's Toilet", field: "no_of_school"},
+    {headerName: "Functional Toilet Facility", field: "no_of_school"},
+    {headerName: "Functional Urinal Boy's", field: "no_of_school"},
+    {headerName: "Functional Urinal Girl's", field: "no_of_school"},
+    {headerName: "Functional Drinking Water", field: "no_of_school"},
+    {headerName: "Water Purifier", field: "no_of_school"},
+    {headerName: "Rain Water Harvesting", field: "no_of_school"},
+    {headerName: "Water Tested", field: "no_of_school"},
+    {headerName: "Handwash", field: "no_of_school"},
+    {headerName: "Incinerator", field: "no_of_school"},
+    {headerName: "WASH Facility(Drinking Water, Toilet and Handwash)", field: "no_of_school"},
+    {headerName: "Ramps", field: "no_of_school"},
+    {headerName: "Hand-Rails", field: "no_of_school"},
+    {headerName: "Medical Checkup", field: "no_of_school"},
+    {headerName: "Complete Medical Checkup", field: "no_of_school"},
+    {headerName: "Internet", field: "no_of_school"},
+    {headerName: "Computer Available", field: "no_of_school"},
+  ];
+
+  const defColumnDefs = {
+    flex: 1,
+    minWidth: 250,
+    // allow every column to be aggregated
+    enableValue: true,
+    // allow every column to be grouped
+    enableRowGroup: true,
+    // allow every column to be pivoted
+    enablePivot: true,
+    filter: true,
+};
+
+  const onGridReady = useCallback((params) => {
+    setGridApi(params);
+  }
+  ,[]);
+
   const [queryParameters] = useSearchParams();
   const id = queryParameters.get('id');
   const report_name = queryParameters.get('report_name');
   const type = queryParameters.get('type');
   const schoolFilterYear = useSelector((state) => state.schoolFilter);
   const [show, setShow] = useState(false);
+  const [filterShowHide,setFilterShowHide] = useState(false);
   const dispatch = useDispatch();
   const school_data = useSelector((state) => state.school);
+
   useEffect(() => {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
+  const handleHideAndShowFilter = useCallback(()=>{
+    setFilterShowHide(filterShowHide=>!filterShowHide)
+  }
+  ,[]);
+
+  const onBtExport =() => {
+    gridApi.api.exportDataAsExcel()
+  }
+  const getHeaderToExport = (gridApi) => {
+    const columns = gridApi.api.getAllDisplayedColumns();
+  
+    return columns.map((column) => {
+      const { field } = column.getColDef();
+      const sort = column.getSort();
+      const headerNameUppercase =
+        field[0].toUpperCase() + field.slice(1);
+      const headerCell = {
+        text: headerNameUppercase + (sort ? ` (${sort})` : ''),
+      };
+      return headerCell;
+    });
+  };
+  const getRowsToExport = (gridApi) => {
+    const columns = gridApi.api.getAllDisplayedColumns();
+  
+    const getCellToExport = (column, node) => ({
+      text: gridApi.api.getValue(column, node) ?? '',
+    });
+  
+    const rowsToExport = [];
+    gridApi.api.forEachNodeAfterFilterAndSort((node) => {
+      const rowToExport = columns.map((column) =>
+        getCellToExport(column, node)
+      );
+      rowsToExport.push(rowToExport);
+    });
+  
+    return rowsToExport;
+  };
+  /** 
+* This function returns a PDF document definition object - the input for pdfMake.
+*/
+const getDocument = (gridApi) => {
+  const columns = gridApi.api.getAllDisplayedColumns();
+
+  const headerRow = getHeaderToExport(gridApi);
+  const rows = getRowsToExport(gridApi);
+
+  return {
+    pageOrientation: 'landscape', // can also be 'portrait' ||landscape
+    content: [
+      {
+        table: {
+          // the number of header rows
+          headerRows: 1,
+
+          // the width of each column, can be an array of widths
+          widths: `${100 / columns.length}%`,
+
+          // all the rows to display, including the header rows
+          body: [headerRow, ...rows],
+
+          // Header row is 40px, other rows are 15px
+          heights: (rowIndex) => (rowIndex === 0 ? 150 : 150),
+          
+        },
+      },
+    ],
+    header: 'simple text',
+
+          footer: {
+            columns: [
+              'Left part',
+              { text: 'Right part', alignment: 'right' }
+            ]
+          },
+  };
+};
+
+ const exportToPDF = () => {
+  console.log(gridApi,' grid api')
+  const doc = getDocument(gridApi);
+  pdfMake.createPdf(doc).open();
+};
   return (
     <section className="infrastructure-main-card p-0">
       <div className="bg-grey2 ptb-30">
@@ -62,13 +242,14 @@ export default function Infrastructure3013() {
             <div className="col-md-2 col-lg-2 text-right pt-1 pe-0">
               <button
                 className="header-dropdown-btn customize-btn"
-                onClick={() => setShow(!show)}
+                // onClick={() => setShow(!show)}
+                onClick={() => handleHideAndShowFilter()}
               >
                 <span className="material-icons-round">dashboard</span>{" "}
                 Customize
               </button>
 
-              <div
+              {/* <div
                 className={`custmize-filter-column ${show ? "show" : ""}`}
                 id="customize_filter"
               >
@@ -491,13 +672,14 @@ export default function Infrastructure3013() {
 
                   </form>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Customize Filter END*/}
 
             <div className="col-md-12 col-lg-12 ps-1">
-              <div className="tab-text-infra download-rep">
+              <div className="tab-text-infra download-rep" onClick={onBtExport}>
+              {/* <div className="tab-text-infra download-rep" onClick={exportToPDF}> */}
                 Download Report{" "}
                 <span className="material-icons-round">download</span>
               </div>
@@ -553,103 +735,23 @@ export default function Infrastructure3013() {
                   </div>
                 </Tab>
                 <Tab eventKey="table" title="Table">
-                  <TableContainer className="mt-4">
-                    <Table className="table-responsive table-bordered">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Location</TableCell>
-                          <TableCell>Rural/Urban</TableCell>
-                          <TableCell>School Category </TableCell>
-                          <TableCell>School Management</TableCell>
-                          <TableCell>School Type </TableCell>
-                          <TableCell>Total No. of Schools</TableCell>
-                          <TableCell>Separate Room <br /> for Headmaster</TableCell>
-                          <TableCell>Land Available</TableCell>
-                          <TableCell>Electricity </TableCell>
-                          <TableCell>Functional <br /> Electricity</TableCell>
-                          <TableCell>Solar Panel</TableCell>
-                          <TableCell>Playground</TableCell>
-                          <TableCell>Library or Reading <br /> Corner or Book Bank</TableCell>
-                          <TableCell>Librarian</TableCell>
-                          <TableCell>Newspaper</TableCell>
-                          <TableCell>Kitchen Garden</TableCell>
-                          <TableCell>Furniture</TableCell>
-                          <TableCell>Boy's Toilet</TableCell>
-                          <TableCell>Functional Boy's <br /> Toilet</TableCell>
-                          <TableCell>Girl's Toilet</TableCell>
-                          <TableCell>Functional Girl's <br /> Toilet</TableCell>
-                          <TableCell>Toilet Facility</TableCell>
-                          <TableCell>Functional Toilet <br /> Facility</TableCell>
-                          <TableCell>Functional Urinal <br /> Boy's</TableCell>
-                          <TableCell>Functional Urinal <br /> Girl's</TableCell>
-                          <TableCell>Drinking Water</TableCell>
-                          <TableCell>Functional <br /> Drinking Water </TableCell>
-                          <TableCell>Water Purifier</TableCell>
-                          <TableCell>Rain Water <br /> Harvesting</TableCell>
-                          <TableCell>Water Tested</TableCell>
-                          <TableCell>Handwash</TableCell>
-                          <TableCell>Incinerator</TableCell>
-                          <TableCell>WASH Facility(Drinking Water, <br /> Toilet and Handwash)</TableCell>
-                          <TableCell>Ramps</TableCell>
-                          <TableCell>Hand-Rails</TableCell>
-                          <TableCell>Medical <br /> Checkup</TableCell>
-                          <TableCell>Complete Medical <br /> Checkup</TableCell>
-                          <TableCell>Internet</TableCell>
-                          <TableCell>Computer <br /> Available</TableCell>
-
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-
-                        <TableRow>
-
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-
-                        </TableRow>
-
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+                <div className="ag-theme-material ag-theme-custom-height" style={{height:600}}>
+                    <AgGridReact
+                      rowData={rowData}
+                      columnDefs={columns}
+                      defaultColDef={defColumnDefs}
+                      onGridReady={onGridReady}
+                      sideBar={filterShowHide}
+                      groupIncludeFooter={true}
+                      groupIncludeTotalFooter={true}
+                    />
+                  </div>
                 </Tab>
-                <Tab eventKey="graph" title="Chart"></Tab>
+                <Tab eventKey="graph" title="Chart">
+
+            
+
+                </Tab>
               </Tabs>
             </div>
           </div>

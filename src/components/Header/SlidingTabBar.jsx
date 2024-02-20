@@ -35,7 +35,7 @@ export default function SlidingTabBar() {
               >
                 Reports
               </Link>{" "}
-              <span class="material-icons-round">chevron_right</span>{" "}
+              <span className="material-icons-round">chevron_right</span>{" "}
               <span className="internalpagename">{path_name}</span>{" "}
             </div>
           </div>

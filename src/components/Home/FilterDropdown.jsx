@@ -14,6 +14,7 @@ import {
 } from 'mdb-react-ui-kit';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStateData } from "../../redux/thunks/stateThunk";
+import { fetchDistrictDataByStateId } from "../../redux/thunks/districtThunk";
 import { fetchYearData } from "../../redux/thunks/yearThunk";
 import { changeYearFilter,changeStateFilter } from "../../redux/slice/schoolFilterSlice";
 import { filterItemsStatePerPage, filterItemsYearPerPage } from "../../constants/constants";
@@ -24,18 +25,48 @@ export default function FilterDropdown() {
   const dispatch = useDispatch();
   const stateData=useSelector(state=>state.state);
   const yearData=useSelector(state=>state.year);
-
+  const districtData=useSelector(state=>state.distrct);
+  const [selectedState,setSelectedState] = useState('National');
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
   useEffect(()=>{
     dispatch(fetchStateData());
     dispatch(fetchYearData());
   },[]);
 
 
-  const handleSchoolFilterYear = (year)=>{
+  const handleSchoolFilterYear = (year,year_report)=>{
+    setSelectedYear(year_report);
     dispatch(changeYearFilter(year));
+
+    /*hide the open box*/ 
+    hideOpendFilterBox();
+    /*end here*/
   }
-  const handleSchoolFilterState = (state_id)=>{
+  const handleSchoolFilterState = (state_id,state_name)=>{
+    setSelectedState(state_name);
+    setSelectedDistrict("");
     dispatch(changeStateFilter(state_id));
+    dispatch(fetchDistrictDataByStateId(state_id));
+
+    /*hide the open box*/ 
+    hideOpendFilterBox();
+    /*end here*/
+  }
+  const handleSchoolFilterDistrict = (state_id,district_name)=>{
+    setSelectedDistrict(district_name);
+
+    /*hide the open box*/ 
+    hideOpendFilterBox();
+    /*end here*/
+  }
+
+
+  const hideOpendFilterBox = ()=>{
+    const boxes = document.querySelectorAll('.dropdown-menu');
+    boxes.forEach(box => {
+      box.classList.remove('show');
+    });
   }
 
   const renderStateListGroup = () => {
@@ -44,7 +75,7 @@ export default function FilterDropdown() {
       const groupItems = [];
       for (let j = i; j < i + itemsPerPage && j < stateData.data.data.length; j++) {
         groupItems.push(
-          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterState(stateData.data.data[j].state_id)}>
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterState(stateData.data.data[j].state_id,stateData.data.data[j].state_name)}>
             {stateData.data.data[j].state_name}
           </MDBListGroupItem>
         );
@@ -64,7 +95,7 @@ export default function FilterDropdown() {
       const groupItems = [];
       for (let j = i; j < i + yearItemsPerPage && j < yearData.data.data.length; j++) {
         groupItems.push(
-          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterYear(yearData.data.data[j].year_id)}>
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterYear(yearData.data.data[j].year_id,yearData.data.data[j].report_year)}>
             {yearData.data.data[j].report_year}
           </MDBListGroupItem>
         );
@@ -76,6 +107,27 @@ export default function FilterDropdown() {
       );
     }
     return yearGroups;
+  };
+
+
+  const renderDistrictListGroup = () => {
+    const groups = [];
+    for (let i = 0; i < districtData.data.data.length; i += itemsPerPage) {
+      const groupItems = [];
+      for (let j = i; j < i + itemsPerPage && j < districtData.data.data.length; j++) {
+        groupItems.push(
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterDistrict(districtData.data.data[j].state_id,districtData.data.data[j].district_name)}>
+            {districtData.data.data[j].district_name}
+          </MDBListGroupItem>
+        );
+      }
+      groups.push(
+        <MDBCol key={i} md='6' lg='4' className='mb-3 mb-lg-0'>
+          <MDBListGroup >{groupItems}</MDBListGroup>
+        </MDBCol>
+      );
+    }
+    return groups;
   };
 
 
@@ -93,7 +145,7 @@ export default function FilterDropdown() {
                     <MDBDropdown>
                       <MDBDropdownToggle tag='a' className='nav-link'>
                        <div className="menu-sub-heading">Select State</div>
-                       National
+                       {selectedState}
                       </MDBDropdownToggle>
                       <MDBDropdownMenu
                         className='mt-0 w-100 justify-content-center'
@@ -117,7 +169,7 @@ export default function FilterDropdown() {
                     <MDBDropdown>
                       <MDBDropdownToggle tag='a' className='nav-link'>
                        <div className="menu-sub-heading">Select District</div>
-                       Lucknow
+                       {selectedDistrict}
                       </MDBDropdownToggle>
                       <MDBDropdownMenu
                         className='mt-0 w-100 justify-content-center'
@@ -129,7 +181,7 @@ export default function FilterDropdown() {
                         <MDBContainer className="droplist">
                           <MDBRow className='my-1'>
                       
-                          {<>{renderStateListGroup()}</>}
+                          {<>{renderDistrictListGroup()}</>}
                            
                           </MDBRow>
                         </MDBContainer>
@@ -141,7 +193,7 @@ export default function FilterDropdown() {
                     <MDBDropdown>
                       <MDBDropdownToggle tag='a' className='nav-link'>
                        <div className="menu-sub-heading">Select Year</div>
-                       2019-2020
+                       {selectedYear}
                       </MDBDropdownToggle>
                       <MDBDropdownMenu
                         className='mt-0 w-100 justify-content-center'
