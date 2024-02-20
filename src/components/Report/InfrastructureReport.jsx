@@ -10,16 +10,33 @@ import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
+import allreportsdata from '../../json-data/allreports.json';
 
 export default function Infrastructure({id,report_name,type}) {
   const schoolFilterYear = useSelector((state) => state.schoolFilter);
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const school_data = useSelector((state) => state.school);
+  const [report, setReport] = useState(null);
+
   useEffect(() => {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
     // eslint-disable-next-line
   }, [schoolFilterYear]);
+
+   // Find the report with the given id
+  useEffect(() => {
+    for (const category in allreportsdata) {
+      const foundReport = allreportsdata[category].find(
+        (report) => report.id === parseInt(id)
+      );
+      if (foundReport) {
+        setReport(foundReport);
+        break;
+      }
+    }
+  }, [id]);
+
 
   return (
     <section className="infrastructure-main-card p-0">
@@ -28,10 +45,12 @@ export default function Infrastructure({id,report_name,type}) {
           <div className="row align-items-center">
             <div className="col-md-6 col-lg-6">
               <div className="common-content text-start map-heading-map">
-                <span>Reports ID: {id}</span>
-                <h2 className="heading-sm1 mb-3">
-                 {report_name}
-                </h2>
+              {report && (
+                <div className="common-content text-start map-heading-map">
+                  <span>Reports ID: {report.id}</span>
+                  <h2 className="heading-sm1 mb-3">{report.report_name}</h2>
+                </div>
+              )}
               </div>
             </div>
             <div className="col-md-4 col-lg-4">
