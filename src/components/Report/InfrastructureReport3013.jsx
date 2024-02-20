@@ -14,20 +14,134 @@ import { useSearchParams } from "react-router-dom"
 import FilterDropdown from "../Home/FilterDropdown";
 
 
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-enterprise";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-material.css";
+
 export default function Infrastructure3013() {
+  const [gridApi, setGridApi] = useState();
+  
+  const rowData = [
+    {
+      make: "Toyota",
+      model: "Celica",
+      price: 35000,
+      date: "09-02-2022",
+      available: true,
+    },
+    {
+      make: "Ford",
+      model: "Mondeo",
+      price: 32000,
+      date: "11-02-2022",
+      available: false,
+    },
+    {
+      make: "Porsche",
+      model: "Boxter",
+      price: 72000,
+      date: "10-02-2022",
+      available: true,
+    },
+    {
+      make: "Mers",
+      model: "Mers",
+      price: 92000,
+      date: "12-02-2022",
+      available: true,
+    },
+  ];
+
+  const columns = [
+    {headerName: "Location", field: "location",},
+    {headerName: "Rural/Urban", field: "rural_urban"},
+    {headerName: "School Category", field: "school_category"},
+    {headerName: "School Management", field: "school_management"},
+    {headerName: "School Type", field: "school_type"},
+    {headerName: "Total No. of Schools", field: "no_of_school"},
+    {headerName: "Separate Room for Headmaster", field: "no_of_school"},
+    {headerName: "Land Available", field: "no_of_school"},
+    {headerName: "Electricity", field: "no_of_school"},
+    {headerName: "Functional Electricity", field: "no_of_school"},
+    {headerName: "Solar Panel", field: "no_of_school"},
+    {headerName: "Playground", field: "no_of_school"},
+    {headerName: "Library or Reading Corner or Book Bank", field: "no_of_school"},
+    {headerName: "Librarian", field: "no_of_school"},
+    {headerName: "Newspaper", field: "no_of_school"},
+    {headerName: "Kitchen Garden", field: "no_of_school"},
+    {headerName: "Furniture", field: "no_of_school"},
+    {headerName: "Boy's Toilet", field: "no_of_school"},
+    {headerName: "Functional Boy's Toilet", field: "no_of_school"},
+    {headerName: "Girl's Toilet", field: "no_of_school"},
+    {headerName: "Functional Girl's Toilet", field: "no_of_school"},
+    {headerName: "Functional Toilet Facility", field: "no_of_school"},
+    {headerName: "Functional Urinal Boy's", field: "no_of_school"},
+    {headerName: "Functional Urinal Girl's", field: "no_of_school"},
+    {headerName: "Functional Drinking Water", field: "no_of_school"},
+    {headerName: "Water Purifier", field: "no_of_school"},
+    {headerName: "Rain Water Harvesting", field: "no_of_school"},
+    {headerName: "Water Tested", field: "no_of_school"},
+    {headerName: "Handwash", field: "no_of_school"},
+    {headerName: "Incinerator", field: "no_of_school"},
+    {headerName: "WASH Facility(Drinking Water, Toilet and Handwash)", field: "no_of_school"},
+    {headerName: "Ramps", field: "no_of_school"},
+    {headerName: "Hand-Rails", field: "no_of_school"},
+    {headerName: "Medical Checkup", field: "no_of_school"},
+    {headerName: "Complete Medical Checkup", field: "no_of_school"},
+    {headerName: "Internet", field: "no_of_school"},
+    {headerName: "Computer Available", field: "no_of_school"},
+  ];
+
+  const defColumnDefs = {
+    flex: 1,
+    minWidth: 250,
+    // allow every column to be aggregated
+    enableValue: true,
+    // allow every column to be grouped
+    enableRowGroup: true,
+    // allow every column to be pivoted
+    enablePivot: true,
+    filter: true,
+};
+
+
+
+  const onGridReady = (params) => {
+    setGridApi(params);
+  };
+
+
+  // const onFirstDataRendered = () => {
+  //   // for all rows expanded
+  //   // gridApi.api.forEachNode((node) => {
+  //   //   node.setExpanded(true);
+  //   // });
+
+  //   // for specific row expand
+  //   const row2 = gridApi?.api?.getDisplayedRowAtIndex(1);
+  //   row2.setExpanded(true);
+  //   // gridApi.api.getDisplayedRowAtIndex(0).setExpanded(true);
+  // };
+
   const [queryParameters] = useSearchParams();
   const id = queryParameters.get('id');
   const report_name = queryParameters.get('report_name');
   const type = queryParameters.get('type');
   const schoolFilterYear = useSelector((state) => state.schoolFilter);
   const [show, setShow] = useState(false);
+  const [filterShowHide,setFilterShowHide] = useState(false);
   const dispatch = useDispatch();
   const school_data = useSelector((state) => state.school);
+
   useEffect(() => {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
+  const handleHideAndShowFilter = ()=>{
+    setFilterShowHide(filterShowHide=>!filterShowHide)
+  }
   return (
     <section className="infrastructure-main-card p-0">
       <div className="bg-grey2 ptb-30">
@@ -62,13 +176,14 @@ export default function Infrastructure3013() {
             <div className="col-md-2 col-lg-2 text-right pt-1 pe-0">
               <button
                 className="header-dropdown-btn customize-btn"
-                onClick={() => setShow(!show)}
+                // onClick={() => setShow(!show)}
+                onClick={() => handleHideAndShowFilter()}
               >
                 <span className="material-icons-round">dashboard</span>{" "}
                 Customize
               </button>
 
-              <div
+              {/* <div
                 className={`custmize-filter-column ${show ? "show" : ""}`}
                 id="customize_filter"
               >
@@ -491,7 +606,7 @@ export default function Infrastructure3013() {
 
                   </form>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Customize Filter END*/}
@@ -553,7 +668,19 @@ export default function Infrastructure3013() {
                   </div>
                 </Tab>
                 <Tab eventKey="table" title="Table">
-                  <TableContainer className="mt-4">
+                <div className="ag-theme-material ag-theme-custom-height" style={{height:600}}>
+                    <AgGridReact
+                      rowData={rowData}
+                      columnDefs={columns}
+                      defaultColDef={defColumnDefs}
+                      onGridReady={onGridReady}
+                      sideBar={filterShowHide}
+                      groupIncludeFooter={true}
+                      groupIncludeTotalFooter={true}
+                    />
+                  </div>
+
+                  {/* <TableContainer className="mt-4">
                     <Table className="table-responsive table-bordered">
                       <TableHead>
                         <TableRow>
@@ -601,55 +728,66 @@ export default function Infrastructure3013() {
                       </TableHead>
                       <TableBody>
 
-                        <TableRow>
+                      {
+                        school_data?.data?.map((item)=>{
+                          return (<>
+                            <TableRow>
 
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
-                          <TableCell>0</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
+                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
 
-                        </TableRow>
+                                </TableRow>
 
+                          </>);
+                        })
+                      }
+                      
                       </TableBody>
                     </Table>
-                  </TableContainer>
+                  </TableContainer> */}
                 </Tab>
-                <Tab eventKey="graph" title="Chart"></Tab>
+                <Tab eventKey="graph" title="Chart">
+
+            
+
+                </Tab>
               </Tabs>
             </div>
           </div>
