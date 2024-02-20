@@ -1,12 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useCallback, } from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
@@ -18,6 +12,11 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
+
+
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
@@ -105,24 +104,10 @@ export default function Infrastructure3013() {
     filter: true,
 };
 
-
-
-  const onGridReady = (params) => {
+  const onGridReady = useCallback((params) => {
     setGridApi(params);
-  };
-
-
-  // const onFirstDataRendered = () => {
-  //   // for all rows expanded
-  //   // gridApi.api.forEachNode((node) => {
-  //   //   node.setExpanded(true);
-  //   // });
-
-  //   // for specific row expand
-  //   const row2 = gridApi?.api?.getDisplayedRowAtIndex(1);
-  //   row2.setExpanded(true);
-  //   // gridApi.api.getDisplayedRowAtIndex(0).setExpanded(true);
-  // };
+  }
+  ,[]);
 
   const [queryParameters] = useSearchParams();
   const id = queryParameters.get('id');
@@ -139,9 +124,90 @@ export default function Infrastructure3013() {
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
-  const handleHideAndShowFilter = ()=>{
+  const handleHideAndShowFilter = useCallback(()=>{
     setFilterShowHide(filterShowHide=>!filterShowHide)
   }
+  ,[]);
+
+  const onBtExport =() => {
+    gridApi.api.exportDataAsExcel()
+  }
+  const getHeaderToExport = (gridApi) => {
+    const columns = gridApi.api.getAllDisplayedColumns();
+  
+    return columns.map((column) => {
+      const { field } = column.getColDef();
+      const sort = column.getSort();
+      const headerNameUppercase =
+        field[0].toUpperCase() + field.slice(1);
+      const headerCell = {
+        text: headerNameUppercase + (sort ? ` (${sort})` : ''),
+      };
+      return headerCell;
+    });
+  };
+  const getRowsToExport = (gridApi) => {
+    const columns = gridApi.api.getAllDisplayedColumns();
+  
+    const getCellToExport = (column, node) => ({
+      text: gridApi.api.getValue(column, node) ?? '',
+    });
+  
+    const rowsToExport = [];
+    gridApi.api.forEachNodeAfterFilterAndSort((node) => {
+      const rowToExport = columns.map((column) =>
+        getCellToExport(column, node)
+      );
+      rowsToExport.push(rowToExport);
+    });
+  
+    return rowsToExport;
+  };
+  /** 
+* This function returns a PDF document definition object - the input for pdfMake.
+*/
+const getDocument = (gridApi) => {
+  const columns = gridApi.api.getAllDisplayedColumns();
+
+  const headerRow = getHeaderToExport(gridApi);
+  const rows = getRowsToExport(gridApi);
+
+  return {
+    pageOrientation: 'landscape', // can also be 'portrait' ||landscape
+    content: [
+      {
+        table: {
+          // the number of header rows
+          headerRows: 1,
+
+          // the width of each column, can be an array of widths
+          widths: `${100 / columns.length}%`,
+
+          // all the rows to display, including the header rows
+          body: [headerRow, ...rows],
+
+          // Header row is 40px, other rows are 15px
+          heights: (rowIndex) => (rowIndex === 0 ? 150 : 150),
+          
+        },
+      },
+    ],
+    header: 'simple text',
+
+          footer: {
+            columns: [
+              'Left part',
+              { text: 'Right part', alignment: 'right' }
+            ]
+          },
+  };
+};
+
+ const exportToPDF = () => {
+  console.log(gridApi,' grid api')
+  const doc = getDocument(gridApi);
+  pdfMake.createPdf(doc).open();
+};
   return (
     <section className="infrastructure-main-card p-0">
       <div className="bg-grey2 ptb-30">
@@ -612,7 +678,8 @@ export default function Infrastructure3013() {
             {/* Customize Filter END*/}
 
             <div className="col-md-12 col-lg-12 ps-1">
-              <div className="tab-text-infra download-rep">
+              <div className="tab-text-infra download-rep" onClick={onBtExport}>
+              {/* <div className="tab-text-infra download-rep" onClick={exportToPDF}> */}
                 Download Report{" "}
                 <span className="material-icons-round">download</span>
               </div>
@@ -679,109 +746,6 @@ export default function Infrastructure3013() {
                       groupIncludeTotalFooter={true}
                     />
                   </div>
-
-                  {/* <TableContainer className="mt-4">
-                    <Table className="table-responsive table-bordered">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Location</TableCell>
-                          <TableCell>Rural/Urban</TableCell>
-                          <TableCell>School Category </TableCell>
-                          <TableCell>School Management</TableCell>
-                          <TableCell>School Type </TableCell>
-                          <TableCell>Total No. of Schools</TableCell>
-                          <TableCell>Separate Room <br /> for Headmaster</TableCell>
-                          <TableCell>Land Available</TableCell>
-                          <TableCell>Electricity </TableCell>
-                          <TableCell>Functional <br /> Electricity</TableCell>
-                          <TableCell>Solar Panel</TableCell>
-                          <TableCell>Playground</TableCell>
-                          <TableCell>Library or Reading <br /> Corner or Book Bank</TableCell>
-                          <TableCell>Librarian</TableCell>
-                          <TableCell>Newspaper</TableCell>
-                          <TableCell>Kitchen Garden</TableCell>
-                          <TableCell>Furniture</TableCell>
-                          <TableCell>Boy's Toilet</TableCell>
-                          <TableCell>Functional Boy's <br /> Toilet</TableCell>
-                          <TableCell>Girl's Toilet</TableCell>
-                          <TableCell>Functional Girl's <br /> Toilet</TableCell>
-                          <TableCell>Toilet Facility</TableCell>
-                          <TableCell>Functional Toilet <br /> Facility</TableCell>
-                          <TableCell>Functional Urinal <br /> Boy's</TableCell>
-                          <TableCell>Functional Urinal <br /> Girl's</TableCell>
-                          <TableCell>Drinking Water</TableCell>
-                          <TableCell>Functional <br /> Drinking Water </TableCell>
-                          <TableCell>Water Purifier</TableCell>
-                          <TableCell>Rain Water <br /> Harvesting</TableCell>
-                          <TableCell>Water Tested</TableCell>
-                          <TableCell>Handwash</TableCell>
-                          <TableCell>Incinerator</TableCell>
-                          <TableCell>WASH Facility(Drinking Water, <br /> Toilet and Handwash)</TableCell>
-                          <TableCell>Ramps</TableCell>
-                          <TableCell>Hand-Rails</TableCell>
-                          <TableCell>Medical <br /> Checkup</TableCell>
-                          <TableCell>Complete Medical <br /> Checkup</TableCell>
-                          <TableCell>Internet</TableCell>
-                          <TableCell>Computer <br /> Available</TableCell>
-
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-
-                      {
-                        school_data?.data?.map((item)=>{
-                          return (<>
-                            <TableRow>
-
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-                                <TableCell>{item.schHavingFuncToiletBoys}</TableCell>
-
-                                </TableRow>
-
-                          </>);
-                        })
-                      }
-                      
-                      </TableBody>
-                    </Table>
-                  </TableContainer> */}
                 </Tab>
                 <Tab eventKey="graph" title="Chart">
 
