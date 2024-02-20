@@ -672,8 +672,8 @@ const getDocument = (gridApi) => {
             {/* Customize Filter END*/}
 
             <div className="col-md-12 col-lg-12 ps-1">
-              {/* <div className="tab-text-infra download-rep" onClick={onBtExport}> */}
-              <div className="tab-text-infra download-rep" onClick={exportToPDF}>
+              <div className="tab-text-infra download-rep" onClick={onBtExport}>
+              {/* <div className="tab-text-infra download-rep" onClick={exportToPDF}> */}
                 Download Report{" "}
                 <span className="material-icons-round">download</span>
               </div>
