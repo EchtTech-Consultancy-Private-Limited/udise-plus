@@ -181,7 +181,8 @@ const getDocument = (gridApi) => {
           headerRows: 1,
 
           // the width of each column, can be an array of widths
-          widths: `${100 / columns.length}%`,
+          // widths: `${100 / columns.length}%`,
+          widths: '20%',
 
           // all the rows to display, including the header rows
           body: [headerRow, ...rows],
@@ -193,7 +194,6 @@ const getDocument = (gridApi) => {
       },
     ],
     header: 'simple text',
-
           footer: {
             columns: [
               'Left part',
@@ -742,8 +742,8 @@ const getDocument = (gridApi) => {
                       defaultColDef={defColumnDefs}
                       onGridReady={onGridReady}
                       sideBar={filterShowHide}
-                      groupIncludeFooter={true}
-                      groupIncludeTotalFooter={true}
+                      // groupIncludeFooter={true}
+                      // groupIncludeTotalFooter={true}
                     />
                   </div>
                 </Tab>
