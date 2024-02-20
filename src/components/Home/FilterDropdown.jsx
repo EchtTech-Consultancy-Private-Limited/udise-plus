@@ -28,7 +28,7 @@ export default function FilterDropdown() {
   const districtData=useSelector(state=>state.distrct);
   const [selectedState,setSelectedState] = useState('National');
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
+  const [selectedYear, setSelectedYear] = useState("2020-21");
   useEffect(()=>{
     dispatch(fetchStateData());
     dispatch(fetchYearData());
@@ -165,7 +165,9 @@ export default function FilterDropdown() {
                     </MDBDropdown>
                   </MDBNavbarItem>
 
-                  <MDBNavbarItem className='position-static'>
+
+                  {
+                    selectedState!=="National"? <MDBNavbarItem className='position-static'>
                     <MDBDropdown>
                       <MDBDropdownToggle tag='a' className='nav-link'>
                        <div className="menu-sub-heading">Select District</div>
@@ -187,7 +189,11 @@ export default function FilterDropdown() {
                         </MDBContainer>
                       </MDBDropdownMenu>
                     </MDBDropdown>
-                  </MDBNavbarItem>
+                  </MDBNavbarItem>:""
+                  }
+                  
+
+
 
                   <MDBNavbarItem className='position-static'>
                     <MDBDropdown>

@@ -9,6 +9,7 @@ import Tableicon from '../../assets/images/table_cells.png'
 import Download from '../../assets/images/download.png'
 import graph from '../../assets/images/circular-graphic.png'
 import { Link } from "react-router-dom";
+import allreportsdata from '../../json-data/allreports.json';
 
 export default function Reports() {
 
@@ -82,13 +83,14 @@ export default function Reports() {
                         </div>
                     </div>
 
+                    {Object.keys(allreportsdata).map(category => (
                     <div className="Allreport-table-card mb-4">
                         <div className="col-md-12">
                             <TableContainer className="mt-4">
                                 <Table>
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell colSpan={5}> <h2 className="heading-sm heading-sm2">Frequently Used Reports</h2> </TableCell>
+                                            <TableCell colSpan={5}> <h2 className="heading-sm heading-sm2">{category}</h2> </TableCell>
                                         </TableRow>
                                         <TableRow className="">
                                             <TableCell className="bg-grey2">S.no</TableCell>
@@ -99,69 +101,27 @@ export default function Reports() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
+                                    {allreportsdata[category].map((report, index) => (
                                         <TableRow>
-                                            <TableCell>1</TableCell>
-                                            <TableCell>3016</TableCell>
-                                            <TableCell>Number of Schools having Electricity Connection by School Category and Management</TableCell>
-                                            <TableCell>School</TableCell>
+                                        <TableCell>{index + 1}</TableCell>
+                                            <TableCell>{report.id}</TableCell>
+                                            <TableCell>{report.report_name}</TableCell>
+                                            <TableCell>{report.tags}</TableCell>
                                             <TableCell>
-                                                <Link className="action-icon" to="/all-reports?id=3016&report_name=Number of Schools having Electricity Connection by School Category and Management&type=table"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports?id=3016&report_name=Number of Schools having Electricity Connection by School Category and Management&type=graph"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/all-reports?id=3016&report_name=Number of Schools having Electricity Connection by School Category and Management&type=about"><img src={Download} alt="" /></Link>
+                                                <Link className="action-icon" to={`/${report.url}?id=${report.id}&type=table`}><img src={Tableicon} alt="" /></Link>
+                                                <Link className="action-icon" to={`/${report.url}?id=${report.id}&type=graph`}><img src={graph} alt="" /></Link>
+                                                <Link className="action-icon" to={`/${report.url}?id=${report.id}&type=about`}><img src={Download} alt="" /></Link>
                                             </TableCell>                                          
                                         </TableRow>
-                                        <TableRow>
-                                            <TableCell>2</TableCell>
-                                            <TableCell>1005</TableCell>
-                                            <TableCell>Number of Schools by Type of School and School Category</TableCell>
-                                            <TableCell>School</TableCell>
-                                            <TableCell>
-                                                <Link className="action-icon" to="/school-reports?id=1005&report_name=Number of Schools by Type of School and School Category&type=table"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/school-reports?id=1005&report_name=Number of Schools by Type of School and School Category&type=graph"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/school-reports?id=1005&report_name=Number of Schools by Type of School and School Category&type=about"><img src={Download} alt="" /></Link>
-                                            </TableCell>                                          
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>3</TableCell>
-                                            <TableCell>1003</TableCell>
-                                            <TableCell>Number of Schools by School Management and School Category</TableCell>
-                                            <TableCell>School</TableCell>
-                                            <TableCell>
-                                                <Link className="action-icon" to="/school-reports?id=1003&report_name=Number of Schools by School Management and School Category&type=table"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/school-reports?id=1003&report_name=Number of Schools by School Management and School Category&type=graph"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/school-reports?id=1003&report_name=Number of Schools by School Management and School Category&type=about"><img src={Download} alt="" /></Link>
-                                            </TableCell>                                          
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>4</TableCell>
-                                            <TableCell>2008</TableCell>
-                                            <TableCell>Number of Teachers by Social Category , Gender and School Management</TableCell>
-                                            <TableCell>Teacher</TableCell>
-                                            <TableCell>
-                                                <Link className="action-icon" to="/teacher-reports?id=2008&report_name=Number of Teachers by Social Category , Gender and School Management&type=table"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/teacher-reports?id=2008&report_name=Number of Teachers by Social Category , Gender and School Management&type=graph"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/teacher-reports?id=2008&report_name=Number of Teachers by Social Category , Gender and School Management&type=about"><img src={Download} alt="" /></Link>
-                                            </TableCell>                                          
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>5</TableCell>
-                                            <TableCell>2007</TableCell>
-                                            <TableCell>Pupil Teacher Ratio (PTR)</TableCell>
-                                            <TableCell>Teacher</TableCell>
-                                            <TableCell>
-                                                <Link className="action-icon" to="/teacher-reports?id=2007&report_name=Pupil Teacher Ratio (PTR)&type=table"><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to="/teacher-reports?id=2007&report_name=Pupil Teacher Ratio (PTR)&type=graph"><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to="/teacher-reports?id=2007&report_name=Pupil Teacher Ratio (PTR)&type=about"><img src={Download} alt="" /></Link>
-                                            </TableCell>                                          
-                                        </TableRow>
-                                      
+                                        ))}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
                         </div>
                     </div>
+                    ))}
 
-                    <div className="Allreport-table-card mb-4">
+                    {/* <div className="Allreport-table-card mb-4">
                         <div className="col-md-12">
                             <TableContainer className="mt-4">
                                 <Table>
@@ -299,7 +259,7 @@ export default function Reports() {
                                 </Table>
                             </TableContainer>
                         </div>
-                    </div>
+                    </div> */}
 
                 </div>
             </div>

@@ -1,0 +1,76 @@
+{
+    "Frequently Used Reports": [
+        {
+            "id": 3016,
+            "report_name": "Number of Schools having Electricity Connection by School Category and Management",
+            "tags": "School",
+            "url":"all-reports"
+        },
+        {
+            "id": 1005,
+            "report_name": "Number of Schools by Type of School and School Category",
+            "tags": "School",
+            "url":"school-reports"
+        },
+        {
+            "id": 1003,
+            "report_name": "Number of Schools by School Management and School Category",
+            "tags": "School",
+            "url":"school-reports"
+        },
+        {
+            "id": 2008,
+            "report_name": "Number of Teachers by Social Category, Gender and School Management",
+            "tags": "Teacher",
+            "url":"teacher-reports"
+        },
+        {
+            "id": 2007,
+            "report_name": "Pupil Teacher Ratio (PTR)",
+            "tags": "Teacher",
+            "url":"teacher-reports"
+        }
+    ],
+    "School": [
+        {
+            "id": 1005,
+            "report_name": "Number of Schools by Type of School and School Category",
+            "tags": "School",
+            "url":"school-reports"
+        },
+        {
+            "id": 1003,
+            "report_name": "Number of Schools by School Management and School Category",
+            "tags": "School",
+            "url":"school-reports"
+        }
+    ],
+    "Teacher": [
+        {
+            "id": 2008,
+            "report_name": "Number of Teachers by Social Category , Gender and School Management",
+            "tags": "Teacher",
+            "url":"teacher-reports"
+        },
+        {
+            "id": 2007,
+            "report_name": "Pupil Teacher Ratio (PTR)",
+            "tags": "Teacher",
+            "url":"teacher-reports"
+        }
+    ],
+    "Infrastructure": [
+        {
+            "id": 3013,
+            "report_name": "Number of Schools by Availability of Infrastructure and Facilities, School Management and School Category",
+            "tags": "School",
+            "url":"infrastructure-reports3013"
+        },
+        {
+            "id": 3016,
+            "report_name": "Number of Schools having Electricity Connection by School Category and Management",
+            "tags": "School",
+            "url":"all-reports"
+        }
+    ]
+}

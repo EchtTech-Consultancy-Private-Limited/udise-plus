@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
 import { useSearchParams } from "react-router-dom"
 import FilterDropdown from "../Home/FilterDropdown";
+import allreportsdata from '../../json-data/allreports.json';
 
 
 import { AgGridReact } from "ag-grid-react";
@@ -20,35 +21,46 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
-  
+  const [report, setReport] = useState(null);
+
   const rowData = [
     {
-      make: "Toyota",
-      model: "Celica",
-      price: 35000,
-      date: "09-02-2022",
-      available: true,
-    },
-    {
-      make: "Ford",
-      model: "Mondeo",
-      price: 32000,
-      date: "11-02-2022",
-      available: false,
-    },
-    {
-      make: "Porsche",
-      model: "Boxter",
-      price: 72000,
-      date: "10-02-2022",
-      available: true,
-    },
-    {
-      make: "Mers",
-      model: "Mers",
-      price: 92000,
-      date: "12-02-2022",
-      available: true,
+
+            "location": "India",
+            "rural_urban": "Urban",
+            "school_management": "School mgt.",
+            "school_type": "School Type.",
+            "no_of_headmaster": 150,
+            "land_available": 150,
+            "totalSchool": 76090,
+            "schHavingFuncElectricity": 75092,
+            "schHavingInternet": 31355,
+            "schHavingLibrary": 73158,
+            "schHavingPlayground": 73158,
+            "schHavingRampFacility": 56580,
+            "schHavingSolarPanel": 9363,
+            "schHavingNewsPaper": 23,
+            "schHavingKitchenGarden": 3,
+            "schHavingFurniture": 6,
+            "schHavingWaterPurifier": 26,
+            "schHavingFuncDrinkingWater": 75098,
+            "schHavingFuncToilet": 74655,
+            "schHavingToiletBoys": 72327,
+            "schHavingFuncToiletBoys": 72327,
+            "schHavingToiletGirls": 74655,
+            "schHavingFuncToiletGirls": 74655,
+            "schHavingFuncUrinalToiletBoys": 72327,
+            "schHavingFuncUrinalToiletGirls": 72327,
+            "schHavingRainWaterHarvesting": 345,
+            "schHavingWaterTested": 145,
+            "schHavingHandwash": 14,
+            "schHavingIncinerator": 514,
+            "schHavingWashFacility": 514,
+            "schHavingHandRails": 54,
+            "schHavingMedicalCheckup": 754,
+            "schHavingCompleteMedicalCheckup": 754,
+            "schHavingAvailableComputer": 75,
+            "school_category": "HSS (I-XII)",
     },
   ];
 
@@ -58,38 +70,38 @@ export default function Infrastructure3013() {
     {headerName: "School Category", field: "school_category"},
     {headerName: "School Management", field: "school_management"},
     {headerName: "School Type", field: "school_type"},
-    {headerName: "Total No. of Schools", field: "no_of_school"},
-    {headerName: "Separate Room for Headmaster", field: "no_of_school"},
-    {headerName: "Land Available", field: "no_of_school"},
-    {headerName: "Electricity", field: "no_of_school"},
-    {headerName: "Functional Electricity", field: "no_of_school"},
-    {headerName: "Solar Panel", field: "no_of_school"},
-    {headerName: "Playground", field: "no_of_school"},
-    {headerName: "Library or Reading Corner or Book Bank", field: "no_of_school"},
-    {headerName: "Librarian", field: "no_of_school"},
-    {headerName: "Newspaper", field: "no_of_school"},
-    {headerName: "Kitchen Garden", field: "no_of_school"},
-    {headerName: "Furniture", field: "no_of_school"},
-    {headerName: "Boy's Toilet", field: "no_of_school"},
-    {headerName: "Functional Boy's Toilet", field: "no_of_school"},
-    {headerName: "Girl's Toilet", field: "no_of_school"},
-    {headerName: "Functional Girl's Toilet", field: "no_of_school"},
-    {headerName: "Functional Toilet Facility", field: "no_of_school"},
-    {headerName: "Functional Urinal Boy's", field: "no_of_school"},
-    {headerName: "Functional Urinal Girl's", field: "no_of_school"},
-    {headerName: "Functional Drinking Water", field: "no_of_school"},
-    {headerName: "Water Purifier", field: "no_of_school"},
-    {headerName: "Rain Water Harvesting", field: "no_of_school"},
-    {headerName: "Water Tested", field: "no_of_school"},
-    {headerName: "Handwash", field: "no_of_school"},
-    {headerName: "Incinerator", field: "no_of_school"},
-    {headerName: "WASH Facility(Drinking Water, Toilet and Handwash)", field: "no_of_school"},
-    {headerName: "Ramps", field: "no_of_school"},
-    {headerName: "Hand-Rails", field: "no_of_school"},
-    {headerName: "Medical Checkup", field: "no_of_school"},
-    {headerName: "Complete Medical Checkup", field: "no_of_school"},
-    {headerName: "Internet", field: "no_of_school"},
-    {headerName: "Computer Available", field: "no_of_school"},
+    {headerName: "Total No. of Schools", field: "totalSchool"},
+    {headerName: "Separate Room for Headmaster", field: "no_of_headmaster"},
+    {headerName: "Land Available", field: "land_available"},
+    {headerName: "Electricity", field: "schHavingFuncElectricity"},
+    {headerName: "Functional Electricity", field: "schHavingFuncElectricity"},
+    {headerName: "Solar Panel", field: "schHavingSolarPanel"},
+    {headerName: "Playground", field: "schHavingPlayground"},
+    {headerName: "Library or Reading Corner or Book Bank", field: "schHavingLibrary"},
+    {headerName: "Librarian", field: "schHavingLibrary"},
+    {headerName: "Newspaper", field: "schHavingNewsPaper"},
+    {headerName: "Kitchen Garden", field: "schHavingKitchenGarden"},
+    {headerName: "Furniture", field: "schHavingFurniture"},
+    {headerName: "Boy's Toilet", field: "schHavingToiletBoys"},
+    {headerName: "Functional Boy's Toilet", field: "schHavingFuncToiletBoys"},
+    {headerName: "Girl's Toilet", field: "schHavingToiletGirls"},
+    {headerName: "Functional Girl's Toilet", field: "schHavingFuncToiletGirls"},
+    {headerName: "Functional Toilet Facility", field: "schHavingFuncToilet"},
+    {headerName: "Functional Urinal Boy's", field: "schHavingFuncUrinalToiletBoys"},
+    {headerName: "Functional Urinal Girl's", field: "schHavingFuncUrinalToiletGirls"},
+    {headerName: "Functional Drinking Water", field: "schHavingFuncDrinkingWater"},
+    {headerName: "Water Purifier", field: "schHavingWaterPurifier"},
+    {headerName: "Rain Water Harvesting", field: "schHavingRainWaterHarvesting"},
+    {headerName: "Water Tested", field: "schHavingWaterTested"},
+    {headerName: "Handwash", field: "schHavingHandwash"},
+    {headerName: "Incinerator", field: "schHavingIncinerator"},
+    {headerName: "WASH Facility(Drinking Water, Toilet and Handwash)", field: "schHavingWashFacility"},
+    {headerName: "Ramps", field: "schHavingRampFacility"},
+    {headerName: "Hand-Rails", field: "schHavingHandRails"},
+    {headerName: "Medical Checkup", field: "schHavingMedicalCheckup"},
+    {headerName: "Complete Medical Checkup", field: "schHavingCompleteMedicalCheckup"},
+    {headerName: "Internet", field: "schHavingInternet"},
+    {headerName: "Computer Available", field: "schHavingAvailableComputer"},
   ];
 
   const defColumnDefs = {
@@ -123,7 +135,18 @@ export default function Infrastructure3013() {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
     // eslint-disable-next-line
   }, [schoolFilterYear]);
-
+// Find the report with the given id
+useEffect(() => {
+  for (const category in allreportsdata) {
+    const foundReport = allreportsdata[category].find(
+      (report) => report.id === parseInt(id)
+    );
+    if (foundReport) {
+      setReport(foundReport);
+      break;
+    }
+  }
+}, [id]);
   const handleHideAndShowFilter = useCallback(()=>{
     setFilterShowHide(filterShowHide=>!filterShowHide)
   }
@@ -142,6 +165,8 @@ export default function Infrastructure3013() {
         field[0].toUpperCase() + field.slice(1);
       const headerCell = {
         text: headerNameUppercase + (sort ? ` (${sort})` : ''),
+        bold: true,
+        margin: [0, 12, 0, 0],
       };
       return headerCell;
     });
@@ -171,7 +196,6 @@ const getDocument = (gridApi) => {
 
   const headerRow = getHeaderToExport(gridApi);
   const rows = getRowsToExport(gridApi);
-
   return {
     pageOrientation: 'landscape', // can also be 'portrait' ||landscape
     content: [
@@ -181,7 +205,8 @@ const getDocument = (gridApi) => {
           headerRows: 1,
 
           // the width of each column, can be an array of widths
-          widths: `${100 / columns.length}%`,
+          // widths: `${100 / columns.length}%`,
+          widths: `5%`,
 
           // all the rows to display, including the header rows
           body: [headerRow, ...rows],
@@ -193,7 +218,6 @@ const getDocument = (gridApi) => {
       },
     ],
     header: 'simple text',
-
           footer: {
             columns: [
               'Left part',
@@ -204,7 +228,6 @@ const getDocument = (gridApi) => {
 };
 
  const exportToPDF = () => {
-  console.log(gridApi,' grid api')
   const doc = getDocument(gridApi);
   pdfMake.createPdf(doc).open();
 };
@@ -215,10 +238,12 @@ const getDocument = (gridApi) => {
           <div className="row align-items-center">
             <div className="col-md-6 col-lg-6">
               <div className="common-content text-start map-heading-map">
-                <span>Reports ID: {id}</span>
-                <h2 className="heading-sm1 mb-3">
-                  {report_name}
-                </h2>
+              {report && (
+                <div className="common-content text-start map-heading-map">
+                  <span>Reports ID: {report.id}</span>
+                  <h2 className="heading-sm1 mb-3">{report.report_name}</h2>
+                </div>
+              )}
               </div>
             </div>
             <div className="col-md-4 col-lg-4">
@@ -742,8 +767,8 @@ const getDocument = (gridApi) => {
                       defaultColDef={defColumnDefs}
                       onGridReady={onGridReady}
                       sideBar={filterShowHide}
-                      groupIncludeFooter={true}
-                      groupIncludeTotalFooter={true}
+                      // groupIncludeFooter={true}
+                      // groupIncludeTotalFooter={true}
                     />
                   </div>
                 </Tab>
