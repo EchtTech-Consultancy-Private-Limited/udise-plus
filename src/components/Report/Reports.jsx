@@ -108,9 +108,9 @@ export default function Reports() {
                                             <TableCell>{report.report_name}</TableCell>
                                             <TableCell>{report.tags}</TableCell>
                                             <TableCell>
-                                                <Link className="action-icon" to={`/all-reports?id=${report.id}&type=table`}><img src={Tableicon} alt="" /></Link>
-                                                <Link className="action-icon" to={`/all-reports?id=${report.id}&type=graph`}><img src={graph} alt="" /></Link>
-                                                <Link className="action-icon" to={`/all-reports?id=${report.id}&type=about`}><img src={Download} alt="" /></Link>
+                                                <Link className="action-icon" to={`/${report.url}?id=${report.id}&type=table`}><img src={Tableicon} alt="" /></Link>
+                                                <Link className="action-icon" to={`/${report.url}?id=${report.id}&type=graph`}><img src={graph} alt="" /></Link>
+                                                <Link className="action-icon" to={`/${report.url}?id=${report.id}&type=about`}><img src={Download} alt="" /></Link>
                                             </TableCell>                                          
                                         </TableRow>
                                         ))}

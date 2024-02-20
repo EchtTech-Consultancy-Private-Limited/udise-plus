@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
 import { useSearchParams } from "react-router-dom"
 import FilterDropdown from "../Home/FilterDropdown";
+import allreportsdata from '../../json-data/allreports.json';
 
 
 import { AgGridReact } from "ag-grid-react";
@@ -20,7 +21,8 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
-  
+  const [report, setReport] = useState(null);
+
   const rowData = [
     {
       make: "Toyota",
@@ -123,7 +125,18 @@ export default function Infrastructure3013() {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
     // eslint-disable-next-line
   }, [schoolFilterYear]);
-
+// Find the report with the given id
+useEffect(() => {
+  for (const category in allreportsdata) {
+    const foundReport = allreportsdata[category].find(
+      (report) => report.id === parseInt(id)
+    );
+    if (foundReport) {
+      setReport(foundReport);
+      break;
+    }
+  }
+}, [id]);
   const handleHideAndShowFilter = useCallback(()=>{
     setFilterShowHide(filterShowHide=>!filterShowHide)
   }
@@ -216,10 +229,12 @@ const getDocument = (gridApi) => {
           <div className="row align-items-center">
             <div className="col-md-6 col-lg-6">
               <div className="common-content text-start map-heading-map">
-                <span>Reports ID: {id}</span>
-                <h2 className="heading-sm1 mb-3">
-                  {report_name}
-                </h2>
+              {report && (
+                <div className="common-content text-start map-heading-map">
+                  <span>Reports ID: {report.id}</span>
+                  <h2 className="heading-sm1 mb-3">{report.report_name}</h2>
+                </div>
+              )}
               </div>
             </div>
             <div className="col-md-4 col-lg-4">
