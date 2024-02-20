@@ -142,6 +142,8 @@ export default function Infrastructure3013() {
         field[0].toUpperCase() + field.slice(1);
       const headerCell = {
         text: headerNameUppercase + (sort ? ` (${sort})` : ''),
+        bold: true,
+        margin: [0, 12, 0, 0],
       };
       return headerCell;
     });
@@ -171,7 +173,6 @@ const getDocument = (gridApi) => {
 
   const headerRow = getHeaderToExport(gridApi);
   const rows = getRowsToExport(gridApi);
-
   return {
     pageOrientation: 'landscape', // can also be 'portrait' ||landscape
     content: [
@@ -182,7 +183,7 @@ const getDocument = (gridApi) => {
 
           // the width of each column, can be an array of widths
           // widths: `${100 / columns.length}%`,
-          widths: '20%',
+          widths: `5%`,
 
           // all the rows to display, including the header rows
           body: [headerRow, ...rows],
@@ -678,8 +679,8 @@ const getDocument = (gridApi) => {
             {/* Customize Filter END*/}
 
             <div className="col-md-12 col-lg-12 ps-1">
-              <div className="tab-text-infra download-rep" onClick={onBtExport}>
-              {/* <div className="tab-text-infra download-rep" onClick={exportToPDF}> */}
+              {/* <div className="tab-text-infra download-rep" onClick={onBtExport}> */}
+              <div className="tab-text-infra download-rep" onClick={exportToPDF}>
                 Download Report{" "}
                 <span className="material-icons-round">download</span>
               </div>
