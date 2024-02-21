@@ -8,5 +8,10 @@
     "skip_to_main_content": "मुख्य विषय में जाएं",
     "last_modified": "अंतिम संशोधित",
     "screen_reader_access": "स्क्रीन रीडर एक्सेस",
-    "logout": "लॉगआउट"
+    "logout": "लॉगआउट",
+    "education_dashboard": "शिक्षा डैशबोर्ड",
+    "school_dashboard": "स्कूल डैशबोर्ड",
+    "teacher_dashboard": "शिक्षक डैशबोर्ड",
+    "student_dashboard": "छात्र डैशबोर्ड",
+    "all_reports": "सभी रिपोर्ट"
 }

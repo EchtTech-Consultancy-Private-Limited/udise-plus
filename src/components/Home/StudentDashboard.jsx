@@ -2,6 +2,7 @@ import React from 'react';
 import dashboard from '../../assets/images/S_dashboard.svg'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import {useTranslation} from "react-i18next";
 // require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
@@ -84,13 +85,14 @@ require('highcharts/modules/accessibility')(Highcharts);
 var breaks = [];
 
 export default function StudentDashboard() {
+    const { t } = useTranslation();
     return (
         <>
             <section className="pgicategory vision-mission-card ptb-30">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12 mb-4 p-0">
-                            <h2 className="heading-blue">Student Dashboard</h2>
+                            <h2 className="heading-blue">{t("student_dashboard")}</h2>
                         </div>
                         <div className="col-md-12 col-lg-12 p-0">
                             <div className="common-content text-start right-card-sec">
