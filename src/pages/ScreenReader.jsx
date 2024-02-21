@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function ScreenReader() {
     return (
-        <section className="bg-grey ptb-60">
+        <section className="bg-grey ptb-60" id='content'>
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
