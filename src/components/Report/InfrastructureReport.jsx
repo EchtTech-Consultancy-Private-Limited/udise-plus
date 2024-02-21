@@ -290,7 +290,7 @@ export default function Infrastructure({id,report_name,type}) {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {school_data?.data?.map((item, idx) => {
+                        {school_data?.data?.data?.map((item, idx) => {
                           return (
                             <>
                               <TableRow key={idx}>
