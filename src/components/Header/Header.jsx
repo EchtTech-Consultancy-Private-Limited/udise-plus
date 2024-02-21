@@ -1,15 +1,51 @@
 import "./Header.scss";
-// import Logo from "src/assets/images/pm-shri.png";
+import { useState, useEffect, useRef } from "react";
 import ministry from '../../assets/images/education_ministry.svg';
 import dropdownimg from '../../assets/images/dropdown-icon.svg'
 import SlidingTabBar from "./SlidingTabBar";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { urls } from "../../constants/constants";
 import { useLocation,Link } from 'react-router-dom';
+import {useTranslation} from "react-i18next";
+import i18n from "../../components/i18next/i18n";
+import { Switch } from "@mui/material";
+import { updateToggleDark } from "../../redux/slice/darkLightModeSlice";
+
+
 
 const Header = () => {
   const location = useLocation();
   const header_name = useSelector(state => state.header);
+  const toggleDarkMode = useSelector(state => state.toggle.toggleDarkLight);
+  const dispatch = useDispatch();
+  
+  const changeSizeByBtn = (size) => {
+    if (size === "normal") {
+      document.body.style.fontSize = "16px";
+    } else if (size === "average") {
+      document.body.style.fontSize = "17px";
+    } else if (size === "max") {
+      document.body.style.fontSize = "18px";
+    }  
+  }
+  const { t, i18n } = useTranslation();
+  const changeLanguage = (e) => {
+    i18n.changeLanguage(e.target.value);
+  };
+
+  const handleClickScroll = () => {
+    const element = document.getElementById('content');
+    if (element) {
+      // 👇 Will scroll smoothly to the top of the next section
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
+  
+  const toggleDarkTheme = ()=>{
+    dispatch(updateToggleDark(!toggleDarkMode));
+  }
+
   return (
     <>
       <div className="header-top">
@@ -26,9 +62,10 @@ const Header = () => {
 
                 <div className="header-top-skipwrap">
                   <ul>
-                    <li><a href="#" target="_blank">Helpline Numbers</a></li>
-                    <li><a href="#" target="_blank">Skip To Navigation</a></li>
-                    <li><a href="#">Skip to Main Content</a></li>
+                    <li><Link to='#'>Helpline Numbers</Link></li>
+                    <li><Link to='#' onClick={handleClickScroll}>Skip To Navigation</Link></li>
+                    <li><Link to='#' onClick={handleClickScroll}>Skip to Main Content</Link></li>
+                    <li><Link to='/screen-reader-access'>Screen Reader Access</Link></li>
                   </ul>
                 </div>
 
@@ -39,11 +76,11 @@ const Header = () => {
                         <form action="" method="" className="font-item">
                           <span className="font-t">A</span>
                           <div id="debt-amount-slider">
-                            <input type="radio" name="debt-amount" id="1" value="1" required="" title="Decrease Font Size"/>
+                            <input type="radio" name="debt-amount" id="1" value="1" required="" title="Decrease Font Size" onClick={() => changeSizeByBtn("normal")}/>
                             <label htmlFor="1"></label>
-                            <input type="radio" name="debt-amount" id="2" value="2" defaultChecked="checked" required="" title="Normal Font Size"/>
+                            <input type="radio" name="debt-amount" id="2" value="2" defaultChecked="checked" required="" title="Normal Font Size" onClick={() => changeSizeByBtn("average")} />
                             <label htmlFor="2"></label>
-                            <input type="radio" name="debt-amount" id="3" value="3" required="" title="Increase Font Size"/>
+                            <input type="radio" name="debt-amount" id="3" value="3" required="" title="Increase Font Size" onClick={() => changeSizeByBtn("max")}/>
                             <label htmlFor="3"></label>
                             <div id="debt-amount-pos"></div>
                           </div>
@@ -56,9 +93,10 @@ const Header = () => {
                       <div className="d-flex align-items-center">
                       <span className="text me-2">Dark Mode </span>
                       <label className="switch mb-0" title="Dark Mode">
-                        <input type="checkbox" id="mode"/>
+                        <input type="checkbox" id="mode" onClick={toggleDarkTheme}/>
                           <span className="slider round"></span>
                       </label>
+                      {/* <Switch  onChange={toggleDarkTheme} /> */}
                       </div>
                     </li>
 
@@ -67,7 +105,7 @@ const Header = () => {
                       <span className="text me-2">Language </span>
                       <a>
                         <div className="select-wrap">
-                          <select className="form-select Langchange" defaultValue={"en"}>
+                          <select className="form-select Langchange" value={i18n.language} onChange={changeLanguage}>
                             <option value="en">English</option>
                             <option value="hi">हिन्दी</option>
                           </select>
@@ -77,7 +115,7 @@ const Header = () => {
                       </div>
                     </li>
                   </ul>
-                </div>              
+                </div>
               </div>
             </div>
           </div>
@@ -90,13 +128,13 @@ const Header = () => {
             <div className="col-md-12">
               <nav className="navbar navbar-expand-lg">
                 <div className="logo-wrap">
-                  <a href="#" className="top-logo"> <img src={ministry} alt="logo" className="img-fluid" /></a>
+                  <a href="#" className="top-logo ordernav-sm-1"> <img src={ministry} alt="logo" className="img-fluid logo-main" /></a>
 
-                  <div className="menu-switch-tab">
+                  <div className="menu-switch-tab ordernav-sm-3">
                     <SlidingTabBar/>
                   </div>
 
-                  <div className="">
+                  <div className="ordernav-sm-2">
                     
                   {header_name.headerName!=="All Reports" && !urls.includes(location.pathname)?<Link className="header-dropdown-btn" title="UDISE+ Reports" to="/reports">UDISE+ Reports <img src={dropdownimg} alt="UDISE+ Reports" /> </Link>:""}
                   

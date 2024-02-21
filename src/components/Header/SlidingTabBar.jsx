@@ -6,6 +6,7 @@ import { updateHeaderName } from "../../redux/slice/headerSlice";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { urls } from "../../constants/constants";
 import { useSelector } from "react-redux";
+import {useTranslation} from "react-i18next";
 
 export default function SlidingTabBar() {
   const header_name = useSelector((state) => state.header);
@@ -22,6 +23,9 @@ export default function SlidingTabBar() {
   function handleNavigate(e) {
     dispatch(updateHeaderName(e));
   }
+
+  const { t } = useTranslation();
+
   return (
     <>
       {urls.includes(location.pathname) ? (
@@ -46,11 +50,11 @@ export default function SlidingTabBar() {
           id="uncontrolled-tab-example"
           onSelect={(e) => handleSelect(e)}
         >
-          <Tab eventKey="Education Dashboard" title="Education Dashboard"></Tab>
-          <Tab eventKey="School Dashboard" title="School Dashboard"></Tab>
-          <Tab eventKey="Teacher Dashboard" title="Teacher Dashboard"></Tab>
-          <Tab eventKey="Student Dashboard" title="Student Dashboard"></Tab>
-          <Tab eventKey="All Reports" title="All Reports"></Tab>
+          <Tab eventKey="Education Dashboard" title={t("education_dashboard")}></Tab>
+          <Tab eventKey="School Dashboard" title={t("school_dashboard")}></Tab>
+          <Tab eventKey="Teacher Dashboard" title={t("teacher_dashboard")}></Tab>
+          <Tab eventKey="Student Dashboard" title={t("student_dashboard")}></Tab>
+          <Tab eventKey="All Reports" title={t("all_reports")}></Tab>
         </Tabs>
       )}
     </>

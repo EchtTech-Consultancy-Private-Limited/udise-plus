@@ -164,10 +164,8 @@ export default function FilterDropdown() {
                       </MDBDropdownMenu>
                     </MDBDropdown>
                   </MDBNavbarItem>
-
-
-                  {
-                    selectedState!=="National"? <MDBNavbarItem className='position-static'>
+                  
+                  <MDBNavbarItem className='position-static'>
                     <MDBDropdown>
                       <MDBDropdownToggle tag='a' className='nav-link'>
                        <div className="menu-sub-heading">Select District</div>
@@ -189,8 +187,7 @@ export default function FilterDropdown() {
                         </MDBContainer>
                       </MDBDropdownMenu>
                     </MDBDropdown>
-                  </MDBNavbarItem>:""
-                  }
+                  </MDBNavbarItem>
                   
 
 

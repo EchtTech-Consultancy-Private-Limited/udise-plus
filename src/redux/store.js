@@ -5,6 +5,7 @@ import yearSlice from "./slice/yearSlice";
 import stateSlice from "./slice/stateSlice";
 import archiveServicesSlice from "./slice/archiveServicesSlice";
 import schoolFilterSlice from "./slice/schoolFilterSlice";
+import darkLightMode from "./slice/darkLightModeSlice";
 
 const store = configureStore({
     reducer:{
@@ -14,6 +15,8 @@ const store = configureStore({
         distrct:districtSlice,
         year:yearSlice,
         school:archiveServicesSlice,
+        toggle:darkLightMode,
+        
     }
   });
 

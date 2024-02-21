@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,9 +13,59 @@ import allreportsdata from '../../json-data/allreports.json';
 
 export default function Reports() {
 
+    const [reportList,setReportList] = useState(allreportsdata);
+    const [cloneReportList] = useState(allreportsdata);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const [reportType,setReportType] = useState('All');
+
+    
+    const handleReportType = (e)=>{
+        setReportType(e.target.value);
+    }
+
+    const handleFilterReport = () => {
+        let isBlockTrue = false;
+        let input_search = ""
+        Object.keys(cloneReportList).forEach(category => {
+            if(isBlockTrue===false){
+                if (reportType === "All") {
+                    setReportList(cloneReportList);
+                    isBlockTrue = true;
+                } else {
+                    if(reportType===category){
+                        setReportList({ [reportType]: cloneReportList[category] });
+                        isBlockTrue = true;
+                        input_search={ [reportType]: cloneReportList[category] };
+                    }
+                }
+            }
+            
+        });
+        if(searchQuery!==""){
+            if (reportType === "All") {
+                handleSearch(cloneReportList);
+            }else{
+                handleSearch(input_search);
+            }
+        }
+    };
+
+      const handleSearch = (input_search) => {
+        const filteredResults = {};
+        Object.keys(input_search).forEach((category) => {
+          const categoryResults = input_search[category].filter((report) =>
+            report.report_name.toLowerCase().includes(searchQuery.trim().toLowerCase())
+          );
+          if (categoryResults.length > 0) {
+            filteredResults[category] = categoryResults;
+          }
+        });
+        setReportList(filteredResults);
+      };
     return (     
         <> 
-        <section className="infrastructure-main-card p-0">
+        <section className="infrastructure-main-card p-0" id='content'>
             <div className="bg-grey ptb-30">
                 <div className="container tab-for-graph">
                     <div className="row align-items-center">
@@ -32,24 +82,24 @@ export default function Reports() {
                                 <div className="row align-items-center">
                                     <div className="col-md-6">
                                         <h2 className="heading-sm1 mb-2">Search For Reports</h2>
-                                        <input type="search" className="form-control border-only-bottom" placeholder="Search" />
+                                        <input type="search" className="form-control border-only-bottom" placeholder="Search" onChange={(e)=>{setSearchQuery(e.target.value)}}/>
                                     </div>
                                     <div className="col-md-3 col-lg-3">
                                         <div className="button-group-filter mt-3 pt-1">
                                             <div className="indicator-select">
                                                 <label className="bg-grey2">Tags</label>
-                                                <select className="form-select bg-grey2">
-                                                    <option value="All Reports">All Reports</option>
-                                                    <option value="">Report 1</option>
-                                                    <option value="">Report 2</option>
-                                                    <option value="">Report 3</option>
+                                                <select className="form-select bg-grey2" onChange={handleReportType}>
+                                                    <option value="All">All Reports</option>
+                                                    <option value="School">School</option>
+                                                    <option value="Teacher">Teacher</option>
+                                                    <option value="Infrastructure">Infrastructure</option>
 
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="col-md-3 col-lg-3 mt-3 pt-1">
-                                        <button className="header-dropdown-btn">SUBMIT</button>
+                                        <button className="header-dropdown-btn" onClick={handleFilterReport}>SUBMIT</button>
                                     </div>
                                 </div>
                             </div>
@@ -83,11 +133,11 @@ export default function Reports() {
                         </div>
                     </div>
 
-                    {Object.keys(allreportsdata).map(category => (
+                    {Object.keys(reportList).map(category => (
                     <div className="Allreport-table-card mb-4">
                         <div className="col-md-12">
                             <TableContainer className="mt-4">
-                                <Table>
+                                <Table className="table-bordered">
                                     <TableHead>
                                         <TableRow>
                                             <TableCell colSpan={5}> <h2 className="heading-sm heading-sm2">{category}</h2> </TableCell>
@@ -101,7 +151,7 @@ export default function Reports() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                    {allreportsdata[category].map((report, index) => (
+                                    {reportList[category].map((report, index) => (
                                         <TableRow>
                                         <TableCell>{index + 1}</TableCell>
                                             <TableCell>{report.id}</TableCell>

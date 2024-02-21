@@ -1,4 +1,4 @@
-import React, { useEffect,useCallback, } from "react";
+import React, { useEffect,useCallback,} from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { useState } from "react";
@@ -22,47 +22,46 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
   const [report, setReport] = useState(null);
+  // const rowData = [
+  //   {
 
-  const rowData = [
-    {
-
-            "location": "India",
-            "rural_urban": "Urban",
-            "school_management": "School mgt.",
-            "school_type": "School Type.",
-            "no_of_headmaster": 150,
-            "land_available": 150,
-            "totalSchool": 76090,
-            "schHavingFuncElectricity": 75092,
-            "schHavingInternet": 31355,
-            "schHavingLibrary": 73158,
-            "schHavingPlayground": 73158,
-            "schHavingRampFacility": 56580,
-            "schHavingSolarPanel": 9363,
-            "schHavingNewsPaper": 23,
-            "schHavingKitchenGarden": 3,
-            "schHavingFurniture": 6,
-            "schHavingWaterPurifier": 26,
-            "schHavingFuncDrinkingWater": 75098,
-            "schHavingFuncToilet": 74655,
-            "schHavingToiletBoys": 72327,
-            "schHavingFuncToiletBoys": 72327,
-            "schHavingToiletGirls": 74655,
-            "schHavingFuncToiletGirls": 74655,
-            "schHavingFuncUrinalToiletBoys": 72327,
-            "schHavingFuncUrinalToiletGirls": 72327,
-            "schHavingRainWaterHarvesting": 345,
-            "schHavingWaterTested": 145,
-            "schHavingHandwash": 14,
-            "schHavingIncinerator": 514,
-            "schHavingWashFacility": 514,
-            "schHavingHandRails": 54,
-            "schHavingMedicalCheckup": 754,
-            "schHavingCompleteMedicalCheckup": 754,
-            "schHavingAvailableComputer": 75,
-            "school_category": "HSS (I-XII)",
-    },
-  ];
+  //           "location": "India",
+  //           "rural_urban": "Urban",
+  //           "school_management": "School mgt.",
+  //           "school_type": "School Type.",
+  //           "no_of_headmaster": 150,
+  //           "land_available": 150,
+  //           "totalSchool": 76090,
+  //           "schHavingFuncElectricity": 75092,
+  //           "schHavingInternet": 31355,
+  //           "schHavingLibrary": 73158,
+  //           "schHavingPlayground": 73158,
+  //           "schHavingRampFacility": 56580,
+  //           "schHavingSolarPanel": 9363,
+  //           "schHavingNewsPaper": 23,
+  //           "schHavingKitchenGarden": 3,
+  //           "schHavingFurniture": 6,
+  //           "schHavingWaterPurifier": 26,
+  //           "schHavingFuncDrinkingWater": 75098,
+  //           "schHavingFuncToilet": 74655,
+  //           "schHavingToiletBoys": 72327,
+  //           "schHavingFuncToiletBoys": 72327,
+  //           "schHavingToiletGirls": 74655,
+  //           "schHavingFuncToiletGirls": 74655,
+  //           "schHavingFuncUrinalToiletBoys": 72327,
+  //           "schHavingFuncUrinalToiletGirls": 72327,
+  //           "schHavingRainWaterHarvesting": 345,
+  //           "schHavingWaterTested": 145,
+  //           "schHavingHandwash": 14,
+  //           "schHavingIncinerator": 514,
+  //           "schHavingWashFacility": 514,
+  //           "schHavingHandRails": 54,
+  //           "schHavingMedicalCheckup": 754,
+  //           "schHavingCompleteMedicalCheckup": 754,
+  //           "schHavingAvailableComputer": 75,
+  //           "school_category": "HSS (I-XII)",
+  //   },
+  // ];
 
   const columns = [
     {headerName: "Location", field: "location",},
@@ -136,6 +135,8 @@ export default function Infrastructure3013() {
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 // Find the report with the given id
+
+
 useEffect(() => {
   for (const category in allreportsdata) {
     const foundReport = allreportsdata[category].find(
@@ -231,8 +232,9 @@ const getDocument = (gridApi) => {
   const doc = getDocument(gridApi);
   pdfMake.createPdf(doc).open();
 };
+
   return (
-    <section className="infrastructure-main-card p-0">
+    <section className="infrastructure-main-card p-0" id='content'>
       <div className="bg-grey2 ptb-30">
         <div className="container tab-for-graph">
           <div className="row align-items-center">
@@ -762,7 +764,7 @@ const getDocument = (gridApi) => {
                 <Tab eventKey="table" title="Table">
                 <div className="ag-theme-material ag-theme-custom-height" style={{height:600}}>
                     <AgGridReact
-                      rowData={rowData}
+                      rowData={school_data?.data?.data}
                       columnDefs={columns}
                       defaultColDef={defColumnDefs}
                       onGridReady={onGridReady}

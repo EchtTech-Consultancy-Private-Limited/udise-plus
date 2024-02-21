@@ -39,7 +39,7 @@ export default function Infrastructure({id,report_name,type}) {
 
 
   return (
-    <section className="infrastructure-main-card p-0">
+    <section className="infrastructure-main-card p-0" id='content'>
       <div className="bg-grey2 ptb-30">
         <div className="container tab-for-graph">
           <div className="row align-items-center">
@@ -290,7 +290,7 @@ export default function Infrastructure({id,report_name,type}) {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {school_data?.data?.map((item, idx) => {
+                        {school_data?.data?.data?.map((item, idx) => {
                           return (
                             <>
                               <TableRow key={idx}>

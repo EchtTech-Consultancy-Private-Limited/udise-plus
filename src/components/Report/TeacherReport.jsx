@@ -35,7 +35,7 @@ export default function TeacherReport() {
   }, [id]);
 
     return (
-        <section className="infrastructure-main-card p-0">
+        <section className="infrastructure-main-card p-0" id='content'>
             <div className="bg-grey2 ptb-30">
                 <div className="container tab-for-graph">
                     <div className="row align-items-center">

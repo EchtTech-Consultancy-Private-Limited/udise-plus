@@ -172,12 +172,13 @@
     border-radius: 90px;
     border: 0;
     font-size: 14px;
-    padding: 12px 12px;
+    padding: 12px 12px !important   ;
     display: flex;
     align-items: center;
 
     img {
         margin-left: 8px;
+        width: auto !important;
     }
 }
 
@@ -968,7 +969,7 @@ button.text-increment-btn {
 @media (max-width: 991px) {
     .site-header .logo-wrap img {
         height: auto;
-        width: 162px;
+        width: 180px;
     }
 
     button.header-dropdown-btn {
@@ -996,6 +997,12 @@ button.text-increment-btn {
     }
 
     .menu-switch-tab .nav-tabs .nav-item:not(:last-child){margin-bottom: 8px;}
+
+    .ordernav-sm-1{order: 1;}
+    .ordernav-sm-2{order: 2;}
+    .ordernav-sm-3{order: 3;}
+
+    .header-dropdown-btn{font-size: 13px;padding: 10px 12px !important;}
 
 }
 

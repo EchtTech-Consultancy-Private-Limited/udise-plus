@@ -15,6 +15,7 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDistrictData } from '../../redux/thunks/districtThunk';
+import {useTranslation} from "react-i18next";
 // require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
@@ -100,13 +101,15 @@ export default function EducationDashboard() {
     useEffect(()=>{
             dispatch(fetchDistrictData());
     },[])
+
+    const { t } = useTranslation();
     return (
         <>
             <section className="pgicategory vision-mission-card ptb-30">
                 <div className="container">
                     <div className="row">
                     <div className="col-md-12 mb-4 p-0">
-                            <h2 className="heading-blue">Education Dashboard</h2>
+                            <h2 className="heading-blue">{t("education_dashboard")}</h2>
                         </div>
                         <div className="col-md-12 col-lg-12 p-0">
                             <div className="common-content text-start right-card-sec">
