@@ -13,14 +13,14 @@ const Header = () => {
   const location = useLocation();
   const header_name = useSelector(state => state.header);
 
-  const changeSizeByBtn = (size: any) => {
+  const changeSizeByBtn = (size) => {
     if (size === "normal") {
       document.body.style.fontSize = "16px";
     } else if (size === "average") {
       document.body.style.fontSize = "17px";
     } else if (size === "max") {
       document.body.style.fontSize = "18px";
-    }
+    }  
   }
   const { t, i18n } = useTranslation();
   const changeLanguage = (e) => {
