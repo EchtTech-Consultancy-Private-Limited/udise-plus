@@ -12,7 +12,6 @@ const fetchDistrictData = createAsyncThunk(
 const fetchDistrictDataByStateId = createAsyncThunk(
   "district/fetchDistrictData",
   async (state_id) => {
-    console.log(state_id,' state id ')
     const response = await axios.get(`districts/get-district/${state_id}`);
     return response.data;
   }
