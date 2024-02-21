@@ -24,7 +24,7 @@ export default function Home() {
   return (
     <>
 
-      <section className={`${header_name.headerName!=="All Reports"? header_name.removeBeforeAfterClass:""} ptb-0 bg-grey ${customClass}`}>
+      <section className={`${header_name.headerName!=="All Reports"? header_name.removeBeforeAfterClass:""} ptb-0 bg-grey ${customClass}`} id='content'>
         <div className="container">
           <div className="row">
 

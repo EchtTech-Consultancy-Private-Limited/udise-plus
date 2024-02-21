@@ -464,7 +464,7 @@ button.header-dropdown-btn.open-map-btn {
     left: 50%;
     bottom: 2%;
     transform: translate(-50%, 10px);
-    width: 530px;
+    width: 600px;
     color: #fff;
     border-radius: 0 0 10px 10px;
     padding: 6px;
@@ -482,7 +482,7 @@ button.header-dropdown-btn.open-map-btn {
 
         h6{
             background: rgb(62 62 62 / 43%);
-            padding: 18px 10px;
+            padding: 18px 12px;
             border-radius: 50px;
             white-space: nowrap;
             font-size: 14px;
@@ -498,11 +498,11 @@ opacity: 1;
     
 }
     ul.dropdown-menu.show.animation {
-        width: 530px !important;
+        width: 600px !important;
         left: 0px !important;
         border-radius: 10px 10px 0 0 !important;
         // transform: translate(-68.5%, -28%) !important;
-        transform: translate(-51.5%, -22.6%) !important;
+        transform: translate(-53.3%, -21.9%) !important;
         background: rgba(34, 34, 34, 0.8); 
         /* border-bottom: 2px solid #fff; */
         transition: all 0.5s ease-in-out;
@@ -545,7 +545,7 @@ opacity: 1;
             margin-right: 0px;
 
             ul.dropdown-menu.show.animation{ 
-                transform: translate(-27.9%, -22.5%) !important;
+                transform: translate(-24.7%, -21.9%) !important;
             }
 
         }
@@ -553,20 +553,25 @@ opacity: 1;
             margin-right: 0px;
 
             ul.dropdown-menu.show.animation{ 
-                transform: translate(-75.5%, -22.5%) !important;
+                transform: translate(-82%, -21.9%) !important;
             }
 
         }
         
         li.nav-item.position-static {
             border-radius: 50px;
-            padding: 0px 18px;
+            padding: 0px 12px;
             background: #fff;       
             margin-left: 8px;     
         }
         a.dropdown-toggle.nav-link {
             padding: 5px 0;
             font-weight: 600;
+            width: 140px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 14px;
+            text-align: left;
 
             .menu-sub-heading {
                 font-size: 12px;
@@ -576,6 +581,10 @@ opacity: 1;
                 padding-top: 5px;
                 color: #000;
             }
+        }
+
+        li.nav-item.position-static:last-child{
+            a.dropdown-toggle.nav-link{width: 80px;}
         }
     }
 
