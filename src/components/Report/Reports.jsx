@@ -15,7 +15,7 @@ export default function Reports() {
 
     return (     
         <> 
-        <section className="infrastructure-main-card p-0">
+        <section className="infrastructure-main-card p-0" id='content'>
             <div className="bg-grey ptb-30">
                 <div className="container tab-for-graph">
                     <div className="row align-items-center">
@@ -87,7 +87,7 @@ export default function Reports() {
                     <div className="Allreport-table-card mb-4">
                         <div className="col-md-12">
                             <TableContainer className="mt-4">
-                                <Table>
+                                <Table className="table-bordered">
                                     <TableHead>
                                         <TableRow>
                                             <TableCell colSpan={5}> <h2 className="heading-sm heading-sm2">{category}</h2> </TableCell>

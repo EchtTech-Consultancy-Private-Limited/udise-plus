@@ -3,16 +3,22 @@ import { useState, useEffect, useRef } from "react";
 import ministry from '../../assets/images/education_ministry.svg';
 import dropdownimg from '../../assets/images/dropdown-icon.svg'
 import SlidingTabBar from "./SlidingTabBar";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { urls } from "../../constants/constants";
 import { useLocation,Link } from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 import i18n from "../../components/i18next/i18n";
+import { Switch } from "@mui/material";
+import { updateToggleDark } from "../../redux/slice/darkLightModeSlice";
+
+
 
 const Header = () => {
   const location = useLocation();
   const header_name = useSelector(state => state.header);
-
+  const toggleDarkMode = useSelector(state => state.toggle.toggleDarkLight);
+  const dispatch = useDispatch();
+  
   const changeSizeByBtn = (size) => {
     if (size === "normal") {
       document.body.style.fontSize = "16px";
@@ -26,6 +32,20 @@ const Header = () => {
   const changeLanguage = (e) => {
     i18n.changeLanguage(e.target.value);
   };
+
+  const handleClickScroll = () => {
+    const element = document.getElementById('content');
+    if (element) {
+      // 👇 Will scroll smoothly to the top of the next section
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
+  
+  const toggleDarkTheme = ()=>{
+    dispatch(updateToggleDark(!toggleDarkMode));
+  }
+
   return (
     <>
       <div className="header-top">
@@ -43,8 +63,8 @@ const Header = () => {
                 <div className="header-top-skipwrap">
                   <ul>
                     <li><Link to='#'>Helpline Numbers</Link></li>
-                    <li><Link to='#'>Skip To Navigation</Link></li>
-                    <li><Link to='#'>Skip to Main Content</Link></li>
+                    <li><Link to='#' onClick={handleClickScroll}>Skip To Navigation</Link></li>
+                    <li><Link to='#' onClick={handleClickScroll}>Skip to Main Content</Link></li>
                     <li><Link to='/screen-reader-access'>Screen Reader Access</Link></li>
                   </ul>
                 </div>
@@ -73,9 +93,10 @@ const Header = () => {
                       <div className="d-flex align-items-center">
                       <span className="text me-2">Dark Mode </span>
                       <label className="switch mb-0" title="Dark Mode">
-                        <input type="checkbox" id="mode"/>
+                        <input type="checkbox" id="mode" onClick={toggleDarkTheme}/>
                           <span className="slider round"></span>
                       </label>
+                      {/* <Switch  onChange={toggleDarkTheme} /> */}
                       </div>
                     </li>
 
@@ -107,7 +128,7 @@ const Header = () => {
             <div className="col-md-12">
               <nav className="navbar navbar-expand-lg">
                 <div className="logo-wrap">
-                  <a href="#" className="top-logo ordernav-sm-1"> <img src={ministry} alt="logo" className="img-fluid" /></a>
+                  <a href="#" className="top-logo ordernav-sm-1"> <img src={ministry} alt="logo" className="img-fluid logo-main" /></a>
 
                   <div className="menu-switch-tab ordernav-sm-3">
                     <SlidingTabBar/>

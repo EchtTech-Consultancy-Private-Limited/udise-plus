@@ -2,6 +2,7 @@
 @import "./_icon.scss";
 @import "./fonts.scss";
 @import "./variables.scss";
+@import './darkmode.scss';
 
 html {
     scroll-behavior: smooth;
@@ -972,10 +973,10 @@ ul {
     }
 
     button.header-dropdown-btn.open-map-btn {
-        padding: 10px 18px;
+        padding: 8px 8px !important;
         font-size: 12px;
         top: 0;
-        left: -90px;
+        left: -97px;
     }
 
     .close_map_sec .card-box-impact.tab-for-graph .impact-box-content-education {
@@ -1198,3 +1199,5 @@ table tr {
     border-color: transparent !important;
     box-shadow: none !important;
 }
+
+.ag-checkbox-input-wrapper.ag-checked::after{color: #113689 !important;}
