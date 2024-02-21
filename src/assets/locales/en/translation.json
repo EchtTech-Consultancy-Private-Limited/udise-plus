@@ -8,5 +8,10 @@
     "skip_to_main_content": "Skip to Main Content",
     "last_modified": "Last Modified",
     "screen_reader_access": "Screen Reader Access",
-    "logout": "Logout"
+    "logout": "Logout",
+    "education_dashboard": "Education Dashboard",
+    "school_dashboard": "School Dashboard",
+    "teacher_dashboard": "Teacher Dashboard",
+    "student_dashboard": "Student Dashboard",
+    "all_reports": "All Reports"
 }

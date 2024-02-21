@@ -6,6 +6,8 @@ import SlidingTabBar from "./SlidingTabBar";
 import { useSelector } from 'react-redux';
 import { urls } from "../../constants/constants";
 import { useLocation,Link } from 'react-router-dom';
+import {useTranslation} from "react-i18next";
+import i18n from "../../components/i18next/i18n";
 
 const Header = () => {
   const location = useLocation();
@@ -20,8 +22,10 @@ const Header = () => {
       document.body.style.fontSize = "18px";
     }
   }
-
-
+  const { t, i18n } = useTranslation();
+  const changeLanguage = (e) => {
+    i18n.changeLanguage(e.target.value);
+  };
   return (
     <>
       <div className="header-top">
@@ -80,7 +84,7 @@ const Header = () => {
                       <span className="text me-2">Language </span>
                       <a>
                         <div className="select-wrap">
-                          <select className="form-select Langchange" defaultValue={"en"}>
+                          <select className="form-select Langchange" value={i18n.language} onChange={changeLanguage}>
                             <option value="en">English</option>
                             <option value="hi">हिन्दी</option>
                           </select>
@@ -90,7 +94,7 @@ const Header = () => {
                       </div>
                     </li>
                   </ul>
-                </div>              
+                </div>
               </div>
             </div>
           </div>

@@ -4,6 +4,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import schoolgraph from '../../assets/images/s-graph.svg'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import {useTranslation} from "react-i18next";
 // require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
@@ -84,13 +85,14 @@ require('highcharts/modules/accessibility')(Highcharts);
 }(Highcharts));
 
 export default function SchoolDashboard() {
+    const { t } = useTranslation();
     return (
         <>
             <section className="pgicategory vision-mission-card ptb-30">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12 mb-4 p-0">
-                            <h2 className="heading-blue">School Dashboard</h2>
+                            <h2 className="heading-blue">{t("school_dashboard")}</h2>
                         </div>
                         <div className="col-md-12 col-lg-12 p-0">
                             <div className="common-content text-start right-card-sec">
