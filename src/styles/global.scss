@@ -1267,6 +1267,8 @@ table {
     transform-origin: right;
     transform: rotateY(90deg);
     transition: all 500ms ease-in-out;
+    display: block !important;
+    width: 0;
 }
 
   .ag-side-bar.ag-unselectable.ag-focus-managed.ag-side-bar-right {
@@ -1283,7 +1285,7 @@ table {
     background: #fff !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1019607843);
 }
-.ag-virtual-list-viewport{padding: 10px !important;}
+.ag-virtual-list-viewport{padding: 10px !important;transition: all 500ms ease-in-out;}
 .ag-ltr .ag-side-bar-right .ag-selected .ag-side-button-button{border-left: 0px;}
 .ag-virtual-list-item {
     position: static;
