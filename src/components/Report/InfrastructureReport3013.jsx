@@ -310,7 +310,7 @@ export default function Infrastructure3013() {
                       columnDefs={columns}
                       defaultColDef={defColumnDefs}
                       onGridReady={onGridReady}
-                      sideBar={filterShowHide}
+                      sideBar={"columns"}
                       // groupIncludeFooter={true}
                       // groupIncludeTotalFooter={true}
                     />
