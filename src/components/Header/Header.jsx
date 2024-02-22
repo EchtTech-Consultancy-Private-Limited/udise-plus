@@ -25,7 +25,7 @@ const Header = () => {
     } else if (size === "average") {
       document.body.style.fontSize = "14px";
     } else if (size === "max") {
-      document.body.style.fontSize = "18px";
+      document.body.style.fontSize = "18px";  
     }  
   }
   const { t, i18n } = useTranslation();

@@ -18,7 +18,7 @@ import { fetchDistrictData } from '../../redux/thunks/districtThunk';
 import {useTranslation} from "react-i18next";
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
-// require("highcharts/modules/export-data.js")(Highcharts);
+require("highcharts/modules/export-data.js")(Highcharts);
 
 
 (function (H) {
@@ -331,7 +331,7 @@ export default function EducationDashboard() {
                                                     <Tab eventKey="School" title="School">
 
                                                         <div className="piechart-box row mt-4">
-                                                            <div className="col-md-12">
+                                                        <div className="col-md-12">
                                                                 <HighchartsReact
                                                                     highcharts={Highcharts}
                                                                     options={{
@@ -347,7 +347,7 @@ export default function EducationDashboard() {
                                                                             }
                                                                         },
                                                                         title: {
-                                                                            text: 'Total Numbers of Student'
+                                                                            text: 'Education Data By Management Type'
                                                                         },
                                                                         tooltip: {
                                                                             valueSuffix: '%'
@@ -395,25 +395,6 @@ export default function EducationDashboard() {
                                                                             itemMarginTop: 10,
                                                                             itemMarginBottom: 10
                                                                         },
-
-                                                                        responsive: {
-                                                                            rules: [{
-                                                                              condition: {
-                                                                                maxWidth: 767
-                                                                              },
-                                                                              chartOptions: {
-                                                                                legend: {
-                                                                                    layout: 'horizontal',
-                                                                                    align: 'center',
-                                                                                    verticalAlign: 'bottom',                                                                                 
-                                                                                },
-                                                                                dataLabels: {
-                                                                                    enabled: false,
-                                                                                },
-                                                                              }
-                                                                            }]
-                                                                          },
-
                                                                         series: [
                                                                             {
                                                                                 name: 'Percentage',
@@ -421,7 +402,7 @@ export default function EducationDashboard() {
                                                                                 data: [
                                                                                     {
                                                                                         name: 'Government',
-                                                                                        y: 45,
+                                                                                        y: 40,
                                                                                         color: '#F5BF55'
                                                                                     },
                                                                                     {
@@ -431,7 +412,7 @@ export default function EducationDashboard() {
                                                                                     },
                                                                                     {
                                                                                         name: 'Aided',
-                                                                                        y: 15,
+                                                                                        y: 20,
                                                                                         color: '#BCE263'
                                                                                     },
                                                                                     {
@@ -445,7 +426,7 @@ export default function EducationDashboard() {
                                                                         ]
                                                                     }}
                                                                     // allowChartUpdate={true}
-                                                                    immutable={true} 
+                                                                    immutable={true}
                                                                 />
                                                             </div>
                                                         </div>
@@ -469,7 +450,7 @@ export default function EducationDashboard() {
                                                                             }
                                                                         },
                                                                         title: {
-                                                                            text: 'Total Numbers of Student'
+                                                                            text: 'Education Data By Management Type'
                                                                         },
                                                                         tooltip: {
                                                                             valueSuffix: '%'
@@ -571,7 +552,7 @@ export default function EducationDashboard() {
                                                                             }
                                                                         },
                                                                         title: {
-                                                                            text: 'Total Numbers of Student'
+                                                                            text: 'Education Data By Management Type'
                                                                         },
                                                                         tooltip: {
                                                                             valueSuffix: '%'
@@ -706,6 +687,9 @@ export default function EducationDashboard() {
                                                                     },
                                                                     gridLineWidth: 0
                                                                 },
+                                                                title: {
+                                                                    text: 'Enrollement By Level Of Education & Gender'
+                                                                },
                                                                 tooltip: {
                                                                     valueSuffix: 'k'
                                                                 },
@@ -794,7 +778,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
-
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
                                                                                 'Total: {point.stackTotal}'
@@ -872,6 +858,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
 
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
@@ -933,7 +922,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
-
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
                                                                                 'Total: {point.stackTotal}'
@@ -994,7 +985,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
-
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
                                                                                 'Total: {point.stackTotal}'
@@ -1055,7 +1048,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
-
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
                                                                                 'Total: {point.stackTotal}'
@@ -1116,7 +1111,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
-
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
                                                                                 'Total: {point.stackTotal}'
@@ -1177,7 +1174,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
-
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
                                                                                 'Total: {point.stackTotal}'
