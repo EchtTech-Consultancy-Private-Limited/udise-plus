@@ -1350,3 +1350,12 @@ table {
 .ag-tool-panel-wrapper {
     border-radius: 20px 0px 0px 20px !important;
 }
+.ag-input-field-input {
+    background: #F2F2F2 !important;
+    border-radius: 100px !important;
+    padding-left: 15px;
+    padding-bottom: 0 !important;
+}
+input[class^=ag-][type=text]:focus {
+    border-bottom-color: transparent !important;
+}
