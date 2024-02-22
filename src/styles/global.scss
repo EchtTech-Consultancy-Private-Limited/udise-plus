@@ -1011,6 +1011,32 @@ ul {
         padding: 14px 12px;
     }
 
+    .heading-blue{font-size: 2em;}
+    .heading-sm{font-size: 22px !important;}
+    .right-card-sec .card-box-impact .impact-box-content .main-text-c.m-big, .right-card-sec .srid-card-se .card-box .main-text-c{font-size: 14px;}
+    .right-card-sec .srid-card-se .card-box .main-text-c.m-big {
+        font-size: 22px;
+        letter-spacing: 0px;
+    }
+    .right-card-sec .srid-card-se .card-box .sub-text-c {
+        font-size: 12px;
+    }
+    .right-card-sec .srid-card-se .card-box img.card-img {
+        width: 55px;
+        height: 50px;
+        right: 16px;
+    }
+    .right-card-sec .card-box-impact .impact-box-content .main-text-c, .right-card-sec .card-box-impact .impact-box-content span.sub-text-c {
+        font-size: 12px;
+    }
+    .right-card-sec .card-box-impact .impact-box-content span.sub-text-c.sub-main-text {
+        font-size: 24px;
+        letter-spacing: -1px;
+        margin-top: 16px;
+    }
+    .tab-for-graph button.view-table-btn{font-size: 10px;padding: 8px 8px 6px;}
+    .header-dropdown-btn{padding: 10px 12px !important;}
+
 }
 
 @media (max-width:1360px) and (min-width: 1024px) {
@@ -1201,3 +1227,13 @@ table tr {
 }
 
 .ag-checkbox-input-wrapper.ag-checked::after{color: #113689 !important;}
+
+.ag-theme-quartz {
+    --ag-cell-horizontal-border: var(--ag-row-border-width)
+    var(--ag-row-border-style) var(--ag-row-border-color); /* Add left and right borders to each cell and use row border's properties  */
+  --ag-header-column-separator-display: block;
+}
+
+rect.highcharts-button-box {
+    fill: #f7edd6;
+}

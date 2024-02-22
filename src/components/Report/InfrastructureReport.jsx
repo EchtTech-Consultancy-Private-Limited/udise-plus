@@ -267,7 +267,7 @@ export default function Infrastructure({id,report_name,type}) {
                 </Tab>
                 <Tab eventKey="table" title="Table">
                   <TableContainer className="mt-4">
-                    <Table>
+                    <Table className="table-bordered">
                       <TableHead>
                         <TableRow>
                           <TableCell>School Category</TableCell>

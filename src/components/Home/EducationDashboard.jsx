@@ -16,8 +16,9 @@ import HighchartsReact from 'highcharts-react-official'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDistrictData } from '../../redux/thunks/districtThunk';
 import {useTranslation} from "react-i18next";
-// require('highcharts/modules/exporting')(Highcharts);
+require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
+// require("highcharts/modules/export-data.js")(Highcharts);
 
 
 (function (H) {

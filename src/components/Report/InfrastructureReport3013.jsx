@@ -762,7 +762,7 @@ const getDocument = (gridApi) => {
                   </div>
                 </Tab>
                 <Tab eventKey="table" title="Table">
-                <div className="ag-theme-material ag-theme-custom-height" style={{height:600}}>
+                <div className="ag-theme-material ag-theme-custom-height ag-theme-quartz" style={{height:600}}>
                     <AgGridReact
                       rowData={school_data?.data?.data}
                       columnDefs={columns}
