@@ -1,4 +1,4 @@
-import React, { useEffect,useCallback,} from "react";
+import React, { useEffect,useCallback,useMemo} from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { useState } from "react";
@@ -79,6 +79,31 @@ export default function Infrastructure3013() {
   }
   ,[]);
 
+  const sideBar = useMemo(() => { 
+    return {
+          toolPanels: [
+              {
+                  id: 'columns',
+                  labelDefault: 'Columns',
+                  labelKey: 'columns',
+                  iconKey: 'columns',
+                  toolPanel: 'agColumnsToolPanel',
+                  minWidth: 225,
+                  maxWidth: 225,
+                  width: 225,
+                  toolPanelParams: {
+                    suppressRowGroups: true,
+                    suppressValues: true,
+                    suppressPivotMode: true,
+                  }
+              },
+              
+          ],
+          position: 'right',
+          defaultToolPanel: 'columns'
+      };
+  }, []);
+
   const [queryParameters] = useSearchParams();
   const id = queryParameters.get('id');
   const type = queryParameters.get('type');
@@ -115,9 +140,9 @@ export default function Infrastructure3013() {
     }
   }, [grid_column, gridApi]);
   
-  const handleHideAndShowFilter = useCallback(()=>{
-    setFilterShowHide(filterShowHide=>!filterShowHide)
-  },[]);
+  const handleHideAndShowFilter = ()=>{
+      setFilterShowHide(filterShowHide=>!filterShowHide)
+  };
 
   const onBtExport =() => {
     gridApi.api.exportDataAsExcel()
@@ -310,7 +335,7 @@ export default function Infrastructure3013() {
                       columnDefs={columns}
                       defaultColDef={defColumnDefs}
                       onGridReady={onGridReady}
-                      sideBar={"columns"}
+                      sideBar={filterShowHide?sideBar:false}
                       // groupIncludeFooter={true}
                       // groupIncludeTotalFooter={true}
                     />
