@@ -1240,3 +1240,46 @@ rect.highcharts-button-box {
 table {
     width: 100%;
 }
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .ag-side-bar.ag-unselectable.ag-focus-managed.ag-side-bar-right {
+    position: relative;
+    background: #fff;    
+    width: 300px;
+    border-radius: 10px 0px 0px 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1019607843);
+}
+.ag-tool-panel-wrapper{width: 100% !important; 
+    background: #fff !important;
+}
+.ag-virtual-list-viewport{padding: 10px !important;}
+.ag-ltr .ag-side-bar-right .ag-selected .ag-side-button-button{border-left: 0px;}
+.ag-virtual-list-item {
+    position: static;
+    width: 100%;
+    background: #F2F2F2;
+    border-radius: 10px;
+    font-size: 14px;
+    margin: 8px 0px;
+    padding: 5px 15px !important;
+}
