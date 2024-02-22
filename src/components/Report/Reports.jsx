@@ -97,23 +97,6 @@ export default function Reports() {
     document.body.removeChild(link);
   };
 
-  const handleDownloaddReport = (e) => {
-    e.preventDefault();
-    let doc_path = "";
-    if (year === "2020") {
-      doc_path = "assets/document/UDISE+2021_22_Booklet.pdf";
-    } else if (year === "2019") {
-      doc_path = "assets/document/UDISE+2021_22_Booklet.pdf";
-    } else if (year === "2018") {
-      doc_path = "assets/document/UDISE+2021_22_Booklet.pdf";
-    } else {
-      doc_path = "assets/document/UDISE+2021_22_Booklet.pdf";
-    }
-
-    console.log("Generated path:", doc_path);
-    downloadReport(doc_path, "UDISE+2021_22_Booklet.pdf");
-  };
-
   return (
     <>
       <section className="infrastructure-main-card p-0" id="content">
