@@ -46,18 +46,17 @@ export default function FilterDropdown() {
     setSelectedState(state_name);
     setSelectedDistrict("");
     dispatch(changeStateFilter(state_id));
-   
+    dispatch(fetchDistrictDataByStateId(state_id));
     if(state_name==="All India/National"){
       dispatch(hideShowColumn(false));
     }else if(state_name==="State Wise"){
       dispatch(hideShowColumn(true));
     }else{
       dispatch(hideShowColumn(false));
-      dispatch(fetchDistrictDataByStateId(state_id));
     }
     hideOpendFilterBox();
   }
-  
+
   const handleSchoolFilterDistrict = (state_id,district_name)=>{
     setSelectedDistrict(district_name);
     hideOpendFilterBox();
