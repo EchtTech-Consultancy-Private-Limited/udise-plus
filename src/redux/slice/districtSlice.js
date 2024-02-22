@@ -47,6 +47,7 @@ const distrcitSlice = createSlice({
       .addCase(fetchDistrictDataByStateId.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        state.data.data = [];
       });
   },
 });

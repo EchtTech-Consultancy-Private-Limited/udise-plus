@@ -12,7 +12,6 @@ import ScreenReader from './pages/ScreenReader';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useSelector } from 'react-redux';
-
 function App() {
     
   const toggleDarkMode =   useSelector(state=>state.toggle.toggleDarkLight);

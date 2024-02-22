@@ -17,6 +17,7 @@ import { fetchStateData } from "../../redux/thunks/stateThunk";
 import { fetchDistrictDataByStateId } from "../../redux/thunks/districtThunk";
 import { fetchYearData } from "../../redux/thunks/yearThunk";
 import { changeYearFilter,changeStateFilter } from "../../redux/slice/schoolFilterSlice";
+import {hideShowColumn } from "../../redux/slice/dataGridAPISlice";
 import { filterItemsStatePerPage, filterItemsYearPerPage } from "../../constants/constants";
 
 export default function FilterDropdown() {
@@ -25,8 +26,9 @@ export default function FilterDropdown() {
   const dispatch = useDispatch();
   const stateData=useSelector(state=>state.state);
   const yearData=useSelector(state=>state.year);
+  const gridApi=useSelector(state=>state.gridApi);
   const districtData=useSelector(state=>state.distrct);
-  const [selectedState,setSelectedState] = useState('National');
+  const [selectedState,setSelectedState] = useState('All India/National');
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedYear, setSelectedYear] = useState("2020-21");
   useEffect(()=>{
@@ -38,27 +40,27 @@ export default function FilterDropdown() {
   const handleSchoolFilterYear = (year,year_report)=>{
     setSelectedYear(year_report);
     dispatch(changeYearFilter(year));
-
-    /*hide the open box*/ 
     hideOpendFilterBox();
-    /*end here*/
   }
   const handleSchoolFilterState = (state_id,state_name)=>{
     setSelectedState(state_name);
     setSelectedDistrict("");
     dispatch(changeStateFilter(state_id));
-    dispatch(fetchDistrictDataByStateId(state_id));
-
-    /*hide the open box*/ 
+   
+    if(state_name==="All India/National"){
+      dispatch(hideShowColumn(false));
+    }else if(state_name==="State Wise"){
+      dispatch(hideShowColumn(true));
+    }else{
+      dispatch(hideShowColumn(false));
+      dispatch(fetchDistrictDataByStateId(state_id));
+    }
     hideOpendFilterBox();
-    /*end here*/
   }
+  
   const handleSchoolFilterDistrict = (state_id,district_name)=>{
     setSelectedDistrict(district_name);
-
-    /*hide the open box*/ 
     hideOpendFilterBox();
-    /*end here*/
   }
 
 
@@ -71,12 +73,15 @@ export default function FilterDropdown() {
 
   const renderStateListGroup = () => {
     const groups = [];
-    for (let i = 0; i < stateData.data.data.length; i += itemsPerPage) {
+    let extra_col = JSON.parse(JSON.stringify(stateData.data.data)); 
+    extra_col.unshift({state_id:"sw",state_name:"State Wise"});
+    extra_col.unshift({state_id:"n",state_name:"All India/National"});
+    for (let i = 0; i < extra_col.length; i += itemsPerPage) {
       const groupItems = [];
-      for (let j = i; j < i + itemsPerPage && j < stateData.data.data.length; j++) {
+      for (let j = i; j < i + itemsPerPage && j < extra_col.length; j++) {
         groupItems.push(
-          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterState(stateData.data.data[j].state_id,stateData.data.data[j].state_name)}>
-            {stateData.data.data[j].state_name}
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterState(extra_col[j].state_id,extra_col[j].state_name)}>
+            {extra_col[j].state_name}
           </MDBListGroupItem>
         );
       }

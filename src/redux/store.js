@@ -6,6 +6,7 @@ import stateSlice from "./slice/stateSlice";
 import archiveServicesSlice from "./slice/archiveServicesSlice";
 import schoolFilterSlice from "./slice/schoolFilterSlice";
 import darkLightMode from "./slice/darkLightModeSlice";
+import dataGridAPISlice from "./slice/dataGridAPISlice";
 
 const store = configureStore({
     reducer:{
@@ -16,6 +17,7 @@ const store = configureStore({
         year:yearSlice,
         school:archiveServicesSlice,
         toggle:darkLightMode,
+        column:dataGridAPISlice
         
     }
   });

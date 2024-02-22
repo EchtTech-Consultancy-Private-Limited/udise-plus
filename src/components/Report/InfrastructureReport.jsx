@@ -13,16 +13,10 @@ import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServic
 import allreportsdata from '../../json-data/allreports.json';
 
 export default function Infrastructure({id,report_name,type}) {
-  const schoolFilterYear = useSelector((state) => state.schoolFilter);
   const [show, setShow] = useState(false);
-  const dispatch = useDispatch();
   const school_data = useSelector((state) => state.school);
   const [report, setReport] = useState(null);
 
-  useEffect(() => {
-    dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
-    // eslint-disable-next-line
-  }, [schoolFilterYear]);
 
    // Find the report with the given id
   useEffect(() => {
@@ -290,36 +284,32 @@ export default function Infrastructure({id,report_name,type}) {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {school_data?.data?.data?.map((item, idx) => {
-                          return (
-                            <>
-                              <TableRow key={idx}>
-                                <TableCell>{item.schCategoryCode}</TableCell>
-                                <TableCell>{item.totalSchool}</TableCell>
+                      
+                              <TableRow>
+                                <TableCell>0</TableCell>
+                                <TableCell>0</TableCell>
                                 <TableCell>
-                                  {item.schHavingFuncElectricity}
+                                  0
                                 </TableCell>
                                 <TableCell>0</TableCell>
                                 <TableCell>0</TableCell>
                                 <TableCell>0</TableCell>
                                 <TableCell>
-                                  {item.schHavingFuncToiletBoys}
+                                  0
                                 </TableCell>
                                 <TableCell>
-                                  {item.schHavingFuncToiletGirls}
+                                  0
                                 </TableCell>
                                 <TableCell>
-                                  {item.schHavingFuncDrinkingWater}
+                                  0
                                 </TableCell>
                                 <TableCell>0</TableCell>
                                 <TableCell>
-                                  {item.schHavingRampFacility}
+                                  0
                                 </TableCell>
                                 <TableCell>0</TableCell>
-                              </TableRow>
-                            </>
-                          );
-                        })}
+                                </TableRow>
+
                       </TableBody>
                     </Table>
                   </TableContainer>
