@@ -21,11 +21,20 @@ export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
   const [report, setReport] = useState(null);
   const grid_column = useSelector(state=>state.column.column);
+  const [queryParameters] = useSearchParams();
+  const id = queryParameters.get('id');
+  const type = queryParameters.get('type');
+  const schoolFilterYear = useSelector((state) => state.schoolFilter);
+  const [show, setShow] = useState(false);
+  const [filterShowHide,setFilterShowHide] = useState(false);
+  const dispatch = useDispatch();
+  const school_data = useSelector((state) => state.school);
+
   const columns = [
-    {headerName: "Location", field: "location"},
-    {headerName: "Rural/Urban", field: "rural_urban"},
-    {headerName: "School Category", field: "school_category"},
-    {headerName: "School Management", field: "school_management"},
+    {headerName: "Location", field: "location",suppressColumnsToolPanel: true},
+    {headerName: "Rural/Urban", field: "rural_urban",suppressColumnsToolPanel: true},
+    {headerName: "School Category", field: "school_category",suppressColumnsToolPanel: true},
+    {headerName: "School Management", field: "school_management",suppressColumnsToolPanel: true},
     {headerName: "School Type", field: "school_type"},
     {headerName: "Total No. of Schools", field: "totalSchool"},
     {headerName: "Separate Room for Headmaster", field: "no_of_headmaster"},
@@ -104,15 +113,7 @@ export default function Infrastructure3013() {
       };
   }, []);
 
-  const [queryParameters] = useSearchParams();
-  const id = queryParameters.get('id');
-  const type = queryParameters.get('type');
-  const schoolFilterYear = useSelector((state) => state.schoolFilter);
-  const [show, setShow] = useState(false);
-  const [filterShowHide,setFilterShowHide] = useState(false);
-  const dispatch = useDispatch();
-  const school_data = useSelector((state) => state.school);
-
+  
   useEffect(() => {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
     // eslint-disable-next-line
