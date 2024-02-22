@@ -5,7 +5,7 @@ import schoolgraph from '../../assets/images/s-graph.svg'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import {useTranslation} from "react-i18next";
-// require('highcharts/modules/exporting')(Highcharts);
+require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
 

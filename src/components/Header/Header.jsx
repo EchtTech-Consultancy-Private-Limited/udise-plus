@@ -21,9 +21,9 @@ const Header = () => {
   
   const changeSizeByBtn = (size) => {
     if (size === "normal") {
-      document.body.style.fontSize = "16px";
+      document.body.style.fontSize = "12px";
     } else if (size === "average") {
-      document.body.style.fontSize = "17px";
+      document.body.style.fontSize = "14px";
     } else if (size === "max") {
       document.body.style.fontSize = "18px";
     }  
