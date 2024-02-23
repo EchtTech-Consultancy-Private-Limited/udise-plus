@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { routes } from './routes/index'
 import Header from './components/Header/Header';
 import { useSelector } from 'react-redux';
@@ -17,10 +17,10 @@ useEffect(()=>{
 
 
     return (
-          <BrowserRouter>
+          <HashRouter>
               <Header />
             {routes}
-          </BrowserRouter>
+          </HashRouter>
     );
 }
 

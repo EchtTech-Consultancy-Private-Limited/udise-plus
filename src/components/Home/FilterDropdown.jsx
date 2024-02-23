@@ -173,7 +173,6 @@ export default function FilterDropdown() {
     return yearGroups;
   };
 
-
   const renderDistrictListGroup = () => {
     const groups = [];
 

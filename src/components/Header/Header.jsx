@@ -87,7 +87,8 @@ const Header = () => {
   const navigate = useNavigate()
 
   const goToPageOnClick = () =>{
-      navigate("/")
+      // navigate("/");
+      window.location.href=window.location.origin;
   }
   return (
     <>
