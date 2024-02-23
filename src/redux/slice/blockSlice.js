@@ -4,7 +4,9 @@ import {fetchBlockByDistrictCode} from "../thunks/blockThunk";
 const blockSlice = createSlice({
   name: "block",
   initialState: {
-    data:[],
+    data:{
+      data:[]
+    },
     isLoading:false,
     isError:false,
     error:null

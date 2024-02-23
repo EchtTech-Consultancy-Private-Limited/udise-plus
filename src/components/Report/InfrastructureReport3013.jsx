@@ -29,6 +29,10 @@ export default function Infrastructure3013() {
   const [filterShowHide,setFilterShowHide] = useState(false);
   const dispatch = useDispatch();
   const school_data = useSelector((state) => state.school);
+  const local_state = window.localStorage.getItem('state');
+  const local_district = window.localStorage.getItem('district');
+  const local_block = window.localStorage.getItem('block');
+  const local_year = window.localStorage.getItem('year');
 
   const columns = [
     {headerName: "Location", field: "schLocationCode",suppressColumnsToolPanel: true},
@@ -290,13 +294,13 @@ export default function Infrastructure3013() {
           <div className="row align-items-center report-inner-tab">
             <div className="col-md-12">
               <h4 className="brudcrumb_heading">
-                <span>National</span>
+                <span>{local_state}</span>
                 <span> > </span>
-                <span>District</span>
+                <span>{local_district}</span>
                 <span> > </span>
-                <span>Block</span>
+                <span>{local_block}</span>
                 <span> > </span>
-                <span>2019-2022</span>
+                <span>{local_year}</span>
 
               </h4>
             </div>

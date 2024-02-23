@@ -3,6 +3,7 @@ import headerSlice from "./slice/headerSlice";
 import districtSlice from "./slice/districtSlice";
 import yearSlice from "./slice/yearSlice";
 import stateSlice from "./slice/stateSlice";
+import blockSlice from './slice/blockSlice';
 import archiveServicesSlice from "./slice/archiveServicesSlice";
 import schoolFilterSlice from "./slice/schoolFilterSlice";
 import darkLightMode from "./slice/darkLightModeSlice";
@@ -14,10 +15,11 @@ const store = configureStore({
         schoolFilter:schoolFilterSlice,
         state:stateSlice,
         distrct:districtSlice,
+        block:blockSlice,
         year:yearSlice,
         school:archiveServicesSlice,
         toggle:darkLightMode,
-        column:dataGridAPISlice
+        column:dataGridAPISlice,
         
     }
   });

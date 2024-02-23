@@ -21,45 +21,59 @@ import { changeYearFilter,changeStateFilter,allFilter } from "../../redux/slice/
 import {hideShowColumn } from "../../redux/slice/dataGridAPISlice";
 import { filterItemsStatePerPage, filterItemsYearPerPage } from "../../constants/constants";
 import { fetchBlockByDistrictCode } from "../../redux/thunks/blockThunk";
+import { useLocation } from "react-router-dom";
 
 export default function FilterDropdown() {
   const [itemsPerPage] = useState(filterItemsStatePerPage);
   const [yearItemsPerPage] = useState(filterItemsYearPerPage);
   const dispatch = useDispatch();
+  const location = useLocation();
+  
   const stateData=useSelector(state=>state.state);
   const yearData=useSelector(state=>state.year);
-  const gridApi=useSelector(state=>state.gridApi);
   const schoolFilter=useSelector(state=>state.schoolFilter);
   const districtData=useSelector(state=>state.distrct);
   const blockData=useSelector(state=>state.block);
   const [selectedState,setSelectedState] = useState('All India/National');
-  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("District");
   const [selectedYear, setSelectedYear] = useState("2020-21");
   const [selectedBlock, setSelectedBlock] = useState("Block");
   const filterObj = structuredClone(schoolFilter);
+  
+  window.localStorage.setItem('state',selectedState);
+  window.localStorage.setItem('district',selectedDistrict);
+  window.localStorage.setItem('block',selectedBlock);
+  window.localStorage.setItem('year',selectedYear);
+
   useEffect(()=>{
     dispatch(fetchStateData());
     dispatch(fetchYearData());
+
   },[]);
 
   const handleSchoolFilterYear = (year,year_report)=>{
     setSelectedYear(year_report);
-    dispatch(changeYearFilter(year));
+    filterObj.year_id = year;
+    dispatch(allFilter(filterObj));
+    window.localStorage.setItem('year',year_report);
     hideOpendFilterBox();
   }
   const handleSchoolFilterState = (state_id,state_name,state_code)=>{
     setSelectedState(state_name);
-    setSelectedDistrict("");
+    setSelectedDistrict("District");
+    setSelectedBlock("Block");
     
    
     // dispatch(changeStateFilter(state_id));
     dispatch(fetchDistrictDataByStateId(state_id));
+    dispatch(fetchBlockByDistrictCode({district_code:state_id,year_id:8}));
     if(state_name==="All India/National"){
 
       filterObj.region_type = "n";
       filterObj.region_code = "99";
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
+      
 
     }else if(state_name==="State Wise"){
 
@@ -74,6 +88,7 @@ export default function FilterDropdown() {
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
     }
+    window.localStorage.setItem('state',state_name);
     hideOpendFilterBox();
   }
 
@@ -91,22 +106,35 @@ export default function FilterDropdown() {
       // dispatch(hideShowColumn(false));
     }
     setSelectedDistrict(district_name);
+    window.localStorage.setItem('district',district_name);
     hideOpendFilterBox();
   }
 
+  const handleSchoolFilterBlock = (block_code,block_name)=>{
+    if(block_name==="Block Wise"){
+      filterObj.region_type = "bw";
+      dispatch(allFilter(filterObj));
+      // dispatch(hideShowColumn(true));
 
-  const hideOpendFilterBox = ()=>{
-    const boxes = document.querySelectorAll('.dropdown-menu');
-    boxes.forEach(box => {
-      box.classList.remove('show');
-    });
+    }else{
+      filterObj.region_type = "b";
+      filterObj.region_code = block_code;
+      dispatch(allFilter(filterObj));
+      // dispatch(hideShowColumn(false));
+    }
+    setSelectedBlock(block_name);
+    window.localStorage.setItem('block',block_name);
+    hideOpendFilterBox();
   }
 
   const renderStateListGroup = () => {
     const groups = [];
     let extra_col = JSON.parse(JSON.stringify(stateData.data.data)); 
-    extra_col.unshift({state_id:"sw",state_name:"State Wise"});
-    extra_col.unshift({state_id:"n",state_name:"All India/National"});
+    if(location.pathname!=="/"){
+      extra_col.unshift({state_id:"sw",state_name:"State Wise"});
+      extra_col.unshift({state_id:"n",state_name:"All India/National"});
+    }
+    
     for (let i = 0; i < extra_col.length; i += itemsPerPage) {
       const groupItems = [];
       for (let j = i; j < i + itemsPerPage && j < extra_col.length; j++) {
@@ -148,9 +176,11 @@ export default function FilterDropdown() {
 
   const renderDistrictListGroup = () => {
     const groups = [];
-    let extra_col = JSON.parse(JSON.stringify(districtData?.data?.data)); 
 
-    extra_col.unshift({udise_district_code:filterObj.region_code,district_name:"District Wise"});
+    let extra_col = JSON.parse(JSON.stringify(districtData?.data?.data)); 
+if(location.pathname!=="/"){
+  extra_col.unshift({udise_district_code:filterObj.region_code,district_name:"District Wise"});
+}
 
     for (let i = 0; i < extra_col.length; i += itemsPerPage) {
       const groupItems = [];
@@ -172,12 +202,22 @@ export default function FilterDropdown() {
 
   const renderBlockListGroup = () => {
     const groups = [];
-    for (let i = 0; i < blockData?.data?.data.length; i += itemsPerPage) {
+    let extra_col;
+    if(blockData?.data?.data.length>0){
+       extra_col = JSON.parse(JSON.stringify(blockData?.data?.data)); 
+    }else{
+       extra_col =[];
+    }
+    if( location.pathname!=="/"){
+      extra_col.unshift({udiseBlockCode:filterObj.region_code,udiseBlockName:"Block Wise"});
+    }
+
+    for (let i = 0; i < extra_col?.length; i += itemsPerPage) {
       const groupItems = [];
-      for (let j = i; j < i + itemsPerPage && j < blockData?.data?.data?.length; j++) {
+      for (let j = i; j < i + itemsPerPage && j < extra_col?.length; j++) {
         groupItems.push(
-          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterDistrict(blockData?.data?.data[j].udiseBlockCode,blockData?.data?.data[j].udiseBlockName)}>
-            {blockData?.data?.data[j].udiseBlockName}
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterBlock(extra_col[j].udiseBlockCode,extra_col[j].udiseBlockName)}>
+            {extra_col[j].udiseBlockName}
           </MDBListGroupItem>
         );
       }
@@ -189,6 +229,13 @@ export default function FilterDropdown() {
     }
     return groups;
   };
+
+  const hideOpendFilterBox = ()=>{
+    const boxes = document.querySelectorAll('.dropdown-menu');
+    boxes.forEach(box => {
+      box.classList.remove('show');
+    });
+  }
 
   return (
     <>
