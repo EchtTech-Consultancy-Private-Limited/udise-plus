@@ -17,8 +17,10 @@ import { fetchStateData } from "../../redux/thunks/stateThunk";
 import { fetchDistrictDataByStateId } from "../../redux/thunks/districtThunk";
 import { fetchYearData } from "../../redux/thunks/yearThunk";
 import { changeYearFilter,changeStateFilter,allFilter } from "../../redux/slice/schoolFilterSlice";
+
 import {hideShowColumn } from "../../redux/slice/dataGridAPISlice";
 import { filterItemsStatePerPage, filterItemsYearPerPage } from "../../constants/constants";
+import { fetchBlockByDistrictCode } from "../../redux/thunks/blockThunk";
 
 export default function FilterDropdown() {
   const [itemsPerPage] = useState(filterItemsStatePerPage);
@@ -29,15 +31,16 @@ export default function FilterDropdown() {
   const gridApi=useSelector(state=>state.gridApi);
   const schoolFilter=useSelector(state=>state.schoolFilter);
   const districtData=useSelector(state=>state.distrct);
+  const blockData=useSelector(state=>state.block);
   const [selectedState,setSelectedState] = useState('All India/National');
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedYear, setSelectedYear] = useState("2020-21");
+  const [selectedBlock, setSelectedBlock] = useState("Block");
+  const filterObj = structuredClone(schoolFilter);
   useEffect(()=>{
     dispatch(fetchStateData());
     dispatch(fetchYearData());
   },[]);
-
-  console.log(schoolFilter,'schoolFilter@@@@')
 
   const handleSchoolFilterYear = (year,year_report)=>{
     setSelectedYear(year_report);
@@ -47,7 +50,7 @@ export default function FilterDropdown() {
   const handleSchoolFilterState = (state_id,state_name,state_code)=>{
     setSelectedState(state_name);
     setSelectedDistrict("");
-    const filterObj = structuredClone(schoolFilter);
+    
    
     // dispatch(changeStateFilter(state_id));
     dispatch(fetchDistrictDataByStateId(state_id));
@@ -74,7 +77,19 @@ export default function FilterDropdown() {
     hideOpendFilterBox();
   }
 
-  const handleSchoolFilterDistrict = (udise_district_code,district_name)=>{
+  const handleSchoolFilterDistrict = (district_name,district_code)=>{
+    if(district_name==="District Wise"){
+      filterObj.region_type = "dw";
+      dispatch(allFilter(filterObj));
+      // dispatch(hideShowColumn(true));
+
+    }else{
+      filterObj.region_type = "d";
+      filterObj.region_code = district_code;
+      dispatch(fetchBlockByDistrictCode({district_code:district_code,year_id:filterObj.year_id}));
+      dispatch(allFilter(filterObj));
+      // dispatch(hideShowColumn(false));
+    }
     setSelectedDistrict(district_name);
     hideOpendFilterBox();
   }
@@ -96,7 +111,7 @@ export default function FilterDropdown() {
       const groupItems = [];
       for (let j = i; j < i + itemsPerPage && j < extra_col.length; j++) {
         groupItems.push(
-          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterState(extra_col[j].state_id,extra_col[j].state_name)}>
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterState(extra_col[j].state_id,extra_col[j].state_name,extra_col[j].state_code)}>
             {extra_col[j].state_name}
           </MDBListGroupItem>
         );
@@ -133,12 +148,16 @@ export default function FilterDropdown() {
 
   const renderDistrictListGroup = () => {
     const groups = [];
-    for (let i = 0; i < districtData.data.data.length; i += itemsPerPage) {
+    let extra_col = JSON.parse(JSON.stringify(districtData?.data?.data)); 
+
+    extra_col.unshift({udise_district_code:filterObj.region_code,district_name:"District Wise"});
+
+    for (let i = 0; i < extra_col.length; i += itemsPerPage) {
       const groupItems = [];
-      for (let j = i; j < i + itemsPerPage && j < districtData.data.data.length; j++) {
+      for (let j = i; j < i + itemsPerPage && j < extra_col.length; j++) {
         groupItems.push(
-          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterDistrict(districtData.data.data[j].udise_district_code,districtData.data.data[j].district_name)}>
-            {districtData.data.data[j].district_name}
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterDistrict(extra_col[j].district_name,extra_col[j].udise_district_code)}>
+            {extra_col[j].district_name}
           </MDBListGroupItem>
         );
       }
@@ -151,7 +170,26 @@ export default function FilterDropdown() {
     return groups;
   };
 
-  console.log(schoolFilter,' school filter @@@@')
+  const renderBlockListGroup = () => {
+    const groups = [];
+    for (let i = 0; i < blockData?.data?.data.length; i += itemsPerPage) {
+      const groupItems = [];
+      for (let j = i; j < i + itemsPerPage && j < blockData?.data?.data?.length; j++) {
+        groupItems.push(
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterDistrict(blockData?.data?.data[j].udiseBlockCode,blockData?.data?.data[j].udiseBlockName)}>
+            {blockData?.data?.data[j].udiseBlockName}
+          </MDBListGroupItem>
+        );
+      }
+      groups.push(
+        <MDBCol key={i} md='6' lg='4' className='mb-3 mb-lg-0'>
+          <MDBListGroup >{groupItems}</MDBListGroup>
+        </MDBCol>
+      );
+    }
+    return groups;
+  };
+
   return (
     <>
       <div className="filter_drodown">
@@ -214,7 +252,7 @@ export default function FilterDropdown() {
                     <MDBDropdown className="disabled">
                       <MDBDropdownToggle tag='a' className='nav-link'>
                        <div className="menu-sub-heading">Select Blog</div>
-                       {selectedDistrict}
+                       {selectedBlock}
                       </MDBDropdownToggle>
                       <MDBDropdownMenu
                         className='mt-0 w-100 justify-content-center'
@@ -226,7 +264,7 @@ export default function FilterDropdown() {
                         <MDBContainer className="droplist">
                           <MDBRow className='my-1'>
                       
-                          {<>{renderDistrictListGroup()}</>}
+                          {<>{renderBlockListGroup()}</>}
                            
                           </MDBRow>
                         </MDBContainer>
