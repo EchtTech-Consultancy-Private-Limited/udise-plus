@@ -391,7 +391,7 @@ export default function EducationDashboard() {
                                                                         legend: {
                                                                             layout: 'vertical',
                                                                             align: 'left',
-                                                                            verticalAlign: 'middle',
+                                                                            verticalAlign: 'middle', 
                                                                             itemMarginTop: 10,
                                                                             itemMarginBottom: 10
                                                                         },
