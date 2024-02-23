@@ -326,17 +326,17 @@ export default function SchoolDashboard() {
                                                                                 colorByPoint: true,
                                                                                 data: [
                                                                                     {
-                                                                                        name: 'Elementry',
+                                                                                        name: 'Elementary',
                                                                                         y: 65,
                                                                                         color: '#BCE263'
                                                                                     },
                                                                                     {
-                                                                                        name: 'Secondry',
+                                                                                        name: 'Secondary',
                                                                                         y: 20,
                                                                                         color: '#751539'
                                                                                     },
                                                                                     {
-                                                                                        name: 'Higher Secondry',
+                                                                                        name: 'Higher Secondary',
                                                                                         y: 15,
                                                                                         color: '#E6694A'
                                                                                     }
@@ -486,9 +486,9 @@ export default function SchoolDashboard() {
                                                     </div>
                                                 </div>
 
-                                                <Tabs defaultActiveKey="Elementry" id="uncontrolled-tab-example" className="">
+                                                <Tabs defaultActiveKey="Elementary" id="uncontrolled-tab-example" className="">
 
-                                                    <Tab eventKey="Elementry" title="Elementry">
+                                                    <Tab eventKey="Elementary" title="Elementary">
 
                                                         <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
@@ -561,7 +561,7 @@ export default function SchoolDashboard() {
                                                                                 colorByPoint: true,
                                                                                 data: [
                                                                                     {
-                                                                                        name: 'Elementry',
+                                                                                        name: 'Elementary',
                                                                                         y: 65,
                                                                                         color: '#BCE263'
                                                                                     },
@@ -659,7 +659,7 @@ export default function SchoolDashboard() {
                                                                                 colorByPoint: true,
                                                                                 data: [
                                                                                     {
-                                                                                        name: 'Elementry',
+                                                                                        name: 'Elementary',
                                                                                         y: 65,
                                                                                         color: '#BCE263'
                                                                                     },
@@ -756,7 +756,7 @@ export default function SchoolDashboard() {
                                                                                 colorByPoint: true,
                                                                                 data: [
                                                                                     {
-                                                                                        name: 'Elementry',
+                                                                                        name: 'Elementary',
                                                                                         y: 65,
                                                                                         color: '#BCE263'
                                                                                     },
