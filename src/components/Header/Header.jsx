@@ -46,6 +46,43 @@ const Header = () => {
     dispatch(updateToggleDark(!toggleDarkMode));
   }
 
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Function to format the date in the desired format
+  const formatDateString = (date) => {
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+    const ordinalSuffix = getOrdinalSuffix(day);
+
+    return (
+        <a href="#" className="date-link">
+          {day}<sup className="ordinal">{ordinalSuffix} </sup> &nbsp;{month} {year}
+        </a>
+    );
+  };
+
+  // Function to get the ordinal suffix for a given day
+  const getOrdinalSuffix = (day) => {
+    if (day === 1 || day === 21 || day === 31) {
+      return "st";
+    } else if (day === 2 || day === 22) {
+      return "nd";
+    } else if (day === 3 || day === 23) {
+      return "rd";
+    } else {
+      return "th";
+    }
+  };
+
   return (
     <>
       <div className="header-top">
@@ -55,17 +92,17 @@ const Header = () => {
               <div className="header-top-content">
                 <div className="header-top-skipwrap top-date-time">
                   <ul>
-                    <li><a href="#">10<sup>th</sup> July 2021</a></li>
-                    <li><a href="#">14:00 IST (GMT + 5:30)</a></li>
+                    <li><a href="#">{formatDateString(currentDateTime)}</a></li>
+                    <li><a href="#">{currentDateTime.toLocaleTimeString()}</a></li>
                   </ul>
                 </div>
 
                 <div className="header-top-skipwrap">
                   <ul>
-                    <li><Link to='#'>Helpline Numbers</Link></li>
-                    <li><Link to='#' onClick={handleClickScroll}>Skip To Navigation</Link></li>
-                    <li><Link to='#' onClick={handleClickScroll}>Skip to Main Content</Link></li>
-                    <li><Link to='/screen-reader-access'>Screen Reader Access</Link></li>
+                    <li><Link to='/help-line-numbers'>{t("helpline_numbers")}</Link></li>
+                    <li><Link to='#' onClick={handleClickScroll}>{t("skip_to_navigation")}</Link></li>
+                    <li><Link to='#' onClick={handleClickScroll}>{t("skip_to_main_content")}</Link></li>
+                    <li><Link to='/screen-reader-access'>{t("screen_reader_access")}</Link></li>
                   </ul>
                 </div>
 
@@ -102,7 +139,7 @@ const Header = () => {
 
                     <li>
                       <div className="d-flex align-items-center">
-                      <span className="text me-2">Language </span>
+                      <span className="text me-2">{t("language")} </span>
                       <a>
                         <div className="select-wrap">
                           <select className="form-select Langchange" value={i18n.language} onChange={changeLanguage}>
@@ -128,7 +165,7 @@ const Header = () => {
             <div className="col-md-12">
               <nav className="navbar navbar-expand-lg">
                 <div className="logo-wrap">
-                  <a href="#" className="top-logo ordernav-sm-1"> <img src={ministry} alt="logo" className="img-fluid logo-main" /></a>
+                  <Link to="/" className="top-logo ordernav-sm-1"> <img src={ministry} alt="logo" className="img-fluid logo-main" /></Link>
 
                   <div className="menu-switch-tab ordernav-sm-3">
                     <SlidingTabBar/>
@@ -136,10 +173,8 @@ const Header = () => {
 
                   <div className="ordernav-sm-2">
                     
-                  {header_name.headerName!=="All Reports" && !urls.includes(location.pathname)?<Link className="header-dropdown-btn" title="UDISE+ Reports" to="/reports">UDISE+ Reports <img src={dropdownimg} alt="UDISE+ Reports" /> </Link>:""}
+                  {header_name.headerName!=="All Reports" && !urls.includes(location.pathname)?<Link className="header-dropdown-btn" title="UDISE+ Reports" to="/reports">{t("udise_reports")}<img src={dropdownimg} alt="UDISE+ Reports" /> </Link>:""}
                   
-
-
                   </div>                 
                 </div>
 
