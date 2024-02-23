@@ -102,19 +102,19 @@ export default function SchoolDashboard() {
                                             <div className="card-box row">
                                                 <div className="col-md-6 mb-5">
                                                     <div className="main-text-c m-big">14.89 Lakhs</div>
-                                                    <span className="sub-text-c text-green">Total Schools</span>
+                                                    <span className="sub-text-c text-green">{t("total_schools")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-5">
                                                     <div className="main-text-c m-big">11.96 Lakhs</div>
-                                                    <span className="sub-text-c text-green">Secondary Schools</span>
+                                                    <span className="sub-text-c text-green">{t("secondary_schools")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <div className="main-text-c m-big">11.96 Lakhs</div>
-                                                    <span className="sub-text-c text-green">Higher Sec. Schools</span>
+                                                    <span className="sub-text-c text-green">{t("higher_sec_school")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <div className="main-text-c m-big">11.96 Lakhs</div>
-                                                    <span className="sub-text-c text-green">Elementary Schools</span>
+                                                    <span className="sub-text-c text-green">{t("elementary_schools")}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -127,7 +127,7 @@ export default function SchoolDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number of Schools Management-Wise</h2>
+                                                    <h2 className="heading-sm">{t("number_of_schools_management_wise")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1 highcharts-button-normal'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -248,7 +248,7 @@ export default function SchoolDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number of Schools by Level of Education</h2>
+                                                    <h2 className="heading-sm">{t("number_of_schools_by_level_of_education")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -363,7 +363,7 @@ export default function SchoolDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number of Schools based on School Types</h2>
+                                                    <h2 className="heading-sm" style={{ whiteSpace: 'pre-line' }}>{t("number_of_schools_based_on_school_types")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>

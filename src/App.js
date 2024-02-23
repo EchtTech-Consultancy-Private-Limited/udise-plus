@@ -12,6 +12,7 @@ import ScreenReader from './pages/ScreenReader';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useSelector } from 'react-redux';
+import HelpLineNumber from "./pages/HelpLineNumber";
 function App() {
     
   const toggleDarkMode =   useSelector(state=>state.toggle.toggleDarkLight);
@@ -34,6 +35,7 @@ useEffect(()=>{
                     <Route exact path="/teacher-reports" element={<TeacherReport />} />
                     <Route exact path="/infrastructure-reports3013" element={<Infrastructure3013 />} />
                     <Route exact path="/screen-reader-access" element={<ScreenReader />} />
+                    <Route exact path="/help-line-numbers" element={<HelpLineNumber />} />
                     <Route path="/*" element={<Navigate to="/" />} />
                 </Routes>
             </Router>
