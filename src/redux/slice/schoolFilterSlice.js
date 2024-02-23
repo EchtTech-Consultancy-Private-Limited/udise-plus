@@ -21,8 +21,11 @@ const schoolFilterSlice = createSlice({
       changeStateFilter(state,action) {
         state.region_type=action.payload;
       },
+      allFilter(state,action){
+        Object.assign(state, action.payload);
+      }
     },
   })
   
-  export const { changeYearFilter,changeDistrictFilter,changeStateFilter } = schoolFilterSlice.actions
+  export const { changeYearFilter,changeDistrictFilter,changeStateFilter,allFilter } = schoolFilterSlice.actions
   export default schoolFilterSlice.reducer

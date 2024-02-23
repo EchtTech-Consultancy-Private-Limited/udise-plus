@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchStateData } from "../../redux/thunks/stateThunk";
 import { fetchDistrictDataByStateId } from "../../redux/thunks/districtThunk";
 import { fetchYearData } from "../../redux/thunks/yearThunk";
-import { changeYearFilter,changeStateFilter } from "../../redux/slice/schoolFilterSlice";
+import { changeYearFilter,changeStateFilter,allFilter } from "../../redux/slice/schoolFilterSlice";
 import {hideShowColumn } from "../../redux/slice/dataGridAPISlice";
 import { filterItemsStatePerPage, filterItemsYearPerPage } from "../../constants/constants";
 
@@ -27,6 +27,7 @@ export default function FilterDropdown() {
   const stateData=useSelector(state=>state.state);
   const yearData=useSelector(state=>state.year);
   const gridApi=useSelector(state=>state.gridApi);
+  const schoolFilter=useSelector(state=>state.schoolFilter);
   const districtData=useSelector(state=>state.distrct);
   const [selectedState,setSelectedState] = useState('All India/National');
   const [selectedDistrict, setSelectedDistrict] = useState("");
@@ -36,22 +37,38 @@ export default function FilterDropdown() {
     dispatch(fetchYearData());
   },[]);
 
+  console.log(schoolFilter,'schoolFilter@@@@')
 
   const handleSchoolFilterYear = (year,year_report)=>{
     setSelectedYear(year_report);
     dispatch(changeYearFilter(year));
     hideOpendFilterBox();
   }
-  const handleSchoolFilterState = (state_id,state_name)=>{
+  const handleSchoolFilterState = (state_id,state_name,state_code)=>{
     setSelectedState(state_name);
     setSelectedDistrict("");
-    dispatch(changeStateFilter(state_id));
+    const filterObj = structuredClone(schoolFilter);
+   
+    // dispatch(changeStateFilter(state_id));
     dispatch(fetchDistrictDataByStateId(state_id));
     if(state_name==="All India/National"){
+
+      filterObj.region_type = "n";
+      filterObj.region_code = "99";
+      dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
+
     }else if(state_name==="State Wise"){
+
+      filterObj.region_type = "sw";
+      filterObj.region_code = "99";
+      dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
+
     }else{
+      filterObj.region_type = "s";
+      filterObj.region_code = state_code;
+      dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
     }
     hideOpendFilterBox();
@@ -134,7 +151,7 @@ export default function FilterDropdown() {
     return groups;
   };
 
-
+  console.log(schoolFilter,' school filter @@@@')
   return (
     <>
       <div className="filter_drodown">
