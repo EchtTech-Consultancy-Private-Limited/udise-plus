@@ -57,7 +57,7 @@ export default function FilterDropdown() {
     hideOpendFilterBox();
   }
 
-  const handleSchoolFilterDistrict = (state_id,district_name)=>{
+  const handleSchoolFilterDistrict = (udise_district_code,district_name)=>{
     setSelectedDistrict(district_name);
     hideOpendFilterBox();
   }
@@ -120,7 +120,7 @@ export default function FilterDropdown() {
       const groupItems = [];
       for (let j = i; j < i + itemsPerPage && j < districtData.data.data.length; j++) {
         groupItems.push(
-          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterDistrict(districtData.data.data[j].state_id,districtData.data.data[j].district_name)}>
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterDistrict(districtData.data.data[j].udise_district_code,districtData.data.data[j].district_name)}>
             {districtData.data.data[j].district_name}
           </MDBListGroupItem>
         );

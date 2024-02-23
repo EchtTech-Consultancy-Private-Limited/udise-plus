@@ -31,44 +31,46 @@ export default function Infrastructure3013() {
   const school_data = useSelector((state) => state.school);
 
   const columns = [
-    {headerName: "Location", field: "location",suppressColumnsToolPanel: true},
+    {headerName: "Location", field: "schLocationCode",suppressColumnsToolPanel: true},
     {headerName: "Rural/Urban", field: "rural_urban",suppressColumnsToolPanel: true},
-    {headerName: "School Category", field: "school_category",suppressColumnsToolPanel: true},
-    {headerName: "School Management", field: "school_management",suppressColumnsToolPanel: true},
-    {headerName: "School Type", field: "school_type"},
-    {headerName: "Total No. of Schools", field: "totalSchool"},
-    {headerName: "Separate Room for Headmaster", field: "no_of_headmaster"},
-    {headerName: "Land Available", field: "land_available"},
-    {headerName: "Electricity", field: "schHavingFuncElectricity"},
-    {headerName: "Functional Electricity", field: "schHavingFuncElectricity"},
-    {headerName: "Solar Panel", field: "schHavingSolarPanel"},
-    {headerName: "Playground", field: "schHavingPlayground"},
-    {headerName: "Library or Reading Corner or Book Bank", field: "schHavingLibrary"},
-    {headerName: "Librarian", field: "schHavingLibrary"},
-    {headerName: "Newspaper", field: "schHavingNewsPaper"},
-    {headerName: "Kitchen Garden", field: "schHavingKitchenGarden"},
-    {headerName: "Furniture", field: "schHavingFurniture"},
-    {headerName: "Boy's Toilet", field: "schHavingToiletBoys"},
-    {headerName: "Functional Boy's Toilet", field: "schHavingFuncToiletBoys"},
-    {headerName: "Girl's Toilet", field: "schHavingToiletGirls"},
-    {headerName: "Functional Girl's Toilet", field: "schHavingFuncToiletGirls"},
-    {headerName: "Toilet Facility", field: "schHavingFuncToiletGirls"},
-    {headerName: "Functional Toilet Facility", field: "schHavingFuncToilet"},
-    {headerName: "Functional Urinal Boy's", field: "schHavingFuncUrinalToiletBoys"},
-    {headerName: "Functional Urinal Girl's", field: "schHavingFuncUrinalToiletGirls"},
-    {headerName: "Functional Drinking Water", field: "schHavingFuncDrinkingWater"},
-    {headerName: "Water Purifier", field: "schHavingWaterPurifier"},
-    {headerName: "Rain Water Harvesting", field: "schHavingRainWaterHarvesting"},
-    {headerName: "Water Tested", field: "schHavingWaterTested"},
-    {headerName: "Handwash", field: "schHavingHandwash"},
+    {headerName: "School Category", field: "schCategoryCode",suppressColumnsToolPanel: true},
+    {headerName: "School Management", field: "schManagementCode",suppressColumnsToolPanel: true},
+    {headerName: "School Type", field: "schTypeCode"},
+    {headerName: "Total No. of Schools", field: "totalSchools"},
+    {headerName: "Separate Room for Headmaster", field: "schHaveSeparateRoomForHM"},
+    {headerName: "Land Available", field: "schHaveLandForExpansion"},
+    {headerName: "Electricity", field: "schHaveElectricity"},
+    {headerName: "Functional Electricity", field: "schHaveFuncElectricity"},
+    {headerName: "Solar Panel", field: "schHaveSolarPanels"},
+    {headerName: "Playground", field: "schHavePlayground"},
+    {headerName: "Library or Reading Corner or Book Bank", field: "schHaveLibrary"},
+    {headerName: "Librarian", field: "schHaveLibrarian"},
+    {headerName: "Newspaper", field: "schHaveNewsPaperSubscription"},
+    {headerName: "Kitchen Garden", field: "schHaveKitchenGarden"},
+    {headerName: "Furniture", field: "schHaveFurnitureForStudents"},
+    {headerName: "Boy's Toilet", field: "schHaveBoysToilet"},
+    {headerName: "Functional Boy's Toilet", field: "schHaveFuncBoysToilet"},
+    {headerName: "Girl's Toilet", field: "schHaveGirlsToilet"},
+    {headerName: "Functional Girl's Toilet", field: "schHaveFuncGirlsToilet"},
+    {headerName: "Toilet Facility", field: "schHaveToilet"},
+    {headerName: "Functional Toilet Facility", field: "schHaveFuncToilet"},
+    {headerName: "Functional Urinal Boy's", field: "schHaveFuncBoysUrinals"},
+    {headerName: "Functional Urinal", field: "schHaveFuncUrinals"},
+    {headerName: "Functional Urinal Girl's", field: "schHaveFuncGirlsUrinals"},
+    {headerName: "Drinking Water", field: "schHaveDrinkWater"},
+    {headerName: "Functional Drinking Water", field: "schHaveFuncDrinkWater"},
+    {headerName: "Water Purifier", field: "schHaveWaterPurifier"},
+    {headerName: "Rain Water Harvesting", field: "schHaveRainWaterHarvesting"},
+    {headerName: "Water Tested", field: "schHaveTestedWater"},
+    {headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets"},
     {headerName: "Incinerator", field: "schHavingIncinerator"},
-    {headerName: "WASH Facility(Drinking Water, Toilet and Handwash)", field: "schHavingWashFacility"},
-    {headerName: "Ramps", field: "schHavingRampFacility"},
-    {headerName: "Hand-Rails", field: "schHavingHandRails"},
-    {headerName: "Medical Checkup", field: "schHavingMedicalCheckup"},
+    {headerName: "WASH Facility(Drinking Water, Toilet and Handwash)", field: "schHaveHandwashWithSoapBeforeAfterMeal"},
+    {headerName: "Ramps", field: "schHaveRamps"},
+    {headerName: "Hand-Rails", field: "schHaveHandRails"},
+    {headerName: "Medical Checkup", field: "schHaveMedicalCheckup"},
     {headerName: "Complete Medical Checkup", field: "schHavingCompleteMedicalCheckup"},
-    {headerName: "Internet", field: "schHavingInternet"},
-    {headerName: "Computer Available", field: "schHavingAvailableComputer"},
+    {headerName: "Internet", field: "schHaveInternet"},
+    {headerName: "Computer Available", field: "schHaveComputers"},
   ];
 
   const defColumnDefs = {
@@ -108,8 +110,9 @@ export default function Infrastructure3013() {
               },
               
           ],
+         
           position: 'right',
-          defaultToolPanel: 'columns'
+          defaultToolPanel: 'columns',
       };
   }, []);
 
@@ -184,38 +187,39 @@ export default function Infrastructure3013() {
   
   const getDocument = (gridApi) => {
     const columns = gridApi.api.getAllDisplayedColumns();
-
+    const fontSize = 12 * 0.8;
+    // Calculate the width for each column
+    const columnWidths = Array(columns.length).fill(`${100 / columns.length}%`);
+    
     const headerRow = getHeaderToExport(gridApi);
     const rows = getRowsToExport(gridApi);
+    
     return {
-      pageOrientation: 'landscape', // can also be 'portrait' ||landscape
+      pageOrientation: 'landscape',
       content: [
         {
           table: {
-            // the number of header rows
             headerRows: 1,
-
-            // the width of each column, can be an array of widths
-            // widths: `${100 / columns.length}%`,
-            widths: `5%`,
-
-            // all the rows to display, including the header rows
+            widths: columnWidths, // Set the width for each column
+    
             body: [headerRow, ...rows],
-
-            // Header row is 40px, other rows are 15px
             heights: (rowIndex) => (rowIndex === 0 ? 150 : 150),
-            
           },
         },
       ],
       header: 'simple text',
-            footer: {
-              columns: [
-                'Left part',
-                { text: 'Right part', alignment: 'right' }
-              ]
-            },
+      footer: {
+        columns: [
+          'Left part',
+          { text: 'Right part', alignment: 'right' }
+        ]
+      },
+      styles: {
+        // Adjust the font size for the entire document
+        defaultStyle: { fontSize: fontSize },
+      },
     };
+    
   };
 
   const exportToPDF = () => {
@@ -273,8 +277,8 @@ export default function Infrastructure3013() {
             {/* Customize Filter END*/}
 
             <div className="col-md-12 col-lg-12 ps-1">
-              <div className="tab-text-infra download-rep" onClick={onBtExport}>
-              {/* <div className="tab-text-infra download-rep" onClick={exportToPDF}> */}
+              {/* <div className="tab-text-infra download-rep" onClick={onBtExport}> */}
+              <div className="tab-text-infra download-rep" onClick={exportToPDF}>
                 Download Report{" "}
                 <span className="material-icons-round">download</span>
               </div>
