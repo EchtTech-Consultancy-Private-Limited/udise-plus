@@ -165,7 +165,7 @@ const Header = () => {
             <div className="col-md-12">
               <nav className="navbar navbar-expand-lg">
                 <div className="logo-wrap">
-                  <a href="#" className="top-logo ordernav-sm-1"> <img src={ministry} alt="logo" className="img-fluid logo-main" /></a>
+                  <Link to="/" className="top-logo ordernav-sm-1"> <img src={ministry} alt="logo" className="img-fluid logo-main" /></Link>
 
                   <div className="menu-switch-tab ordernav-sm-3">
                     <SlidingTabBar/>
@@ -175,8 +175,6 @@ const Header = () => {
                     
                   {header_name.headerName!=="All Reports" && !urls.includes(location.pathname)?<Link className="header-dropdown-btn" title="UDISE+ Reports" to="/reports">{t("udise_reports")}<img src={dropdownimg} alt="UDISE+ Reports" /> </Link>:""}
                   
-
-
                   </div>                 
                 </div>
 

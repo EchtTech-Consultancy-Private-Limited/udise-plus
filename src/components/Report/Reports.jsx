@@ -221,7 +221,7 @@ export default function Reports() {
                             <TableCell>{report.id}</TableCell>
                             <TableCell>{report.report_name}</TableCell>
                             <TableCell>{report.tags}</TableCell>
-                            <TableCell>
+                            <TableCell className="text-nowrap">
                               <Link
                                 className="action-icon"
                                 to={`/${report.url}?id=${report.id}&type=table`}
