@@ -5,11 +5,12 @@ import dropdownimg from '../../assets/images/dropdown-icon.svg'
 import SlidingTabBar from "./SlidingTabBar";
 import { useDispatch, useSelector } from 'react-redux';
 import { urls } from "../../constants/constants";
-import { useLocation,Link } from 'react-router-dom';
+import { useLocation,Link,useNavigate } from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 import i18n from "../../components/i18next/i18n";
 import { Switch } from "@mui/material";
 import { updateToggleDark } from "../../redux/slice/darkLightModeSlice";
+import Home from "../../pages/Home";
 
 
 
@@ -83,6 +84,11 @@ const Header = () => {
     }
   };
 
+  const navigate = useNavigate()
+
+  const goToPageOnClick = () =>{
+      navigate("/")
+  }
   return (
     <>
       <div className="header-top">
@@ -165,7 +171,7 @@ const Header = () => {
             <div className="col-md-12">
               <nav className="navbar navbar-expand-lg">
                 <div className="logo-wrap">
-                  <Link to="/" className="top-logo ordernav-sm-1"> <img src={ministry} alt="logo" className="img-fluid logo-main" /></Link>
+                  <Link to="" onClick={goToPageOnClick} className="top-logo ordernav-sm-1"> <img src={ministry} alt="logo" className="img-fluid logo-main" /></Link>
 
                   <div className="menu-switch-tab ordernav-sm-3">
                     <SlidingTabBar/>
