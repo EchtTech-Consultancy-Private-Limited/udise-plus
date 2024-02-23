@@ -243,8 +243,7 @@ export default function Infrastructure3013() {
             </div>
             <div className="col-md-4 col-lg-4">
               <div className="tab-text-infra mb-1">View Data By</div>
-              <Tabs
-                defaultActiveKey="School Category"
+              <Tabs defaultActiveKey=""
                 id="uncontrolled-tab-example"
                 className=""
               >

@@ -170,9 +170,33 @@ export default function FilterDropdown() {
                   </MDBNavbarItem>
                   
                   <MDBNavbarItem className='position-static'>
-                    <MDBDropdown>
+                    <MDBDropdown className="disabled">
                       <MDBDropdownToggle tag='a' className='nav-link'>
                        <div className="menu-sub-heading">Select District</div>
+                       {selectedDistrict}
+                      </MDBDropdownToggle>
+                      <MDBDropdownMenu
+                        className='mt-0 w-100 justify-content-center'
+                        style={{
+                          borderTopLeftRadius: '0',
+                          borderTopRightRadius: '0',
+                        }}
+                      >
+                        <MDBContainer className="droplist">
+                          <MDBRow className='my-1'>
+                      
+                          {<>{renderDistrictListGroup()}</>}
+                           
+                          </MDBRow>
+                        </MDBContainer>
+                      </MDBDropdownMenu>
+                    </MDBDropdown>
+                  </MDBNavbarItem>
+
+                  <MDBNavbarItem className='position-static'>
+                    <MDBDropdown className="disabled">
+                      <MDBDropdownToggle tag='a' className='nav-link'>
+                       <div className="menu-sub-heading">Select Blog</div>
                        {selectedDistrict}
                       </MDBDropdownToggle>
                       <MDBDropdownMenu
