@@ -326,17 +326,17 @@ export default function TeacherDashboard() {
                                                                                 colorByPoint: true,
                                                                                 data: [
                                                                                     {
-                                                                                        name: 'Elementry',
+                                                                                        name: 'Elementary',
                                                                                         y: 65,
                                                                                         color: '#BCE263'
                                                                                     },
                                                                                     {
-                                                                                        name: 'Secondry',
+                                                                                        name: 'Secondary',
                                                                                         y: 20,
                                                                                         color: '#751539'
                                                                                     },
                                                                                     {
-                                                                                        name: 'Higher Secondry',
+                                                                                        name: 'Higher Secondary',
                                                                                         y: 15,
                                                                                         color: '#E6694A'
                                                                                     }

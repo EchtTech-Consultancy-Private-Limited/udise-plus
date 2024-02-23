@@ -598,7 +598,7 @@ export default function EducationDashboard() {
                                                                     type: 'bar'
                                                                 },
                                                                 xAxis: {
-                                                                    categories: ['Higher-Secondory', 'Secondry', 'Upper Primary', 'Primary', 'Pre-Primary'],
+                                                                    categories: ['Higher-Secondory', 'Secondary', 'Upper Primary', 'Primary', 'Pre-Primary'],
                                                                     title: {
                                                                         text: null
                                                                     },

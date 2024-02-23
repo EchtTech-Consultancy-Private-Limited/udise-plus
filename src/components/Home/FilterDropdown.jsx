@@ -251,7 +251,7 @@ export default function FilterDropdown() {
                   <MDBNavbarItem className='position-static'>
                     <MDBDropdown className="disabled">
                       <MDBDropdownToggle tag='a' className='nav-link'>
-                       <div className="menu-sub-heading">Select Blog</div>
+                       <div className="menu-sub-heading">Select Block</div>
                        {selectedBlock}
                       </MDBDropdownToggle>
                       <MDBDropdownMenu

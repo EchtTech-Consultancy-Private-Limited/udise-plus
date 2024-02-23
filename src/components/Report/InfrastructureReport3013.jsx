@@ -275,7 +275,7 @@ export default function Infrastructure3013() {
 
             {/* Customize Filter END*/}
 
-            <div className="col-md-12 col-lg-12 ps-1">
+            <div className="col-md-12 col-lg-12">
               {/* <div className="tab-text-infra download-rep" onClick={onBtExport}> */}
               <div className="tab-text-infra download-rep" onClick={exportToPDF}>
                 Download Report{" "}
@@ -288,13 +288,25 @@ export default function Infrastructure3013() {
       <div className="bg-grey ptb-30">
         <div className="container tab-for-graph">
           <div className="row align-items-center report-inner-tab">
+            <div className="col-md-12">
+              <h4 className="brudcrumb_heading">
+                <span>National</span>
+                <span> > </span>
+                <span>District</span>
+                <span> > </span>
+                <span>Block</span>
+                <span> > </span>
+                <span>2019-2022</span>
+
+              </h4>
+            </div>
             <div className="col-md-12 col-lg-12">
               <Tabs
                 defaultActiveKey={type}
                 id="uncontrolled-tab-example"
                 className=""
               >
-                <Tab eventKey="about" title="About">
+                <Tab eventKey="about" title="About">                  
                   <div className="about-card mt-4">
                     <h2 className="heading-sm2 mb-2">About Us</h2>
                     <p>
