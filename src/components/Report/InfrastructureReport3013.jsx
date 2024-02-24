@@ -257,17 +257,14 @@ export default function Infrastructure3013() {
   };
 
   const handleGroupButtonClick = (e) => {
+    const groupObj = {"School Category":"schCategoryCode","School Management":"schManagementCode","Urban/Rural":"rural_urban"}
+    const groupByColumn = groupObj[e];
     setIsRowGrouping(!isRowGrouping);
 
-    // Update columnDefs based on row grouping state
     setCol((prevDefs) =>
-      // isRowGrouping
-        // ? prevDefs.map((colDef) => ({ ...colDef, rowGroup: false }))
-        // :
-        
         prevDefs.map((colDef) => ({
             ...colDef,
-            rowGroup: colDef.field === "schCategoryCode" || colDef.field === "schManagementCode" || colDef.field === "rural_urban",
+            rowGroup: colDef.field === groupByColumn,
           }))
     );
   };
@@ -341,10 +338,19 @@ export default function Infrastructure3013() {
                 <h4 className="brudcrumb_heading">
                   <span>{local_state}</span>
                   <span> > </span>
-                  <span>{local_district}</span>
-                  <span> > </span>
-                  <span>{local_block}</span>
-                  <span> > </span>
+                  {
+                    local_district!=="District" && <>
+                    <span>{local_district}</span>
+                    <span> > </span>
+                    </>
+                  }
+                  {
+                    local_block!=="Block" && <>
+                      <span>{local_block}</span>
+                      <span> > </span>  
+                    </>
+                  }
+                  
                   <span>{local_year}</span>
                 </h4>
               </div>

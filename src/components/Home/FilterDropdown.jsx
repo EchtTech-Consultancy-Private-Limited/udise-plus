@@ -106,6 +106,7 @@ export default function FilterDropdown() {
       // dispatch(hideShowColumn(false));
     }
     setSelectedDistrict(district_name);
+    setSelectedBlock("Block");
     window.localStorage.setItem('district',district_name);
     hideOpendFilterBox();
   }
@@ -270,7 +271,8 @@ if(location.pathname!=="/"){
                     </MDBDropdown>
                   </MDBNavbarItem>
                   
-                  <MDBNavbarItem className='position-static'>
+                  {/* District List */}
+                  {location.pathname!=="/" &&   <MDBNavbarItem className='position-static'>
                     <MDBDropdown className="disabled">
                       <MDBDropdownToggle tag='a' className='nav-link'>
                        <div className="menu-sub-heading">Select District</div>
@@ -292,9 +294,11 @@ if(location.pathname!=="/"){
                         </MDBContainer>
                       </MDBDropdownMenu>
                     </MDBDropdown>
-                  </MDBNavbarItem>
+                  </MDBNavbarItem>}
+                
 
-                  <MDBNavbarItem className='position-static'>
+                  {/* Block List */}
+                  {location.pathname!=="/" && <MDBNavbarItem className='position-static'>
                     <MDBDropdown className="disabled">
                       <MDBDropdownToggle tag='a' className='nav-link'>
                        <div className="menu-sub-heading">Select Block</div>
@@ -316,7 +320,8 @@ if(location.pathname!=="/"){
                         </MDBContainer>
                       </MDBDropdownMenu>
                     </MDBDropdown>
-                  </MDBNavbarItem>
+                  </MDBNavbarItem>}
+                  
                   
 
 
