@@ -171,10 +171,10 @@ export default function Infrastructure3013() {
 
   useEffect(() => {
     if (!grid_column) {
-      gridApi?.columnApi?.api?.setColumnVisible("location", false);
+      gridApi?.columnApi?.api?.setColumnVisible("schLocationCode", false);
     }
     if (gridApi && gridApi.columnApi) {
-      gridApi.columnApi.api.setColumnVisible("location", grid_column);
+      gridApi.columnApi.api.setColumnVisible("schLocationCode", grid_column);
     }
   }, [grid_column, gridApi]);
 

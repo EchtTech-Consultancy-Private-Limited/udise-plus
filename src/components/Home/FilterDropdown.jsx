@@ -96,14 +96,14 @@ export default function FilterDropdown() {
     if(district_name==="District Wise"){
       filterObj.region_type = "dw";
       dispatch(allFilter(filterObj));
-      // dispatch(hideShowColumn(true));
+      dispatch(hideShowColumn(true));
 
     }else{
       filterObj.region_type = "d";
       filterObj.region_code = district_code;
       dispatch(fetchBlockByDistrictCode({district_code:district_code,year_id:filterObj.year_id}));
       dispatch(allFilter(filterObj));
-      // dispatch(hideShowColumn(false));
+      dispatch(hideShowColumn(false));
     }
     setSelectedDistrict(district_name);
     setSelectedBlock("Block");
@@ -115,13 +115,13 @@ export default function FilterDropdown() {
     if(block_name==="Block Wise"){
       filterObj.region_type = "bw";
       dispatch(allFilter(filterObj));
-      // dispatch(hideShowColumn(true));
+      dispatch(hideShowColumn(true));
 
     }else{
       filterObj.region_type = "b";
       filterObj.region_code = block_code;
       dispatch(allFilter(filterObj));
-      // dispatch(hideShowColumn(false));
+      dispatch(hideShowColumn(false));
     }
     setSelectedBlock(block_name);
     window.localStorage.setItem('block',block_name);
@@ -154,31 +154,11 @@ export default function FilterDropdown() {
     return groups;
   };
 
-  const renderYearListGroup = () => {
-    const yearGroups = [];
-    for (let i = 0; i < yearData.data.data.length; i += yearItemsPerPage) {
-      const groupItems = [];
-      for (let j = i; j < i + yearItemsPerPage && j < yearData.data.data.length; j++) {
-        groupItems.push(
-          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterYear(yearData.data.data[j].year_id,yearData.data.data[j].report_year)}>
-            {yearData.data.data[j].report_year}
-          </MDBListGroupItem>
-        );
-      }
-      yearGroups.push(
-        <MDBCol key={i} md='6' lg='4' className='mb-3 mb-lg-0'>
-          <MDBListGroup >{groupItems}</MDBListGroup>
-        </MDBCol>
-      );
-    }
-    return yearGroups;
-  };
-
   const renderDistrictListGroup = () => {
     const groups = [];
 
     let extra_col = JSON.parse(JSON.stringify(districtData?.data?.data)); 
-if(location.pathname!=="/"){
+if(location.pathname!=="/" && selectedDistrict!=="District"){
   extra_col.unshift({udise_district_code:filterObj.region_code,district_name:"District Wise"});
 }
 
@@ -208,7 +188,7 @@ if(location.pathname!=="/"){
     }else{
        extra_col =[];
     }
-    if( location.pathname!=="/"){
+    if( location.pathname!=="/" && selectedBlock!=="Block"){
       extra_col.unshift({udiseBlockCode:filterObj.region_code,udiseBlockName:"Block Wise"});
     }
 
@@ -228,6 +208,26 @@ if(location.pathname!=="/"){
       );
     }
     return groups;
+  };
+
+  const renderYearListGroup = () => {
+    const yearGroups = [];
+    for (let i = 0; i < yearData.data.data.length; i += yearItemsPerPage) {
+      const groupItems = [];
+      for (let j = i; j < i + yearItemsPerPage && j < yearData.data.data.length; j++) {
+        groupItems.push(
+          <MDBListGroupItem key={j} onClick={()=>handleSchoolFilterYear(yearData.data.data[j].year_id,yearData.data.data[j].report_year)}>
+            {yearData.data.data[j].report_year}
+          </MDBListGroupItem>
+        );
+      }
+      yearGroups.push(
+        <MDBCol key={i} md='6' lg='4' className='mb-3 mb-lg-0'>
+          <MDBListGroup >{groupItems}</MDBListGroup>
+        </MDBCol>
+      );
+    }
+    return yearGroups;
   };
 
   const hideOpendFilterBox = ()=>{
