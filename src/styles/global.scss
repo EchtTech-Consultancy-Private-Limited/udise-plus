@@ -649,7 +649,7 @@ ul {
     }
 
     .filter_drodown {
-        width: 100%;
+        width: 100% !important;
         padding: 1px 12px 10px;
         min-height: 60px;
     }
@@ -742,9 +742,11 @@ ul {
         width: 350px !important;
         transform: translate(-56%, -21.9%) !important;
     }
+
     .filter_drodown .select-box.from-control li.nav-item.position-static:nth-child(3) ul.dropdown-menu.show.animation {
         transform: translate(-4.6%, -18%) !important;
     }
+
     .filter_drodown .select-box.from-control li.nav-item.position-static:last-child ul.dropdown-menu.show.animation {
         transform: translate(-55%, -21.9%) !important;
     }
@@ -1230,41 +1232,62 @@ ul {
         font-size: 12px;
     }
 
-    .filter_drodown.small-filter-box, .filter_drodown {
+    .filter_drodown.small-filter-box,
+    .filter_drodown {
         width: 130px;
     }
-    
+
 }
 
 @media (max-width: 991px) {
-    .infrastructure-main-card .tab-for-graph .customize-btn{
+    .infrastructure-main-card .tab-for-graph .customize-btn {
         float: left;
         margin-top: 0;
     }
-    .infrastructure-main-card .tab-for-graph .heading-sm1{margin: 0px;font-size: 18px;}
+
+    .infrastructure-main-card .tab-for-graph .heading-sm1 {
+        margin: 0px;
+        font-size: 18px;
+    }
+
     .infrastructure-main-card .tab-for-graph .tab-text-infra.download-rep {
         padding-left: 12px;
         padding-top: 10px;
     }
-    .infrastructure-main-card .tab-for-graph .filter-card{margin-bottom: 15px; padding-bottom: 15px;}
-    .infrastructure-main-card .tab-for-graph .filter-card button.header-dropdown-btn{margin-top: 15px;}
-    .filter-card .col-md-3.col-lg-3{
+
+    .infrastructure-main-card .tab-for-graph .filter-card {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+    }
+
+    .infrastructure-main-card .tab-for-graph .filter-card button.header-dropdown-btn {
+        margin-top: 15px;
+    }
+
+    .filter-card .col-md-3.col-lg-3 {
         margin-top: 0 !important;
         margin-bottom: 0px !important;
         padding-top: 0 !important;
     }
+
     .button-group-filter {
         padding: 0 !important;
         margin: 0 !important;
         margin-top: 15px !important;
     }
+
     p {
         font-size: 14px;
     }
-    .ag-side-bar.ag-unselectable.ag-focus-managed.ag-side-bar-right{height: 600px;} 
+
+    .ag-side-bar.ag-unselectable.ag-focus-managed.ag-side-bar-right {
+        height: 600px;
+    }
+
     .ag-virtual-list-container {
         overflow: hidden;
     }
+
     .ag-virtual-list-viewport {
         overflow: scroll;
     }
@@ -1275,20 +1298,39 @@ ul {
     .filter_drodown .filter-content {
         display: block;
     }
+
     .select-box.from-control ul.navbar-nav {
         flex-wrap: wrap;
     }
-    .filter_drodown .select-box.from-control li.nav-item.position-static{    width: 46%;
-        margin-top: 15px;}
 
-        .filter_drodown .select-box.from-control li.nav-item.position-static:first-child {
-            margin-right: 0px;
-        }
+    .filter_drodown .select-box.from-control li.nav-item.position-static {
+        width: 46%;
+        margin-top: 15px;
+    }
 
-        .filter_drodown .select-box.from-control li.nav-item.position-static:first-child ul.dropdown-menu.show.animation {
-            transform: translate(-7%, -21.9%) !important;
-        }
+    .filter_drodown .select-box.from-control li.nav-item.position-static:first-child {
+        margin-right: 0px;
+    }
+
+    .filter_drodown.small-filter-box .select-box.from-control li.nav-item.position-static:first-child ul.dropdown-menu.show.animation, .filter_drodown .select-box.from-control li.nav-item.position-static:first-child ul.dropdown-menu.show.animation {
+        transform: translate(-8%, -21.9%) !important;
+        width: 320px !important;        
+    }
+
+   .filter_drodown.small-filter-box .select-box.from-control li.nav-item.position-static:last-child ul.dropdown-menu.show.animation {
+        transform: translate(-56%, -22.5%) !important;
+        width: 320px !important;        
+    }
+
+    .filter_drodown .select-box.from-control {
+        visibility: visible;
+        opacity: 1;
+        transition: all 0.3s ease-out;
+    }
+    .filter_drodown .filter-content{padding: 10px;}
     
+    
+
 }
 
 
@@ -1415,12 +1457,14 @@ table {
 .ag-tool-panel-wrapper {
     border-radius: 20px 0px 0px 20px !important;
 }
+
 .ag-input-field-input {
     background: #F2F2F2 !important;
     border-radius: 100px !important;
     padding-left: 15px;
     padding-bottom: 0 !important;
 }
+
 input[class^=ag-][type=text]:focus {
     border-bottom-color: transparent !important;
 }
