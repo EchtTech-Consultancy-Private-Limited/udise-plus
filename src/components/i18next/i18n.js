@@ -4,6 +4,9 @@ import i18n from 'i18next';
 import enTranslation from '../../assets/locales/en/translation.json';
 import hiTranslation from '../../assets/locales/hi/translation.json';
 
+const languageKey = 'selectedLanguage';
+const selectedLanguage = localStorage.getItem(languageKey);
+
 i18n
     .use(initReactI18next)
     .init({
@@ -15,10 +18,10 @@ i18n
                 translation: hiTranslation,
             },
         },
-        lng: 'en',
+        lng: selectedLanguage || 'en',
         fallbackLng: 'en',
         interpolation: {
-            escapeValue: false, // react already safes from xss
+            escapeValue: false,
         },
     });
 

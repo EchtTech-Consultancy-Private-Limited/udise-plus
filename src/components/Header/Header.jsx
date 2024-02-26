@@ -31,8 +31,13 @@ const Header = () => {
   }
   const { t, i18n } = useTranslation();
   const changeLanguage = (e) => {
-    i18n.changeLanguage(e.target.value);
+    const selectedLanguage = e.target.value;
+    localStorage.setItem('selectedLanguage', selectedLanguage); // Save selected language to local storage
+    i18n.changeLanguage(selectedLanguage); // Change the language in i18n
   };
+
+
+
 
   const handleClickScroll = () => {
     const element = document.getElementById('content');
