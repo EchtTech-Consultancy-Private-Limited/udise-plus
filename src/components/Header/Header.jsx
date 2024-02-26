@@ -1,18 +1,14 @@
 import "./Header.scss";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import ministry from '../../assets/images/education_ministry.svg';
 import dropdownimg from '../../assets/images/dropdown-icon.svg'
 import SlidingTabBar from "./SlidingTabBar";
 import { useDispatch, useSelector } from 'react-redux';
 import { urls } from "../../constants/constants";
-import { useLocation,Link,useNavigate } from 'react-router-dom';
+import { useLocation,Link } from 'react-router-dom';
+import i18n from "../../components/i18next/i18n"; /*Don't remove it*/
 import {useTranslation} from "react-i18next";
-import i18n from "../../components/i18next/i18n";
-import { Switch } from "@mui/material";
 import { updateToggleDark } from "../../redux/slice/darkLightModeSlice";
-import Home from "../../pages/Home";
-
-
 
 const Header = () => {
   const location = useLocation();
@@ -88,9 +84,6 @@ const Header = () => {
       return "th";
     }
   };
-
-  const navigate = useNavigate()
-
   const goToPageOnClick = () =>{
       // navigate("/");
       window.location.href=window.location.origin;

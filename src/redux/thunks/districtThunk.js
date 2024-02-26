@@ -1,19 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios  from '../../services/utility';
+import externalAxios  from '../../services/external-utilityv1';
 
-const fetchDistrictData = createAsyncThunk(
+const fetchDistrictDataByStateCode = createAsyncThunk(
   "district/fetchDistrictData",
+  async ({state_code,year_id}) => {
+    const response = await externalAxios.get(`districts/${state_code}/${year_id}`);
+    return response.data;
+  }
+);
+
+const removeAllDistrict = createAsyncThunk(
+  "district/removeAllDistrct",
   async () => {
-    const response = await axios.get(`districts/get-all`);
-    return response.data;
+    return [];
   }
 );
-
-const fetchDistrictDataByStateId = createAsyncThunk(
-  "district/fetchDistrictData",
-  async (state_id) => {
-    const response = await axios.get(`districts/get-district/${state_id}`);
-    return response.data;
-  }
-);
-export  {fetchDistrictData,fetchDistrictDataByStateId};
+export  {fetchDistrictDataByStateCode,removeAllDistrict};

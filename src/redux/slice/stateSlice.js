@@ -5,14 +5,7 @@ const stateSlice = createSlice({
   name: "state",
   initialState: {
     data: {
-      data:[{
-        "id": 0,
-        "state_id": 0,
-        "state_code": 0,
-        "state_name": "",
-        "inityear": "",
-        "year_id": 0
-      }],
+      data:[],
       statusCode:0,
       message:"",
       success:false
@@ -29,7 +22,7 @@ const stateSlice = createSlice({
       })
       .addCase(fetchStateData.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = action.payload.data===""?[]:action.payload;
       })
       .addCase(fetchStateData.rejected, (state, action) => {
         state.isLoading = false;

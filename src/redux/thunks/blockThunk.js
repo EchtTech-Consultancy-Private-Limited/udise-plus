@@ -8,4 +8,11 @@ const fetchBlockByDistrictCode = createAsyncThunk(
     return response.data;
   }
 );
-export  {fetchBlockByDistrictCode};
+
+const removeAllBlock = createAsyncThunk(
+  "block/removeAllBlockData",
+  async () => {
+    return [];
+  }
+);
+export  {fetchBlockByDistrictCode,removeAllBlock};
