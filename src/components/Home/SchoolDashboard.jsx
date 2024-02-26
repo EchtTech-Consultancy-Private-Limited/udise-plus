@@ -5,7 +5,7 @@ import schoolgraph from '../../assets/images/s-graph.svg'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import {useTranslation} from "react-i18next";
-// require('highcharts/modules/exporting')(Highcharts);
+require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
 
@@ -102,19 +102,19 @@ export default function SchoolDashboard() {
                                             <div className="card-box row">
                                                 <div className="col-md-6 mb-5">
                                                     <div className="main-text-c m-big">14.89 Lakhs</div>
-                                                    <span className="sub-text-c text-green">Total Schools</span>
+                                                    <span className="sub-text-c text-green">{t("total_schools")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-5">
                                                     <div className="main-text-c m-big">11.96 Lakhs</div>
-                                                    <span className="sub-text-c text-green">Secondary Schools</span>
+                                                    <span className="sub-text-c text-green">{t("secondary_schools")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <div className="main-text-c m-big">11.96 Lakhs</div>
-                                                    <span className="sub-text-c text-green">Higher Sec. Schools</span>
+                                                    <span className="sub-text-c text-green">{t("higher_sec_school")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <div className="main-text-c m-big">11.96 Lakhs</div>
-                                                    <span className="sub-text-c text-green">Elementary Schools</span>
+                                                    <span className="sub-text-c text-green">{t("elementary_schools")}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -127,7 +127,7 @@ export default function SchoolDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number of Schools Management-Wise</h2>
+                                                    <h2 className="heading-sm">{t("number_of_schools_management_wise")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1 highcharts-button-normal'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -248,7 +248,7 @@ export default function SchoolDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number of Schools by Level of Education</h2>
+                                                    <h2 className="heading-sm">{t("number_of_schools_by_level_of_education")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -326,17 +326,17 @@ export default function SchoolDashboard() {
                                                                                 colorByPoint: true,
                                                                                 data: [
                                                                                     {
-                                                                                        name: 'Elementry',
+                                                                                        name: 'Elementary',
                                                                                         y: 65,
                                                                                         color: '#BCE263'
                                                                                     },
                                                                                     {
-                                                                                        name: 'Secondry',
+                                                                                        name: 'Secondary',
                                                                                         y: 20,
                                                                                         color: '#751539'
                                                                                     },
                                                                                     {
-                                                                                        name: 'Higher Secondry',
+                                                                                        name: 'Higher Secondary',
                                                                                         y: 15,
                                                                                         color: '#E6694A'
                                                                                     }
@@ -363,7 +363,7 @@ export default function SchoolDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number of Schools based on School Types</h2>
+                                                    <h2 className="heading-sm" style={{ whiteSpace: 'pre-line' }}>{t("number_of_schools_based_on_school_types")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -479,16 +479,16 @@ export default function SchoolDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number of Schools by Type and School Category</h2>
+                                                    <h2 className="heading-sm" style={{ whiteSpace: 'pre-line' }}>{t("number_of_schools_by_type_and_school_category")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>
                                                     </div>
                                                 </div>
 
-                                                <Tabs defaultActiveKey="Elementry" id="uncontrolled-tab-example" className="">
+                                                <Tabs defaultActiveKey="Elementary" id="uncontrolled-tab-example" className="">
 
-                                                    <Tab eventKey="Elementry" title="Elementry">
+                                                    <Tab eventKey="Elementary" title={t("elementary")}>
 
                                                         <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
@@ -561,7 +561,7 @@ export default function SchoolDashboard() {
                                                                                 colorByPoint: true,
                                                                                 data: [
                                                                                     {
-                                                                                        name: 'Elementry',
+                                                                                        name: 'Elementary',
                                                                                         y: 65,
                                                                                         color: '#BCE263'
                                                                                     },
@@ -587,7 +587,7 @@ export default function SchoolDashboard() {
                                                         </div>
 
                                                     </Tab>
-                                                    <Tab eventKey="Secondary" title="Secondary">
+                                                    <Tab eventKey="Secondary" title={t("secondary")}>
                                                     <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact
@@ -659,7 +659,7 @@ export default function SchoolDashboard() {
                                                                                 colorByPoint: true,
                                                                                 data: [
                                                                                     {
-                                                                                        name: 'Elementry',
+                                                                                        name: 'Elementary',
                                                                                         y: 65,
                                                                                         color: '#BCE263'
                                                                                     },
@@ -684,7 +684,7 @@ export default function SchoolDashboard() {
                                                             </div>
                                                         </div>
                                                     </Tab>
-                                                    <Tab eventKey="Higher Secondory" title="Higher Secondory">
+                                                    <Tab eventKey="Higher Secondory" title={t("higher_secondary")}>
                                                     <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact
@@ -756,7 +756,7 @@ export default function SchoolDashboard() {
                                                                                 colorByPoint: true,
                                                                                 data: [
                                                                                     {
-                                                                                        name: 'Elementry',
+                                                                                        name: 'Elementary',
                                                                                         y: 65,
                                                                                         color: '#BCE263'
                                                                                     },

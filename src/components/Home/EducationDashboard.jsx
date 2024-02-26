@@ -16,8 +16,9 @@ import HighchartsReact from 'highcharts-react-official'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDistrictData } from '../../redux/thunks/districtThunk';
 import {useTranslation} from "react-i18next";
-// require('highcharts/modules/exporting')(Highcharts);
+require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
+require("highcharts/modules/export-data.js")(Highcharts);
 
 
 (function (H) {
@@ -118,39 +119,39 @@ export default function EducationDashboard() {
                                         <div className="col-md-4 col-lg-4">
                                             <div className="card-box">
                                                 <img src={school} alt="school" className='card-img' />
-                                                <i className="sub-text-c text-green">No. Of School</i>
+                                                <i className="sub-text-c text-green">{t("no_of_schools")}</i>
                                                 <div className="main-text-c m-big">14891115</div>
 
-                                                <span className="sub-text-c">Urban</span>
+                                                <span className="sub-text-c">{t("urban")}</span>
                                                 <div className="main-text-c">2.54 Lakhs</div>
 
-                                                <span className="sub-text-c">Rural</span>
+                                                <span className="sub-text-c">{t("rural")}</span>
                                                 <div className="main-text-c">12.34 Lakhs</div>
                                             </div>
                                         </div>
                                         <div className="col-md-4 col-lg-4">
                                             <div className="card-box">
                                                 <img src={Teachers} alt="Teachers" className='card-img' />
-                                                <i className="sub-text-c text-green">No. Of Teachers</i>
+                                                <i className="sub-text-c text-green">{t("no_of_teachers")}</i>
                                                 <div className="main-text-c m-big">9507123</div>
 
-                                                <span className="sub-text-c">Urban</span>
+                                                <span className="sub-text-c">{t("urban")}</span>
                                                 <div className="main-text-c">48.76 Lakhs</div>
 
-                                                <span className="sub-text-c">Rural</span>
+                                                <span className="sub-text-c">{t("rural")}</span>
                                                 <div className="main-text-c">46.30 Lakhs</div>
                                             </div>
                                         </div>
                                         <div className="col-md-4 col-lg-4">
                                             <div className="card-box">
                                                 <img src={Students} alt="Students" className='card-img' />
-                                                <i className="sub-text-c text-green">No. Of Students</i>
+                                                <i className="sub-text-c text-green">{t("no_of_students")}</i>
                                                 <div className="main-text-c m-big">265235830</div>
 
-                                                <span className="sub-text-c">Urban</span>
+                                                <span className="sub-text-c">{t("urban")}</span>
                                                 <div className="main-text-c">12.73 Lakhs</div>
 
-                                                <span className="sub-text-c">Rural</span>
+                                                <span className="sub-text-c">{t("rural")}</span>
                                                 <div className="main-text-c">13.79 Lakhs</div>
                                             </div>
                                         </div>
@@ -159,19 +160,19 @@ export default function EducationDashboard() {
                                 <div className="card-box-impact mt-4">
                                     <div className="row">
                                         <div className="col-md-12 mb-4">
-                                            <h2 className="heading-sm">Impact of Various Schemes and Initiatives</h2>
+                                            <h2 className="heading-sm">{t("impact_of_various_schemes_and_initiatives")}</h2>
                                         </div>
 
 
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
                                                 <img src={ArrowUP} alt="school" className='card-img-impact' />
-                                                <div className="main-text-c m-big">Gross Enrollment <br /> Ratio</div>
+                                                <div className="main-text-c m-big" style={{ whiteSpace: 'pre-line' }}>{t("gross_enrollment_ratio")}</div>
 
-                                                <div className="main-text-c">Elementry</div>
+                                                <div className="main-text-c">{t("elementary")}</div>
                                                 <span className="sub-text-c">100.13%</span>
 
-                                                <div className="main-text-c">Secondry</div>
+                                                <div className="main-text-c">{t("secondary")}</div>
                                                 <span className="sub-text-c">79.86%</span>
                                             </div>
                                         </div>
@@ -179,12 +180,12 @@ export default function EducationDashboard() {
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
                                                 <img src={Arrowdown} alt="school" className='card-img-impact' />
-                                                <div className="main-text-c m-big">Dropout <br /> Rate</div>
+                                                <div className="main-text-c m-big" style={{ whiteSpace: 'pre-line' }}>{t("dropout_rate")}</div>
 
-                                                <div className="main-text-c">Primary</div>
+                                                <div className="main-text-c">{t("primary")}</div>
                                                 <span className="sub-text-c">100.13%</span>
 
-                                                <div className="main-text-c">Secondry</div>
+                                                <div className="main-text-c">{t("secondary")}</div>
                                                 <span className="sub-text-c">79.86%</span>
                                             </div>
                                         </div>
@@ -193,12 +194,12 @@ export default function EducationDashboard() {
                                             <div className="impact-box-content">
                                                 <img src={transition_img} alt="school" className='card-img-impact' />
                                                
-                                                <div className="main-text-c m-big">Transition <br /> Rate</div>
+                                                <div className="main-text-c m-big" style={{ whiteSpace: 'pre-line' }}>{t("transition_rate")}</div>
 
-                                                <div className="main-text-c">Primary to Upper Primary</div>
+                                                <div className="main-text-c">{t("primary_to_upper_primary")}</div>
                                                 <span className="sub-text-c">100.13%</span>
 
-                                                <div className="main-text-c">Upper Primary to Secondary</div>
+                                                <div className="main-text-c">{t("upper_primary_to_secondary")}</div>
                                                 <span className="sub-text-c">79.86%</span>
                                             </div>
                                         </div>
@@ -210,12 +211,12 @@ export default function EducationDashboard() {
                                                 <img src={std2} alt="school" className='big-img'/>
                                                 <img src={std1} alt="school" />
                                                 </div>
-                                                <div className="main-text-c m-big">Pupil - Teacher <br /> Ratio</div>
+                                                <div className="main-text-c m-big" style={{ whiteSpace: 'pre-line' }}>{t("pupil_teacher_ratio")}</div>
 
-                                                <div className="main-text-c">Primary</div>
+                                                <div className="main-text-c">{t("primary")}</div>
                                                 <span className="sub-text-c">100.13%</span>
 
-                                                <div className="main-text-c">Upper Primary</div>
+                                                <div className="main-text-c">{t("upper_primary")}</div>
                                                 <span className="sub-text-c">79.86%</span>
                                             </div>
                                         </div>
@@ -223,7 +224,7 @@ export default function EducationDashboard() {
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
                                                 <img src={drinkinwater} alt="school" className='card-img-impact' />
-                                                <div className="main-text-c m-big">Schools with Drinking Water</div>
+                                                <div className="main-text-c m-big" style={{ whiteSpace: 'pre-line' }}>{t("schools_with_drinking_water")}</div>
 
                                                 <span className="sub-text-c sub-main-text">97.6%</span>
                                             </div>
@@ -232,83 +233,11 @@ export default function EducationDashboard() {
                                         <div className="col-md-4 col-lg-4">
                                             <div className="impact-box-content">
                                                 <img src={power} alt="school" className='card-img-impact' />
-                                                <div className="main-text-c m-big">Schools with Electricity Connection</div>
-                                                <span className="sub-text-c sub-main-text">97.6%</span>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-4 col-lg-4">
-                                            <div className="impact-box-content">
-                                                <img src={ArrowUP} alt="school" className='card-img-impact' />
-                                                <div className="main-text-c m-big">Gross Enrollment <br /> Ratio</div>
-
-                                                <div className="main-text-c">Elementry</div>
-                                                <span className="sub-text-c">100.13%</span>
-
-                                                <div className="main-text-c">Secondry</div>
-                                                <span className="sub-text-c">79.86%</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="col-md-4 col-lg-4"> 
-                                            <div className="impact-box-content">
-                                                <img src={Arrowdown} alt="school" className='card-img-impact' />
-                                                <div className="main-text-c m-big">Dropout <br /> Rate</div>
-
-                                                <div className="main-text-c">Primary</div>
-                                                <span className="sub-text-c">100.13%</span>
-
-                                                <div className="main-text-c">Secondry</div>
-                                                <span className="sub-text-c">79.86%</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="col-md-4 col-lg-4">
-                                            <div className="impact-box-content">
-                                            <img src={transition_img} alt="school" className='card-img-impact' />
-                                               
-                                                <div className="main-text-c m-big">Transition <br /> Rate</div>
-
-                                                <div className="main-text-c">Primary to Upper Primary</div>
-                                                <span className="sub-text-c">100.13%</span>
-
-                                                <div className="main-text-c">Upper Primary to Secondary</div>
-                                                <span className="sub-text-c">79.86%</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="col-md-4 col-lg-4">
-                                            <div className="impact-box-content">
-                                            <div className="img-multi-box">
-                                                <img src={std1} alt="school" />
-                                                <img src={std2} alt="school" className='big-img'/>
-                                                <img src={std1} alt="school" />
-                                                </div>
-                                                <div className="main-text-c m-big">Pupil - Teacher <br /> Ratio</div>
-
-                                                <div className="main-text-c">Primary</div>
-                                                <span className="sub-text-c">100.13%</span>
-
-                                                <div className="main-text-c">Upper Primary</div>
-                                                <span className="sub-text-c">79.86%</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="col-md-4 col-lg-4">
-                                            <div className="impact-box-content">
-                                                <img src={drinkinwater} alt="school" className='card-img-impact' />
-                                                <div className="main-text-c m-big">Schools with Drinking Water</div>
-
+                                                <div className="main-text-c m-big" style={{ whiteSpace: 'pre-line' }}>{t("schools_with_electricity_connection")}</div>
                                                 <span className="sub-text-c sub-main-text">97.6%</span>
                                             </div>
                                         </div>
 
-                                        <div className="col-md-4 col-lg-4">
-                                            <div className="impact-box-content">
-                                                <img src={power} alt="school" className='card-img-impact' />
-                                                <div className="main-text-c m-big">Schools with Electricity Connection</div>
-                                                <span className="sub-text-c sub-main-text">97.6%</span>
-                                            </div>
-                                        </div>
 
                                     </div>
                                 </div>
@@ -318,7 +247,7 @@ export default function EducationDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Education Data By Management Type</h2>
+                                                    <h2 className="heading-sm">{t("education_data_by_management_type")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -327,10 +256,10 @@ export default function EducationDashboard() {
 
                                                 <Tabs defaultActiveKey="School" id="uncontrolled-tab-example" className="">
 
-                                                    <Tab eventKey="School" title="School">
+                                                    <Tab eventKey="School" title={t("school")}>
 
                                                         <div className="piechart-box row mt-4">
-                                                            <div className="col-md-12">
+                                                        <div className="col-md-12">
                                                                 <HighchartsReact
                                                                     highcharts={Highcharts}
                                                                     options={{
@@ -346,7 +275,7 @@ export default function EducationDashboard() {
                                                                             }
                                                                         },
                                                                         title: {
-                                                                            text: 'Total Numbers of Student'
+                                                                            text: 'Education Data By Management Type'
                                                                         },
                                                                         tooltip: {
                                                                             valueSuffix: '%'
@@ -390,29 +319,10 @@ export default function EducationDashboard() {
                                                                         legend: {
                                                                             layout: 'vertical',
                                                                             align: 'left',
-                                                                            verticalAlign: 'middle',
+                                                                            verticalAlign: 'middle', 
                                                                             itemMarginTop: 10,
                                                                             itemMarginBottom: 10
                                                                         },
-
-                                                                        responsive: {
-                                                                            rules: [{
-                                                                              condition: {
-                                                                                maxWidth: 767
-                                                                              },
-                                                                              chartOptions: {
-                                                                                legend: {
-                                                                                    layout: 'horizontal',
-                                                                                    align: 'center',
-                                                                                    verticalAlign: 'bottom',                                                                                 
-                                                                                },
-                                                                                dataLabels: {
-                                                                                    enabled: false,
-                                                                                },
-                                                                              }
-                                                                            }]
-                                                                          },
-
                                                                         series: [
                                                                             {
                                                                                 name: 'Percentage',
@@ -420,7 +330,7 @@ export default function EducationDashboard() {
                                                                                 data: [
                                                                                     {
                                                                                         name: 'Government',
-                                                                                        y: 45,
+                                                                                        y: 40,
                                                                                         color: '#F5BF55'
                                                                                     },
                                                                                     {
@@ -430,7 +340,7 @@ export default function EducationDashboard() {
                                                                                     },
                                                                                     {
                                                                                         name: 'Aided',
-                                                                                        y: 15,
+                                                                                        y: 20,
                                                                                         color: '#BCE263'
                                                                                     },
                                                                                     {
@@ -444,13 +354,13 @@ export default function EducationDashboard() {
                                                                         ]
                                                                     }}
                                                                     // allowChartUpdate={true}
-                                                                    immutable={true} 
+                                                                    immutable={true}
                                                                 />
                                                             </div>
                                                         </div>
 
                                                     </Tab>
-                                                    <Tab eventKey="Teacher" title="Teacher">
+                                                    <Tab eventKey="Teacher" title={t("teacher")}>
                                                         <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact
@@ -468,7 +378,7 @@ export default function EducationDashboard() {
                                                                             }
                                                                         },
                                                                         title: {
-                                                                            text: 'Total Numbers of Student'
+                                                                            text: 'Education Data By Management Type'
                                                                         },
                                                                         tooltip: {
                                                                             valueSuffix: '%'
@@ -552,7 +462,7 @@ export default function EducationDashboard() {
                                                             </div>
                                                         </div>
                                                     </Tab>
-                                                    <Tab eventKey="Student" title="Student">
+                                                    <Tab eventKey="Student" title={t("student")}>
                                                         <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact
@@ -570,7 +480,7 @@ export default function EducationDashboard() {
                                                                             }
                                                                         },
                                                                         title: {
-                                                                            text: 'Total Numbers of Student'
+                                                                            text: 'Education Data By Management Type'
                                                                         },
                                                                         tooltip: {
                                                                             valueSuffix: '%'
@@ -672,7 +582,7 @@ export default function EducationDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Enrollement By Level Of Education & Gender</h2>
+                                                    <h2 className="heading-sm">{t("enrollment_by_level_of_education_gender")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -688,7 +598,7 @@ export default function EducationDashboard() {
                                                                     type: 'bar'
                                                                 },
                                                                 xAxis: {
-                                                                    categories: ['Higher-Secondory', 'Secondry', 'Upper Primary', 'Primary', 'Pre-Primary'],
+                                                                    categories: ['Higher-Secondary', 'Secondary', 'Upper Primary', 'Primary', 'Pre-Primary'],
                                                                     title: {
                                                                         text: null
                                                                     },
@@ -704,6 +614,9 @@ export default function EducationDashboard() {
                                                                         overflow: 'justify'
                                                                     },
                                                                     gridLineWidth: 0
+                                                                },
+                                                                title: {
+                                                                    text: 'Enrollement By Level Of Education & Gender'
                                                                 },
                                                                 tooltip: {
                                                                     valueSuffix: 'k'
@@ -762,7 +675,7 @@ export default function EducationDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Status of Infrastructure in Schools (Management Wise)</h2>
+                                                    <h2 className="heading-sm" style={{ whiteSpace: 'pre-line' }}>{t("status_of_infrastructure_in_schools")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -771,7 +684,7 @@ export default function EducationDashboard() {
 
                                                 <Tabs defaultActiveKey="Girl Toilet" id="uncontrolled-tab-example" className="">
 
-                                                    <Tab eventKey="Girl Toilet" title="Girl Toilet">
+                                                    <Tab eventKey="Girl Toilet" title={t("girl_toilet")}>
                                                         <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact
@@ -793,7 +706,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
-
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
                                                                                 'Total: {point.stackTotal}'
@@ -849,7 +764,7 @@ export default function EducationDashboard() {
                                                             </div>
                                                         </div>
                                                     </Tab>
-                                                    <Tab eventKey="Library" title="Library">
+                                                    <Tab eventKey="Library" title={t("library")}>
                                                     <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact
@@ -870,6 +785,9 @@ export default function EducationDashboard() {
                                                                             title: {
                                                                                 text: ''
                                                                             }
+                                                                        },
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
                                                                         },
 
                                                                         tooltip: {
@@ -910,7 +828,7 @@ export default function EducationDashboard() {
                                                             </div>
                                                         </div>
                                                     </Tab>
-                                                    <Tab eventKey="Library With Books" title="Library With Books">
+                                                    <Tab eventKey="Library With Books" title={t("library_with_books")}>
                                                     <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact
@@ -932,7 +850,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
-
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
                                                                                 'Total: {point.stackTotal}'
@@ -971,7 +891,7 @@ export default function EducationDashboard() {
                                                             </div>
                                                         </div>
                                                     </Tab>
-                                                    <Tab eventKey="Electricity" title="Electricity">
+                                                    <Tab eventKey="Electricity" title={t("electricity")}>
                                                     <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact
@@ -993,7 +913,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
-
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
                                                                                 'Total: {point.stackTotal}'
@@ -1032,7 +954,7 @@ export default function EducationDashboard() {
                                                             </div>
                                                         </div>
                                                     </Tab>
-                                                    <Tab eventKey="Drinking Water" title="Drinking Water">
+                                                    <Tab eventKey="Drinking Water" title={t("drinking_water")}>
                                                     <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact
@@ -1054,7 +976,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
-
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
                                                                                 'Total: {point.stackTotal}'
@@ -1093,7 +1017,7 @@ export default function EducationDashboard() {
                                                             </div>
                                                         </div>
                                                     </Tab>
-                                                    <Tab eventKey="Handwash" title="Handwash">
+                                                    <Tab eventKey="Handwash" title={t("handwash")}>
                                                     <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact
@@ -1115,7 +1039,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
-
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
                                                                                 'Total: {point.stackTotal}'
@@ -1154,7 +1080,7 @@ export default function EducationDashboard() {
                                                             </div>
                                                         </div>
                                                     </Tab>
-                                                    <Tab eventKey="Medical Facility" title="Medical Facility">
+                                                    <Tab eventKey="Medical Facility" title={t("medical_facility")}>
                                                     <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact
@@ -1176,7 +1102,9 @@ export default function EducationDashboard() {
                                                                                 text: ''
                                                                             }
                                                                         },
-
+                                                                        title: {
+                                                                            text: 'Status of Infrastructure in Schools (Management Wise)'
+                                                                        },
                                                                         tooltip: {
                                                                             format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
                                                                                 'Total: {point.stackTotal}'

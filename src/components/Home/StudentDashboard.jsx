@@ -3,7 +3,7 @@ import dashboard from '../../assets/images/S_dashboard.svg'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import {useTranslation} from "react-i18next";
-// require('highcharts/modules/exporting')(Highcharts);
+require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
 
@@ -102,19 +102,19 @@ export default function StudentDashboard() {
                                             <div className="card-box row">
                                                 <div className="col-md-6 mb-5">
                                                     <div className="main-text-c m-big">26.52 Crores</div>
-                                                    <span className="sub-text-c text-green">Total Students</span>
+                                                    <span className="sub-text-c text-green">{t("total_students")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-5">
                                                     <div className="main-text-c m-big">19.81 Crores</div>
-                                                    <span className="sub-text-c text-green">Elementary Students</span>
+                                                    <span className="sub-text-c text-green">{t("elementary_students")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <div className="main-text-c m-big">3.85 Crores</div>
-                                                    <span className="sub-text-c text-green">Secondary Students</span>
+                                                    <span className="sub-text-c text-green">{t("secondary_students")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <div className="main-text-c m-big">2.85 Crores</div>
-                                                    <span className="sub-text-c text-green">Higher Sec. Students</span>
+                                                    <span className="sub-text-c text-green">{t("higher_secondary_students")}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -127,7 +127,7 @@ export default function StudentDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number of Students Management-Wise</h2>
+                                                    <h2 className="heading-sm">{t("number_of_students_management_wise")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1 highcharts-button-normal'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -249,7 +249,7 @@ export default function StudentDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Gross Enrolment Ratio</h2>
+                                                    <h2 className="heading-sm">{t("gross_enrolment_ratio")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -341,7 +341,7 @@ export default function StudentDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Net Enrolment Ratio</h2>
+                                                    <h2 className="heading-sm">{t("net_enrolment_ratio")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -433,7 +433,7 @@ export default function StudentDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number Boys and Girls </h2>
+                                                    <h2 className="heading-sm">{t("number_boys_and_girls")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>

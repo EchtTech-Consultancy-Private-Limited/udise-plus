@@ -8,6 +8,7 @@ import StudentDashboard from '../components/Home/StudentDashboard';
 import FilterDropdown from '../components/Home/FilterDropdown';
 import { useSelector } from 'react-redux';
 import Reports from '../components/Report/Reports';
+import {useTranslation} from "react-i18next";
 
 export default function Home() {
   const header_name = useSelector(state => state.header);
@@ -21,6 +22,9 @@ export default function Home() {
   const handleRemoveClass = () => {
     setCustomClass("open_map_sec");
   }
+
+  const { t } = useTranslation();
+
   return (
     <>
 
@@ -31,7 +35,7 @@ export default function Home() {
             {
               header_name.headerName === "All Reports" ? <Reports/> :
                 <>
-                  <button className="header-dropdown-btn open-map-btn" title="Open Map" onClick={() => handleRemoveClass('close_map_sec')}> Open Map</button>
+                  <button className="header-dropdown-btn open-map-btn" title="Open Map" onClick={() => handleRemoveClass('close_map_sec')}> {t("open_map_button")}</button>
                   <div className="col-sm-12 col-md-6 col-lg-6 map_hide_on_click_btn">
                     <div className="map-sec-h">
                       <HomeMap handleClass={handleClass} customClass={customClass} />

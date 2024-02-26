@@ -4,7 +4,8 @@ const headerSlice = createSlice({
     name: 'header',
     initialState:{
         headerName:"Education Dashboard",
-        removeBeforeAfterClass:'main-card-home'
+        removeBeforeAfterClass:'main-card-home',
+        
     },
     reducers: {
       updateHeaderName(state,action) {
