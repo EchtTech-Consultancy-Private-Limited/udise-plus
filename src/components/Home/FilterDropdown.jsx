@@ -49,6 +49,14 @@ export default function FilterDropdown() {
     dispatch(fetchStateData());
     dispatch(fetchYearData());
 
+    const children = document.getElementsByClassName("position-static");  
+    let filter_drodown = document.getElementsByClassName('filter_drodown')[0];
+    if (children.length ==2) {
+      filter_drodown?.classList?.add('small-filter-box');
+    } else {
+      filter_drodown?.classList?.remove('small-filter-box');
+    }
+
   },[]);
 
   const handleSchoolFilterYear = (year,year_report)=>{
@@ -236,16 +244,18 @@ if(location.pathname!=="/" && selectedDistrict!=="District"){
       box.classList.remove('show');
     });
   }
-
+ 
   return (
     <>
-      <div className="filter_drodown">
+      <div className={`filter_drodown `}>
         <div className="filter-content">
           <h6 className="mb-0">Apply Filters</h6>
           <div className="select-box from-control">
             <MDBNavbar expand='lg' light>
               <MDBContainer fluid className="p-0">
-                <MDBNavbarNav className='me-auto ps-lg-0'>
+                <MDBNavbarNav className='me-auto ps-lg-0 smallfilter'>
+
+
 
                   <MDBNavbarItem className='position-static'>
                     <MDBDropdown>
@@ -268,7 +278,7 @@ if(location.pathname!=="/" && selectedDistrict!=="District"){
                           </MDBRow>
                         </MDBContainer>
                       </MDBDropdownMenu>
-                    </MDBDropdown>
+                    </MDBDropdown>                  
                   </MDBNavbarItem>
                   
                   {/* District List */}

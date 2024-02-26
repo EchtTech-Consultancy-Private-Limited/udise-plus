@@ -99,7 +99,7 @@ const Header = () => {
               <div className="header-top-content">
                 <div className="header-top-skipwrap top-date-time">
                   <ul>
-                    <li><a href="#">{formatDateString(currentDateTime)}</a></li>
+                    <li>{formatDateString(currentDateTime)}</li>
                     <li><a href="#">{currentDateTime.toLocaleTimeString()}</a></li>
                   </ul>
                 </div>
