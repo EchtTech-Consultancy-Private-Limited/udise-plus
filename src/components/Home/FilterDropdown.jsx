@@ -14,7 +14,7 @@ import {
 } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStateData } from "../../redux/thunks/stateThunk";
-import { fetchDistrictDataByStateCode,removeAllDistrict} from "../../redux/thunks/districtThunk";
+import { fetchDistrictDataByStateCode, removeAllDistrict } from "../../redux/thunks/districtThunk";
 import { fetchYearData } from "../../redux/thunks/yearThunk";
 import {
   allFilter,
@@ -55,18 +55,18 @@ export default function FilterDropdown() {
   useEffect(() => {
     dispatch(fetchStateData(filterObj.year_id));
     dispatch(fetchYearData());
-    const children = document.getElementsByClassName("position-static");  
+    const children = document.getElementsByClassName("position-static");
     let filter_drodown = document.getElementsByClassName('filter_drodown')[0];
-    if (children.length ==2) {
+    if (children.length == 2) {
       filter_drodown?.classList?.add('small-filter-box');
     } else {
       filter_drodown?.classList?.remove('small-filter-box');
     }
   }, []);
 
-  
 
-  const handleSchoolFilterYear = (year,year_report)=>{
+
+  const handleSchoolFilterYear = (year, year_report) => {
     setSelectedYear(year_report);
     filterObj.year_id = year;
     dispatch(allFilter(filterObj));
@@ -76,7 +76,7 @@ export default function FilterDropdown() {
   const handleSchoolFilterState = (state_code, state_name) => {
     setSelectedState(state_name);
     setSelectedDistrict("District");
-    
+
     setSelectedBlock("Block");
     setSelectedBlockClone("Block");
     if (state_name === "All India/National") {
@@ -100,7 +100,7 @@ export default function FilterDropdown() {
       filterObj.region_code = state_code;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
-      dispatch(fetchDistrictDataByStateCode({state_code:state_code,year_id:filterObj.year_id}));
+      dispatch(fetchDistrictDataByStateCode({ state_code: state_code, year_id: filterObj.year_id }));
       dispatch(removeAllBlock());
       setSelectedDistrictClone(state_name);
     }
@@ -300,7 +300,7 @@ export default function FilterDropdown() {
       box.classList.remove("show");
     });
   }
- 
+
   return (
     <>
       <div className={`filter_drodown `}>
@@ -327,12 +327,17 @@ export default function FilterDropdown() {
                         }}
                       >
                         <MDBContainer className="droplist">
-                          <MDBRow className="my-1">
+                          <MDBRow className="my-0">
+                            <li class="list-group-item mb-3">
+                              <div className="search-barfilter mx-2">
+                                <input type="search" placeholder="Search here..." className="form-control" />
+                              </div>
+                            </li>
                             {<>{renderStateListGroup()}</>}
                           </MDBRow>
                         </MDBContainer>
                       </MDBDropdownMenu>
-                    </MDBDropdown>                  
+                    </MDBDropdown>
                   </MDBNavbarItem>
 
                   {/* District List */}
@@ -354,6 +359,11 @@ export default function FilterDropdown() {
                         >
                           <MDBContainer className="droplist">
                             <MDBRow className="my-1">
+                              <li class="list-group-item mb-3">
+                                <div className="search-barfilter mx-2">
+                                  <input type="search" placeholder="Search here..." className="form-control" />
+                                </div>
+                              </li>
                               {<>{renderDistrictListGroup()}</>}
                             </MDBRow>
                           </MDBContainer>
@@ -379,6 +389,11 @@ export default function FilterDropdown() {
                         >
                           <MDBContainer className="droplist">
                             <MDBRow className="my-1">
+                              <li class="list-group-item mb-3">
+                                <div className="search-barfilter mx-2">
+                                  <input type="search" placeholder="Search here..." className="form-control" />
+                                </div>
+                              </li>
                               {<>{renderBlockListGroup()}</>}
                             </MDBRow>
                           </MDBContainer>
