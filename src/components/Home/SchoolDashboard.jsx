@@ -479,7 +479,7 @@ export default function SchoolDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number of Schools by Type and School Category</h2>
+                                                    <h2 className="heading-sm" style={{ whiteSpace: 'pre-line' }}>{t("number_of_schools_by_type_and_school_category")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -488,7 +488,7 @@ export default function SchoolDashboard() {
 
                                                 <Tabs defaultActiveKey="Elementary" id="uncontrolled-tab-example" className="">
 
-                                                    <Tab eventKey="Elementary" title="Elementary">
+                                                    <Tab eventKey="Elementary" title={t("elementary")}>
 
                                                         <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
@@ -587,7 +587,7 @@ export default function SchoolDashboard() {
                                                         </div>
 
                                                     </Tab>
-                                                    <Tab eventKey="Secondary" title="Secondary">
+                                                    <Tab eventKey="Secondary" title={t("secondary")}>
                                                     <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact
@@ -684,7 +684,7 @@ export default function SchoolDashboard() {
                                                             </div>
                                                         </div>
                                                     </Tab>
-                                                    <Tab eventKey="Higher Secondory" title="Higher Secondory">
+                                                    <Tab eventKey="Higher Secondory" title={t("higher_secondary")}>
                                                     <div className="piechart-box row mt-4">
                                                             <div className="col-md-12">
                                                                 <HighchartsReact

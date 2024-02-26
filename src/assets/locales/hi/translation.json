@@ -32,6 +32,7 @@
     "transition_rate":"संक्रमण\nदर",
     "elementary":"प्राथमिक",
     "secondary": "माध्यमिक",
+    "higher_secondary": "उच्च माध्यमिक",
     "primary": "प्राथमिक",
     "pupil_teacher_ratio":"विद्यार्थी-शिक्षक\nअनुपात",
     "primary_to_upper_primary": "प्राथमिक से उच्च प्राथमिक",
@@ -59,5 +60,32 @@
     "higher_sec_school": "हायर सेक. विद्यालय",
     "elementary_schools": "प्राथमिक विद्यालय",
     "number_of_schools_by_level_of_education": "शिक्षा के स्तर के अनुसार स्कूलों की संख्या",
-    "number_of_schools_based_on_school_types": "स्कूल के प्रकार के आधार पर स्कूलों की\nसंख्या"
+    "number_of_schools_based_on_school_types": "स्कूल के प्रकार के आधार पर स्कूलों की\nसंख्या",
+    "number_of_schools_by_type_and_school_category": "प्रकार और स्कूल श्रेणी के अनुसार\nस्कूलों की संख्या",
+    "total_teachers": "कुल शिक्षक",
+    "elementary_teachers": "प्रारंभिक शिक्षक",
+    "secondary_teachers": "माध्यमिक शिक्षक",
+    "higher_sec_teachers": "उच्चतर माध्यमिक शिक्षक",
+    "number_of_teachers_management_wise": "प्रबंधन के अनुसार शिक्षकों की संख्या",
+    "number_of_teachers_by_level_of_education": "शिक्षा के स्तर के अनुसार शिक्षकों की संख्या",
+    "number_of_male_female_teacher": "पुरुष-महिला शिक्षकों की संख्या",
+    "total_students": "कुल छात्र",
+    "elementary_students": "प्राथमिक छात्र",
+    "secondary_students": "माध्यमिक छात्र",
+    "higher_secondary_students": "उच्चतर माध्यमिक छात्र",
+    "number_of_students_management_wise": "प्रबंधन-वार छात्रों की संख्या",
+    "gross_enrolment_ratio": "सकल नामांकन अनुपात",
+    "net_enrolment_ratio": "शुद्ध नामांकन अनुपात",
+    "number_boys_and_girls": "नंबर लड़के और लड़कियाँ",
+    "all_reports_page": {
+        "reports": "रिपोर्ट",
+        "search_for_reports": "रिपोर्ट खोजें",
+        "download_udise_yearly_report": "UDISE वार्षिक\nरिपोर्ट डाउनलोड करें",
+        "frequently_used_reports": "अक्सर प्रयुक्त रिपोर्टें"
+    },
+    "screen_reader": {
+        "title": "स्क्रीन रीडर एक्सेस",
+        "description": "क्वालिटी एश्योरेंस महानिदेशक की वेबसाइट भारत सरकार की वेबसाइटों और वर्ल्ड वाइड वेब कंसोर्टियम (डब्ल्यू3सी) वेब कंटेंट एक्सेसिबिलिटी दिशानिर्देश (डब्ल्यूसीएजी) 2.0 स्तर ए के दिशानिर्देशों का अनुपालन करती है। यह दृष्टिबाधित लोगों को स्क्रीन रीडर जैसी प्रौद्योगिकियों का उपयोग करके वेबसाइट तक पहुंचने में सक्षम बनाएगी। . वेबसाइट की जानकारी विभिन्न स्क्रीन रीडर्स, जैसे कि JAWS, NVDA, SAFA, सुपरनोवा और विंडो-आइज़ के साथ उपलब्ध है।",
+        "table_description": "निम्नलिखित तालिका विभिन्न स्क्रीन रीडर के बारे में जानकारी सूचीबद्ध करती है: विभिन्न स्क्रीन रीडर से संबंधित जानकारी"
+    }
 }
