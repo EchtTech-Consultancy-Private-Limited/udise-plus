@@ -1,17 +1,11 @@
-import {  useSelector } from "react-redux";
 import { error } from "../../utils/toaster";
-
 function useCheckError (){
-const schoolData = useSelector(state=>state.school);
-
-const handleSchoolAPIResopnse = ()=>{
-    if(schoolData.data.errorDetails!==""){
-        error(schoolData.data.errorDetails?.message);
-    }  
+const handleSchoolAPIResopnse = (school_data)=>{
+    if(school_data.data.errorDetails!==""){
+        error(school_data.data.errorDetails?.message);
+    }
 }
-
 return {handleSchoolAPIResopnse};
-
 }
 
 export default useCheckError;

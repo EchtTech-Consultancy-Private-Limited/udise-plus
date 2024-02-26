@@ -20,7 +20,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
-  // const {handleSchoolAPIResopnse}=useCheckError();
+  const {handleSchoolAPIResopnse}=useCheckError();
   const [report, setReport] = useState(null);
   const [viewDataBy,setViewDataBy] = useState('');
   const grid_column = useSelector((state) => state.column.column);
@@ -156,7 +156,6 @@ export default function Infrastructure3013() {
   useEffect(() => {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
     // eslint-disable-next-line
-    // handleSchoolAPIResopnse();
   }, [schoolFilterYear]);
 
   useEffect(() => {
@@ -179,7 +178,6 @@ export default function Infrastructure3013() {
       gridApi.columnApi.api.setColumnVisible("schLocationCode", grid_column);
     }
   }, [grid_column, gridApi]);
-
   const handleHideAndShowFilter = () => {
     setFilterShowHide((filterShowHide) => !filterShowHide);
   };
