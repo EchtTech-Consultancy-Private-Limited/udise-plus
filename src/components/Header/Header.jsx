@@ -6,10 +6,9 @@ import SlidingTabBar from "./SlidingTabBar";
 import { useDispatch, useSelector } from 'react-redux';
 import { urls } from "../../constants/constants";
 import { useLocation,Link } from 'react-router-dom';
+import i18n from "../../components/i18next/i18n"; /*Don't remove it*/
 import {useTranslation} from "react-i18next";
 import { updateToggleDark } from "../../redux/slice/darkLightModeSlice";
-
-
 
 const Header = () => {
   const location = useLocation();
