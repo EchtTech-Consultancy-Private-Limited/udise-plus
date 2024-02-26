@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {fetchBlockByDistrictCode} from "../thunks/blockThunk";
+import {fetchBlockByDistrictCode,removeAllBlock} from "../thunks/blockThunk";
 
 const blockSlice = createSlice({
   name: "block",
@@ -25,7 +25,12 @@ const blockSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.data.data = [];
-      });
+      })
+       /*<><><><><><><><><><><><><><><>Make District List Blank<><><><><><><><><><><><><><><><><>*/ 
+       .addCase(removeAllBlock.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data.data = [];
+      })
   },
 });
 

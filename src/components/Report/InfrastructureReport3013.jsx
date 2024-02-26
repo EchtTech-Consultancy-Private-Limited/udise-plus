@@ -19,6 +19,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
   const [report, setReport] = useState(null);
+  const [viewDataBy,setViewDataBy] = useState('');
   const grid_column = useSelector((state) => state.column.column);
   const [queryParameters] = useSearchParams();
   const id = queryParameters.get("id");
@@ -259,7 +260,12 @@ export default function Infrastructure3013() {
   const handleGroupButtonClick = (e) => {
     const groupObj = {"School Category":"schCategoryCode","School Management":"schManagementCode","Urban/Rural":"rural_urban"}
     const groupByColumn = groupObj[e];
-    setIsRowGrouping(!isRowGrouping);
+    setIsRowGrouping(isRowGrouping=>!isRowGrouping);
+    setViewDataBy(e);
+    
+    if(e===viewDataBy){
+      setViewDataBy("School Management");
+    }
 
     setCol((prevDefs) =>
         prevDefs.map((colDef) => ({
@@ -289,7 +295,7 @@ export default function Infrastructure3013() {
               <div className="col-md-4 col-lg-4">
                 <div className="tab-text-infra mb-1">View Data By</div>
                 <Tabs
-                  defaultActiveKey=""
+                  defaultActiveKey={viewDataBy}
                   id="uncontrolled-tab-example"
                   className=""
                   onSelect={(e) => handleGroupButtonClick(e)}

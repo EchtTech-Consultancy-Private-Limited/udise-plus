@@ -13,8 +13,6 @@ import power from '../../assets/images/noun-power.svg'
 import transition_img from '../../assets/images/Transition.svg'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchDistrictData } from '../../redux/thunks/districtThunk';
 import {useTranslation} from "react-i18next";
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
@@ -97,11 +95,6 @@ require("highcharts/modules/export-data.js")(Highcharts);
 }(Highcharts));
 
 export default function EducationDashboard() {
-    const districtData = useSelector(state=>state.district);
-    const dispatch = useDispatch();
-    useEffect(()=>{
-            dispatch(fetchDistrictData());
-    },[])
 
     const { t } = useTranslation();
     return (
