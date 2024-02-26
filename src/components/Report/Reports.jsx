@@ -15,6 +15,7 @@ import udise_2020_21_Booklet from "../../assets/document/UDISE+2020_21_Booklet.p
 import udise_2019_20_Booklet from "../../assets/document/UDISE+2019_20_Booklet.pdf";
 import udise_2018_19_Booklet from "../../assets/document/UDISE+2018_19_Booklet.docx";
 import { ScrollToTopOnMount } from "../Scroll/ScrollToTopOnMount";
+import { useTranslation } from "react-i18next";
 
 export default function Reports() {
   const [reportList, setReportList] = useState(allreportsdata);
@@ -22,7 +23,6 @@ export default function Reports() {
   const [searchQuery, setSearchQuery] = useState("");
   const [year, setYear] = useState("2021");
   const [reportType, setReportType] = useState("All");
-
   const handleReportType = (e) => {
     setReportType(e.target.value);
   };

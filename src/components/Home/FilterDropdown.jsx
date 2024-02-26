@@ -55,11 +55,6 @@ export default function FilterDropdown() {
   useEffect(() => {
     dispatch(fetchStateData(filterObj.year_id));
     dispatch(fetchYearData());
-  }, []);
-
-<<<<<<< HEAD
-  const handleSchoolFilterYear = (year, year_report) => {
-=======
     const children = document.getElementsByClassName("position-static");  
     let filter_drodown = document.getElementsByClassName('filter_drodown')[0];
     if (children.length ==2) {
@@ -67,11 +62,11 @@ export default function FilterDropdown() {
     } else {
       filter_drodown?.classList?.remove('small-filter-box');
     }
+  }, []);
 
-  },[]);
+  
 
   const handleSchoolFilterYear = (year,year_report)=>{
->>>>>>> b71bf35ba4bfaa1f301e5a3536cda4db856edb5a
     setSelectedYear(year_report);
     filterObj.year_id = year;
     dispatch(allFilter(filterObj));
