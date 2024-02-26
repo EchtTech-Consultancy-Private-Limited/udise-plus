@@ -14,6 +14,7 @@ import udise_2021_22_Booklet from "../../assets/document/UDISE+2021_22_Booklet.p
 import udise_2020_21_Booklet from "../../assets/document/UDISE+2020_21_Booklet.pdf";
 import udise_2019_20_Booklet from "../../assets/document/UDISE+2019_20_Booklet.pdf";
 import udise_2018_19_Booklet from "../../assets/document/UDISE+2018_19_Booklet.docx";
+import { ScrollToTopOnMount } from "../Scroll/ScrollToTopOnMount";
 
 export default function Reports() {
   const [reportList, setReportList] = useState(allreportsdata);
@@ -99,6 +100,7 @@ export default function Reports() {
 
   return (
     <>
+    <ScrollToTopOnMount/>
       <section className="infrastructure-main-card p-0" id="content">
         <div className="bg-grey ptb-30">
           <div className="container tab-for-graph">

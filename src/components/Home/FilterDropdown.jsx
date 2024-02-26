@@ -254,7 +254,6 @@ export default function FilterDropdown() {
     }
     return groups;
   };
-console.log(selectedBlockClone,' Block wise 222')
   const renderYearListGroup = () => {
     const yearGroups = [];
     for (let i = 0; i < yearData.data.data.length; i += yearItemsPerPage) {
@@ -286,7 +285,6 @@ console.log(selectedBlockClone,' Block wise 222')
     }
     return yearGroups;
   };
-
   const hideOpendFilterBox = () => {
     const boxes = document.querySelectorAll(".dropdown-menu");
     boxes.forEach((box) => {

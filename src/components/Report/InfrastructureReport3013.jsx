@@ -14,6 +14,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { ScrollToTopOnMount } from "../Scroll/ScrollToTopOnMount";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default function Infrastructure3013() {
@@ -277,7 +278,7 @@ export default function Infrastructure3013() {
   return (
     <>
       {school_data.isLoading && <GlobalLoading />}
-
+      <ScrollToTopOnMount/>
       <section className="infrastructure-main-card p-0" id="content">
         <div className="bg-grey2 ptb-30">
           <div className="container tab-for-graph">
