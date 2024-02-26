@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchArchiveServicesSchoolData } from "../thunks/archiveServicesThunk";
+import { fetchArchiveServicesSchoolData,updateMergeDataToActualData } from "../thunks/archiveServicesThunk";
 
 const archiveServicesSlice = createSlice({
   name: "archiveServices",
@@ -61,7 +61,12 @@ const archiveServicesSlice = createSlice({
       .addCase(fetchArchiveServicesSchoolData.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-      });
+      })
+
+      .addCase(updateMergeDataToActualData.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.isLoading = false;
+      })
   },
 });
 

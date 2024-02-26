@@ -10,4 +10,11 @@ const fetchArchiveServicesSchoolData = createAsyncThunk(
   }
 );
 
-export  {fetchArchiveServicesSchoolData};
+const updateMergeDataToActualData = createAsyncThunk(
+  "archive-services/updateMergeDataToActualData",
+  async (merged_data) => {
+    return merged_data;
+  }
+);
+
+export  {fetchArchiveServicesSchoolData,updateMergeDataToActualData};

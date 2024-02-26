@@ -3,7 +3,8 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
+import { fetchArchiveServicesSchoolData, updateMergeDataToActualData } from "../../redux/thunks/archiveServicesThunk";
+import { fetchSchoolCateMgtData } from "../../redux/thunks/schoolCateMgtThunk";
 import { useSearchParams } from "react-router-dom";
 import FilterDropdown from "../Home/FilterDropdown";
 import allreportsdata from "../../json-data/allreports.json";
@@ -31,6 +32,7 @@ export default function Infrastructure3013() {
   const [filterShowHide, setFilterShowHide] = useState(false);
   const dispatch = useDispatch();
   const school_data = useSelector((state) => state.school);
+  const [data,setData] = useState(school_data);
   const local_state = window.localStorage.getItem("state");
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
@@ -40,6 +42,20 @@ export default function Infrastructure3013() {
       headerName: "Location",
       field: "schLocationCode",
       suppressColumnsToolPanel: true,
+      valueGetter: function(params) {
+        const flagValue = params?.data?.schLocationCode;
+        switch (flagValue) {
+          case 0:
+            return "All";
+          case 1:
+            return "Rural";
+          case 2:
+            return "Urban";
+          default:
+            return "N/A";
+        }
+      },
+      
     },
     {
       headerName: "Rural/Urban",
@@ -48,16 +64,39 @@ export default function Infrastructure3013() {
     },
     {
       headerName: "School Category",
+      // field: "schCategoryName",
       field: "schCategoryCode",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Management",
+      // field: "schManagementName",
       field: "schManagementCode",
       suppressColumnsToolPanel: true,
     },
-    { headerName: "School Type", field: "schTypeCode" },
-    { headerName: "Total No. of Schools", field: "totalSchools" },
+    { 
+      headerName: "School Type", field: "schTypeCode" ,
+      valueGetter: function(params) {
+        const flagValue = params?.data?.schTypeCode;
+    
+        switch (flagValue) {
+          case 0:
+            return "All";
+          case 1:
+            return "Boys";
+          case 2:
+            return "Girls";
+          case 3:
+          return "Co-Add";
+          default:
+            return "N/A";
+        }
+      },
+  
+  },
+    { headerName: "Total No. of Schools", field: "totalSchools" 
+  
+  },
     {
       headerName: "Separate Room for Headmaster",
       field: "schHaveSeparateRoomForHM",
@@ -154,7 +193,25 @@ export default function Infrastructure3013() {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
+    Promise.all([
+      dispatch(fetchSchoolCateMgtData()),
+      dispatch(fetchArchiveServicesSchoolData(schoolFilterYear)),
+    ]).then(([schoolCateMgtDataResult, archiveServicesSchoolDataResult]) => {
+      const school_data_list =  archiveServicesSchoolDataResult.payload.data;
+      const school_cat_mgt_list =  schoolCateMgtDataResult.payload.data;
+      if(school_data_list.length>0){
+        const mergedData = school_data_list?.map((item)=>{
+          const match_cate_name = school_cat_mgt_list.find((d) => d.cate_code === item.schCategoryCode);
+          const match_cate_mgt_name = school_cat_mgt_list.find((d) => d.mgt_code == item.schManagementCode);
+          if (match_cate_name || match_cate_mgt_name) {
+            // return { ...item, schCategoryCode: match_cate_name?.broad_category, schManagementCode: match_cate_mgt_name?.management_details };
+            return { ...item, schCategoryName: match_cate_name?.broad_category, schManagementName: match_cate_mgt_name?.management_details };
+          }
+          return item;
+        });
+          dispatch(updateMergeDataToActualData(mergedData));
+      }
+    });
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
