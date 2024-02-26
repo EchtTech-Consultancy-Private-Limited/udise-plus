@@ -19,7 +19,7 @@ const blockSlice = createSlice({
       })
       .addCase(fetchBlockByDistrictCode.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = action.payload.data===""?[]:action.payload;
       })
       .addCase(fetchBlockByDistrictCode.rejected, (state, action) => {
         state.isLoading = false;

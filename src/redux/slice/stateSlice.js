@@ -22,7 +22,7 @@ const stateSlice = createSlice({
       })
       .addCase(fetchStateData.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = action.payload.data===""?[]:action.payload;
       })
       .addCase(fetchStateData.rejected, (state, action) => {
         state.isLoading = false;

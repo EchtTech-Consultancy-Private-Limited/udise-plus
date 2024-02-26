@@ -22,7 +22,7 @@ const distrcitSlice = createSlice({
       })
       .addCase(fetchDistrictDataByStateCode.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = action.payload.data===""?[]:action.payload;
       })
       .addCase(fetchDistrictDataByStateCode.rejected, (state, action) => {
         state.isLoading = false;

@@ -15,10 +15,12 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { ScrollToTopOnMount } from "../Scroll/ScrollToTopOnMount";
+import useCheckError from "../hooks/useCheckError";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
+  // const {handleSchoolAPIResopnse}=useCheckError();
   const [report, setReport] = useState(null);
   const [viewDataBy,setViewDataBy] = useState('');
   const grid_column = useSelector((state) => state.column.column);
@@ -26,7 +28,6 @@ export default function Infrastructure3013() {
   const id = queryParameters.get("id");
   const type = queryParameters.get("type");
   const schoolFilterYear = useSelector((state) => state.schoolFilter);
-  const [show, setShow] = useState(false);
   const [filterShowHide, setFilterShowHide] = useState(false);
   const dispatch = useDispatch();
   const school_data = useSelector((state) => state.school);
@@ -34,8 +35,6 @@ export default function Infrastructure3013() {
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
   const local_year = window.localStorage.getItem("year");
-  const [isRowGrouping, setIsRowGrouping] = useState(false);
-
   const [columns,setCol] = useState([
     {
       headerName: "Location",
@@ -113,7 +112,7 @@ export default function Infrastructure3013() {
     { headerName: "Computer Available", field: "schHaveComputers" },
   ]);
 
-  const [defColumnDefs, setColumnDefs] = useState({
+  const [defColumnDefs] = useState({
     flex: 1,
     minWidth: 250,
     // allow every column to be aggregated
@@ -157,6 +156,7 @@ export default function Infrastructure3013() {
   useEffect(() => {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
     // eslint-disable-next-line
+    // handleSchoolAPIResopnse();
   }, [schoolFilterYear]);
 
   useEffect(() => {
@@ -261,20 +261,16 @@ export default function Infrastructure3013() {
   const handleGroupButtonClick = (e) => {
     const groupObj = {"School Category":"schCategoryCode","School Management":"schManagementCode","Urban/Rural":"rural_urban"}
     const groupByColumn = groupObj[e];
-    setIsRowGrouping(isRowGrouping=>!isRowGrouping);
-    setViewDataBy(e);
-    
-    if(e===viewDataBy){
-      setViewDataBy("School Management");
-    }
-
+    setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
     setCol((prevDefs) =>
         prevDefs.map((colDef) => ({
             ...colDef,
-            rowGroup: colDef.field === groupByColumn,
+            rowGroup: viewDataBy ===e ? false : colDef.field === groupByColumn,
           }))
     );
+
   };
+
   return (
     <>
       {school_data.isLoading && <GlobalLoading />}
@@ -296,7 +292,7 @@ export default function Infrastructure3013() {
               <div className="col-md-4 col-lg-4">
                 <div className="tab-text-infra mb-1">View Data By</div>
                 <Tabs
-                  defaultActiveKey={viewDataBy}
+                   activeKey={viewDataBy}
                   id="uncontrolled-tab-example"
                   className=""
                   onSelect={(e) => handleGroupButtonClick(e)}
