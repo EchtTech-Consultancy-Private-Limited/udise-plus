@@ -97,7 +97,7 @@ export default function Reports() {
     link.click();
     document.body.removeChild(link);
   };
-
+  const { t } = useTranslation();
   return (
     <>
     <ScrollToTopOnMount/>
@@ -107,7 +107,7 @@ export default function Reports() {
             <div className="row align-items-center">
               <div className="col-md-12 col-lg-12">
                 <div className="common-content text-start map-heading-map">
-                  <h2 className="heading-sm mb-4">Reports</h2>
+                  <h2 className="heading-sm mb-4">{t("all_reports_page.reports")}</h2>
                 </div>
               </div>
 
@@ -115,7 +115,7 @@ export default function Reports() {
                 <div className="filter-card">
                   <div className="row align-items-center">
                     <div className="col-md-6">
-                      <h2 className="heading-sm1 mb-2">Search For Reports</h2>
+                      <h2 className="heading-sm1 mb-2">{t("all_reports_page.search_for_reports")}</h2>
                       <input
                         type="search"
                         className="form-control border-only-bottom"
@@ -159,8 +159,8 @@ export default function Reports() {
                 <div className="filter-card">
                   <div className="row align-items-center">
                     <div className="col-md-4">
-                      <h2 className="heading-sm1">
-                        Download UDISE+ <br /> Yearly Report
+                      <h2 className="heading-sm1" style={{ whiteSpace: 'pre-line' }}>
+                        {t("all_reports_page.download_udise_yearly_report")}
                       </h2>
                     </div>
                     <div className="col-md-3 col-lg-3">

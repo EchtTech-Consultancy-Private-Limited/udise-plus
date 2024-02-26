@@ -31,8 +31,13 @@ const Header = () => {
   }
   const { t, i18n } = useTranslation();
   const changeLanguage = (e) => {
-    i18n.changeLanguage(e.target.value);
+    const selectedLanguage = e.target.value;
+    localStorage.setItem('selectedLanguage', selectedLanguage); // Save selected language to local storage
+    i18n.changeLanguage(selectedLanguage); // Change the language in i18n
   };
+
+
+
 
   const handleClickScroll = () => {
     const element = document.getElementById('content');
@@ -99,7 +104,7 @@ const Header = () => {
               <div className="header-top-content">
                 <div className="header-top-skipwrap top-date-time">
                   <ul>
-                    <li><a href="#">{formatDateString(currentDateTime)}</a></li>
+                    <li>{formatDateString(currentDateTime)}</li>
                     <li><a href="#">{currentDateTime.toLocaleTimeString()}</a></li>
                   </ul>
                 </div>

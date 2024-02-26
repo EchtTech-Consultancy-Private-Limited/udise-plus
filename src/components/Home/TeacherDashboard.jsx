@@ -102,19 +102,19 @@ export default function TeacherDashboard() {
                                             <div className="card-box row">
                                                 <div className="col-md-6 mb-5">
                                                     <div className="main-text-c m-big">95.07 Lakhs</div>
-                                                    <span className="sub-text-c text-green">Total Teachers</span>
+                                                    <span className="sub-text-c text-green">{t("total_teachers")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-5">
                                                     <div className="main-text-c m-big">51.85 Lakhs</div>
-                                                    <span className="sub-text-c text-green">Elementary Teachers</span>
+                                                    <span className="sub-text-c text-green">{t("elementary_teachers")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <div className="main-text-c m-big">16.20 Lakhs</div>
-                                                    <span className="sub-text-c text-green">Secondary Teachers</span>
+                                                    <span className="sub-text-c text-green">{t("secondary_teachers")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <div className="main-text-c m-big">27.01 Lakhs</div>
-                                                    <span className="sub-text-c text-green">Higher Sec. Teachers</span>
+                                                    <span className="sub-text-c text-green">{t("higher_sec_teachers")}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -127,7 +127,7 @@ export default function TeacherDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number of Teachers Management-Wise</h2>
+                                                    <h2 className="heading-sm">{t("number_of_teachers_management_wise")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1 highcharts-button-normal'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -248,7 +248,7 @@ export default function TeacherDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number of Teachers by Level of Education</h2>
+                                                    <h2 className="heading-sm">{t("number_of_teachers_by_level_of_education")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -363,7 +363,7 @@ export default function TeacherDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Number of Male - Female Teacher</h2>
+                                                    <h2 className="heading-sm">{t("number_of_male_female_teacher")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>
@@ -455,7 +455,7 @@ export default function TeacherDashboard() {
                                         <div className="col-md-12 col-lg-12">
                                             <div className="impact-box-content-education">
                                                 <div className="text-btn-d">
-                                                    <h2 className="heading-sm">Pupil Teacher Ratio</h2>
+                                                    <h2 className="heading-sm">{t("pupil_teacher_ratio")}</h2>
                                                     <div className='d-flex w-20'>
                                                         <button className='view-table-btn'> <span className="material-icons-round">table_view</span> View Table </button>
                                                         <button className='view-table-btn view-more-btn ms-1'> <span className="material-icons-round me-0">more_horiz</span></button>

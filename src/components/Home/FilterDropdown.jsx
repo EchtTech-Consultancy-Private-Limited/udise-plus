@@ -57,7 +57,21 @@ export default function FilterDropdown() {
     dispatch(fetchYearData());
   }, []);
 
+<<<<<<< HEAD
   const handleSchoolFilterYear = (year, year_report) => {
+=======
+    const children = document.getElementsByClassName("position-static");  
+    let filter_drodown = document.getElementsByClassName('filter_drodown')[0];
+    if (children.length ==2) {
+      filter_drodown?.classList?.add('small-filter-box');
+    } else {
+      filter_drodown?.classList?.remove('small-filter-box');
+    }
+
+  },[]);
+
+  const handleSchoolFilterYear = (year,year_report)=>{
+>>>>>>> b71bf35ba4bfaa1f301e5a3536cda4db856edb5a
     setSelectedYear(year_report);
     filterObj.year_id = year;
     dispatch(allFilter(filterObj));
@@ -290,18 +304,21 @@ export default function FilterDropdown() {
     boxes.forEach((box) => {
       box.classList.remove("show");
     });
-  };
-
+  }
+ 
   return (
     <>
-      <div className="filter_drodown">
+      <div className={`filter_drodown `}>
         <div className="filter-content">
           <h6 className="mb-0">Apply Filters</h6>
           <div className="select-box from-control">
             <MDBNavbar expand="lg" light>
               <MDBContainer fluid className="p-0">
-                <MDBNavbarNav className="me-auto ps-lg-0">
-                  <MDBNavbarItem className="position-static">
+                <MDBNavbarNav className='me-auto ps-lg-0 smallfilter'>
+
+
+
+                  <MDBNavbarItem className='position-static'>
                     <MDBDropdown>
                       <MDBDropdownToggle tag="a" className="nav-link">
                         <div className="menu-sub-heading">Select State</div>
@@ -320,7 +337,7 @@ export default function FilterDropdown() {
                           </MDBRow>
                         </MDBContainer>
                       </MDBDropdownMenu>
-                    </MDBDropdown>
+                    </MDBDropdown>                  
                   </MDBNavbarItem>
 
                   {/* District List */}
