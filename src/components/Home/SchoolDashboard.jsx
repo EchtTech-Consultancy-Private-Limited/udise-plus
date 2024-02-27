@@ -173,7 +173,7 @@ export default function SchoolDashboard() {
                                                                                 allowPointSelect: true,
                                                                                 cursor: 'pointer',
                                                                                 dataLabels: [{
-                                                                                    enabled: true,
+                                                                                    enabled: false,
                                                                                     distance: 20
                                                                                 }, {
                                                                                     enabled: true,
@@ -294,7 +294,7 @@ export default function SchoolDashboard() {
                                                                                 allowPointSelect: true,
                                                                                 cursor: 'pointer',
                                                                                 dataLabels: [{
-                                                                                    enabled: true,
+                                                                                    enabled: false,
                                                                                     distance: 20
                                                                                 }, {
                                                                                     enabled: true,
@@ -409,7 +409,7 @@ export default function SchoolDashboard() {
                                                                                 allowPointSelect: true,
                                                                                 cursor: 'pointer',
                                                                                 dataLabels: [{
-                                                                                    enabled: true,
+                                                                                    enabled: false,
                                                                                     distance: 20
                                                                                 }, {
                                                                                     enabled: true,
@@ -529,7 +529,7 @@ export default function SchoolDashboard() {
                                                                                 allowPointSelect: true,
                                                                                 cursor: 'pointer',
                                                                                 dataLabels: [{
-                                                                                    enabled: true,
+                                                                                    enabled: false,
                                                                                     distance: 20
                                                                                 }, {
                                                                                     enabled: true,
@@ -627,7 +627,7 @@ export default function SchoolDashboard() {
                                                                                 allowPointSelect: true,
                                                                                 cursor: 'pointer',
                                                                                 dataLabels: [{
-                                                                                    enabled: true,
+                                                                                    enabled: false,
                                                                                     distance: 20
                                                                                 }, {
                                                                                     enabled: true,
@@ -724,7 +724,7 @@ export default function SchoolDashboard() {
                                                                                 allowPointSelect: true,
                                                                                 cursor: 'pointer',
                                                                                 dataLabels: [{
-                                                                                    enabled: true,
+                                                                                    enabled: false,
                                                                                     distance: 20
                                                                                 }, {
                                                                                     enabled: true,
