@@ -1472,4 +1472,10 @@ input[class^=ag-][type=text]:focus {
 h4.brudcrumb_heading {
     font-size: 16px;
     margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.ag-theme-material.ag-theme-custom-height.ag-theme-quartz .ag-side-buttons {
+    display: none;
 }
