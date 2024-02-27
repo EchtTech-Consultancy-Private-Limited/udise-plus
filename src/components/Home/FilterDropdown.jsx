@@ -321,6 +321,16 @@ export default function FilterDropdown() {
       dispatch(updateFilterBlock(searchBlockResult));
     }
   }
+
+  const handleStateDistBlockSearchState = (e)=>{
+    if(e==="state_search_update_state"){
+      dispatch(updateFilterState(stateDataClone.data));
+    }else if (e==="district_search_update_state"){
+      dispatch(updateFilterDistrict(districtDataClone.data));
+    }else{
+      dispatch(updateFilterBlock(blockDataClone.data));
+    }
+  }
   return (
     <>
       <div className={`filter_drodown `}>
@@ -333,7 +343,7 @@ export default function FilterDropdown() {
 
 
 
-                  <MDBNavbarItem className='position-static'>
+                  <MDBNavbarItem className='position-static' onClick={()=>handleStateDistBlockSearchState("state_search_update_state")}>
                     <MDBDropdown>
                       <MDBDropdownToggle tag="a" className="nav-link">
                         <div className="menu-sub-heading">Select State</div>
@@ -362,7 +372,7 @@ export default function FilterDropdown() {
 
                   {/* District List */}
                   {location.pathname !== "/" && (
-                    <MDBNavbarItem className="position-static">
+                    <MDBNavbarItem className="position-static" onClick={()=>handleStateDistBlockSearchState("district_search_update_state")}>
                       <MDBDropdown className="disabled">
                         <MDBDropdownToggle tag="a" className="nav-link">
                           <div className="menu-sub-heading">
@@ -394,7 +404,7 @@ export default function FilterDropdown() {
 
                   {/* Block List */}
                   {location.pathname !== "/" && (
-                    <MDBNavbarItem className="position-static">
+                    <MDBNavbarItem className="position-static" onClick={()=>handleStateDistBlockSearchState("block_search_update_state")}>
                       <MDBDropdown className="disabled">
                         <MDBDropdownToggle tag="a" className="nav-link">
                           <div className="menu-sub-heading">Select Block</div>
