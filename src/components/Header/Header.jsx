@@ -1,18 +1,14 @@
 import "./Header.scss";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import ministry from '../../assets/images/education_ministry.svg';
 import dropdownimg from '../../assets/images/dropdown-icon.svg'
 import SlidingTabBar from "./SlidingTabBar";
 import { useDispatch, useSelector } from 'react-redux';
 import { urls } from "../../constants/constants";
-import { useLocation,Link,useNavigate } from 'react-router-dom';
+import { useLocation,Link } from 'react-router-dom';
+import i18n from "../../components/i18next/i18n"; /*Don't remove it*/
 import {useTranslation} from "react-i18next";
-import i18n from "../../components/i18next/i18n";
-import { Switch } from "@mui/material";
 import { updateToggleDark } from "../../redux/slice/darkLightModeSlice";
-import Home from "../../pages/Home";
-
-
 
 const Header = () => {
   const location = useLocation();
@@ -22,9 +18,9 @@ const Header = () => {
   
   const changeSizeByBtn = (size) => {
     if (size === "normal") {
-      document.body.style.fontSize = "12px";
-    } else if (size === "average") {
       document.body.style.fontSize = "14px";
+    } else if (size === "average") {
+      document.body.style.fontSize = "16px";
     } else if (size === "max") {
       document.body.style.fontSize = "18px";  
     }  
@@ -88,9 +84,6 @@ const Header = () => {
       return "th";
     }
   };
-
-  const navigate = useNavigate()
-
   const goToPageOnClick = () =>{
       // navigate("/");
       window.location.href=window.location.origin;
@@ -121,16 +114,16 @@ const Header = () => {
                 <div className="header-top-skipwrap right-access-points">
                   <ul>
                     <li>
-                      <div id="form-wrapper" title="Text Increment">
+                      <div id="form-wrapper">
                         <form action="" method="" className="font-item">
                           <span className="font-t">A</span>
                           <div id="debt-amount-slider">
                             <input type="radio" name="debt-amount" id="1" value="1" required="" title="Decrease Font Size" onClick={() => changeSizeByBtn("normal")}/>
-                            <label htmlFor="1"></label>
+                            <label htmlFor="1" title="Decrease Font Size"></label>
                             <input type="radio" name="debt-amount" id="2" value="2" defaultChecked="checked" required="" title="Normal Font Size" onClick={() => changeSizeByBtn("average")} />
-                            <label htmlFor="2"></label>
+                            <label htmlFor="2" title="Normal Font Size"></label>
                             <input type="radio" name="debt-amount" id="3" value="3" required="" title="Increase Font Size" onClick={() => changeSizeByBtn("max")}/>
-                            <label htmlFor="3"></label>
+                            <label htmlFor="3" title="Increase Font Size"></label>
                             <div id="debt-amount-pos"></div>
                           </div>
                           <span className="font-t size-16">A</span>

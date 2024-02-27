@@ -3,7 +3,8 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
+import { fetchArchiveServicesSchoolData, updateMergeDataToActualData } from "../../redux/thunks/archiveServicesThunk";
+import { fetchSchoolCateMgtData } from "../../redux/thunks/schoolCateMgtThunk";
 import { useSearchParams } from "react-router-dom";
 import FilterDropdown from "../Home/FilterDropdown";
 import allreportsdata from "../../json-data/allreports.json";
@@ -14,31 +15,47 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { ScrollToTopOnMount } from "../Scroll/ScrollToTopOnMount";
+import useCheckError from "../hooks/useCheckError";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
+  const {handleSchoolAPIResopnse}=useCheckError();
   const [report, setReport] = useState(null);
+  const [viewDataBy,setViewDataBy] = useState('');
   const grid_column = useSelector((state) => state.column.column);
   const [queryParameters] = useSearchParams();
   const id = queryParameters.get("id");
   const type = queryParameters.get("type");
   const schoolFilterYear = useSelector((state) => state.schoolFilter);
-  const [show, setShow] = useState(false);
   const [filterShowHide, setFilterShowHide] = useState(false);
   const dispatch = useDispatch();
   const school_data = useSelector((state) => state.school);
+  const [data,setData] = useState(school_data);
   const local_state = window.localStorage.getItem("state");
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
   const local_year = window.localStorage.getItem("year");
-  const [isRowGrouping, setIsRowGrouping] = useState(false);
-
   const [columns,setCol] = useState([
     {
       headerName: "Location",
       field: "schLocationCode",
       suppressColumnsToolPanel: true,
+      valueGetter: function(params) {
+        const flagValue = params?.data?.schLocationCode;
+        switch (flagValue) {
+          case 0:
+            return "All";
+          case 1:
+            return "Rural";
+          case 2:
+            return "Urban";
+          default:
+            return "N/A";
+        }
+      },
+      
     },
     {
       headerName: "Rural/Urban",
@@ -47,16 +64,39 @@ export default function Infrastructure3013() {
     },
     {
       headerName: "School Category",
-      field: "schCategoryCode",
+      field: "schCategoryName",
+      // field: "schCategoryCode",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Management",
-      field: "schManagementCode",
+      field: "schManagementName",
+      // field: "schManagementCode",
       suppressColumnsToolPanel: true,
     },
-    { headerName: "School Type", field: "schTypeCode" },
-    { headerName: "Total No. of Schools", field: "totalSchools" },
+    { 
+      headerName: "School Type", field: "schTypeCode" ,
+      valueGetter: function(params) {
+        const flagValue = params?.data?.schTypeCode;
+    
+        switch (flagValue) {
+          case 0:
+            return "All";
+          case 1:
+            return "Boys";
+          case 2:
+            return "Girls";
+          case 3:
+          return "Co-Add";
+          default:
+            return "N/A";
+        }
+      },
+  
+  },
+    { headerName: "Total No. of Schools", field: "totalSchools" 
+  
+  },
     {
       headerName: "Separate Room for Headmaster",
       field: "schHaveSeparateRoomForHM",
@@ -111,7 +151,7 @@ export default function Infrastructure3013() {
     { headerName: "Computer Available", field: "schHaveComputers" },
   ]);
 
-  const [defColumnDefs, setColumnDefs] = useState({
+  const [defColumnDefs] = useState({
     flex: 1,
     minWidth: 250,
     // allow every column to be aggregated
@@ -153,7 +193,25 @@ export default function Infrastructure3013() {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
+    Promise.all([
+      dispatch(fetchSchoolCateMgtData()),
+      dispatch(fetchArchiveServicesSchoolData(schoolFilterYear)),
+    ]).then(([schoolCateMgtDataResult, archiveServicesSchoolDataResult]) => {
+      const school_data_list =  archiveServicesSchoolDataResult.payload.data;
+      const school_cat_mgt_list =  schoolCateMgtDataResult.payload.data;
+      if(school_data_list.length>0){
+        const mergedData = school_data_list?.map((item)=>{
+          const match_cate_name = school_cat_mgt_list.find((d) => d.cate_code === item.schCategoryCode);
+          const match_cate_mgt_name = school_cat_mgt_list.find((d) => d.mgt_code == item.schManagementCode);
+          if (match_cate_name || match_cate_mgt_name) {
+            // return { ...item, schCategoryCode: match_cate_name?.broad_category, schManagementCode: match_cate_mgt_name?.management_details };
+            return { ...item, schCategoryName: match_cate_name?.broad_category, schManagementName: match_cate_mgt_name?.management_details };
+          }
+          return item;
+        });
+          dispatch(updateMergeDataToActualData(mergedData));
+      }
+    });
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
@@ -177,7 +235,6 @@ export default function Infrastructure3013() {
       gridApi.columnApi.api.setColumnVisible("schLocationCode", grid_column);
     }
   }, [grid_column, gridApi]);
-
   const handleHideAndShowFilter = () => {
     setFilterShowHide((filterShowHide) => !filterShowHide);
   };
@@ -257,21 +314,22 @@ export default function Infrastructure3013() {
   };
 
   const handleGroupButtonClick = (e) => {
-    const groupObj = {"School Category":"schCategoryCode","School Management":"schManagementCode","Urban/Rural":"rural_urban"}
+    const groupObj = {"School Category":"schCategoryName","School Management":"schManagementName","Urban/Rural":"rural_urban"}
     const groupByColumn = groupObj[e];
-    setIsRowGrouping(!isRowGrouping);
-
+    setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
     setCol((prevDefs) =>
         prevDefs.map((colDef) => ({
             ...colDef,
-            rowGroup: colDef.field === groupByColumn,
+            rowGroup: viewDataBy ===e ? false : colDef.field === groupByColumn,
           }))
     );
+
   };
+
   return (
     <>
       {school_data.isLoading && <GlobalLoading />}
-
+      <ScrollToTopOnMount/>
       <section className="infrastructure-main-card p-0" id="content">
         <div className="bg-grey2 ptb-30">
           <div className="container tab-for-graph">
@@ -289,7 +347,7 @@ export default function Infrastructure3013() {
               <div className="col-md-4 col-lg-4">
                 <div className="tab-text-infra mb-1">View Data By</div>
                 <Tabs
-                  defaultActiveKey=""
+                   activeKey={viewDataBy}
                   id="uncontrolled-tab-example"
                   className=""
                   onSelect={(e) => handleGroupButtonClick(e)}

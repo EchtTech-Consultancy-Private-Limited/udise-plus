@@ -16,7 +16,6 @@ export default function SchoolReport() {
     const [show, setShow] = useState(false);
     const [queryParameters] = useSearchParams();
     const id = queryParameters.get('id');
-    const report_name = queryParameters.get('report_name');
     const type = queryParameters.get('type');
     const [report, setReport] = useState(null);
      // Find the report with the given id

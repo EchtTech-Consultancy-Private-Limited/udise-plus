@@ -1,23 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchDistrictData,fetchDistrictDataByStateId } from "../thunks/districtThunk";
+import { fetchDistrictDataByStateCode,removeAllDistrict,updateFilterDistrict } from "../thunks/districtThunk";
 
 const distrcitSlice = createSlice({
   name: "district",
   initialState: {
     data:{
-      data:[{
-        "id": "0",
-        "district_id": 0,
-        "udise_district_code": 0,
-        "udise_state_code": 0,
-        "state_id": 0,
-        "district_name": "",
-        "inityear": ""
-    }],
+      data:[],
     statusCode:0,
     message:"",
     success:false
     },
+    dataClone:[],
     isLoading:false,
     isError:false,
     error:null
@@ -25,29 +18,28 @@ const distrcitSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // .addCase(fetchDistrictData.pending, (state) => {
-      //   state.isLoading = true;
-      // })
-      // .addCase(fetchDistrictData.fulfilled, (state, action) => {
-      //   state.isLoading = false;
-      //   state.data = action.payload;
-      // })
-      // .addCase(fetchDistrictData.rejected, (state, action) => {
-      //   state.isLoading = false;
-      //   state.isError = true;
-      // })
-
-      .addCase(fetchDistrictDataByStateId.pending, (state) => {
+      .addCase(fetchDistrictDataByStateCode.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchDistrictDataByStateId.fulfilled, (state, action) => {
+      .addCase(fetchDistrictDataByStateCode.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = action.payload.data===""?[]:action.payload;
+        state.dataClone = action.payload.data===""?[]:action.payload;
       })
-      .addCase(fetchDistrictDataByStateId.rejected, (state, action) => {
+      .addCase(fetchDistrictDataByStateCode.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.data.data = [];
+      })
+
+      /*<><><><><><><><><><><><><><><>Make District List Blank<><><><><><><><><><><><><><><><><>*/ 
+      .addCase(removeAllDistrict.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data.data = [];
+      })
+      .addCase(updateFilterDistrict.fulfilled, (state, action) => {
+        state.data.data = action.payload
+        state.isLoading = false;
       });
   },
 });

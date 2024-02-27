@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
 import allreportsdata from '../../json-data/allreports.json';
+import { ScrollToTopOnMount } from "../Scroll/ScrollToTopOnMount";
 
 export default function Infrastructure({id,report_name,type}) {
   const [show, setShow] = useState(false);
@@ -33,6 +34,8 @@ export default function Infrastructure({id,report_name,type}) {
 
 
   return (
+   <>
+    <ScrollToTopOnMount/>
     <section className="infrastructure-main-card p-0" id='content'>
       <div className="bg-grey2 ptb-30">
         <div className="container tab-for-graph">
@@ -321,5 +324,6 @@ export default function Infrastructure({id,report_name,type}) {
         </div>
       </div>
     </section>
+   </>
   );
 }

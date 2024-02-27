@@ -173,7 +173,7 @@ export default function StudentDashboard() {
                                                                                 allowPointSelect: true,
                                                                                 cursor: 'pointer',
                                                                                 dataLabels: [{
-                                                                                    enabled: true,
+                                                                                    enabled: false,
                                                                                     distance: 20
                                                                                 }, {
                                                                                     enabled: true,
