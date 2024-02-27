@@ -36,9 +36,10 @@ const distrcitSlice = createSlice({
       .addCase(removeAllDistrict.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data.data = [];
+        state.dataClone = [];
       })
       .addCase(updateFilterDistrict.fulfilled, (state, action) => {
-        state.data.data = action.payload
+        state.data.data = action.payload===undefined ? [] : action.payload;
         state.isLoading = false;
       });
   },

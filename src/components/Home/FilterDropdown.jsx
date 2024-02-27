@@ -133,12 +133,14 @@ export default function FilterDropdown() {
       setSelectedBlockClone(district_name);
     }
     dispatch(updateFilterDistrict(districtDataClone.data));
+    
     setSelectedDistrict(district_name);
     setSelectedBlock("Block");
     window.localStorage.setItem("district", district_name);
     hideOpendFilterBox();
   };
 
+  
   const handleSchoolFilterBlock = (block_code, block_name) => {
     if (block_name === "Block Wise") {
       filterObj.region_type = "bw";
@@ -309,15 +311,15 @@ export default function FilterDropdown() {
 
   const handleSearch = (e)=>{
     if(e.target.name==="state_search"){
-      const searchStateResult = stateSearch.data.filter((item)=>item.udiseStateName.toLowerCase().indexOf(e.target.value) > -1);
+      const searchStateResult = stateSearch?.data?.filter((item)=>item.udiseStateName.toLowerCase().indexOf(e.target.value) > -1);
       dispatch(updateFilterState(searchStateResult));
     }
     if(e.target.name==="district_search"){
-      const searchDistrictResult = districtSearch.data.filter((item)=>item.udiseDistrictName.toLowerCase().indexOf(e.target.value) > -1);
+      const searchDistrictResult = districtSearch?.data?.filter((item)=>item.udiseDistrictName.toLowerCase().indexOf(e.target.value) > -1);
       dispatch(updateFilterDistrict(searchDistrictResult));
     }
     if(e.target.name==="block_search"){
-      const searchBlockResult = blockSearch.data.filter((item)=>item.udiseBlockName.toLowerCase().indexOf(e.target.value) > -1);
+      const searchBlockResult = blockSearch?.data?.filter((item)=>item.udiseBlockName.toLowerCase().indexOf(e.target.value) > -1);
       dispatch(updateFilterBlock(searchBlockResult));
     }
   }
@@ -331,7 +333,7 @@ export default function FilterDropdown() {
       dispatch(updateFilterBlock(blockDataClone.data));
     }
   }
-  
+
   return (
     <>
       <div className={`filter_drodown `}>
