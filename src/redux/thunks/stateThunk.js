@@ -10,4 +10,11 @@ const fetchStateData = createAsyncThunk(
   }
 );
 
-export  {fetchStateData};
+const updateFilterState = createAsyncThunk(
+  "state/searchState",
+  async (searchState) => {
+    return searchState;
+  }
+);
+
+export  {fetchStateData,updateFilterState};

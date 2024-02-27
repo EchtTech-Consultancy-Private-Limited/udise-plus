@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchDistrictDataByStateCode,removeAllDistrict } from "../thunks/districtThunk";
+import { fetchDistrictDataByStateCode,removeAllDistrict,updateFilterDistrict } from "../thunks/districtThunk";
 
 const distrcitSlice = createSlice({
   name: "district",
@@ -10,6 +10,7 @@ const distrcitSlice = createSlice({
     message:"",
     success:false
     },
+    dataClone:[],
     isLoading:false,
     isError:false,
     error:null
@@ -23,6 +24,7 @@ const distrcitSlice = createSlice({
       .addCase(fetchDistrictDataByStateCode.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload.data===""?[]:action.payload;
+        state.dataClone = action.payload.data===""?[]:action.payload;
       })
       .addCase(fetchDistrictDataByStateCode.rejected, (state, action) => {
         state.isLoading = false;
@@ -35,6 +37,10 @@ const distrcitSlice = createSlice({
         state.isLoading = false;
         state.data.data = [];
       })
+      .addCase(updateFilterDistrict.fulfilled, (state, action) => {
+        state.data.data = action.payload
+        state.isLoading = false;
+      });
   },
 });
 

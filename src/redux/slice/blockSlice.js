@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {fetchBlockByDistrictCode,removeAllBlock} from "../thunks/blockThunk";
+import {fetchBlockByDistrictCode,removeAllBlock,updateFilterBlock} from "../thunks/blockThunk";
 
 const blockSlice = createSlice({
   name: "block",
@@ -7,6 +7,7 @@ const blockSlice = createSlice({
     data:{
       data:[]
     },
+    dataClone:[],
     isLoading:false,
     isError:false,
     error:null
@@ -20,6 +21,7 @@ const blockSlice = createSlice({
       .addCase(fetchBlockByDistrictCode.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload.data===""?[]:action.payload;
+        state.dataClone = action.payload.data===""?[]:action.payload;
       })
       .addCase(fetchBlockByDistrictCode.rejected, (state, action) => {
         state.isLoading = false;
@@ -31,6 +33,10 @@ const blockSlice = createSlice({
         state.isLoading = false;
         state.data.data = [];
       })
+      .addCase(updateFilterBlock.fulfilled, (state, action) => {
+        state.data.data = action.payload
+        state.isLoading = false;
+      });
   },
 });
 

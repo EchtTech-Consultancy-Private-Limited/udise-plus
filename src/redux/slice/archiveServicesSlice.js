@@ -64,7 +64,7 @@ const archiveServicesSlice = createSlice({
       })
 
       .addCase(updateMergeDataToActualData.fulfilled, (state, action) => {
-        state.data = action.payload;
+        state.data.data = action.payload;
         state.isLoading = false;
       })
   },

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchStateData } from "../thunks/stateThunk";
+import { fetchStateData,updateFilterState } from "../thunks/stateThunk";
 
 const stateSlice = createSlice({
   name: "state",
@@ -10,6 +10,7 @@ const stateSlice = createSlice({
       message:"",
       success:false
     },
+    dataClone:[],
 
     isLoading:false,
     isError:false
@@ -23,10 +24,15 @@ const stateSlice = createSlice({
       .addCase(fetchStateData.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload.data===""?[]:action.payload;
+        state.dataClone = action.payload.data===""?[]:action.payload;
       })
       .addCase(fetchStateData.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      .addCase(updateFilterState.fulfilled, (state, action) => {
+        state.data.data = action.payload
+        state.isLoading = false;
       });
   },
 });

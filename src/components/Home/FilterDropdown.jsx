@@ -13,8 +13,8 @@ import {
   MDBRow,
 } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStateData } from "../../redux/thunks/stateThunk";
-import { fetchDistrictDataByStateCode, removeAllDistrict } from "../../redux/thunks/districtThunk";
+import { fetchStateData, updateFilterState } from "../../redux/thunks/stateThunk";
+import { fetchDistrictDataByStateCode, removeAllDistrict, updateFilterDistrict } from "../../redux/thunks/districtThunk";
 import { fetchYearData } from "../../redux/thunks/yearThunk";
 import {
   allFilter,
@@ -25,7 +25,7 @@ import {
   filterItemsStatePerPage,
   filterItemsYearPerPage,
 } from "../../constants/constants";
-import { fetchBlockByDistrictCode, removeAllBlock } from "../../redux/thunks/blockThunk";
+import { fetchBlockByDistrictCode, removeAllBlock, updateFilterBlock } from "../../redux/thunks/blockThunk";
 import { useLocation } from "react-router-dom";
 
 export default function FilterDropdown() {
@@ -35,10 +35,13 @@ export default function FilterDropdown() {
   const location = useLocation();
 
   const stateData = useSelector((state) => state.state);
+  const stateDataClone = useSelector((state) => state.state.dataClone);
   const yearData = useSelector((state) => state.year);
   const schoolFilter = useSelector((state) => state.schoolFilter);
   const districtData = useSelector((state) => state.distrct);
+  const districtDataClone = useSelector((state) => state.distrct.dataClone);
   const blockData = useSelector((state) => state.block);
+  const blockDataClone = useSelector((state) => state.block.dataClone);
   const [selectedState, setSelectedState] = useState("All India/National");
   const [selectedDistrict, setSelectedDistrict] = useState("District");
   const [selectedDistrictclone, setSelectedDistrictClone] = useState("District");
@@ -46,7 +49,9 @@ export default function FilterDropdown() {
   const [selectedBlock, setSelectedBlock] = useState("Block");
   const [selectedBlockClone, setSelectedBlockClone] = useState("Block");
   const filterObj = structuredClone(schoolFilter);
-
+  const stateSearch = stateDataClone;
+  const districtSearch = districtDataClone;
+  const blockSearch = blockDataClone;
   window.localStorage.setItem("state", selectedState);
   window.localStorage.setItem("district", selectedDistrict);
   window.localStorage.setItem("block", selectedBlock);
@@ -63,8 +68,6 @@ export default function FilterDropdown() {
       filter_drodown?.classList?.remove('small-filter-box');
     }
   }, []);
-
-
 
   const handleSchoolFilterYear = (year, year_report) => {
     setSelectedYear(year_report);
@@ -104,6 +107,7 @@ export default function FilterDropdown() {
       dispatch(removeAllBlock());
       setSelectedDistrictClone(state_name);
     }
+    dispatch(updateFilterState(stateDataClone.data));
     window.localStorage.setItem("state", state_name);
     hideOpendFilterBox();
   };
@@ -128,6 +132,7 @@ export default function FilterDropdown() {
       dispatch(hideShowColumn(false));
       setSelectedBlockClone(district_name);
     }
+    dispatch(updateFilterDistrict(districtDataClone.data));
     setSelectedDistrict(district_name);
     setSelectedBlock("Block");
     window.localStorage.setItem("district", district_name);
@@ -145,6 +150,7 @@ export default function FilterDropdown() {
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
     }
+    dispatch(updateFilterBlock(blockDataClone.data));
     setSelectedBlock(block_name);
     window.localStorage.setItem("block", block_name);
     hideOpendFilterBox();
@@ -301,6 +307,20 @@ export default function FilterDropdown() {
     });
   }
 
+  const handleSearch = (e)=>{
+    if(e.target.name==="state_search"){
+      const searchStateResult = stateSearch.data.filter((item)=>item.udiseStateName.toLowerCase().indexOf(e.target.value) > -1);
+      dispatch(updateFilterState(searchStateResult));
+    }
+    if(e.target.name==="district_search"){
+      const searchDistrictResult = districtSearch.data.filter((item)=>item.udiseDistrictName.toLowerCase().indexOf(e.target.value) > -1);
+      dispatch(updateFilterDistrict(searchDistrictResult));
+    }
+    if(e.target.name==="block_search"){
+      const searchBlockResult = blockSearch.data.filter((item)=>item.udiseBlockName.toLowerCase().indexOf(e.target.value) > -1);
+      dispatch(updateFilterBlock(searchBlockResult));
+    }
+  }
   return (
     <>
       <div className={`filter_drodown `}>
@@ -328,9 +348,9 @@ export default function FilterDropdown() {
                       >
                         <MDBContainer className="droplist">
                           <MDBRow className="my-0">
-                            <li class="list-group-item mb-3">
+                            <li className="list-group-item mb-3">
                               <div className="search-barfilter mx-2">
-                                <input type="search" placeholder="Search here..." className="form-control" />
+                                <input type="search" placeholder="Search here..." className="form-control" id="state_search" name="state_search" onChange={handleSearch}/>
                               </div>
                             </li>
                             {<>{renderStateListGroup()}</>}
@@ -359,9 +379,9 @@ export default function FilterDropdown() {
                         >
                           <MDBContainer className="droplist">
                             <MDBRow className="my-1">
-                              <li class="list-group-item mb-3">
+                              <li className="list-group-item mb-3">
                                 <div className="search-barfilter mx-2">
-                                  <input type="search" placeholder="Search here..." className="form-control" />
+                                  <input type="search" placeholder="Search here..." className="form-control" id="district_search" name="district_search" onChange={handleSearch}/>
                                 </div>
                               </li>
                               {<>{renderDistrictListGroup()}</>}
@@ -389,9 +409,9 @@ export default function FilterDropdown() {
                         >
                           <MDBContainer className="droplist">
                             <MDBRow className="my-1">
-                              <li class="list-group-item mb-3">
+                              <li className="list-group-item mb-3">
                                 <div className="search-barfilter mx-2">
-                                  <input type="search" placeholder="Search here..." className="form-control" />
+                                  <input type="search" placeholder="Search here..." className="form-control"  id="block_search" name="block_search" onChange={handleSearch}/>
                                 </div>
                               </li>
                               {<>{renderBlockListGroup()}</>}

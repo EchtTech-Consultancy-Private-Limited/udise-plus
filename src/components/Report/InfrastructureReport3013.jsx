@@ -64,14 +64,14 @@ export default function Infrastructure3013() {
     },
     {
       headerName: "School Category",
-      // field: "schCategoryName",
-      field: "schCategoryCode",
+      field: "schCategoryName",
+      // field: "schCategoryCode",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Management",
-      // field: "schManagementName",
-      field: "schManagementCode",
+      field: "schManagementName",
+      // field: "schManagementCode",
       suppressColumnsToolPanel: true,
     },
     { 
@@ -314,7 +314,7 @@ export default function Infrastructure3013() {
   };
 
   const handleGroupButtonClick = (e) => {
-    const groupObj = {"School Category":"schCategoryCode","School Management":"schManagementCode","Urban/Rural":"rural_urban"}
+    const groupObj = {"School Category":"schCategoryName","School Management":"schManagementName","Urban/Rural":"rural_urban"}
     const groupByColumn = groupObj[e];
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
     setCol((prevDefs) =>

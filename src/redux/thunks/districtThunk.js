@@ -15,4 +15,11 @@ const removeAllDistrict = createAsyncThunk(
     return [];
   }
 );
-export  {fetchDistrictDataByStateCode,removeAllDistrict};
+
+const updateFilterDistrict = createAsyncThunk(
+  "district/searchDistrict",
+  async (searchDistrict) => {
+    return searchDistrict;
+  }
+);
+export  {fetchDistrictDataByStateCode,removeAllDistrict,updateFilterDistrict};

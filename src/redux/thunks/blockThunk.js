@@ -15,4 +15,11 @@ const removeAllBlock = createAsyncThunk(
     return [];
   }
 );
-export  {fetchBlockByDistrictCode,removeAllBlock};
+
+const updateFilterBlock = createAsyncThunk(
+  "block/searchBlock",
+  async (searchBlock) => {
+    return searchBlock;
+  }
+);
+export  {fetchBlockByDistrictCode,removeAllBlock,updateFilterBlock};
