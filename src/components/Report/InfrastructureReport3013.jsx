@@ -59,6 +59,7 @@ export default function Infrastructure3013() {
     },
     {
       headerName: "Rural/Urban",
+      minWidth:100,
       field: "rural_urban",
       suppressColumnsToolPanel: true,
     },
@@ -153,7 +154,7 @@ export default function Infrastructure3013() {
 
   const [defColumnDefs] = useState({
     flex: 1,
-    minWidth: 250,
+    minWidth: 100,
     // allow every column to be aggregated
     enableValue: true,
     // allow every column to be grouped
