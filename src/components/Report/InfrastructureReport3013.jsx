@@ -65,15 +65,15 @@ export default function Infrastructure3013() {
     {
       headerName: "School Category",
       minWidth:140,
-      // field: "schCategoryName",
-      field: "schCategoryCode",
+      field: "schCategoryName",
+      // field: "schCategoryCode",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Management",
       minWidth:170,
-      // field: "schManagementName",
-      field: "schManagementCode",
+      field: "schManagementName",
+      // field: "schManagementCode",
       suppressColumnsToolPanel: true,
     },
     { 
