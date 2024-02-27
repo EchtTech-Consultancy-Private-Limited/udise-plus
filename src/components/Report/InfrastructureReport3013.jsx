@@ -59,24 +59,27 @@ export default function Infrastructure3013() {
     },
     {
       headerName: "Rural/Urban",
-      minWidth:100,
+      minWidth:105,
       field: "rural_urban",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Category",
+      minWidth:140,
       // field: "schCategoryName",
       field: "schCategoryCode",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Management",
+      minWidth:170,
       // field: "schManagementName",
       field: "schManagementCode",
       suppressColumnsToolPanel: true,
     },
     { 
       headerName: "School Type", field: "schTypeCode" ,
+      minWidth:85,
       valueGetter: function(params) {
         const flagValue = params?.data?.schTypeCode;
     
@@ -95,30 +98,32 @@ export default function Infrastructure3013() {
       },
   
   },
-    { headerName: "Total No. of Schools", field: "totalSchools" 
+    { headerName: "Total No. of Schools",minWidth:100, field: "totalSchools" 
   
   },
     {
       headerName: "Separate Room for Headmaster",
+      minWidth:130,
       field: "schHaveSeparateRoomForHM",
     },
-    { headerName: "Land Available", field: "schHaveLandForExpansion" },
-    { headerName: "Electricity", field: "schHaveElectricity" },
-    { headerName: "Functional Electricity", field: "schHaveFuncElectricity" },
-    { headerName: "Solar Panel", field: "schHaveSolarPanels" },
-    { headerName: "Playground", field: "schHavePlayground" },
+    { headerName: "Land Available",minWidth:90, field: "schHaveLandForExpansion" },
+    { headerName: "Electricity",minWidth:95, field: "schHaveElectricity" },
+    { headerName: "Functional Electricity",minWidth:100, field: "schHaveFuncElectricity" },
+    { headerName: "Solar Panel",minWidth:105, field: "schHaveSolarPanels" },
+    { headerName: "Playground",minWidth:105, field: "schHavePlayground" },
     {
       headerName: "Library or Reading Corner or Book Bank",
+      minWidth:150,
       field: "schHaveLibrary",
     },
-    { headerName: "Librarian", field: "schHaveLibrarian" },
-    { headerName: "Newspaper", field: "schHaveNewsPaperSubscription" },
-    { headerName: "Kitchen Garden", field: "schHaveKitchenGarden" },
-    { headerName: "Furniture", field: "schHaveFurnitureForStudents" },
-    { headerName: "Boy's Toilet", field: "schHaveBoysToilet" },
+    { headerName: "Librarian",minWidth:90, field: "schHaveLibrarian" },
+    { headerName: "Newspaper",minWidth:105, field: "schHaveNewsPaperSubscription" },
+    { headerName: "Kitchen Garden",minWidth:90, field: "schHaveKitchenGarden" },
+    { headerName: "Furniture",minWidth:90, field: "schHaveFurnitureForStudents" },
+    { headerName: "Boy's Toilet",minWidth:100, field: "schHaveBoysToilet" },
     { headerName: "Functional Boy's Toilet", field: "schHaveFuncBoysToilet" },
-    { headerName: "Girl's Toilet", field: "schHaveGirlsToilet" },
-    { headerName: "Functional Girl's Toilet", field: "schHaveFuncGirlsToilet" },
+    { headerName: "Girl's Toilet",minWidth:100, field: "schHaveGirlsToilet" },
+    { headerName: "Functional Girl's Toilet",minWidth:110, field: "schHaveFuncGirlsToilet" },
     { headerName: "Toilet Facility", field: "schHaveToilet" },
     { headerName: "Functional Toilet Facility", field: "schHaveFuncToilet" },
     { headerName: "Functional Urinal Boy's", field: "schHaveFuncBoysUrinals" },
@@ -135,26 +140,28 @@ export default function Infrastructure3013() {
       field: "schHaveRainWaterHarvesting",
     },
     { headerName: "Water Tested", field: "schHaveTestedWater" },
-    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets" },
-    { headerName: "Incinerator", field: "schHavingIncinerator" },
+    { headerName: "Handwash",minWidth:100, field: "schHaveHandwashWithSoapForToilets" },
+    { headerName: "Incinerator",minWidth:100, field: "schHavingIncinerator" },
     {
       headerName: "WASH Facility(Drinking Water, Toilet and Handwash)",
+      minWidth:200,
       field: "schHaveHandwashWithSoapBeforeAfterMeal",
     },
-    { headerName: "Ramps", field: "schHaveRamps" },
-    { headerName: "Hand-Rails", field: "schHaveHandRails" },
-    { headerName: "Medical Checkup", field: "schHaveMedicalCheckup" },
+    { headerName: "Ramps",minWidth:90, field: "schHaveRamps" },
+    { headerName: "Hand-Rails",minWidth:100, field: "schHaveHandRails" },
+    { headerName: "Medical Checkup",minWidth:100, field: "schHaveMedicalCheckup" },
     {
       headerName: "Complete Medical Checkup",
+      minWidth:140,
       field: "schHavingCompleteMedicalCheckup",
     },
-    { headerName: "Internet", field: "schHaveInternet" },
-    { headerName: "Computer Available", field: "schHaveComputers" },
+    { headerName: "Internet",minWidth:100, field: "schHaveInternet" },
+    { headerName: "Computer Available",minWidth:100, field: "schHaveComputers" },
   ]);
 
   const [defColumnDefs] = useState({
     flex: 1,
-    minWidth: 100,
+    minWidth: 120,
     // allow every column to be aggregated
     enableValue: true,
     // allow every column to be grouped
