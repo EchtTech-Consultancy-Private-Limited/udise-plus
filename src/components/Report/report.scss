@@ -349,5 +349,7 @@ th.report-name-width-50 {
     white-space: nowrap;
     font-size: 0.875rem;
 }
-
+.ag-header-cell, .ag-header-group-cell {
+    padding: 0px 11px !important;
+}
 
