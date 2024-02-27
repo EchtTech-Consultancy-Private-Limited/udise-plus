@@ -331,6 +331,7 @@ export default function FilterDropdown() {
       dispatch(updateFilterBlock(blockDataClone.data));
     }
   }
+  
   return (
     <>
       <div className={`filter_drodown `}>
