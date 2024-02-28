@@ -167,7 +167,7 @@ export default function Infrastructure3013() {
 
   const [defColumnDefs] = useState({
     flex: 1,
-    minWidth: 120,
+    minWidth: 150,
     // allow every column to be aggregated
     enableValue: true,
     // allow every column to be grouped
