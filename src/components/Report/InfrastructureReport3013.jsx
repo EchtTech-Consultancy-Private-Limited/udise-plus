@@ -41,6 +41,12 @@ export default function Infrastructure3013() {
     {
       headerName: "Location",
       field: "schLocationCode",
+      suppressColumnsToolPanel: true, 
+    },
+    {
+      headerName: "Rural/Urban",
+      minWidth:105,
+      field: "schLocationCode",
       suppressColumnsToolPanel: true,
       valueGetter: function(params) {
         const flagValue = params?.data?.schLocationCode;
@@ -52,7 +58,7 @@ export default function Infrastructure3013() {
           case 2:
             return "Urban";
           default:
-            return "N/A";
+            return "";
         }
       },
       
@@ -66,15 +72,15 @@ export default function Infrastructure3013() {
     {
       headerName: "School Category",
       minWidth:140,
-      // field: "schCategoryName",
-      field: "schCategoryCode",
+      field: "schCategoryName",
+      // field: "schCategoryCode",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Management",
       minWidth:170,
-      // field: "schManagementName",
-      field: "schManagementCode",
+      field: "schManagementName",
+      // field: "schManagementCode",
       suppressColumnsToolPanel: true,
     },
     { 
@@ -93,7 +99,7 @@ export default function Infrastructure3013() {
           case 3:
           return "Co-Add";
           default:
-            return "N/A";
+            return "";
         }
       },
   
@@ -322,7 +328,7 @@ export default function Infrastructure3013() {
   };
 
   const handleGroupButtonClick = (e) => {
-    const groupObj = {"School Category":"schCategoryCode","School Management":"schManagementCode","Urban/Rural":"rural_urban"}
+    const groupObj = {"School Category":"schCategoryCode","School Management":"schManagementCode","Urban/Rural":"schLocationCode"}
     const groupByColumn = groupObj[e];
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
     setCol((prevDefs) =>
