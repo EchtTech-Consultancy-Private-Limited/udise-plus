@@ -59,7 +59,7 @@ export default function Infrastructure3013() {
     },
     {
       headerName: "Rural/Urban",
-      minWidth:105,
+      minWidth:105, 
       field: "rural_urban",
       suppressColumnsToolPanel: true,
     },
