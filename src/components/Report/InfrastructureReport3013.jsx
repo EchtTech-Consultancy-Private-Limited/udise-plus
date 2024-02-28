@@ -328,7 +328,7 @@ export default function Infrastructure3013() {
   };
 
   const handleGroupButtonClick = (e) => {
-    const groupObj = {"School Category":"schCategoryCode","School Management":"schManagementCode","Urban/Rural":"schLocationCode"}
+    const groupObj = {"School Category":"schCategoryName","School Management":"schManagementName","Urban/Rural":"schLocationCode"}
     const groupByColumn = groupObj[e];
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
     setCol((prevDefs) =>
