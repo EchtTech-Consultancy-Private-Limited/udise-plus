@@ -24,14 +24,16 @@ export default function Infrastructure3013() {
   const {handleSchoolAPIResopnse}=useCheckError();
   const [report, setReport] = useState(null);
   const [viewDataBy,setViewDataBy] = useState('');
-  const grid_column = useSelector((state) => state.column.column);
+  const grid_column = useSelector((state) => state?.column?.column);
   const [queryParameters] = useSearchParams();
   const id = queryParameters.get("id");
   const type = queryParameters.get("type");
-  const schoolFilterYear = useSelector((state) => state.schoolFilter);
+   const schoolFilterYear = useSelector((state) => state?.schoolFilter);
+  //const schoolFilterYear = useSelector((state) => state?.testschoolFilter);
   const [filterShowHide, setFilterShowHide] = useState(false);
   const dispatch = useDispatch();
-  const school_data = useSelector((state) => state.school);
+  const school_data = useSelector((state) => state?.school);
+  console.log("school_data", school_data)
   const [data,setData] = useState(school_data);
   const local_state = window.localStorage.getItem("state");
   const local_district = window.localStorage.getItem("district");
@@ -40,7 +42,7 @@ export default function Infrastructure3013() {
   const [columns,setCol] = useState([
     {
       headerName: "Location",
-      field: "schLocationCode",
+      field: "regionName",
       suppressColumnsToolPanel: true,
       valueGetter: function(params) {
         const flagValue = params?.data?.schLocationCode;
@@ -59,7 +61,7 @@ export default function Infrastructure3013() {
     },
     {
       headerName: "Rural/Urban",
-      field: "rural_urban",
+      field: "schLocationDesc",
       suppressColumnsToolPanel: true,
     },
     {
@@ -135,7 +137,7 @@ export default function Infrastructure3013() {
     },
     { headerName: "Water Tested", field: "schHaveTestedWater" },
     { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets" },
-    { headerName: "Incinerator", field: "schHavingIncinerator" },
+    { headerName: "Incinerator", field: "schHaveIncineratorInGirlsToilets" },
     {
       headerName: "WASH Facility(Drinking Water, Toilet and Handwash)",
       field: "schHaveHandwashWithSoapBeforeAfterMeal",
@@ -145,7 +147,7 @@ export default function Infrastructure3013() {
     { headerName: "Medical Checkup", field: "schHaveMedicalCheckup" },
     {
       headerName: "Complete Medical Checkup",
-      field: "schHavingCompleteMedicalCheckup",
+      field: "schHaveCompleteMedicalCheckup",
     },
     { headerName: "Internet", field: "schHaveInternet" },
     { headerName: "Computer Available", field: "schHaveComputers" },
@@ -197,9 +199,10 @@ export default function Infrastructure3013() {
       dispatch(fetchSchoolCateMgtData()),
       dispatch(fetchArchiveServicesSchoolData(schoolFilterYear)),
     ]).then(([schoolCateMgtDataResult, archiveServicesSchoolDataResult]) => {
-      const school_data_list =  archiveServicesSchoolDataResult.payload.data;
-      const school_cat_mgt_list =  schoolCateMgtDataResult.payload.data;
-      if(school_data_list.length>0){
+      const school_data_list =  archiveServicesSchoolDataResult?.payload?.data;
+      console.log("school_data_list",school_data_list)
+      const school_cat_mgt_list =  schoolCateMgtDataResult?.payload?.data;
+      if(school_data_list?.length>0){
         const mergedData = school_data_list?.map((item)=>{
           const match_cate_name = school_cat_mgt_list.find((d) => d.cate_code === item.schCategoryCode);
           const match_cate_mgt_name = school_cat_mgt_list.find((d) => d.mgt_code == item.schManagementCode);

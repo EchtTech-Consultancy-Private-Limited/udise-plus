@@ -39,6 +39,7 @@ export default function FilterDropdown() {
   const yearData = useSelector((state) => state.year);
   const schoolFilter = useSelector((state) => state.schoolFilter);
   const districtData = useSelector((state) => state.distrct);
+  console.log("districtData",districtData)
   const districtDataClone = useSelector((state) => state.distrct.dataClone);
   const blockData = useSelector((state) => state.block);
   const blockDataClone = useSelector((state) => state.block.dataClone);
@@ -91,7 +92,8 @@ export default function FilterDropdown() {
       dispatch(removeAllBlock());
       setSelectedDistrictClone("District");
     } else if (state_name === "State Wise") {
-      filterObj.region_type = "sw";
+      // filterObj.region_type = "sw";
+      filterObj.region_type = "21";
       filterObj.region_code = "99";
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
@@ -114,7 +116,7 @@ export default function FilterDropdown() {
 
   const handleSchoolFilterDistrict = (district_name, district_code) => {
     if (district_name === "District Wise") {
-      filterObj.region_type = "dw";
+      filterObj.region_type = "22";
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
       dispatch(removeAllBlock());
@@ -160,7 +162,8 @@ export default function FilterDropdown() {
     const groups = [];
     let extra_col = JSON.parse(JSON.stringify(stateData.data.data));
     if (location.pathname !== "/") {
-      extra_col.unshift({ udiseStateCode: "sw", udiseStateName: "State Wise" });
+      // extra_col.unshift({ udiseStateCode: "sw", udiseStateName: "State Wise" });
+      extra_col.unshift({ udiseStateCode: "21", udiseStateName: "State Wise" });
       extra_col.unshift({
         udiseStateCode: "n",
         udiseStateName: "All India/National",
@@ -197,6 +200,7 @@ export default function FilterDropdown() {
     const groups = [];
 
     let extra_col = JSON.parse(JSON.stringify(districtData?.data?.data));
+    console.log("extra_col",extra_col)
     if (location.pathname !== "/" && selectedDistrictclone !== "District") {
       extra_col.unshift({
         udiseDistrictCode: filterObj.region_code,
