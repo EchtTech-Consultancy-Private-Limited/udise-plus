@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const schoolFilterSlice = createSlice({
+const testschoolFilterSlice = createSlice({
   name: 'header',
   initialState: {
     yearId: 8,
@@ -29,5 +29,5 @@ const schoolFilterSlice = createSlice({
   },
 })
 
-export const { changeYearFilter, changeDistrictFilter, changeStateFilter, allFilter } = schoolFilterSlice.actions
-export default schoolFilterSlice.reducer
+export const { changeYearFilter, changeDistrictFilter, changeStateFilter, allFilter } = testschoolFilterSlice.actions
+export default testschoolFilterSlice.reducer

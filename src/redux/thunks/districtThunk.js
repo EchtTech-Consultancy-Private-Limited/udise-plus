@@ -5,6 +5,7 @@ const fetchDistrictDataByStateCode = createAsyncThunk(
   "district/fetchDistrictData",
   async ({state_code,year_id}) => {
     const response = await externalAxios.get(`districts/${state_code}/${year_id}`);
+    console.log("response",response)
     return response.data;
   }
 );

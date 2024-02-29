@@ -6,6 +6,7 @@ import stateSlice from "./slice/stateSlice";
 import blockSlice from './slice/blockSlice';
 import archiveServicesSlice from "./slice/archiveServicesSlice";
 import schoolFilterSlice from "./slice/schoolFilterSlice";
+import testschoolFilterSlice from "./slice/testschoolFilterSlice";
 import darkLightMode from "./slice/darkLightModeSlice";
 import dataGridAPISlice from "./slice/dataGridAPISlice";
 
@@ -20,6 +21,7 @@ const store = configureStore({
         school:archiveServicesSlice,
         toggle:darkLightMode,
         column:dataGridAPISlice,
+        testschoolFilter:testschoolFilterSlice
         
     }
   });
