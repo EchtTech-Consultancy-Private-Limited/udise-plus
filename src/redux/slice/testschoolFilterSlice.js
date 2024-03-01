@@ -4,7 +4,7 @@ const testschoolFilterSlice = createSlice({
   name: 'header',
   initialState: {
     yearId: 8,
-    regionType: "21",
+    regionType: 21,
     regionCode: 99,
     categoryCode: 0,
     managementCode: 0,

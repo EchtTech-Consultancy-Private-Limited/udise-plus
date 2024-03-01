@@ -29,11 +29,11 @@ export default function Infrastructure3013() {
   const id = queryParameters.get("id");
   const type = queryParameters.get("type");
    const schoolFilterYear = useSelector((state) => state?.schoolFilter);
+   
   //const schoolFilterYear = useSelector((state) => state?.testschoolFilter);
   const [filterShowHide, setFilterShowHide] = useState(false);
   const dispatch = useDispatch();
   const school_data = useSelector((state) => state?.school);
-  console.log("school_data", school_data)
   const [data,setData] = useState(school_data);
   const local_state = window.localStorage.getItem("state");
   const local_district = window.localStorage.getItem("district");
@@ -67,13 +67,13 @@ export default function Infrastructure3013() {
     {
       headerName: "School Category",
       field: "schCategoryName",
-      // field: "schCategoryCode",
+       //field: "schCategoryCode",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Management",
       field: "schManagementName",
-      // field: "schManagementCode",
+       //field: "schManagementCode",
       suppressColumnsToolPanel: true,
     },
     { 
@@ -200,7 +200,7 @@ export default function Infrastructure3013() {
       dispatch(fetchArchiveServicesSchoolData(schoolFilterYear)),
     ]).then(([schoolCateMgtDataResult, archiveServicesSchoolDataResult]) => {
       const school_data_list =  archiveServicesSchoolDataResult?.payload?.data;
-      console.log("school_data_list",school_data_list)
+      
       const school_cat_mgt_list =  schoolCateMgtDataResult?.payload?.data;
       if(school_data_list?.length>0){
         const mergedData = school_data_list?.map((item)=>{
@@ -317,7 +317,7 @@ export default function Infrastructure3013() {
   };
 
   const handleGroupButtonClick = (e) => {
-    const groupObj = {"School Category":"schCategoryName","School Management":"schManagementName","Urban/Rural":"rural_urban"}
+    const groupObj = {"School Category":"schCategoryName","School Management":"schManagementName","Urban/Rural":"schLocationDesc"}
     const groupByColumn = groupObj[e];
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
     setCol((prevDefs) =>
