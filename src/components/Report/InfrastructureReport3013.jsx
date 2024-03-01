@@ -44,19 +44,7 @@ export default function Infrastructure3013() {
       headerName: "Location",
       field: "regionName",
       suppressColumnsToolPanel: true,
-      valueGetter: function(params) {
-        const flagValue = params?.data?.schLocationCode;
-        switch (flagValue) {
-          case 0:
-            return "All";
-          case 1:
-            return "Rural";
-          case 2:
-            return "Urban";
-          default:
-            return "";
-        }
-      },
+     
       
     },
     {
@@ -67,14 +55,14 @@ export default function Infrastructure3013() {
     {
       headerName: "School Category",
       minWidth:140,
-      field: "schCategoryName",
+      field: "schCategoryDesc",
        //field: "schCategoryCode",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Management",
       minWidth:170,
-      field: "schManagementName",
+      field: "schManagementDesc",
        //field: "schManagementCode",
       suppressColumnsToolPanel: true,
     },
@@ -83,7 +71,7 @@ export default function Infrastructure3013() {
       minWidth:85,
       valueGetter: function(params) {
         const flagValue = params?.data?.schTypeCode;
-    
+    console.log("flagValue",params)
         switch (flagValue) {
           case 0:
             return "All";
@@ -201,26 +189,27 @@ export default function Infrastructure3013() {
   }, []);
 
   useEffect(() => {
+    dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
     Promise.all([
-      dispatch(fetchSchoolCateMgtData()),
-      dispatch(fetchArchiveServicesSchoolData(schoolFilterYear)),
-    ]).then(([schoolCateMgtDataResult, archiveServicesSchoolDataResult]) => {
-      const school_data_list =  archiveServicesSchoolDataResult?.payload?.data;
+      // dispatch(fetchSchoolCateMgtData()),
+    ])
+    // .then(([schoolCateMgtDataResult, archiveServicesSchoolDataResult]) => {
+    //   const school_data_list =  archiveServicesSchoolDataResult?.payload?.data;
       
-      const school_cat_mgt_list =  schoolCateMgtDataResult?.payload?.data;
-      if(school_data_list?.length>0){
-        const mergedData = school_data_list?.map((item)=>{
-          const match_cate_name = school_cat_mgt_list.find((d) => d.cate_code === item.schCategoryCode);
-          const match_cate_mgt_name = school_cat_mgt_list.find((d) => d.mgt_code == item.schManagementCode);
-          if (match_cate_name || match_cate_mgt_name) {
-            // return { ...item, schCategoryCode: match_cate_name?.broad_category, schManagementCode: match_cate_mgt_name?.management_details };
-            return { ...item, schCategoryName: match_cate_name?.broad_category, schManagementName: match_cate_mgt_name?.management_details };
-          }
-          return item;
-        });
-          dispatch(updateMergeDataToActualData(mergedData));
-      }
-    });
+    //   const school_cat_mgt_list =  schoolCateMgtDataResult?.payload?.data;
+    //   if(school_data_list?.length>0){
+    //     const mergedData = school_data_list?.map((item)=>{
+    //       const match_cate_name = school_cat_mgt_list.find((d) => d.cate_code === item.schCategoryCode);
+    //       const match_cate_mgt_name = school_cat_mgt_list.find((d) => d.mgt_code == item.schManagementCode);
+    //       if (match_cate_name || match_cate_mgt_name) {
+    //         // return { ...item, schCategoryCode: match_cate_name?.broad_category, schManagementCode: match_cate_mgt_name?.management_details };
+    //         return { ...item, schCategoryName: match_cate_name?.broad_category, schManagementName: match_cate_mgt_name?.management_details };
+    //       }
+    //       return item;
+    //     });
+    //       dispatch(updateMergeDataToActualData(mergedData));
+    //   }
+    // });
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
@@ -238,10 +227,10 @@ export default function Infrastructure3013() {
 
   useEffect(() => {
     if (!grid_column) {
-      gridApi?.columnApi?.api?.setColumnVisible("schLocationCode", false);
+      gridApi?.columnApi?.api?.setColumnVisible("regionName", false);
     }
     if (gridApi && gridApi.columnApi) {
-      gridApi.columnApi.api.setColumnVisible("schLocationCode", grid_column);
+      gridApi.columnApi.api.setColumnVisible("regionName", grid_column);
     }
   }, [grid_column, gridApi]);
   const handleHideAndShowFilter = () => {
@@ -324,7 +313,7 @@ export default function Infrastructure3013() {
 
   const handleGroupButtonClick = (e) => {
 
-    const groupObj = {"School Category":"schCategoryName","School Management":"schManagementName","Urban/Rural":"schLocationDesc"}
+    const groupObj = {"School Category":"schCategoryDesc","School Management":"schManagementDesc","Urban/Rural":"schLocationDesc"}
 
     const groupByColumn = groupObj[e];
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))

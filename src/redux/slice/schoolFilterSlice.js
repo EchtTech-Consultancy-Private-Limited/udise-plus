@@ -9,7 +9,8 @@ const schoolFilterSlice = createSlice({
     categoryCode: 0,
     managementCode: 0,
     locationCode: 0,
-    locationCode: 0
+    locationCode: 0,
+    schoolTypeCode:0
   },
 
 
