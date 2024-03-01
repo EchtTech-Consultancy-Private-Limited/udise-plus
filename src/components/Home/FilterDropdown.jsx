@@ -39,7 +39,7 @@ export default function FilterDropdown() {
   const yearData = useSelector((state) => state.year);
   const schoolFilter = useSelector((state) => state.schoolFilter);
   const districtData = useSelector((state) => state.distrct);
-  console.log("districtData",districtData)
+  
   const districtDataClone = useSelector((state) => state.distrct.dataClone);
   const blockData = useSelector((state) => state.block);
   const blockDataClone = useSelector((state) => state.block.dataClone);
@@ -59,7 +59,7 @@ export default function FilterDropdown() {
   window.localStorage.setItem("year", selectedYear);
 
   useEffect(() => {
-    dispatch(fetchStateData(filterObj.year_id));
+    dispatch(fetchStateData(filterObj.yearId));
     dispatch(fetchYearData());
     const children = document.getElementsByClassName("position-static");
     let filter_drodown = document.getElementsByClassName('filter_drodown')[0];
@@ -72,7 +72,7 @@ export default function FilterDropdown() {
 
   const handleSchoolFilterYear = (year, year_report) => {
     setSelectedYear(year_report);
-    filterObj.year_id = year;
+    filterObj.yearId = year;
     dispatch(allFilter(filterObj));
     window.localStorage.setItem("year", year_report);
     hideOpendFilterBox();
@@ -84,50 +84,53 @@ export default function FilterDropdown() {
     setSelectedBlock("Block");
     setSelectedBlockClone("Block");
     if (state_name === "All India/National") {
-      filterObj.region_type = "n";
-      filterObj.region_code = "99";
+
+      filterObj.regionType = 10;
+      filterObj.regionCode = "99";
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
       dispatch(removeAllDistrict());
       dispatch(removeAllBlock());
       setSelectedDistrictClone("District");
     } else if (state_name === "State Wise") {
-      // filterObj.region_type = "sw";
-      filterObj.region_type = "21";
-      filterObj.region_code = "99";
+
+      // filterObj.regionType = "sw";
+      filterObj.regionType = 21;
+      filterObj.regionCode = "11";
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
       dispatch(removeAllDistrict());
       dispatch(removeAllBlock());
       setSelectedDistrictClone("District");
     } else {
-      filterObj.region_type = "s";
-      filterObj.region_code = state_code;
+      filterObj.regionType = 11;
+      filterObj.regionCode = state_code;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
-      dispatch(fetchDistrictDataByStateCode({ state_code: state_code, year_id: filterObj.year_id }));
+      dispatch(fetchDistrictDataByStateCode({ state_code: state_code, yearId: filterObj.yearId }));
+      dispatch(removeAllDistrict());
       dispatch(removeAllBlock());
       setSelectedDistrictClone(state_name);
     }
-    dispatch(updateFilterState(stateDataClone.data));
+    // dispatch(updateFilterState(stateDataClone.data));
     window.localStorage.setItem("state", state_name);
     hideOpendFilterBox();
   };
 
   const handleSchoolFilterDistrict = (district_name, district_code) => {
     if (district_name === "District Wise") {
-      filterObj.region_type = "22";
+      filterObj.regionType = 22;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
       dispatch(removeAllBlock());
       setSelectedBlockClone("Block");
     } else {
-      filterObj.region_type = "d";
-      filterObj.region_code = district_code;
+      filterObj.regionType = 12;
+      filterObj.regionCode = district_code;
       dispatch(
         fetchBlockByDistrictCode({
           district_code: district_code,
-          year_id: filterObj.year_id,
+          yearId: filterObj.yearId,
         })
       );
       dispatch(allFilter(filterObj));
@@ -135,7 +138,7 @@ export default function FilterDropdown() {
       setSelectedBlockClone(district_name);
     }
     dispatch(updateFilterDistrict(districtDataClone.data));
-    
+    dispatch(removeAllBlock());
     setSelectedDistrict(district_name);
     setSelectedBlock("Block");
     window.localStorage.setItem("district", district_name);
@@ -145,12 +148,12 @@ export default function FilterDropdown() {
   
   const handleSchoolFilterBlock = (block_code, block_name) => {
     if (block_name === "Block Wise") {
-      filterObj.region_type = "bw";
+      filterObj.regionType = 23;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
     } else {
-      filterObj.region_type = "b";
-      filterObj.region_code = block_code;
+      filterObj.regionType = 13;
+      filterObj.regionCode = block_code;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
     }
@@ -162,7 +165,16 @@ export default function FilterDropdown() {
 
   const renderStateListGroup = () => {
     const groups = [];
-    let extra_col = JSON.parse(JSON.stringify(stateData.data.data));
+    //let extra_col = JSON.parse(JSON.stringify(stateData.data.data));
+    let extra_col;
+
+    if (stateData.data && stateData.data.data) {
+      extra_col = JSON.parse(JSON.stringify(stateData.data.data));
+    } else {
+
+      extra_col = [];
+    }
+
     if (location.pathname !== "/") {
       // extra_col.unshift({ udiseStateCode: "sw", udiseStateName: "State Wise" });
       extra_col.unshift({ udiseStateCode: "21", udiseStateName: "State Wise" });
@@ -201,11 +213,18 @@ export default function FilterDropdown() {
   const renderDistrictListGroup = () => {
     const groups = [];
 
-    let extra_col = JSON.parse(JSON.stringify(districtData?.data?.data));
-    console.log("extra_col",extra_col)
+    //let extra_col = JSON.parse(JSON.stringify(districtData?.data?.data));
+    let extra_col;
+
+    if (districtData.data && districtData.data.data) {
+      extra_col = JSON.parse(JSON.stringify(districtData?.data?.data));
+    } else {
+
+      extra_col = [];
+    }
     if (location.pathname !== "/" && selectedDistrictclone !== "District") {
       extra_col.unshift({
-        udiseDistrictCode: filterObj.region_code,
+        udiseDistrictCode: filterObj.regionCode,
         udiseDistrictName: "District Wise",
       });
     }
@@ -237,15 +256,23 @@ export default function FilterDropdown() {
 
   const renderBlockListGroup = () => {
     const groups = [];
+    // let extra_col;
+    // if (blockData?.data?.data.length > 0) {
+    //   extra_col = JSON.parse(JSON.stringify(blockData?.data?.data));
+    // } else {
+    //   extra_col = [];
+    // }
     let extra_col;
-    if (blockData?.data?.data.length > 0) {
-      extra_col = JSON.parse(JSON.stringify(blockData?.data?.data));
+
+    if (blockData.data && blockData.data.data) {
+      extra_col = JSON.parse(JSON.stringify(blockData.data.data));
     } else {
+
       extra_col = [];
     }
     if (location.pathname !== "/" && selectedBlockClone !== "Block") {
       extra_col.unshift({
-        udiseBlockCode: filterObj.region_code,
+        udiseBlockCode: filterObj.regionCode,
         udiseBlockName: "Block Wise",
       });
     }
@@ -289,7 +316,7 @@ export default function FilterDropdown() {
             key={j}
             onClick={() =>
               handleSchoolFilterYear(
-                yearData.data.data[j].year_id,
+                yearData.data.data[j].yearId,
                 yearData.data.data[j].report_year
               )
             }
@@ -313,27 +340,27 @@ export default function FilterDropdown() {
     });
   }
 
-  const handleSearch = (e)=>{
-    if(e.target.name==="state_search"){
-      const searchStateResult = stateSearch?.data?.filter((item)=>item.udiseStateName.toLowerCase().indexOf(e.target.value) > -1);
+  const handleSearch = (e) => {
+    if (e.target.name === "state_search") {
+      const searchStateResult = stateSearch.data.filter((item) => item.udiseStateName.toLowerCase().indexOf(e.target.value) > -1);
       dispatch(updateFilterState(searchStateResult));
     }
-    if(e.target.name==="district_search"){
-      const searchDistrictResult = districtSearch?.data?.filter((item)=>item.udiseDistrictName.toLowerCase().indexOf(e.target.value) > -1);
+    if (e.target.name === "district_search") {
+      const searchDistrictResult = districtSearch.data.filter((item) => item.udiseDistrictName.toLowerCase().indexOf(e.target.value) > -1);
       dispatch(updateFilterDistrict(searchDistrictResult));
     }
-    if(e.target.name==="block_search"){
-      const searchBlockResult = blockSearch?.data?.filter((item)=>item.udiseBlockName.toLowerCase().indexOf(e.target.value) > -1);
+    if (e.target.name === "block_search") {
+      const searchBlockResult = blockSearch.data.filter((item) => item.udiseBlockName.toLowerCase().indexOf(e.target.value) > -1);
       dispatch(updateFilterBlock(searchBlockResult));
     }
   }
 
-  const handleStateDistBlockSearchState = (e)=>{
-    if(e==="state_search_update_state"){
+  const handleStateDistBlockSearchState = (e) => {
+    if (e === "state_search_update_state") {
       dispatch(updateFilterState(stateDataClone.data));
-    }else if (e==="district_search_update_state"){
+    } else if (e === "district_search_update_state") {
       dispatch(updateFilterDistrict(districtDataClone.data));
-    }else{
+    } else {
       dispatch(updateFilterBlock(blockDataClone.data));
     }
   }
@@ -350,7 +377,7 @@ export default function FilterDropdown() {
 
 
 
-                  <MDBNavbarItem className='position-static' onClick={()=>handleStateDistBlockSearchState("state_search_update_state")}>
+                  <MDBNavbarItem className='position-static' onClick={() => handleStateDistBlockSearchState("state_search_update_state")}>
                     <MDBDropdown>
                       <MDBDropdownToggle tag="a" className="nav-link">
                         <div className="menu-sub-heading">Select State</div>
@@ -367,7 +394,7 @@ export default function FilterDropdown() {
                           <MDBRow className="my-0">
                             <li className="list-group-item mb-3">
                               <div className="search-barfilter mx-2">
-                                <input type="search" placeholder="Search here..." className="form-control" id="state_search" name="state_search" onChange={handleSearch}/>
+                                <input type="search" placeholder="Search here..." className="form-control" id="state_search" name="state_search" onChange={handleSearch} />
                               </div>
                             </li>
                             {<>{renderStateListGroup()}</>}
@@ -379,7 +406,7 @@ export default function FilterDropdown() {
 
                   {/* District List */}
                   {location.pathname !== "/" && (
-                    <MDBNavbarItem className="position-static" onClick={()=>handleStateDistBlockSearchState("district_search_update_state")}>
+                    <MDBNavbarItem className="position-static" onClick={() => handleStateDistBlockSearchState("district_search_update_state")}>
                       <MDBDropdown className="disabled">
                         <MDBDropdownToggle tag="a" className="nav-link">
                           <div className="menu-sub-heading">
@@ -398,7 +425,7 @@ export default function FilterDropdown() {
                             <MDBRow className="my-1">
                               <li className="list-group-item mb-3">
                                 <div className="search-barfilter mx-2">
-                                  <input type="search" placeholder="Search here..." className="form-control" id="district_search" name="district_search" onChange={handleSearch}/>
+                                  <input type="search" placeholder="Search here..." className="form-control" id="district_search" name="district_search" onChange={handleSearch} />
                                 </div>
                               </li>
                               {<>{renderDistrictListGroup()}</>}
@@ -411,7 +438,7 @@ export default function FilterDropdown() {
 
                   {/* Block List */}
                   {location.pathname !== "/" && (
-                    <MDBNavbarItem className="position-static" onClick={()=>handleStateDistBlockSearchState("block_search_update_state")}>
+                    <MDBNavbarItem className="position-static" onClick={() => handleStateDistBlockSearchState("block_search_update_state")}>
                       <MDBDropdown className="disabled">
                         <MDBDropdownToggle tag="a" className="nav-link">
                           <div className="menu-sub-heading">Select Block</div>
@@ -428,7 +455,7 @@ export default function FilterDropdown() {
                             <MDBRow className="my-1">
                               <li className="list-group-item mb-3">
                                 <div className="search-barfilter mx-2">
-                                  <input type="search" placeholder="Search here..." className="form-control"  id="block_search" name="block_search" onChange={handleSearch}/>
+                                  <input type="search" placeholder="Search here..." className="form-control" id="block_search" name="block_search" onChange={handleSearch} />
                                 </div>
                               </li>
                               {<>{renderBlockListGroup()}</>}
