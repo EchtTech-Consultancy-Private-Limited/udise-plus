@@ -71,7 +71,6 @@ export default function Infrastructure3013() {
       minWidth:85,
       valueGetter: function(params) {
         const flagValue = params?.data?.schTypeCode;
-    console.log("flagValue",params)
         switch (flagValue) {
           case 0:
             return "All";
