@@ -112,7 +112,7 @@ export default function FilterDropdown() {
       dispatch(removeAllBlock());
       setSelectedDistrictClone(state_name);
     }
-    // dispatch(updateFilterState(stateDataClone.data));
+     dispatch(updateFilterState(stateDataClone.data));
     window.localStorage.setItem("state", state_name);
     hideOpendFilterBox();
   };
