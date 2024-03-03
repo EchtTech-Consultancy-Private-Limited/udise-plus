@@ -71,7 +71,6 @@ export default function Infrastructure3013() {
       minWidth:85,
       valueGetter: function(params) {
         const flagValue = params?.data?.schTypeCode;
-    console.log("flagValue",params)
         switch (flagValue) {
           case 0:
             return "All";
@@ -394,7 +393,7 @@ export default function Infrastructure3013() {
             <div className="row align-items-center report-inner-tab">
               <div className="col-md-12">
                 <h4 className="brudcrumb_heading">
-                  <span>{local_state}</span>
+                 Showing Result for : <span>&nbsp;{local_state}</span>
                    <span className="material-icons-round">chevron_right</span> 
                   {
                     local_district!=="District" && <>

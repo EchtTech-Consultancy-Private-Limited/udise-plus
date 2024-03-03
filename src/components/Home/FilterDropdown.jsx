@@ -46,7 +46,7 @@ export default function FilterDropdown() {
   const [selectedState, setSelectedState] = useState("All India/National");
   const [selectedDistrict, setSelectedDistrict] = useState("District");
   const [selectedDistrictclone, setSelectedDistrictClone] = useState("District");
-  const [selectedYear, setSelectedYear] = useState("2020-21");
+  const [selectedYear, setSelectedYear] = useState("2019-20");
   const [selectedBlock, setSelectedBlock] = useState("Block");
   const [selectedBlockClone, setSelectedBlockClone] = useState("Block");
   const filterObj = structuredClone(schoolFilter);
