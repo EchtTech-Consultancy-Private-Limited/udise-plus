@@ -311,6 +311,7 @@ export default function FilterDropdown() {
         j < i + yearItemsPerPage && j < yearData.data.data.length;
         j++
       ) {
+        console.log(yearData.data.data[j])
         groupItems.push(
           <MDBListGroupItem
             key={j}
