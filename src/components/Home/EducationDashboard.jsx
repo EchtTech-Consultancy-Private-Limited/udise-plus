@@ -17,7 +17,10 @@ import {useTranslation} from "react-i18next";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDashboardData } from '../../redux/thunks/dashboardThunk';
 import { convertToIndianNumberSystem } from '../../constants/constants';
+
+
 import Breadcrumb from './Breadcrumb';
+
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 require("highcharts/modules/export-data.js")(Highcharts);
@@ -129,9 +132,11 @@ export default function EducationDashboard() {
                         
                         <div className="col-md-12 col-lg-12 p-0">
                             <div className="common-content text-start right-card-sec">
+                          
                                 <div className="srid-card-se">
                                     <div className="row">
                                         <div className="col-md-4 col-lg-4">
+                                            
                                             <div className="card-box">
                                                 <img src={school} alt="school" className='card-img' />
                                                 <i className="sub-text-c text-green">{t("no_of_schools")}</i>

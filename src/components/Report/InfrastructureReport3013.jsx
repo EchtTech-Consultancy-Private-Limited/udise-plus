@@ -129,27 +129,27 @@ export default function Infrastructure3013() {
       headerName: "Rain Water Harvesting",
       field: "schHaveRainWaterHarvesting",aggFunc: 'sum'
     },
-    { headerName: "Water Tested", field: "schHaveTestedWater",aggFunc: 'sum'  },
-    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets" ,aggFunc: 'sum'},
-    { headerName: "Incinerator", field: "schHaveIncineratorInGirlsToilets",aggFunc: 'sum' },
+    { headerName: "Water Tested", field: "schHaveTestedWater",aggFunc: 'sum',rowPinned: 'bottom'   },
+    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets" ,aggFunc: 'sum',rowPinned: 'bottom' },
+    { headerName: "Incinerator", field: "schHaveIncineratorInGirlsToilets",aggFunc: 'sum',rowPinned: 'bottom'  },
     {
       headerName: "WASH Facility(Drinking Water, Toilet and Handwash)",
       minWidth:200,
-      field: "schHaveHandwashWithSoapBeforeAfterMeal",aggFunc: 'sum'
+      field: "schHaveHandwashWithSoapBeforeAfterMeal",aggFunc: 'sum',rowPinned: 'bottom' 
     },
-    { headerName: "Ramps",minWidth:90, field: "schHaveRamps",aggFunc: 'sum' },
-    { headerName: "Hand-Rails",minWidth:100, field: "schHaveHandRails",aggFunc: 'sum' },
-    { headerName: "Medical Checkup",minWidth:100, field: "schHaveMedicalCheckup",aggFunc: 'sum' },
+    { headerName: "Ramps",minWidth:90, field: "schHaveRamps",aggFunc: 'sum',rowPinned: 'bottom'  },
+    { headerName: "Hand-Rails",minWidth:100, field: "schHaveHandRails",aggFunc: 'sum',rowPinned: 'bottom'  },
+    { headerName: "Medical Checkup",minWidth:100, field: "schHaveMedicalCheckup",aggFunc: 'sum',rowPinned: 'bottom'  },
     {
       headerName: "Complete Medical Checkup",
-      field: "schHaveCompleteMedicalCheckup",aggFunc: 'sum'
+      field: "schHaveCompleteMedicalCheckup",aggFunc: 'sum',rowPinned: 'bottom' 
     },
-    { headerName: "Internet",minWidth:100, field: "schHaveInternet", aggFunc: 'sum' },
-    { headerName: "Computer Available",minWidth:100, field: "schHaveComputers", aggFunc: 'sum' },
+    { headerName: "Internet",minWidth:100, field: "schHaveInternet", aggFunc: 'sum',rowPinned: 'top'  },
+    { headerName: "Computer Available",minWidth:100, field: "schHaveComputers", aggFunc: 'sum',rowPinned: 'top' },
   ]);
 
   const pinBottomRowData = [
-    { make: 'Total', model: '', Internet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveInternet, 0) },
+    { make: 'Total', model: '',rowPinned: 'top', Internet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveInternet, 0) },
     { make: 'Total', model: '', totalSchools: school_data?.data?.data?.reduce((total, row) => total + row.totalSchools, 0) },
     { make: 'Total', model: '', schHaveSeparateRoomForHM: school_data?.data?.data?.reduce((total, row) => total + row.schHaveSeparateRoomForHM, 0) },
     { make: 'Total', model: '', ComputerAvailable: school_data?.data?.data?.reduce((total, row) => total + row.schHaveComputers, 0) },
@@ -551,8 +551,16 @@ export default function Infrastructure3013() {
                         pinBottomRowData={pinBottomRowData}
                         groupIncludeFooter={true}
                         groupIncludeTotalFooter={true}
-                        
-                       
+                        getRowStyle={(params) => {
+                          console.log("ghsgas",params.node)
+                          if (params.node.data && params.node.data.rowPinned === 'top') {
+                              // Customize background color for pinBottomRowData rows
+                              return { backgroundColor: 'lightblue' };
+                          }
+                          // Return null if you don't want to apply any style to other rows
+                          return null;
+                      }}
+                     
                          //groupIncludeFooter={true}
 
                         // groupIncludeTotalFooter={true}
