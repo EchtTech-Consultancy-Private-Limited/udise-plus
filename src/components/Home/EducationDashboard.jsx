@@ -148,11 +148,11 @@ export default function EducationDashboard() {
                                                 <i className="sub-text-c text-green">{t("no_of_teachers")}</i>
                                                 <div className="main-text-c m-big">{totalTeachers}</div>
 
-                                                <span className="sub-text-c">{t("urban")}</span>
-                                                <div className="main-text-c">9.73 Lakhs</div>
+                                                <span className="sub-text-c">{t("Male")}</span>
+                                                <div className="main-text-c">{convertToIndianNumberSystem(dashData?.totTeachersMale)}</div>
 
-                                                <span className="sub-text-c">{t("rural")}</span>
-                                                <div className="main-text-c">11.73 Lakhs</div>
+                                                <span className="sub-text-c">{t("Female")}</span>
+                                                <div className="main-text-c">{convertToIndianNumberSystem(dashData?.totTeachersFemale)}</div>
                                             </div>
                                         </div>
                                         <div className="col-md-4 col-lg-4">
@@ -161,11 +161,11 @@ export default function EducationDashboard() {
                                                 <i className="sub-text-c text-green">{t("no_of_students")}</i>
                                                 <div className="main-text-c m-big">{totalStudents}</div>
 
-                                                <span className="sub-text-c">{t("urban")}</span>
-                                                <div className="main-text-c">12.73 Lakhs</div>
+                                                <span className="sub-text-c">{t("Boys")}</span>
+                                                <div className="main-text-c">{convertToIndianNumberSystem(dashData?.totStudentBoys)}</div>
 
-                                                <span className="sub-text-c">{t("rural")}</span>
-                                                <div className="main-text-c">13.79 Lakhs</div>
+                                                <span className="sub-text-c">{t("Girls")}</span>
+                                                <div className="main-text-c">{convertToIndianNumberSystem(dashData?.totStudentGirls)}</div>
                                             </div>
                                         </div>
                                     </div>
