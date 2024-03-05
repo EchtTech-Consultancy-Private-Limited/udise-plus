@@ -91,7 +91,6 @@ export default function FilterDropdown() {
       filterObj.regionCode = nWiseregionCode;
       filterObj.dashboardRegionType = "n";
       filterObj.dashboardRegionCode = 100;
-      console.log(filterObj,' filter obj')
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
       dispatch(removeAllDistrict());
@@ -130,7 +129,7 @@ export default function FilterDropdown() {
     hideOpendFilterBox();
   };
 
-  console.log(filterObj,' all filter')
+  
   const handleSchoolFilterDistrict = (district_name, district_code) => {
     if (district_name === districtWiseName) {
       filterObj.regionType = allDWiseregionType;
