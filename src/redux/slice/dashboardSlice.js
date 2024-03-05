@@ -21,17 +21,14 @@ const dashboardSlice = createSlice({
     console.log("shdjsh",builder)
     builder
       .addCase(fetchDashboardData.pending, (state) => {
-        console.log("pending")
         state.isLoading = true;
       })
       .addCase(fetchDashboardData.fulfilled, (state, action) => {
-        console.log("fulfilled")
         state.isLoading = false;
         state.data = action.payload.data===""?[]:action.payload;
         
       })
       .addCase(fetchDashboardData.rejected, (state, action) => {
-        console.log("rejected")
         state.isLoading = false;
         state.isError = true;
       })

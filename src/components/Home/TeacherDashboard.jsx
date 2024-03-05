@@ -99,9 +99,10 @@ export default function TeacherDashboard() {
         dispatch(fetchDashboardData(filterObj));
     }, [dispatch,schoolFilter]);
 
-    const dashData=useSelector((state)=>state?.dashboard?.data?.data?.[0])
-    const totalTeachers=dashData?.totTeachersMale + dashData?.totTeachersFemale;
-    console.log("dashData",dashData)
+    const dashData=useSelector((state)=>state?.dashboard?.data?.data?.[0]) || {}
+    console.log("")
+    const totalTeachers=(dashData?.totTeachersMale + dashData?.totTeachersFemale) || 0;
+  
     return (
         <>
             <section className="pgicategory vision-mission-card ptb-30">
@@ -117,7 +118,7 @@ export default function TeacherDashboard() {
                                         <div className="col-md-9 col-lg-9">
                                             <div className="card-box row">
                                                 <div className="col-md-6 mb-5">
-                                                    <div className="main-text-c m-big">{convertToIndianNumberSystem(totalTeachers)}</div>
+                                                    <div className="main-text-c m-big">{convertToIndianNumberSystem((totalTeachers) || 0)}</div>
                                                     <span className="sub-text-c text-green">{t("total_teachers")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-5">
