@@ -86,69 +86,107 @@ export default function Infrastructure3013() {
       },
   
   },
-    { headerName: "Total No. of Schools",minWidth:100, field: "totalSchools" 
+    { headerName: "Total No. of Schools",minWidth:100, field: "totalSchools" , aggFunc: 'sum' 
   
   },
     {
       headerName: "Separate Room for Headmaster",
       minWidth:130,
-      field: "schHaveSeparateRoomForHM",
+      field: "schHaveSeparateRoomForHM",aggFunc: 'sum'
     },
-    { headerName: "Land Available",minWidth:90, field: "schHaveLandForExpansion" },
-    { headerName: "Electricity",minWidth:95, field: "schHaveElectricity" },
-    { headerName: "Functional Electricity",minWidth:100, field: "schHaveFuncElectricity" },
-    { headerName: "Solar Panel",minWidth:105, field: "schHaveSolarPanels" },
-    { headerName: "Playground",minWidth:105, field: "schHavePlayground" },
+    { headerName: "Land Available",minWidth:90, field: "schHaveLandForExpansion",aggFunc: 'sum' },
+    { headerName: "Electricity",minWidth:95, field: "schHaveElectricity",aggFunc: 'sum' },
+    { headerName: "Functional Electricity",minWidth:100, field: "schHaveFuncElectricity",aggFunc: 'sum' },
+    { headerName: "Solar Panel",minWidth:105, field: "schHaveSolarPanels",aggFunc: 'sum' },
+    { headerName: "Playground",minWidth:105, field: "schHavePlayground",aggFunc: 'sum' },
     {
       headerName: "Library or Reading Corner or Book Bank",
       minWidth:150,
-      field: "schHaveLibrary",
+      field: "schHaveLibrary",aggFunc: 'sum'
     },
-    { headerName: "Librarian",minWidth:90, field: "schHaveLibrarian" },
-    { headerName: "Newspaper",minWidth:105, field: "schHaveNewsPaperSubscription" },
-    { headerName: "Kitchen Garden",minWidth:90, field: "schHaveKitchenGarden" },
-    { headerName: "Furniture",minWidth:90, field: "schHaveFurnitureForStudents" },
-    { headerName: "Boy's Toilet",minWidth:100, field: "schHaveBoysToilet" },
-    { headerName: "Functional Boy's Toilet", field: "schHaveFuncBoysToilet" },
-    { headerName: "Girl's Toilet",minWidth:100, field: "schHaveGirlsToilet" },
-    { headerName: "Functional Girl's Toilet",minWidth:110, field: "schHaveFuncGirlsToilet" },
-    { headerName: "Toilet Facility", field: "schHaveToilet" },
-    { headerName: "Functional Toilet Facility", field: "schHaveFuncToilet" },
-    { headerName: "Functional Urinal Boy's", field: "schHaveFuncBoysUrinals" },
-    { headerName: "Functional Urinal", field: "schHaveFuncUrinals" },
+    { headerName: "Librarian",minWidth:90, field: "schHaveLibrarian",aggFunc: 'sum' },
+    { headerName: "Newspaper",minWidth:105, field: "schHaveNewsPaperSubscription",aggFunc: 'sum' },
+    { headerName: "Kitchen Garden",minWidth:90, field: "schHaveKitchenGarden",aggFunc: 'sum' },
+    { headerName: "Furniture",minWidth:90, field: "schHaveFurnitureForStudents",aggFunc: 'sum' },
+    { headerName: "Boy's Toilet",minWidth:100, field: "schHaveBoysToilet",aggFunc: 'sum' },
+    { headerName: "Functional Boy's Toilet", field: "schHaveFuncBoysToilet",aggFunc: 'sum' },
+    { headerName: "Girl's Toilet",minWidth:100, field: "schHaveGirlsToilet",aggFunc: 'sum' },
+    { headerName: "Functional Girl's Toilet",minWidth:110, field: "schHaveFuncGirlsToilet" ,aggFunc: 'sum'},
+    { headerName: "Toilet Facility", field: "schHaveToilet" ,aggFunc: 'sum'},
+    { headerName: "Functional Toilet Facility", field: "schHaveFuncToilet",aggFunc: 'sum' },
+    { headerName: "Functional Urinal Boy's", field: "schHaveFuncBoysUrinals",aggFunc: 'sum' },
+    { headerName: "Functional Urinal", field: "schHaveFuncUrinals",aggFunc: 'sum' },
     {
       headerName: "Functional Urinal Girl's",
-      field: "schHaveFuncGirlsUrinals",
+      field: "schHaveFuncGirlsUrinals",aggFunc: 'sum'
     },
-    { headerName: "Drinking Water", field: "schHaveDrinkWater" },
-    { headerName: "Functional Drinking Water", field: "schHaveFuncDrinkWater" },
-    { headerName: "Water Purifier", field: "schHaveWaterPurifier" },
+    { headerName: "Drinking Water", field: "schHaveDrinkWater",aggFunc: 'sum' },
+    { headerName: "Functional Drinking Water", field: "schHaveFuncDrinkWater",aggFunc: 'sum' },
+    { headerName: "Water Purifier", field: "schHaveWaterPurifier",aggFunc: 'sum' },
     {
       headerName: "Rain Water Harvesting",
-      field: "schHaveRainWaterHarvesting",
+      field: "schHaveRainWaterHarvesting",aggFunc: 'sum'
     },
-    { headerName: "Water Tested", field: "schHaveTestedWater" },
-    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets" },
-    { headerName: "Incinerator", field: "schHaveIncineratorInGirlsToilets" },
+    { headerName: "Water Tested", field: "schHaveTestedWater",aggFunc: 'sum'  },
+    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets" ,aggFunc: 'sum'},
+    { headerName: "Incinerator", field: "schHaveIncineratorInGirlsToilets",aggFunc: 'sum' },
     {
       headerName: "WASH Facility(Drinking Water, Toilet and Handwash)",
       minWidth:200,
-      field: "schHaveHandwashWithSoapBeforeAfterMeal",
+      field: "schHaveHandwashWithSoapBeforeAfterMeal",aggFunc: 'sum'
     },
-    { headerName: "Ramps",minWidth:90, field: "schHaveRamps" },
-    { headerName: "Hand-Rails",minWidth:100, field: "schHaveHandRails" },
-    { headerName: "Medical Checkup",minWidth:100, field: "schHaveMedicalCheckup" },
+    { headerName: "Ramps",minWidth:90, field: "schHaveRamps",aggFunc: 'sum' },
+    { headerName: "Hand-Rails",minWidth:100, field: "schHaveHandRails",aggFunc: 'sum' },
+    { headerName: "Medical Checkup",minWidth:100, field: "schHaveMedicalCheckup",aggFunc: 'sum' },
     {
       headerName: "Complete Medical Checkup",
-      field: "schHaveCompleteMedicalCheckup",
+      field: "schHaveCompleteMedicalCheckup",aggFunc: 'sum'
     },
-    { headerName: "Internet",minWidth:100, field: "schHaveInternet" },
-    { headerName: "Computer Available",minWidth:100, field: "schHaveComputers" },
+    { headerName: "Internet",minWidth:100, field: "schHaveInternet", aggFunc: 'sum' },
+    { headerName: "Computer Available",minWidth:100, field: "schHaveComputers", aggFunc: 'sum' },
   ]);
 
-  // const pinBottomRowData = [
-  //   { make: 'Total', model: '', Internet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveInternet, 0) }
-  // ];
+  const pinBottomRowData = [
+    { make: 'Total', model: '', Internet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveInternet, 0) },
+    { make: 'Total', model: '', totalSchools: school_data?.data?.data?.reduce((total, row) => total + row.totalSchools, 0) },
+    { make: 'Total', model: '', schHaveSeparateRoomForHM: school_data?.data?.data?.reduce((total, row) => total + row.schHaveSeparateRoomForHM, 0) },
+    { make: 'Total', model: '', ComputerAvailable: school_data?.data?.data?.reduce((total, row) => total + row.schHaveComputers, 0) },
+    { make: 'Total', model: '', CompleteMedicalCheckup: school_data?.data?.data?.reduce((total, row) => total + row.schHaveCompleteMedicalCheckup, 0) },
+    { make: 'Total', model: '', MedicalCheckup: school_data?.data?.data?.reduce((total, row) => total + row.schHaveMedicalCheckup, 0) },
+    { make: 'Total', model: '', HandRails: school_data?.data?.data?.reduce((total, row) => total + row.schHaveHandRails, 0) },
+    { make: 'Total', model: '', Ramps: school_data?.data?.data?.reduce((total, row) => total + row.schHaveRamps, 0) },
+    { make: 'Total', model: '', WASHFacility: school_data?.data?.data?.reduce((total, row) => total + row.schHaveHandwashWithSoapBeforeAfterMeal, 0) },
+    { make: 'Total', model: '', Incinerator: school_data?.data?.data?.reduce((total, row) => total + row.schHaveIncineratorInGirlsToilets, 0) },
+    { make: 'Total', model: '', Handwash: school_data?.data?.data?.reduce((total, row) => total + row.schHaveHandwashWithSoapForToilets, 0) },
+    { make: 'Total', model: '', WaterTested: school_data?.data?.data?.reduce((total, row) => total + row.schHaveTestedWater, 0) },
+    { make: 'Total', model: '', RainWaterHarvesting: school_data?.data?.data?.reduce((total, row) => total + row.schHaveRainWaterHarvesting, 0) },
+    { make: 'Total', model: '', WaterPurifier: school_data?.data?.data?.reduce((total, row) => total + row.schHaveWaterPurifier, 0) },
+    { make: 'Total', model: '', FunctionalDrinkingWater: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncDrinkWater, 0) },
+    { make: 'Total', model: '', DrinkingWater: school_data?.data?.data?.reduce((total, row) => total + row.schHaveDrinkWater, 0) },
+    { make: 'Total', model: '', FunctionalUrinalGirl: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncUrinals, 0) },
+    { make: 'Total', model: '', FunctionalUrinal: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncUrinals, 0) },
+    { make: 'Total', model: '', FunctionalUrinalBoy: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncBoysUrinals, 0) },
+    { make: 'Total', model: '', FunctionalToiletFacility: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncToilet, 0) },
+    { make: 'Total', model: '', ToiletFacility: school_data?.data?.data?.reduce((total, row) => total + row.schHaveToilet, 0) },
+    { make: 'Total', model: '', FunctionalGirlToilet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncGirlsToilet, 0) },
+    { make: 'Total', model: '', GirlToilet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveGirlsToilet, 0) },
+    { make: 'Total', model: '', FunctionalBoyToilet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncBoysToilet, 0) },
+    { make: 'Total', model: '', BoyToilet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveBoysToilet, 0) },
+    { make: 'Total', model: '', Furniture: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFurnitureForStudents, 0) },
+    { make: 'Total', model: '', KitchenGarden: school_data?.data?.data?.reduce((total, row) => total + row.schHaveKitchenGarden, 0) },
+    { make: 'Total', model: '', Newspaper: school_data?.data?.data?.reduce((total, row) => total + row.schHaveNewsPaperSubscription, 0) },
+    { make: 'Total', model: '', Librarian: school_data?.data?.data?.reduce((total, row) => total + row.schHaveLibrarian, 0) },
+    { make: 'Total', model: '', Library: school_data?.data?.data?.reduce((total, row) => total + row.schHaveLibrary, 0) },
+    { make: 'Total', model: '', Playground: school_data?.data?.data?.reduce((total, row) => total + row.schHavePlayground, 0) },
+    { make: 'Total', model: '', SolarPanel: school_data?.data?.data?.reduce((total, row) => total + row.schHaveSolarPanels, 0) },
+    { make: 'Total', model: '', FunctionalElectricity: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncElectricity, 0) },
+    { make: 'Total', model: '', Electricity: school_data?.data?.data?.reduce((total, row) => total + row.schHaveElectricity, 0) },
+    { make: 'Total', model: '', LandAvailable: school_data?.data?.data?.reduce((total, row) => total + row.schHaveLandForExpansion, 0) },
+    { make: 'Total', model: '', SolarPanel: school_data?.data?.data?.reduce((total, row) => total + row.schHaveSolarPanels, 0) },
+
+  ];
+
+  
   const [defColumnDefs] = useState({
     flex: 1,
     minWidth: 150,
@@ -484,9 +522,13 @@ export default function Infrastructure3013() {
                         columnDefs={columns}
                         defaultColDef={defColumnDefs}
                         onGridReady={onGridReady}
+                        sideBar={filterShowHide ? sideBar : false}
                         pagination={true}
                         paginateChildRows={true}
-                        sideBar={filterShowHide ? sideBar : false}
+                        pinBottomRowData={pinBottomRowData}
+                        groupIncludeFooter={true}
+                        groupIncludeTotalFooter={true}
+                        
                        
                          //groupIncludeFooter={true}
 

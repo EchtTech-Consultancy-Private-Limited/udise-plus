@@ -182,10 +182,10 @@ export default function EducationDashboard() {
                                                 <div className="main-text-c m-big" style={{ whiteSpace: 'pre-line' }}>{t("gross_enrollment_ratio")}</div>
 
                                                 <div className="main-text-c">{t("elementary")}</div>
-                                                <span className="sub-text-c">100.13%</span>
+                                                <span className="sub-text-c">{dashData?.gerEle || 0}%</span>
 
                                                 <div className="main-text-c">{t("secondary")}</div>
-                                                <span className="sub-text-c">79.86%</span>
+                                                <span className="sub-text-c">{dashData?.gerSec || 0}%</span>
                                             </div>
                                         </div>
 
@@ -226,10 +226,10 @@ export default function EducationDashboard() {
                                                 <div className="main-text-c m-big" style={{ whiteSpace: 'pre-line' }}>{t("pupil_teacher_ratio")}</div>
 
                                                 <div className="main-text-c">{t("primary")}</div>
-                                                <span className="sub-text-c">100.13%</span>
+                                                <span className="sub-text-c">{dashData?.ptrPry || 0}%</span>
 
                                                 <div className="main-text-c">{t("upper_primary")}</div>
-                                                <span className="sub-text-c">79.86%</span>
+                                                <span className="sub-text-c">{dashData?.ptrUpr || 0}%</span>
                                             </div>
                                         </div>
 
