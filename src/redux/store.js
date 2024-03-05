@@ -9,7 +9,8 @@ import schoolFilterSlice from "./slice/schoolFilterSlice";
 import testschoolFilterSlice from "./slice/testschoolFilterSlice";
 import darkLightMode from "./slice/darkLightModeSlice";
 import dataGridAPISlice from "./slice/dataGridAPISlice";
-
+import dashboardSlice from "./slice/dashboardSlice";
+import dashboardFilterSlice from "./slice/dashboardFilter.slice";
 const store = configureStore({
     reducer:{
         header:headerSlice,
@@ -21,7 +22,9 @@ const store = configureStore({
         school:archiveServicesSlice,
         toggle:darkLightMode,
         column:dataGridAPISlice,
-        testschoolFilter:testschoolFilterSlice
+        testschoolFilter:testschoolFilterSlice,
+        dashboard:dashboardSlice,
+        dashboardFilter: dashboardFilterSlice
         
     }
   });
