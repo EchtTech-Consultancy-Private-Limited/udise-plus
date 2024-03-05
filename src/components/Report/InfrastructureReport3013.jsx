@@ -37,6 +37,8 @@ export default function Infrastructure3013() {
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
   const local_year = window.localStorage.getItem("year");
+  const [columnCount,setColumnCount] = useState(20);
+  const [hideScrollBtn,setHideScrollBtn] = useState(0);
   const [columns,setCol] = useState([
     {
       headerName: "Location",
@@ -339,7 +341,16 @@ export default function Infrastructure3013() {
     );
 
   };
-
+ 
+  const scrollToRight = () => {
+    columns.map((item,idx)=>{
+        if(idx==columnCount){
+            gridApi.columnApi.api.ensureColumnVisible(item.field);
+            setColumnCount(prevColumnCount=>prevColumnCount+10);
+            setHideScrollBtn(prev=>prev+1);
+        }
+    })
+  };
   return (
     <>
       {school_data.isLoading && <GlobalLoading />}
@@ -476,6 +487,7 @@ export default function Infrastructure3013() {
                       className="ag-theme-material ag-theme-custom-height ag-theme-quartz"
                       style={{ height: 600 }}
                     >
+                      
                       <AgGridReact
                         rowData={
                           school_data?.data?.data === ""
@@ -489,6 +501,7 @@ export default function Infrastructure3013() {
                         // groupIncludeFooter={true}
                         // groupIncludeTotalFooter={true}
                       />
+                            {/* <button onClick={() => scrollToLeft()}>Scroll to Left</button> */}
                     </div>
                   </Tab>
                   <Tab eventKey="graph" title="Chart"></Tab>

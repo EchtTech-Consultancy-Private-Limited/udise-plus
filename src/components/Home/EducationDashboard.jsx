@@ -208,7 +208,7 @@ export default function EducationDashboard() {
 
                                                 <div className="main-text-c">{t("primary")}</div>
                                                 <span className="sub-text-c">100.13%</span>
-
+ 
                                                 <div className="main-text-c">{t("upper_primary")}</div>
                                                 <span className="sub-text-c">79.86%</span>
                                             </div>
@@ -230,8 +230,6 @@ export default function EducationDashboard() {
                                                 <span className="sub-text-c sub-main-text">97.6%</span>
                                             </div>
                                         </div>
-
-
                                     </div>
                                 </div>
 
