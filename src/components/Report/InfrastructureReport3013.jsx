@@ -341,12 +341,17 @@ export default function Infrastructure3013() {
 
   };
  
+  
+ 
   const scrollToRight = () => {
+    setHideScrollBtn(hideScrollBtn=>hideScrollBtn+1);
     columns.map((item,idx)=>{
-        if(idx==columnCount){
-            gridApi.columnApi.api.ensureColumnVisible(item.field);
+        if((idx+1)===columnCount){
+          console.log((idx+1),'--------',columnCount)
+          gridApi.columnApi.api.ensureColumnVisible(item.field);
+          if(columnCount<=43){
             setColumnCount(prevColumnCount=>prevColumnCount+10);
-            setHideScrollBtn(prev=>prev+1);
+          }
         }
     })
   };
@@ -482,10 +487,16 @@ export default function Infrastructure3013() {
                     </div>
                   </Tab>
                   <Tab eventKey="table" title="Table">
+                    <div className="col-md-12 d-flex justify-content-end">
+                    {hideScrollBtn!==3 && (<button onClick={() => scrollToRight()} className="scroll-right-btn" title="Scroll to Right "><span className="material-icons-round">arrow_right_alt</span> </button>)}
+
+                    </div>
                     <div
                       className="ag-theme-material ag-theme-custom-height ag-theme-quartz"
-                      style={{ height: 600 }}
+                      style={{ height: 450 }}
                     >
+
+                     
                       
                       <AgGridReact
                         rowData={
@@ -504,7 +515,7 @@ export default function Infrastructure3013() {
 
                         // groupIncludeTotalFooter={true}
                       />
-                            {/* <button onClick={() => scrollToLeft()}>Scroll to Left</button> */}
+                           {/* <button onClick={() => scrollToLeft()}>Scroll to Left</button> */}
                     </div>
                   </Tab>
                   <Tab eventKey="graph" title="Chart"></Tab>

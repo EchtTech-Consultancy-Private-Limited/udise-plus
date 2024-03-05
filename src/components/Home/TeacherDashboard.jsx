@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDashboardData } from '../../redux/thunks/dashboardThunk';
 import { convertToIndianNumberSystem } from '../../constants/constants';
+import Breadcrumb from './Breadcrumb';
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
@@ -110,6 +111,7 @@ export default function TeacherDashboard() {
                     <div className="row">
                         <div className="col-md-12 mb-4 p-0">
                             <h2 className="heading-blue">{t("teacher_dashboard")}</h2>
+                            <Breadcrumb/>
                         </div>
                         <div className="col-md-12 col-lg-12 p-0">
                             <div className="common-content text-start right-card-sec">

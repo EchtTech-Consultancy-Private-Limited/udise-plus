@@ -353,3 +353,26 @@ th.report-name-width-50 {
     padding: 0px 11px !important;
 }
 
+button.scroll-right-btn {
+    background: #113689;
+    color: #fff;
+    border: 1px solid #113689;
+    padding: 2px 8px;
+    margin-top: 15px;
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: -10px;
+    border-radius: 5px;
+}
+
+button.scroll-right-btn .material-icons-round{font-size: 60px;}
+
+button.scroll-right-btn:hover{
+    background: #ffffff;
+    color: #113689;
+}
+button.scroll-right-btn .material-icons-round {
+    font-size: 40px;
+    line-height: 30px;
+}
