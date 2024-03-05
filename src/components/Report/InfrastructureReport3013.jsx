@@ -79,7 +79,7 @@ export default function Infrastructure3013() {
           case 2:
             return "Girls";
           case 3:
-          return "Co-Add";
+          return "Co-Ed";
           default:
             return "";
         }

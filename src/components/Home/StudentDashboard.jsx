@@ -99,9 +99,9 @@ export default function StudentDashboard() {
         dispatch(fetchDashboardData(filterObj));
     }, [dispatch,schoolFilter]);
 
-    const dashData=useSelector((state)=>state?.dashboard?.data?.data?.[0])
-    const totalStudents=dashData?.totStudentBoys + dashData?.totStudentGirls;
-    console.log("dashData",dashData)
+    const dashData=useSelector((state)=>state?.dashboard?.data?.data?.[0]) || {};
+    const totalStudents=(dashData?.totStudentBoys + dashData?.totStudentGirls) || 0 ;
+   
     return (
         <>
             <section className="pgicategory vision-mission-card ptb-30">
