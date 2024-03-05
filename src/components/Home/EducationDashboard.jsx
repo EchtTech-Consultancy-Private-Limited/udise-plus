@@ -17,8 +17,10 @@ import {useTranslation} from "react-i18next";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDashboardData } from '../../redux/thunks/dashboardThunk';
 import { convertToIndianNumberSystem } from '../../constants/constants';
-import { stateName } from '../../constants/constants';
-import { yearData } from '../../constants/constants';
+
+
+import Breadcrumb from './Breadcrumb';
+
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 require("highcharts/modules/export-data.js")(Highcharts);
@@ -125,6 +127,7 @@ export default function EducationDashboard() {
                     <div className="row">
                     <div className="col-md-12 mb-4 p-0">
                             <h2 className="heading-blue">{t("education_dashboard")}</h2>
+                            <Breadcrumb/>
                         </div>
                         
                         <div className="col-md-12 col-lg-12 p-0">
@@ -231,6 +234,7 @@ export default function EducationDashboard() {
                                                 <div className="main-text-c m-big" style={{ whiteSpace: 'pre-line' }}>{t("pupil_teacher_ratio")}</div>
 
                                                 <div className="main-text-c">{t("primary")}</div>
+
                                                 <span className="sub-text-c">{dashData?.ptrPry || 0}%</span>
 
                                                 <div className="main-text-c">{t("upper_primary")}</div>
@@ -254,8 +258,6 @@ export default function EducationDashboard() {
                                                 <span className="sub-text-c sub-main-text">97.6%</span>
                                             </div>
                                         </div>
-
-
                                     </div>
                                 </div>
 

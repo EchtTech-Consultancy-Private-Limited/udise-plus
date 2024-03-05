@@ -39,6 +39,8 @@ export default function Infrastructure3013() {
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
   const local_year = window.localStorage.getItem("year");
+  const [columnCount,setColumnCount] = useState(20);
+  const [hideScrollBtn,setHideScrollBtn] = useState(0);
   const [columns,setCol] = useState([
     {
       headerName: "Location",
@@ -376,7 +378,21 @@ export default function Infrastructure3013() {
     );
 
   };
-
+ 
+  
+ 
+  const scrollToRight = () => {
+    setHideScrollBtn(hideScrollBtn=>hideScrollBtn+1);
+    columns.map((item,idx)=>{
+        if((idx+1)===columnCount){
+          console.log((idx+1),'--------',columnCount)
+          gridApi.columnApi.api.ensureColumnVisible(item.field);
+          if(columnCount<=43){
+            setColumnCount(prevColumnCount=>prevColumnCount+10);
+          }
+        }
+    })
+  };
   return (
     <>
       {school_data.isLoading && <GlobalLoading />}
@@ -509,10 +525,17 @@ export default function Infrastructure3013() {
                     </div>
                   </Tab>
                   <Tab eventKey="table" title="Table">
+                    <div className="col-md-12 d-flex justify-content-end">
+                    {hideScrollBtn!==3 && (<button onClick={() => scrollToRight()} className="scroll-right-btn" title="Scroll to Right "><span className="material-icons-round">arrow_right_alt</span> </button>)}
+
+                    </div>
                     <div
                       className="ag-theme-material ag-theme-custom-height ag-theme-quartz"
-                      style={{ height: 600 }}
+                      style={{ height: 450 }}
                     >
+
+                     
+                      
                       <AgGridReact
                         rowData={
                           school_data?.data?.data === ""
@@ -542,6 +565,7 @@ export default function Infrastructure3013() {
 
                         // groupIncludeTotalFooter={true}
                       />
+                           {/* <button onClick={() => scrollToLeft()}>Scroll to Left</button> */}
                     </div>
                   </Tab>
                   <Tab eventKey="graph" title="Chart"></Tab>

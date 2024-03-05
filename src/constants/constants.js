@@ -37,5 +37,3 @@ export const convertToIndianNumberSystem = (number) => {
   }
 };
 
-export const stateName=localStorage.getItem("state")
-export const yearData=localStorage.getItem("year")
