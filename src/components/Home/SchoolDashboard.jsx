@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import schoolgraph from '../../assets/images/s-graph.svg'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import {useTranslation} from "react-i18next";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDashboardData } from '../../redux/thunks/dashboardThunk';
+import { convertToIndianNumberSystem } from '../../constants/constants';
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
@@ -86,6 +89,19 @@ require('highcharts/modules/accessibility')(Highcharts);
 
 export default function SchoolDashboard() {
     const { t } = useTranslation();
+
+    const dispatch = useDispatch();
+    const schoolFilter = useSelector((state) => state.schoolFilter);
+    const filterObj = structuredClone(schoolFilter);
+
+    
+    useEffect(() => {
+        
+        dispatch(fetchDashboardData(filterObj));
+    }, [dispatch,schoolFilter]);
+
+    const dashData=useSelector((state)=>state?.dashboard?.data?.data?.[0]) || {}
+ 
     return (
         <>
             <section className="pgicategory vision-mission-card ptb-30">
@@ -101,7 +117,7 @@ export default function SchoolDashboard() {
                                         <div className="col-md-9 col-lg-9">
                                             <div className="card-box row">
                                                 <div className="col-md-6 mb-5">
-                                                    <div className="main-text-c m-big">14.89 Lakhs</div>
+                                                    <div className="main-text-c m-big">{convertToIndianNumberSystem((dashData?.totSchools) || 0)}</div>
                                                     <span className="sub-text-c text-green">{t("total_schools")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-5">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import school from '../../assets/images/school.svg'
@@ -14,6 +14,9 @@ import transition_img from '../../assets/images/Transition.svg'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import {useTranslation} from "react-i18next";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDashboardData } from '../../redux/thunks/dashboardThunk';
+import { convertToIndianNumberSystem } from '../../constants/constants';
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 require("highcharts/modules/export-data.js")(Highcharts);
@@ -95,7 +98,23 @@ require("highcharts/modules/export-data.js")(Highcharts);
 }(Highcharts));
 
 export default function EducationDashboard() {
+    const dispatch = useDispatch();
+    const schoolFilter = useSelector((state) => state.schoolFilter);
+    const filterObj = structuredClone(schoolFilter);
 
+    
+    useEffect(() => {
+        
+        dispatch(fetchDashboardData(filterObj));
+    }, [dispatch,schoolFilter]);
+
+    const dashData=useSelector((state)=>state?.dashboard?.data?.data?.[0]) || {}; 
+ console.log("dashData",dashData)
+
+
+    const totalTeachers=(dashData?.totTeachersMale + dashData?.totTeachersFemale) || 0;
+    const totalStudents=(dashData?.totStudentBoys + dashData?.totStudentGirls) || 0;
+    
     const { t } = useTranslation();
     return (
         <>
@@ -113,39 +132,39 @@ export default function EducationDashboard() {
                                             <div className="card-box">
                                                 <img src={school} alt="school" className='card-img' />
                                                 <i className="sub-text-c text-green">{t("no_of_schools")}</i>
-                                                <div className="main-text-c m-big">14891115</div>
+                                                <div className="main-text-c m-big">{dashData?.totSchools || 0}</div>
 
                                                 <span className="sub-text-c">{t("urban")}</span>
-                                                <div className="main-text-c">2.54 Lakhs</div>
+                                                <div className="main-text-c">{convertToIndianNumberSystem((dashData?.totSchoolsUrban) || 0)}</div>
 
                                                 <span className="sub-text-c">{t("rural")}</span>
-                                                <div className="main-text-c">12.34 Lakhs</div>
+                                                <div className="main-text-c">{convertToIndianNumberSystem((dashData?.totSchoolsRural) || 0)}</div>
                                             </div>
                                         </div>
                                         <div className="col-md-4 col-lg-4">
                                             <div className="card-box">
                                                 <img src={Teachers} alt="Teachers" className='card-img' />
                                                 <i className="sub-text-c text-green">{t("no_of_teachers")}</i>
-                                                <div className="main-text-c m-big">9507123</div>
+                                                <div className="main-text-c m-big">{totalTeachers}</div>
 
-                                                <span className="sub-text-c">{t("urban")}</span>
-                                                <div className="main-text-c">48.76 Lakhs</div>
+                                                <span className="sub-text-c">{t("Male")}</span>
+                                                <div className="main-text-c">{convertToIndianNumberSystem((dashData?.totTeachersMale)|| 0)}</div>
 
-                                                <span className="sub-text-c">{t("rural")}</span>
-                                                <div className="main-text-c">46.30 Lakhs</div>
+                                                <span className="sub-text-c">{t("Female")}</span>
+                                                <div className="main-text-c">{convertToIndianNumberSystem((dashData?.totTeachersFemale)|| 0)}</div>
                                             </div>
                                         </div>
                                         <div className="col-md-4 col-lg-4">
                                             <div className="card-box">
                                                 <img src={Students} alt="Students" className='card-img' />
                                                 <i className="sub-text-c text-green">{t("no_of_students")}</i>
-                                                <div className="main-text-c m-big">265235830</div>
+                                                <div className="main-text-c m-big">{totalStudents}</div>
 
-                                                <span className="sub-text-c">{t("urban")}</span>
-                                                <div className="main-text-c">12.73 Lakhs</div>
+                                                <span className="sub-text-c">{t("Boys")}</span>
+                                                <div className="main-text-c">{convertToIndianNumberSystem((dashData?.totStudentBoys) || 0)}</div>
 
-                                                <span className="sub-text-c">{t("rural")}</span>
-                                                <div className="main-text-c">13.79 Lakhs</div>
+                                                <span className="sub-text-c">{t("Girls")}</span>
+                                                <div className="main-text-c">{convertToIndianNumberSystem((dashData?.totStudentGirls) || 0)}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -176,10 +195,10 @@ export default function EducationDashboard() {
                                                 <div className="main-text-c m-big" style={{ whiteSpace: 'pre-line' }}>{t("dropout_rate")}</div>
 
                                                 <div className="main-text-c">{t("primary")}</div>
-                                                <span className="sub-text-c">100.13%</span>
+                                                <span className="sub-text-c">{dashData?.dropoutRatePry || 0}%</span>
 
                                                 <div className="main-text-c">{t("secondary")}</div>
-                                                <span className="sub-text-c">79.86%</span>
+                                                <span className="sub-text-c">{dashData?.dropoutRateSec || 0}%</span>
                                             </div>
                                         </div>
 
@@ -190,10 +209,10 @@ export default function EducationDashboard() {
                                                 <div className="main-text-c m-big" style={{ whiteSpace: 'pre-line' }}>{t("transition_rate")}</div>
 
                                                 <div className="main-text-c">{t("primary_to_upper_primary")}</div>
-                                                <span className="sub-text-c">100.13%</span>
+                                                <span className="sub-text-c">{dashData?.transitionRatePryToUpr || 0}%</span>
 
                                                 <div className="main-text-c">{t("upper_primary_to_secondary")}</div>
-                                                <span className="sub-text-c">79.86%</span>
+                                                <span className="sub-text-c">{dashData?.transitionRateUprToSec || 0}%</span>
                                             </div>
                                         </div>
 

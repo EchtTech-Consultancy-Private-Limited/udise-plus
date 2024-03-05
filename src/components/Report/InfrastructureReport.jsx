@@ -16,6 +16,7 @@ import { ScrollToTopOnMount } from "../Scroll/ScrollToTopOnMount";
 export default function Infrastructure({id,report_name,type}) {
   const [show, setShow] = useState(false);
   const school_data = useSelector((state) => state.school);
+  console.log("school_data",school_data)
   const [report, setReport] = useState(null);
 
 

@@ -3,8 +3,10 @@ import externalAxios  from '../../services/external-utilityv1';
 
 const fetchDistrictDataByStateCode = createAsyncThunk(
   "district/fetchDistrictData",
-  async ({state_code,year_id}) => {
-    const response = await externalAxios.get(`districts/${state_code}/${year_id}`);
+  async ({state_code,yearId}) => {
+    
+    const response = await externalAxios.get(`districts/${state_code}/${yearId}`);
+    
     return response.data;
   }
 );

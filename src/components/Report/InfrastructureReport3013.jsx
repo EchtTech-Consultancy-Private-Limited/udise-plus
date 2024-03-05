@@ -24,14 +24,16 @@ export default function Infrastructure3013() {
   const {handleSchoolAPIResopnse}=useCheckError();
   const [report, setReport] = useState(null);
   const [viewDataBy,setViewDataBy] = useState('');
-  const grid_column = useSelector((state) => state.column.column);
+  const grid_column = useSelector((state) => state?.column?.column);
   const [queryParameters] = useSearchParams();
   const id = queryParameters.get("id");
   const type = queryParameters.get("type");
-  const schoolFilterYear = useSelector((state) => state.schoolFilter);
+   const schoolFilterYear = useSelector((state) => state?.schoolFilter);
+   
+  //const schoolFilterYear = useSelector((state) => state?.testschoolFilter);
   const [filterShowHide, setFilterShowHide] = useState(false);
   const dispatch = useDispatch();
-  const school_data = useSelector((state) => state.school);
+  const school_data = useSelector((state) => state?.school);
   const [data,setData] = useState(school_data);
   const local_state = window.localStorage.getItem("state");
   const local_district = window.localStorage.getItem("district");
@@ -42,47 +44,28 @@ export default function Infrastructure3013() {
   const [columns,setCol] = useState([
     {
       headerName: "Location",
-      field: "schLocationCode",
-      suppressColumnsToolPanel: true, 
-    },
-    {
-      headerName: "Rural/Urban",
-      minWidth:105,
-      field: "schLocationCode",
+      field: "regionName",
       suppressColumnsToolPanel: true,
-      valueGetter: function(params) {
-        const flagValue = params?.data?.schLocationCode;
-        switch (flagValue) {
-          case 0:
-            return "All";
-          case 1:
-            return "Rural";
-          case 2:
-            return "Urban";
-          default:
-            return "";
-        }
-      },
+     
       
     },
     {
       headerName: "Rural/Urban",
-      minWidth:105, 
-      field: "rural_urban",
+      field: "schLocationDesc",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Category",
       minWidth:140,
-      field: "schCategoryName",
-      // field: "schCategoryCode",
+      field: "schCategoryDesc",
+       //field: "schCategoryCode",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Management",
       minWidth:170,
-      field: "schManagementName",
-      // field: "schManagementCode",
+      field: "schManagementDesc",
+       //field: "schManagementCode",
       suppressColumnsToolPanel: true,
     },
     { 
@@ -90,7 +73,6 @@ export default function Infrastructure3013() {
       minWidth:85,
       valueGetter: function(params) {
         const flagValue = params?.data?.schTypeCode;
-    
         switch (flagValue) {
           case 0:
             return "All";
@@ -99,7 +81,7 @@ export default function Infrastructure3013() {
           case 2:
             return "Girls";
           case 3:
-          return "Co-Add";
+          return "Co-Ed";
           default:
             return "";
         }
@@ -148,8 +130,8 @@ export default function Infrastructure3013() {
       field: "schHaveRainWaterHarvesting",
     },
     { headerName: "Water Tested", field: "schHaveTestedWater" },
-    { headerName: "Handwash",minWidth:100, field: "schHaveHandwashWithSoapForToilets" },
-    { headerName: "Incinerator",minWidth:100, field: "schHavingIncinerator" },
+    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets" },
+    { headerName: "Incinerator", field: "schHaveIncineratorInGirlsToilets" },
     {
       headerName: "WASH Facility(Drinking Water, Toilet and Handwash)",
       minWidth:200,
@@ -160,13 +142,15 @@ export default function Infrastructure3013() {
     { headerName: "Medical Checkup",minWidth:100, field: "schHaveMedicalCheckup" },
     {
       headerName: "Complete Medical Checkup",
-      minWidth:140,
-      field: "schHavingCompleteMedicalCheckup",
+      field: "schHaveCompleteMedicalCheckup",
     },
     { headerName: "Internet",minWidth:100, field: "schHaveInternet" },
     { headerName: "Computer Available",minWidth:100, field: "schHaveComputers" },
   ]);
 
+  // const pinBottomRowData = [
+  //   { make: 'Total', model: '', Internet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveInternet, 0) }
+  // ];
   const [defColumnDefs] = useState({
     flex: 1,
     minWidth: 150,
@@ -209,25 +193,27 @@ export default function Infrastructure3013() {
   }, []);
 
   useEffect(() => {
+    dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
     Promise.all([
-      dispatch(fetchSchoolCateMgtData()),
-      dispatch(fetchArchiveServicesSchoolData(schoolFilterYear)),
-    ]).then(([schoolCateMgtDataResult, archiveServicesSchoolDataResult]) => {
-      const school_data_list =  archiveServicesSchoolDataResult.payload.data;
-      const school_cat_mgt_list =  schoolCateMgtDataResult.payload.data;
-      if(school_data_list.length>0){
-        const mergedData = school_data_list?.map((item)=>{
-          const match_cate_name = school_cat_mgt_list.find((d) => d.cate_code === item.schCategoryCode);
-          const match_cate_mgt_name = school_cat_mgt_list.find((d) => d.mgt_code == item.schManagementCode);
-          if (match_cate_name || match_cate_mgt_name) {
-            // return { ...item, schCategoryCode: match_cate_name?.broad_category, schManagementCode: match_cate_mgt_name?.management_details };
-            return { ...item, schCategoryName: match_cate_name?.broad_category, schManagementName: match_cate_mgt_name?.management_details };
-          }
-          return item;
-        });
-          dispatch(updateMergeDataToActualData(mergedData));
-      }
-    });
+      // dispatch(fetchSchoolCateMgtData()),
+    ])
+    // .then(([schoolCateMgtDataResult, archiveServicesSchoolDataResult]) => {
+    //   const school_data_list =  archiveServicesSchoolDataResult?.payload?.data;
+      
+    //   const school_cat_mgt_list =  schoolCateMgtDataResult?.payload?.data;
+    //   if(school_data_list?.length>0){
+    //     const mergedData = school_data_list?.map((item)=>{
+    //       const match_cate_name = school_cat_mgt_list.find((d) => d.cate_code === item.schCategoryCode);
+    //       const match_cate_mgt_name = school_cat_mgt_list.find((d) => d.mgt_code == item.schManagementCode);
+    //       if (match_cate_name || match_cate_mgt_name) {
+    //         // return { ...item, schCategoryCode: match_cate_name?.broad_category, schManagementCode: match_cate_mgt_name?.management_details };
+    //         return { ...item, schCategoryName: match_cate_name?.broad_category, schManagementName: match_cate_mgt_name?.management_details };
+    //       }
+    //       return item;
+    //     });
+    //       dispatch(updateMergeDataToActualData(mergedData));
+    //   }
+    // });
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
@@ -245,10 +231,10 @@ export default function Infrastructure3013() {
 
   useEffect(() => {
     if (!grid_column) {
-      gridApi?.columnApi?.api?.setColumnVisible("schLocationCode", false);
+      gridApi?.columnApi?.api?.setColumnVisible("regionName", false);
     }
     if (gridApi && gridApi.columnApi) {
-      gridApi.columnApi.api.setColumnVisible("schLocationCode", grid_column);
+      gridApi.columnApi.api.setColumnVisible("regionName", grid_column);
     }
   }, [grid_column, gridApi]);
   const handleHideAndShowFilter = () => {
@@ -290,6 +276,17 @@ export default function Infrastructure3013() {
 
     return rowsToExport;
   };
+  const styles = {
+    header: {
+      fontSize: 18,
+      marginBottom: 10,
+      textAlign: 'center',
+    },
+    paragraph: {
+      fontSize: 12,
+      marginBottom: 5,
+    },
+  };
 
   const getDocument = (gridApi) => {
     const columns = gridApi.api.getAllDisplayedColumns();
@@ -330,7 +327,9 @@ export default function Infrastructure3013() {
   };
 
   const handleGroupButtonClick = (e) => {
-    const groupObj = {"School Category":"schCategoryName","School Management":"schManagementName","Urban/Rural":"schLocationCode"}
+
+    const groupObj = {"School Category":"schCategoryDesc","School Management":"schManagementDesc","Urban/Rural":"schLocationDesc"}
+
     const groupByColumn = groupObj[e];
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
     setCol((prevDefs) =>
@@ -402,11 +401,11 @@ export default function Infrastructure3013() {
               {/* Customize Filter END*/}
 
               <div className="col-md-12 col-lg-12">
-                {/* <div className="tab-text-infra download-rep" onClick={onBtExport}> */}
-                <div
+               <div className="tab-text-infra download-rep" onClick={onBtExport}>
+               {/* <div
                   className="tab-text-infra download-rep"
                   onClick={exportToPDF}
-                >
+                >  */}
                   Download Report{" "}
                   <span className="material-icons-round">download</span>
                 </div>
@@ -419,7 +418,7 @@ export default function Infrastructure3013() {
             <div className="row align-items-center report-inner-tab">
               <div className="col-md-12">
                 <h4 className="brudcrumb_heading">
-                  <span>{local_state}</span>
+                 Showing Result for : <span>&nbsp;{local_state}</span>
                    <span className="material-icons-round">chevron_right</span> 
                   {
                     local_district!=="District" && <>
@@ -497,8 +496,12 @@ export default function Infrastructure3013() {
                         columnDefs={columns}
                         defaultColDef={defColumnDefs}
                         onGridReady={onGridReady}
+                        pagination={true}
+                        paginateChildRows={true}
                         sideBar={filterShowHide ? sideBar : false}
-                        // groupIncludeFooter={true}
+                       
+                         //groupIncludeFooter={true}
+
                         // groupIncludeTotalFooter={true}
                       />
                             {/* <button onClick={() => scrollToLeft()}>Scroll to Left</button> */}
