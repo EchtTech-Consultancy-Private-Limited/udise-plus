@@ -146,6 +146,9 @@ export default function Infrastructure3013() {
     { headerName: "Computer Available",minWidth:100, field: "schHaveComputers" },
   ]);
 
+  // const pinBottomRowData = [
+  //   { make: 'Total', model: '', Internet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveInternet, 0) }
+  // ];
   const [defColumnDefs] = useState({
     flex: 1,
     minWidth: 150,
@@ -484,7 +487,9 @@ export default function Infrastructure3013() {
                         pagination={true}
                         paginateChildRows={true}
                         sideBar={filterShowHide ? sideBar : false}
-                        // groupIncludeFooter={true}
+                       
+                         //groupIncludeFooter={true}
+
                         // groupIncludeTotalFooter={true}
                       />
                     </div>
