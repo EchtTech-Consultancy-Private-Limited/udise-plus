@@ -36,3 +36,6 @@ export const convertToIndianNumberSystem = (number) => {
     return number.toString();
   }
 };
+
+export const stateName=localStorage.getItem("state")
+export const yearData=localStorage.getItem("year")
