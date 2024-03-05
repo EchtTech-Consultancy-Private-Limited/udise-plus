@@ -6,9 +6,7 @@ const fetchDashboardData = createAsyncThunk(
   "dashboard/fetchDashboardData",
   
   async ({yearId, dashboardRegionType, dashboardRegionCode}) => {
-    console.log("response",yearId)
-    const response = await externalUtilityv1.get(`summarised-stats/public/${yearId}/n/${dashboardRegionCode}`);
-    console.log("response",response)
+    const response = await externalUtilityv1.get(`summarised-stats/public/${yearId}/${dashboardRegionType}/${dashboardRegionCode}`);
     return response.data;
   }
 );

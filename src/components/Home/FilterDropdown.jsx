@@ -89,8 +89,9 @@ export default function FilterDropdown() {
 
       filterObj.regionType = nWiseregionType;
       filterObj.regionCode = nWiseregionCode;
-      filterObj.dashboardRegionType = nWiseregionType;
-      filterObj.dashboardRegionCode = nWiseregionCode;
+      filterObj.dashboardRegionType = "n";
+      filterObj.dashboardRegionCode = 100;
+      console.log(filterObj,' filter obj')
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
       dispatch(removeAllDistrict());
@@ -101,8 +102,8 @@ export default function FilterDropdown() {
       // filterObj.regionType = "sw";
       filterObj.regionType = allSWiseregionType;
       filterObj.regionCode = allSWiseregionCode;
-      filterObj.dashboardRegionType = allSWiseregionType;
-      filterObj.dashboardRegionCode = allSWiseregionCode;
+      filterObj.dashboardRegionType = "s";
+      filterObj.dashboardRegionCode = state_code;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
       dispatch(removeAllDistrict());
@@ -112,7 +113,7 @@ export default function FilterDropdown() {
       filterObj.regionType = specificSWiseregionType;
       filterObj.regionCode = state_code;
 
-      filterObj.dashboardRegionType = specificSWiseregionType;
+      filterObj.dashboardRegionType = "s";
       filterObj.dashboardRegionCode = state_code;
 
       dispatch(allFilter(filterObj));
@@ -122,11 +123,14 @@ export default function FilterDropdown() {
       dispatch(removeAllBlock());
       setSelectedDistrictClone(state_name);
     }
+
+
      dispatch(updateFilterState(stateDataClone.data));
     window.localStorage.setItem("state", state_name);
     hideOpendFilterBox();
   };
 
+  console.log(filterObj,' all filter')
   const handleSchoolFilterDistrict = (district_name, district_code) => {
     if (district_name === districtWiseName) {
       filterObj.regionType = allDWiseregionType;
@@ -188,11 +192,12 @@ export default function FilterDropdown() {
     if (location.pathname !== "/") {
       // extra_col.unshift({ udiseStateCode: "sw", udiseStateName: "State Wise" });
       extra_col.unshift({ udiseStateCode: allSWiseregionType, udiseStateName: stateWiseName });
+    }
       extra_col.unshift({
         udiseStateCode: nWiseregionType,
         udiseStateName: nationalWiseName,
       });
-    }
+   
 
     for (let i = 0; i < extra_col.length; i += itemsPerPage) {
       const groupItems = [];
