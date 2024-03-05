@@ -271,6 +271,17 @@ export default function Infrastructure3013() {
 
     return rowsToExport;
   };
+  const styles = {
+    header: {
+      fontSize: 18,
+      marginBottom: 10,
+      textAlign: 'center',
+    },
+    paragraph: {
+      fontSize: 12,
+      marginBottom: 5,
+    },
+  };
 
   const getDocument = (gridApi) => {
     const columns = gridApi.api.getAllDisplayedColumns();
@@ -376,11 +387,11 @@ export default function Infrastructure3013() {
               {/* Customize Filter END*/}
 
               <div className="col-md-12 col-lg-12">
-                <div className="tab-text-infra download-rep" onClick={onBtExport}>
-                {/* <div
+                {/*  <div className="tab-text-infra download-rep" onClick={onBtExport}>*/}
+               <div
                   className="tab-text-infra download-rep"
                   onClick={exportToPDF}
-                > */}
+                > 
                   Download Report{" "}
                   <span className="material-icons-round">download</span>
                 </div>
@@ -470,6 +481,8 @@ export default function Infrastructure3013() {
                         columnDefs={columns}
                         defaultColDef={defColumnDefs}
                         onGridReady={onGridReady}
+                        pagination={true}
+                        paginateChildRows={true}
                         sideBar={filterShowHide ? sideBar : false}
                         // groupIncludeFooter={true}
                         // groupIncludeTotalFooter={true}
