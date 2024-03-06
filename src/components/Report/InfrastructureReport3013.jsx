@@ -157,6 +157,8 @@ export default function Infrastructure3013() {
 
   const pinedBottomRowData = [
     { schTypeDesc: 'Total',
+    schHaveInternet: calculateTotal('schHaveInternet'),
+    schHaveFuncGirlsUrinals: calculateTotal('schHaveFuncGirlsUrinals'),
      schHaveComputers: calculateTotal('schHaveComputers'),
      totalSchools:calculateTotal("totalSchools"),
     schHaveSeparateRoomForHM:calculateTotal("schHaveSeparateRoomForHM"),
