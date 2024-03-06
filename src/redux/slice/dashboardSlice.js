@@ -18,7 +18,7 @@ const dashboardSlice = createSlice({
   
   reducers: {},
   extraReducers: (builder) => {
-    console.log("shdjsh",builder)
+    
     builder
       .addCase(fetchDashboardData.pending, (state) => {
         state.isLoading = true;
