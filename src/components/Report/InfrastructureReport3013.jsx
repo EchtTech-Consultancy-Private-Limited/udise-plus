@@ -21,7 +21,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
-  const {handleSchoolAPIResopnse}=useCheckError();
+  const { handleSchoolAPIResopnse } = useCheckError();
   const [report, setReport] = useState(null);
   const [viewDataBy,setViewDataBy] = useState('');
   const location = useLocation();
@@ -38,8 +38,8 @@ export default function Infrastructure3013() {
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
   const local_year = window.localStorage.getItem("year");
-  const [columnCount,setColumnCount] = useState(20);
-  const [hideScrollBtn,setHideScrollBtn] = useState(0);
+  const [columnCount, setColumnCount] = useState(20);
+  const [hideScrollBtn, setHideScrollBtn] = useState(0);
   const gridApiRef = useRef(null);
   const [totalSum, setTotalSum] = useState(0);
   const schoolFilter = useSelector((state) => state.schoolFilter);
@@ -52,8 +52,8 @@ export default function Infrastructure3013() {
       headerName: "Location",
       field: "regionName",
       suppressColumnsToolPanel: true,
-     
-      
+
+
     },
     {
       headerName: "Rural/Urban",
@@ -62,21 +62,21 @@ export default function Infrastructure3013() {
     },
     {
       headerName: "School Category",
-      minWidth:140,
+      minWidth: 140,
       field: "schCategoryDesc",
-       //field: "schCategoryCode",
+      //field: "schCategoryCode",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Management",
-      minWidth:170,
+      minWidth: 170,
       field: "schManagementDesc",
-       //field: "schManagementCode",
+      //field: "schManagementCode",
       suppressColumnsToolPanel: true,
     },
-    { 
-      headerName: "School Type", field: "schTypeDesc" ,
-      minWidth:85,
+    {
+      headerName: "School Type", field: "schTypeDesc",
+      minWidth: 85,
       // valueGetter: function(params) {
       //   const flagValue = params?.data?.schTypeCode;
       //   switch (flagValue) {
@@ -92,70 +92,73 @@ export default function Infrastructure3013() {
       //       return "";
       //   }
       // },
-  
-  },
-    { headerName: "Total No. of Schools",minWidth:100, field: "totalSchools" , aggFunc: 'sum' 
-  
-  },
+
+    },
+    {
+      headerName: "Total No. of Schools", minWidth: 100, field: "totalSchools", aggFunc: 'sum'
+
+    },
     {
       headerName: "Separate Room for Headmaster",
-      minWidth:130,
-      field: "schHaveSeparateRoomForHM",aggFunc: 'sum'
+      minWidth: 130,
+      field: "schHaveSeparateRoomForHM", aggFunc: 'sum'
     },
-    { headerName: "Land Available",minWidth:90, field: "schHaveLandForExpansion",aggFunc: 'sum' },
-    { headerName: "Electricity",minWidth:95, field: "schHaveElectricity",aggFunc: 'sum' },
-    { headerName: "Functional Electricity",minWidth:100, field: "schHaveFuncElectricity",aggFunc: 'sum' },
-    { headerName: "Solar Panel",minWidth:105, field: "schHaveSolarPanels",aggFunc: 'sum' },
-    { headerName: "Playground",minWidth:105, field: "schHavePlayground",aggFunc: 'sum' },
+    { headerName: "Land Available", minWidth: 90, field: "schHaveLandForExpansion", aggFunc: 'sum' },
+    { headerName: "Electricity", minWidth: 95, field: "schHaveElectricity", aggFunc: 'sum' },
+    { headerName: "Functional Electricity", minWidth: 100, field: "schHaveFuncElectricity", aggFunc: 'sum' },
+    { headerName: "Solar Panel", minWidth: 105, field: "schHaveSolarPanels", aggFunc: 'sum' },
+    { headerName: "Playground", minWidth: 105, field: "schHavePlayground", aggFunc: 'sum' },
     {
       headerName: "Library or Reading Corner or Book Bank",
-      minWidth:150,
-      field: "schHaveLibrary",aggFunc: 'sum'
+      minWidth: 150,
+      field: "schHaveLibrary", aggFunc: 'sum'
     },
-    { headerName: "Librarian",minWidth:90, field: "schHaveLibrarian",aggFunc: 'sum' },
-    { headerName: "Newspaper",minWidth:105, field: "schHaveNewsPaperSubscription",aggFunc: 'sum' },
-    { headerName: "Kitchen Garden",minWidth:90, field: "schHaveKitchenGarden",aggFunc: 'sum' },
-    { headerName: "Furniture",minWidth:90, field: "schHaveFurnitureForStudents",aggFunc: 'sum' },
-    { headerName: "Boy's Toilet",minWidth:100, field: "schHaveBoysToilet",aggFunc: 'sum' },
-    { headerName: "Functional Boy's Toilet", field: "schHaveFuncBoysToilet",aggFunc: 'sum' },
-    { headerName: "Girl's Toilet",minWidth:100, field: "schHaveGirlsToilet",aggFunc: 'sum' },
-    { headerName: "Functional Girl's Toilet",minWidth:110, field: "schHaveFuncGirlsToilet" ,aggFunc: 'sum'},
-    { headerName: "Toilet Facility", field: "schHaveToilet" ,aggFunc: 'sum'},
-    { headerName: "Functional Toilet Facility", field: "schHaveFuncToilet",aggFunc: 'sum' },
-    { headerName: "Functional Urinal Boy's", field: "schHaveFuncBoysUrinals",aggFunc: 'sum' },
-    { headerName: "Functional Urinal", field: "schHaveFuncUrinals",aggFunc: 'sum' },
+    { headerName: "Librarian", minWidth: 90, field: "schHaveLibrarian", aggFunc: 'sum' },
+    { headerName: "Newspaper", minWidth: 105, field: "schHaveNewsPaperSubscription", aggFunc: 'sum' },
+    { headerName: "Kitchen Garden", minWidth: 90, field: "schHaveKitchenGarden", aggFunc: 'sum' },
+    { headerName: "Furniture", minWidth: 90, field: "schHaveFurnitureForStudents", aggFunc: 'sum' },
+    { headerName: "Boy's Toilet", minWidth: 100, field: "schHaveBoysToilet", aggFunc: 'sum' },
+    { headerName: "Functional Boy's Toilet", field: "schHaveFuncBoysToilet", aggFunc: 'sum' },
+    { headerName: "Girl's Toilet", minWidth: 100, field: "schHaveGirlsToilet", aggFunc: 'sum' },
+    { headerName: "Functional Girl's Toilet", minWidth: 110, field: "schHaveFuncGirlsToilet", aggFunc: 'sum' },
+    { headerName: "Toilet Facility", field: "schHaveToilet", aggFunc: 'sum' },
+    { headerName: "Functional Toilet Facility", field: "schHaveFuncToilet", aggFunc: 'sum' },
+    { headerName: "Functional Urinal Boy's", field: "schHaveFuncBoysUrinals", aggFunc: 'sum' },
+    { headerName: "Functional Urinal", field: "schHaveFuncUrinals", aggFunc: 'sum' },
     {
       headerName: "Functional Urinal Girl's",
-      field: "schHaveFuncGirlsUrinals",aggFunc: 'sum'
+      field: "schHaveFuncGirlsUrinals", aggFunc: 'sum'
     },
-    { headerName: "Drinking Water", field: "schHaveDrinkWater",aggFunc: 'sum' },
-    { headerName: "Functional Drinking Water", field: "schHaveFuncDrinkWater",aggFunc: 'sum' },
-    { headerName: "Water Purifier", field: "schHaveWaterPurifier",aggFunc: 'sum' },
+    { headerName: "Drinking Water", field: "schHaveDrinkWater", aggFunc: 'sum' },
+    { headerName: "Functional Drinking Water", field: "schHaveFuncDrinkWater", aggFunc: 'sum' },
+    { headerName: "Water Purifier", field: "schHaveWaterPurifier", aggFunc: 'sum' },
     {
       headerName: "Rain Water Harvesting",
-      field: "schHaveRainWaterHarvesting",aggFunc: 'sum'
+      field: "schHaveRainWaterHarvesting", aggFunc: 'sum'
     },
-    { headerName: "Water Tested", field: "schHaveTestedWater",aggFunc: 'sum',rowPinned: 'bottom'   },
-    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets" ,aggFunc: 'sum',rowPinned: 'bottom' },
-    { headerName: "Incinerator", field: "schHaveIncineratorInGirlsToilets",aggFunc: 'sum',rowPinned: 'bottom'  },
+    { headerName: "Water Tested", field: "schHaveTestedWater", aggFunc: 'sum', rowPinned: 'bottom' },
+    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets", aggFunc: 'sum', rowPinned: 'bottom' },
+    { headerName: "Incinerator", field: "schHaveIncineratorInGirlsToilets", aggFunc: 'sum', rowPinned: 'bottom' },
     {
       headerName: "WASH Facility(Drinking Water, Toilet and Handwash)",
-      minWidth:200,
-      field: "schHaveHandwashWithSoapBeforeAfterMeal",aggFunc: 'sum',rowPinned: 'bottom' 
+      minWidth: 200,
+      field: "schHaveHandwashWithSoapBeforeAfterMeal", aggFunc: 'sum', rowPinned: 'bottom'
     },
-    { headerName: "Ramps",minWidth:90, field: "schHaveRamps",aggFunc: 'sum',rowPinned: 'bottom'  },
-    { headerName: "Hand-Rails",minWidth:100, field: "schHaveHandRails",aggFunc: 'sum',rowPinned: 'bottom'  },
-    { headerName: "Medical Checkup",minWidth:100, field: "schHaveMedicalCheckup",aggFunc: 'sum',rowPinned: 'bottom'  },
+    { headerName: "Ramps", minWidth: 90, field: "schHaveRamps", aggFunc: 'sum', rowPinned: 'bottom' },
+    { headerName: "Hand-Rails", minWidth: 100, field: "schHaveHandRails", aggFunc: 'sum', rowPinned: 'bottom' },
+    { headerName: "Medical Checkup", minWidth: 100, field: "schHaveMedicalCheckup", aggFunc: 'sum', rowPinned: 'bottom' },
     {
       headerName: "Complete Medical Checkup",
-      field: "schHaveCompleteMedicalCheckup",aggFunc: 'sum',rowPinned: 'bottom' 
+      field: "schHaveCompleteMedicalCheckup", aggFunc: 'sum', rowPinned: 'bottom'
     },
-    { headerName: "Internet",minWidth:100, field: "schHaveInternet"  },
-    { headerName: "Computer Available",minWidth:100, field: "schHaveComputers" },
+    { headerName: "Internet", minWidth: 100, field: "schHaveInternet" },
+    { headerName: "Computer Available", minWidth: 100, field: "schHaveComputers" },
   ]);
-  
+
   const pinedBottomRowData = [
     { schTypeDesc: 'Total',
+    schHaveInternet: calculateTotal('schHaveInternet'),
+    schHaveFuncGirlsUrinals: calculateTotal('schHaveFuncGirlsUrinals'),
      schHaveComputers: calculateTotal('schHaveComputers'),
      totalSchools:calculateTotal("totalSchools"),
     schHaveSeparateRoomForHM:calculateTotal("schHaveSeparateRoomForHM"),
@@ -195,15 +198,15 @@ export default function Infrastructure3013() {
 
     },
   ];
-  
-  
-  function calculateTotal(fieldName) {
-    return school_data?.data?.data?.reduce((total, row) => total + parseFloat(row[fieldName] || 0), 0);
-}
 
+
+  function calculateTotal(fieldName) {
+    if (!school_data?.data?.data) return 0;
+    return school_data.data.data.reduce((total, row) => total + parseFloat(row[fieldName] || 0), 0);
+  }
  
 
-  
+
   const [defColumnDefs] = useState({
     flex: 1,
     minWidth: 150,
@@ -369,29 +372,29 @@ export default function Infrastructure3013() {
 
   const handleGroupButtonClick = (e) => {
 
-    const groupObj = {"School Category":"schCategoryDesc","School Management":"schManagementDesc","Urban/Rural":"schLocationDesc"}
+    const groupObj = { "School Category": "schCategoryDesc", "School Management": "schManagementDesc", "Urban/Rural": "schLocationDesc" }
 
     const groupByColumn = groupObj[e];
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
     setCol((prevDefs) =>
-        prevDefs.map((colDef) => ({
-            ...colDef,
-            rowGroup: viewDataBy ===e ? false : colDef.field === groupByColumn,
-          }))
+      prevDefs.map((colDef) => ({
+        ...colDef,
+        rowGroup: viewDataBy === e ? false : colDef.field === groupByColumn,
+      }))
     );
 
   };
 
   const scrollToRight = () => {
-    setHideScrollBtn(hideScrollBtn=>hideScrollBtn+1);
-    columns.map((item,idx)=>{
-        if((idx+1)===columnCount){
-          console.log((idx+1),'--------',columnCount)
-          gridApi.columnApi.api.ensureColumnVisible(item.field);
-          if(columnCount<=43){
-            setColumnCount(prevColumnCount=>prevColumnCount+10);
-          }
+    setHideScrollBtn(hideScrollBtn => hideScrollBtn + 1);
+    columns.map((item, idx) => {
+      if ((idx + 1) === columnCount) {
+        console.log((idx + 1), '--------', columnCount)
+        gridApi.columnApi.api.ensureColumnVisible(item.field);
+        if (columnCount <= 43) {
+          setColumnCount(prevColumnCount => prevColumnCount + 10);
         }
+      }
     })
   };
   const scrollToLeft = () => {
@@ -401,7 +404,7 @@ export default function Infrastructure3013() {
   return (
     <>
       {school_data.isLoading && <GlobalLoading />}
-      <ScrollToTopOnMount/>
+      <ScrollToTopOnMount />
       <section className="infrastructure-main-card p-0" id="content">
         <div className="bg-grey2 ptb-30">
           <div className="container tab-for-graph">
@@ -419,7 +422,7 @@ export default function Infrastructure3013() {
               <div className="col-md-4 col-lg-4">
                 <div className="tab-text-infra mb-1">View Data By</div>
                 <Tabs
-                   activeKey={viewDataBy}
+                  activeKey={viewDataBy}
                   id="uncontrolled-tab-example"
                   className=""
                   onSelect={(e) => handleGroupButtonClick(e)}
@@ -449,8 +452,8 @@ export default function Infrastructure3013() {
               {/* Customize Filter END*/}
 
               <div className="col-md-12 col-lg-12">
-               <div className="tab-text-infra download-rep" onClick={onBtExport}>
-               {/* <div
+                <div className="tab-text-infra download-rep" onClick={onBtExport}>
+                  {/* <div
                   className="tab-text-infra download-rep"
                   onClick={exportToPDF}
                 >  */}
@@ -466,21 +469,21 @@ export default function Infrastructure3013() {
             <div className="row align-items-center report-inner-tab">
               <div className="col-md-12">
                 <h4 className="brudcrumb_heading">
-                 Showing Result for : <span>&nbsp;{local_state}</span>
-                   <span className="material-icons-round">chevron_right</span> 
+                  Showing Result for : <span>&nbsp;{local_state}</span>
+                  <span className="material-icons-round">chevron_right</span>
                   {
-                    local_district!=="District" && <>
-                    <span>{local_district}</span>
-                     <span className="material-icons-round">chevron_right</span> 
+                    local_district !== "District" && <>
+                      <span>{local_district}</span>
+                      <span className="material-icons-round">chevron_right</span>
                     </>
                   }
                   {
-                    local_block!=="Block" && <>
+                    local_block !== "Block" && <>
                       <span>{local_block}</span>
-                     <span className="material-icons-round">chevron_right</span> 
+                      <span className="material-icons-round">chevron_right</span>
                     </>
                   }
-                  
+
                   <span>{local_year}</span>
                 </h4>
               </div>
@@ -531,7 +534,7 @@ export default function Infrastructure3013() {
                   </Tab>
                   <Tab eventKey="table" title="Table">
                     <div className="col-md-12 d-flex justify-content-end">
-                    {/* {hideScrollBtn!==3 && (<button onClick={() => scrollToRight()} className="scroll-right-btn" title="Scroll to Right "><span className="material-icons-round">arrow_right_alt</span> </button>)}
+                      {/* {hideScrollBtn!==3 && (<button onClick={() => scrollToRight()} className="scroll-right-btn" title="Scroll to Right "><span className="material-icons-round">arrow_right_alt</span> </button>)}
                     {hideScrollBtn==3 && (<button onClick={() => scrollToLeft()} className="scroll-right-btn" title="Scroll to Right "><span className="material-icons-round">west</span> </button>)}
                                      
                    */}
@@ -541,8 +544,8 @@ export default function Infrastructure3013() {
                       style={{ height: 450 }}
                     >
 
-                     
-                      
+
+
                       <AgGridReact
                         rowData={
                           school_data?.data?.data === ""
@@ -556,13 +559,12 @@ export default function Infrastructure3013() {
                         pagination={true}
                         paginateChildRows={true}
                         pinnedBottomRowData={pinedBottomRowData}
-                       
-                     
-                         //groupIncludeFooter={true}
+                        
+                      //groupIncludeFooter={true}
 
-                        // groupIncludeTotalFooter={true}
+                      // groupIncludeTotalFooter={true}
                       />
-                           {/* <button onClick={() => scrollToLeft()}>Scroll to Left</button> */}
+                      {/* <button onClick={() => scrollToLeft()}>Scroll to Left</button> */}
                     </div>
                   </Tab>
                   <Tab eventKey="graph" title="Chart"></Tab>
