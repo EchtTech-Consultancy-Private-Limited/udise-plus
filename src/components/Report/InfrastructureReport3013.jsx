@@ -155,7 +155,7 @@ export default function Infrastructure3013() {
   ]);
   
   const pinedBottomRowData = [
-    { make: 'Total', model: '', schHaveInternet: calculateTotal('schHaveInternet'),
+    { schTypeDesc: 'Total',
      schHaveComputers: calculateTotal('schHaveComputers'),
      totalSchools:calculateTotal("totalSchools"),
     schHaveSeparateRoomForHM:calculateTotal("schHaveSeparateRoomForHM"),
@@ -381,9 +381,7 @@ export default function Infrastructure3013() {
     );
 
   };
- 
-  
- 
+
   const scrollToRight = () => {
     setHideScrollBtn(hideScrollBtn=>hideScrollBtn+1);
     columns.map((item,idx)=>{
