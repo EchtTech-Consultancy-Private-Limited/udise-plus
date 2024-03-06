@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from "react";
+import React, { useEffect, useCallback, useMemo, useRef } from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { useState } from "react";
@@ -41,6 +41,8 @@ export default function Infrastructure3013() {
   const local_year = window.localStorage.getItem("year");
   const [columnCount,setColumnCount] = useState(20);
   const [hideScrollBtn,setHideScrollBtn] = useState(0);
+  const gridApiRef = useRef(null);
+  const [totalSum, setTotalSum] = useState(0);
   const [columns,setCol] = useState([
     {
       headerName: "Location",
@@ -69,23 +71,23 @@ export default function Infrastructure3013() {
       suppressColumnsToolPanel: true,
     },
     { 
-      headerName: "School Type", field: "schTypeCode" ,
+      headerName: "School Type", field: "schTypeDesc" ,
       minWidth:85,
-      valueGetter: function(params) {
-        const flagValue = params?.data?.schTypeCode;
-        switch (flagValue) {
-          case 0:
-            return "All";
-          case 1:
-            return "Boys";
-          case 2:
-            return "Girls";
-          case 3:
-          return "Co-Ed";
-          default:
-            return "";
-        }
-      },
+      // valueGetter: function(params) {
+      //   const flagValue = params?.data?.schTypeCode;
+      //   switch (flagValue) {
+      //     case 0:
+      //       return "All";
+      //     case 1:
+      //       return "Boys";
+      //     case 2:
+      //       return "Girls";
+      //     case 3:
+      //     return "Co-Ed";
+      //     default:
+      //       return "";
+      //   }
+      // },
   
   },
     { headerName: "Total No. of Schools",minWidth:100, field: "totalSchools" , aggFunc: 'sum' 
@@ -144,49 +146,58 @@ export default function Infrastructure3013() {
       headerName: "Complete Medical Checkup",
       field: "schHaveCompleteMedicalCheckup",aggFunc: 'sum',rowPinned: 'bottom' 
     },
-    { headerName: "Internet",minWidth:100, field: "schHaveInternet", aggFunc: 'sum'  },
-    { headerName: "Computer Available",minWidth:100, field: "schHaveComputers", aggFunc: 'sum',rowPinned: 'Top' },
+    { headerName: "Internet",minWidth:100, field: "schHaveInternet"  },
+    { headerName: "Computer Available",minWidth:100, field: "schHaveComputers" },
   ]);
   
-  const pinBottomRowData = [
-    { make: 'Total', model: '',rowPinned: 'Bottom', Internet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveInternet, 0) },
-    { make: 'Total', model: '', totalSchools: school_data?.data?.data?.reduce((total, row) => total + row.totalSchools, 0) },
-    { make: 'Total', model: '', schHaveSeparateRoomForHM: school_data?.data?.data?.reduce((total, row) => total + row.schHaveSeparateRoomForHM, 0) },
-    { make: 'Total', model: '', ComputerAvailable: school_data?.data?.data?.reduce((total, row) => total + row.schHaveComputers, 0) },
-    { make: 'Total', model: '', CompleteMedicalCheckup: school_data?.data?.data?.reduce((total, row) => total + row.schHaveCompleteMedicalCheckup, 0) },
-    { make: 'Total', model: '', MedicalCheckup: school_data?.data?.data?.reduce((total, row) => total + row.schHaveMedicalCheckup, 0) },
-    { make: 'Total', model: '', HandRails: school_data?.data?.data?.reduce((total, row) => total + row.schHaveHandRails, 0) },
-    { make: 'Total', model: '', Ramps: school_data?.data?.data?.reduce((total, row) => total + row.schHaveRamps, 0) },
-    { make: 'Total', model: '', WASHFacility: school_data?.data?.data?.reduce((total, row) => total + row.schHaveHandwashWithSoapBeforeAfterMeal, 0) },
-    { make: 'Total', model: '', Incinerator: school_data?.data?.data?.reduce((total, row) => total + row.schHaveIncineratorInGirlsToilets, 0) },
-    { make: 'Total', model: '', Handwash: school_data?.data?.data?.reduce((total, row) => total + row.schHaveHandwashWithSoapForToilets, 0) },
-    { make: 'Total', model: '', WaterTested: school_data?.data?.data?.reduce((total, row) => total + row.schHaveTestedWater, 0) },
-    { make: 'Total', model: '', RainWaterHarvesting: school_data?.data?.data?.reduce((total, row) => total + row.schHaveRainWaterHarvesting, 0) },
-    { make: 'Total', model: '', WaterPurifier: school_data?.data?.data?.reduce((total, row) => total + row.schHaveWaterPurifier, 0) },
-    { make: 'Total', model: '', FunctionalDrinkingWater: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncDrinkWater, 0) },
-    { make: 'Total', model: '', DrinkingWater: school_data?.data?.data?.reduce((total, row) => total + row.schHaveDrinkWater, 0) },
-    { make: 'Total', model: '', FunctionalUrinalGirl: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncUrinals, 0) },
-    { make: 'Total', model: '', FunctionalUrinal: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncUrinals, 0) },
-    { make: 'Total', model: '', FunctionalUrinalBoy: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncBoysUrinals, 0) },
-    { make: 'Total', model: '', FunctionalToiletFacility: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncToilet, 0) },
-    { make: 'Total', model: '', ToiletFacility: school_data?.data?.data?.reduce((total, row) => total + row.schHaveToilet, 0) },
-    { make: 'Total', model: '', FunctionalGirlToilet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncGirlsToilet, 0) },
-    { make: 'Total', model: '', GirlToilet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveGirlsToilet, 0) },
-    { make: 'Total', model: '', FunctionalBoyToilet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncBoysToilet, 0) },
-    { make: 'Total', model: '', BoyToilet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveBoysToilet, 0) },
-    { make: 'Total', model: '', Furniture: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFurnitureForStudents, 0) },
-    { make: 'Total', model: '', KitchenGarden: school_data?.data?.data?.reduce((total, row) => total + row.schHaveKitchenGarden, 0) },
-    { make: 'Total', model: '', Newspaper: school_data?.data?.data?.reduce((total, row) => total + row.schHaveNewsPaperSubscription, 0) },
-    { make: 'Total', model: '', Librarian: school_data?.data?.data?.reduce((total, row) => total + row.schHaveLibrarian, 0) },
-    { make: 'Total', model: '', Library: school_data?.data?.data?.reduce((total, row) => total + row.schHaveLibrary, 0) },
-    { make: 'Total', model: '', Playground: school_data?.data?.data?.reduce((total, row) => total + row.schHavePlayground, 0) },
-    { make: 'Total', model: '', SolarPanel: school_data?.data?.data?.reduce((total, row) => total + row.schHaveSolarPanels, 0) },
-    { make: 'Total', model: '', FunctionalElectricity: school_data?.data?.data?.reduce((total, row) => total + row.schHaveFuncElectricity, 0) },
-    { make: 'Total', model: '', Electricity: school_data?.data?.data?.reduce((total, row) => total + row.schHaveElectricity, 0) },
-    { make: 'Total', model: '', LandAvailable: school_data?.data?.data?.reduce((total, row) => total + row.schHaveLandForExpansion, 0) },
-    { make: 'Total', model: '', SolarPanel: school_data?.data?.data?.reduce((total, row) => total + row.schHaveSolarPanels, 0) },
+  const pinedBottomRowData = [
+    { make: 'Total', model: '', schHaveInternet: calculateTotal('schHaveInternet'),
+     schHaveComputers: calculateTotal('schHaveComputers'),
+     totalSchools:calculateTotal("totalSchools"),
+    schHaveSeparateRoomForHM:calculateTotal("schHaveSeparateRoomForHM"),
+    schHaveComputers:calculateTotal("schHaveComputers"),
+    schHaveCompleteMedicalCheckup:calculateTotal("schHaveCompleteMedicalCheckup"),
+    schHaveMedicalCheckup:calculateTotal("schHaveMedicalCheckup"),
+    schHaveHandRails:calculateTotal("schHaveHandRails"),
+    schHaveRamps:calculateTotal("schHaveRamps"),
+    schHaveHandwashWithSoapBeforeAfterMeal:calculateTotal("schHaveHandwashWithSoapBeforeAfterMeal"),
+    schHaveIncineratorInGirlsToilets:calculateTotal("schHaveIncineratorInGirlsToilets"),
+    schHaveHandwashWithSoapForToilets:calculateTotal("schHaveHandwashWithSoapForToilets"),
+    schHaveTestedWater:calculateTotal("schHaveTestedWater"),
+    schHaveRainWaterHarvesting:calculateTotal("schHaveRainWaterHarvesting"),
+    schHaveWaterPurifier:calculateTotal("schHaveWaterPurifier"),
+    schHaveFuncDrinkWater:calculateTotal("schHaveFuncDrinkWater"),
+    schHaveDrinkWater:calculateTotal("schHaveDrinkWater"),
+    schHaveFuncUrinals:calculateTotal("schHaveFuncUrinals"),
+    schHaveFuncUrinals:calculateTotal("schHaveFuncUrinals"),
+    schHaveFuncBoysUrinals:calculateTotal("schHaveFuncBoysUrinals"),
+    schHaveFuncToilet:calculateTotal("schHaveFuncToilet"),
+    schHaveToilet:calculateTotal("schHaveToilet"),
+    schHaveFuncGirlsToilet:calculateTotal("schHaveFuncGirlsToilet"),
+    schHaveGirlsToilet:calculateTotal("schHaveGirlsToilet"),
+    schHaveFuncBoysToilet:calculateTotal("schHaveFuncBoysToilet"),
+    schHaveBoysToilet:calculateTotal("schHaveBoysToilet"),
+    schHaveFurnitureForStudents:calculateTotal("schHaveFurnitureForStudents"),
+    schHaveKitchenGarden:calculateTotal("schHaveKitchenGarden"),
+    schHaveNewsPaperSubscription:calculateTotal("schHaveNewsPaperSubscription"),
+    schHaveLibrarian:calculateTotal("schHaveLibrarian"),
+    schHaveLibrary:calculateTotal("schHaveLibrary"),
+    schHavePlayground:calculateTotal("schHavePlayground"),
+    schHaveSolarPanels:calculateTotal("schHaveSolarPanels"),
+    schHaveFuncElectricity:calculateTotal("schHaveFuncElectricity"),
+    schHaveElectricity:calculateTotal("schHaveElectricity"),
+    schHaveLandForExpansion:calculateTotal("schHaveLandForExpansion"),
+    schHaveSolarPanels:calculateTotal("schHaveSolarPanels"),
 
+    },
   ];
+  
+  
+  function calculateTotal(fieldName) {
+    return school_data?.data?.data?.reduce((total, row) => total + parseFloat(row[fieldName] || 0), 0);
+}
+
+ 
 
   
   const [defColumnDefs] = useState({
@@ -554,10 +565,8 @@ export default function Infrastructure3013() {
                         sideBar={filterShowHide ? sideBar : false}
                         pagination={true}
                         paginateChildRows={true}
-                        pinBottomRowData={pinBottomRowData}
-                        groupIncludeFooter={true}
-                        groupIncludeTotalFooter={true}
-                        ensureDomOrder={true}
+                        pinnedBottomRowData={pinedBottomRowData}
+                       
                      
                          //groupIncludeFooter={true}
 
