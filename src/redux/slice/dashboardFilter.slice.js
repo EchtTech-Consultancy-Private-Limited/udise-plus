@@ -16,18 +16,18 @@ const dashboardFilterSlice = createSlice({
 
   reducers: {
     changeYearFilter(state, action) {
-      console.log("changeYearFilter", state,action)
+     
       state.yearId = action.payload;
     },
     changeDistrictFilter(state, action) {
       state.regionCode = action.payload;
     },
     changeStateFilter(state, action) {
-      console.log("changeYearFilter", state,action)
+     
       state.regionType = action.payload;
     },
     allFilter(state, action) {
-      console.log("allFilter", action.payload)
+      
       Object.assign(state, action.payload);
     }
   },

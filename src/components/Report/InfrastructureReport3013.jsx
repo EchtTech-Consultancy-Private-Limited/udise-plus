@@ -144,12 +144,12 @@ export default function Infrastructure3013() {
       headerName: "Complete Medical Checkup",
       field: "schHaveCompleteMedicalCheckup",aggFunc: 'sum',rowPinned: 'bottom' 
     },
-    { headerName: "Internet",minWidth:100, field: "schHaveInternet", aggFunc: 'sum',rowPinned: 'top'  },
-    { headerName: "Computer Available",minWidth:100, field: "schHaveComputers", aggFunc: 'sum',rowPinned: 'top' },
+    { headerName: "Internet",minWidth:100, field: "schHaveInternet", aggFunc: 'sum'  },
+    { headerName: "Computer Available",minWidth:100, field: "schHaveComputers", aggFunc: 'sum',rowPinned: 'Top' },
   ]);
-
+  
   const pinBottomRowData = [
-    { make: 'Total', model: '',rowPinned: 'top', Internet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveInternet, 0) },
+    { make: 'Total', model: '',rowPinned: 'Bottom', Internet: school_data?.data?.data?.reduce((total, row) => total + row.schHaveInternet, 0) },
     { make: 'Total', model: '', totalSchools: school_data?.data?.data?.reduce((total, row) => total + row.totalSchools, 0) },
     { make: 'Total', model: '', schHaveSeparateRoomForHM: school_data?.data?.data?.reduce((total, row) => total + row.schHaveSeparateRoomForHM, 0) },
     { make: 'Total', model: '', ComputerAvailable: school_data?.data?.data?.reduce((total, row) => total + row.schHaveComputers, 0) },
@@ -557,15 +557,7 @@ export default function Infrastructure3013() {
                         pinBottomRowData={pinBottomRowData}
                         groupIncludeFooter={true}
                         groupIncludeTotalFooter={true}
-                        getRowStyle={(params) => {
-                          console.log("ghsgas",params.node)
-                          if (params.node.data && params.node.data.rowPinned === 'top') {
-                              // Customize background color for pinBottomRowData rows
-                              return { backgroundColor: 'lightblue' };
-                          }
-                          // Return null if you don't want to apply any style to other rows
-                          return null;
-                      }}
+                        ensureDomOrder={true}
                      
                          //groupIncludeFooter={true}
 
