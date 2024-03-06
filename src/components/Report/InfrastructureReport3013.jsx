@@ -3,9 +3,9 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchArchiveServicesSchoolData, updateMergeDataToActualData } from "../../redux/thunks/archiveServicesThunk";
-import { fetchSchoolCateMgtData } from "../../redux/thunks/schoolCateMgtThunk";
-import { useSearchParams } from "react-router-dom";
+import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
+import {allFilter} from "../../redux/slice/schoolFilterSlice";
+import { useLocation, useSearchParams } from "react-router-dom";
 import FilterDropdown from "../Home/FilterDropdown";
 import allreportsdata from "../../json-data/allreports.json";
 import { GlobalLoading } from "../GlobalLoading/GlobalLoading";
@@ -23,18 +23,17 @@ export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
   const { handleSchoolAPIResopnse } = useCheckError();
   const [report, setReport] = useState(null);
-  const [viewDataBy, setViewDataBy] = useState('');
+  const [viewDataBy,setViewDataBy] = useState('');
+  const location = useLocation();
   const grid_column = useSelector((state) => state?.column?.column);
   const [queryParameters] = useSearchParams();
   const id = queryParameters.get("id");
   const type = queryParameters.get("type");
-  const schoolFilterYear = useSelector((state) => state?.schoolFilter);
-
+   const schoolFilterYear = useSelector((state) => state?.schoolFilter);
   //const schoolFilterYear = useSelector((state) => state?.testschoolFilter);
   const [filterShowHide, setFilterShowHide] = useState(false);
   const dispatch = useDispatch();
   const school_data = useSelector((state) => state?.school);
-  const [data, setData] = useState(school_data);
   const local_state = window.localStorage.getItem("state");
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
@@ -43,7 +42,12 @@ export default function Infrastructure3013() {
   const [hideScrollBtn, setHideScrollBtn] = useState(0);
   const gridApiRef = useRef(null);
   const [totalSum, setTotalSum] = useState(0);
-  const [columns, setCol] = useState([
+  const schoolFilter = useSelector((state) => state.schoolFilter);
+  const filterObj = structuredClone(schoolFilter);
+  const [dispatchCount,setDispatchCount] = useState(1);
+ 
+
+  const [columns,setCol] = useState([
     {
       headerName: "Location",
       field: "regionName",
@@ -152,44 +156,43 @@ export default function Infrastructure3013() {
   ]);
 
   const pinedBottomRowData = [
-    {
-      make: 'Total', model: '',rowPinned:"bottom", schHaveInternet: calculateTotal('schHaveInternet'),
-      schHaveComputers: calculateTotal('schHaveComputers'),
-      totalSchools: calculateTotal("totalSchools"),
-      schHaveSeparateRoomForHM: calculateTotal("schHaveSeparateRoomForHM"),
-      schHaveComputers: calculateTotal("schHaveComputers"),
-      schHaveCompleteMedicalCheckup: calculateTotal("schHaveCompleteMedicalCheckup"),
-      schHaveMedicalCheckup: calculateTotal("schHaveMedicalCheckup"),
-      schHaveHandRails: calculateTotal("schHaveHandRails"),
-      schHaveRamps: calculateTotal("schHaveRamps"),
-      schHaveHandwashWithSoapBeforeAfterMeal: calculateTotal("schHaveHandwashWithSoapBeforeAfterMeal"),
-      schHaveIncineratorInGirlsToilets: calculateTotal("schHaveIncineratorInGirlsToilets"),
-      schHaveHandwashWithSoapForToilets: calculateTotal("schHaveHandwashWithSoapForToilets"),
-      schHaveTestedWater: calculateTotal("schHaveTestedWater"),
-      schHaveRainWaterHarvesting: calculateTotal("schHaveRainWaterHarvesting"),
-      schHaveWaterPurifier: calculateTotal("schHaveWaterPurifier"),
-      schHaveFuncDrinkWater: calculateTotal("schHaveFuncDrinkWater"),
-      schHaveDrinkWater: calculateTotal("schHaveDrinkWater"),
-      schHaveFuncUrinals: calculateTotal("schHaveFuncUrinals"),
-      schHaveFuncUrinals: calculateTotal("schHaveFuncUrinals"),
-      schHaveFuncBoysUrinals: calculateTotal("schHaveFuncBoysUrinals"),
-      schHaveFuncToilet: calculateTotal("schHaveFuncToilet"),
-      schHaveToilet: calculateTotal("schHaveToilet"),
-      schHaveFuncGirlsToilet: calculateTotal("schHaveFuncGirlsToilet"),
-      schHaveGirlsToilet: calculateTotal("schHaveGirlsToilet"),
-      schHaveFuncBoysToilet: calculateTotal("schHaveFuncBoysToilet"),
-      schHaveBoysToilet: calculateTotal("schHaveBoysToilet"),
-      schHaveFurnitureForStudents: calculateTotal("schHaveFurnitureForStudents"),
-      schHaveKitchenGarden: calculateTotal("schHaveKitchenGarden"),
-      schHaveNewsPaperSubscription: calculateTotal("schHaveNewsPaperSubscription"),
-      schHaveLibrarian: calculateTotal("schHaveLibrarian"),
-      schHaveLibrary: calculateTotal("schHaveLibrary"),
-      schHavePlayground: calculateTotal("schHavePlayground"),
-      schHaveSolarPanels: calculateTotal("schHaveSolarPanels"),
-      schHaveFuncElectricity: calculateTotal("schHaveFuncElectricity"),
-      schHaveElectricity: calculateTotal("schHaveElectricity"),
-      schHaveLandForExpansion: calculateTotal("schHaveLandForExpansion"),
-      schHaveSolarPanels: calculateTotal("schHaveSolarPanels"),
+    { schTypeDesc: 'Total',
+     schHaveComputers: calculateTotal('schHaveComputers'),
+     totalSchools:calculateTotal("totalSchools"),
+    schHaveSeparateRoomForHM:calculateTotal("schHaveSeparateRoomForHM"),
+    schHaveComputers:calculateTotal("schHaveComputers"),
+    schHaveCompleteMedicalCheckup:calculateTotal("schHaveCompleteMedicalCheckup"),
+    schHaveMedicalCheckup:calculateTotal("schHaveMedicalCheckup"),
+    schHaveHandRails:calculateTotal("schHaveHandRails"),
+    schHaveRamps:calculateTotal("schHaveRamps"),
+    schHaveHandwashWithSoapBeforeAfterMeal:calculateTotal("schHaveHandwashWithSoapBeforeAfterMeal"),
+    schHaveIncineratorInGirlsToilets:calculateTotal("schHaveIncineratorInGirlsToilets"),
+    schHaveHandwashWithSoapForToilets:calculateTotal("schHaveHandwashWithSoapForToilets"),
+    schHaveTestedWater:calculateTotal("schHaveTestedWater"),
+    schHaveRainWaterHarvesting:calculateTotal("schHaveRainWaterHarvesting"),
+    schHaveWaterPurifier:calculateTotal("schHaveWaterPurifier"),
+    schHaveFuncDrinkWater:calculateTotal("schHaveFuncDrinkWater"),
+    schHaveDrinkWater:calculateTotal("schHaveDrinkWater"),
+    schHaveFuncUrinals:calculateTotal("schHaveFuncUrinals"),
+    schHaveFuncUrinals:calculateTotal("schHaveFuncUrinals"),
+    schHaveFuncBoysUrinals:calculateTotal("schHaveFuncBoysUrinals"),
+    schHaveFuncToilet:calculateTotal("schHaveFuncToilet"),
+    schHaveToilet:calculateTotal("schHaveToilet"),
+    schHaveFuncGirlsToilet:calculateTotal("schHaveFuncGirlsToilet"),
+    schHaveGirlsToilet:calculateTotal("schHaveGirlsToilet"),
+    schHaveFuncBoysToilet:calculateTotal("schHaveFuncBoysToilet"),
+    schHaveBoysToilet:calculateTotal("schHaveBoysToilet"),
+    schHaveFurnitureForStudents:calculateTotal("schHaveFurnitureForStudents"),
+    schHaveKitchenGarden:calculateTotal("schHaveKitchenGarden"),
+    schHaveNewsPaperSubscription:calculateTotal("schHaveNewsPaperSubscription"),
+    schHaveLibrarian:calculateTotal("schHaveLibrarian"),
+    schHaveLibrary:calculateTotal("schHaveLibrary"),
+    schHavePlayground:calculateTotal("schHavePlayground"),
+    schHaveSolarPanels:calculateTotal("schHaveSolarPanels"),
+    schHaveFuncElectricity:calculateTotal("schHaveFuncElectricity"),
+    schHaveElectricity:calculateTotal("schHaveElectricity"),
+    schHaveLandForExpansion:calculateTotal("schHaveLandForExpansion"),
+    schHaveSolarPanels:calculateTotal("schHaveSolarPanels"),
 
     },
   ];
@@ -245,26 +248,14 @@ export default function Infrastructure3013() {
 
   useEffect(() => {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
-    Promise.all([
-      // dispatch(fetchSchoolCateMgtData()),
-    ])
-    // .then(([schoolCateMgtDataResult, archiveServicesSchoolDataResult]) => {
-    //   const school_data_list =  archiveServicesSchoolDataResult?.payload?.data;
 
-    //   const school_cat_mgt_list =  schoolCateMgtDataResult?.payload?.data;
-    //   if(school_data_list?.length>0){
-    //     const mergedData = school_data_list?.map((item)=>{
-    //       const match_cate_name = school_cat_mgt_list.find((d) => d.cate_code === item.schCategoryCode);
-    //       const match_cate_mgt_name = school_cat_mgt_list.find((d) => d.mgt_code == item.schManagementCode);
-    //       if (match_cate_name || match_cate_mgt_name) {
-    //         // return { ...item, schCategoryCode: match_cate_name?.broad_category, schManagementCode: match_cate_mgt_name?.management_details };
-    //         return { ...item, schCategoryName: match_cate_name?.broad_category, schManagementName: match_cate_mgt_name?.management_details };
-    //       }
-    //       return item;
-    //     });
-    //       dispatch(updateMergeDataToActualData(mergedData));
-    //   }
-    // });
+    if(dispatchCount===1){
+      filterObj.regionType=21;
+      filterObj.regionCode=99;
+      dispatch(allFilter(filterObj));
+      setDispatchCount(prev=>prev+1);
+    }
+    
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
@@ -391,8 +382,6 @@ export default function Infrastructure3013() {
     );
 
   };
-
-
 
   const scrollToRight = () => {
     setHideScrollBtn(hideScrollBtn => hideScrollBtn + 1);
