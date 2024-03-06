@@ -393,6 +393,10 @@ export default function Infrastructure3013() {
         }
     })
   };
+  const scrollToLeft = () => {
+    setHideScrollBtn(20);
+    gridApi.columnApi.api.ensureColumnVisible("schLocationDesc");
+  };
   return (
     <>
       {school_data.isLoading && <GlobalLoading />}
@@ -526,8 +530,10 @@ export default function Infrastructure3013() {
                   </Tab>
                   <Tab eventKey="table" title="Table">
                     <div className="col-md-12 d-flex justify-content-end">
-                    {hideScrollBtn!==3 && (<button onClick={() => scrollToRight()} className="scroll-right-btn" title="Scroll to Right "><span className="material-icons-round">arrow_right_alt</span> </button>)}
-
+                    {/* {hideScrollBtn!==3 && (<button onClick={() => scrollToRight()} className="scroll-right-btn" title="Scroll to Right "><span className="material-icons-round">arrow_right_alt</span> </button>)}
+                    {hideScrollBtn==3 && (<button onClick={() => scrollToLeft()} className="scroll-right-btn" title="Scroll to Right "><span className="material-icons-round">west</span> </button>)}
+                                     
+                   */}
                     </div>
                     <div
                       className="ag-theme-material ag-theme-custom-height ag-theme-quartz"
