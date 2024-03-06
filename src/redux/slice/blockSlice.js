@@ -32,10 +32,10 @@ const blockSlice = createSlice({
        .addCase(removeAllBlock.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data.data = [];
+        state.dataClone = [];
       })
       .addCase(updateFilterBlock.fulfilled, (state, action) => {
-        state.data.data = action.payload
-        state.isLoading = false;
+        state.data.data = action.payload===undefined ? [] : action.payload;        state.isLoading = false;
       });
   },
 });

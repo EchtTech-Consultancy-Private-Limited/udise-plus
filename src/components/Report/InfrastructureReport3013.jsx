@@ -1,11 +1,11 @@
-import React, { useEffect, useCallback, useMemo } from "react";
+import React, { useEffect, useCallback, useMemo, useRef } from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchArchiveServicesSchoolData, updateMergeDataToActualData } from "../../redux/thunks/archiveServicesThunk";
-import { fetchSchoolCateMgtData } from "../../redux/thunks/schoolCateMgtThunk";
-import { useSearchParams } from "react-router-dom";
+import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
+import {allFilter} from "../../redux/slice/schoolFilterSlice";
+import { useLocation, useSearchParams } from "react-router-dom";
 import FilterDropdown from "../Home/FilterDropdown";
 import allreportsdata from "../../json-data/allreports.json";
 import { GlobalLoading } from "../GlobalLoading/GlobalLoading";
@@ -24,136 +24,189 @@ export default function Infrastructure3013() {
   const {handleSchoolAPIResopnse}=useCheckError();
   const [report, setReport] = useState(null);
   const [viewDataBy,setViewDataBy] = useState('');
-  const grid_column = useSelector((state) => state.column.column);
+  const location = useLocation();
+  const grid_column = useSelector((state) => state?.column?.column);
   const [queryParameters] = useSearchParams();
   const id = queryParameters.get("id");
   const type = queryParameters.get("type");
-  const schoolFilterYear = useSelector((state) => state.schoolFilter);
+   const schoolFilterYear = useSelector((state) => state?.schoolFilter);
+  //const schoolFilterYear = useSelector((state) => state?.testschoolFilter);
   const [filterShowHide, setFilterShowHide] = useState(false);
   const dispatch = useDispatch();
-  const school_data = useSelector((state) => state.school);
-  const [data,setData] = useState(school_data);
+  const school_data = useSelector((state) => state?.school);
   const local_state = window.localStorage.getItem("state");
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
   const local_year = window.localStorage.getItem("year");
+  const [columnCount,setColumnCount] = useState(20);
+  const [hideScrollBtn,setHideScrollBtn] = useState(0);
+  const gridApiRef = useRef(null);
+  const [totalSum, setTotalSum] = useState(0);
+  const schoolFilter = useSelector((state) => state.schoolFilter);
+  const filterObj = structuredClone(schoolFilter);
+  const [dispatchCount,setDispatchCount] = useState(1);
+ 
+
   const [columns,setCol] = useState([
     {
       headerName: "Location",
-      field: "schLocationCode",
+      field: "regionName",
       suppressColumnsToolPanel: true,
-      valueGetter: function(params) {
-        const flagValue = params?.data?.schLocationCode;
-        switch (flagValue) {
-          case 0:
-            return "All";
-          case 1:
-            return "Rural";
-          case 2:
-            return "Urban";
-          default:
-            return "N/A";
-        }
-      },
+     
       
     },
     {
       headerName: "Rural/Urban",
-      field: "rural_urban",
+      field: "schLocationDesc",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Category",
-      field: "schCategoryName",
-      // field: "schCategoryCode",
+      minWidth:140,
+      field: "schCategoryDesc",
+       //field: "schCategoryCode",
       suppressColumnsToolPanel: true,
     },
     {
       headerName: "School Management",
-      field: "schManagementName",
-      // field: "schManagementCode",
+      minWidth:170,
+      field: "schManagementDesc",
+       //field: "schManagementCode",
       suppressColumnsToolPanel: true,
     },
     { 
-      headerName: "School Type", field: "schTypeCode" ,
-      valueGetter: function(params) {
-        const flagValue = params?.data?.schTypeCode;
-    
-        switch (flagValue) {
-          case 0:
-            return "All";
-          case 1:
-            return "Boys";
-          case 2:
-            return "Girls";
-          case 3:
-          return "Co-Add";
-          default:
-            return "N/A";
-        }
-      },
+      headerName: "School Type", field: "schTypeDesc" ,
+      minWidth:85,
+      // valueGetter: function(params) {
+      //   const flagValue = params?.data?.schTypeCode;
+      //   switch (flagValue) {
+      //     case 0:
+      //       return "All";
+      //     case 1:
+      //       return "Boys";
+      //     case 2:
+      //       return "Girls";
+      //     case 3:
+      //     return "Co-Ed";
+      //     default:
+      //       return "";
+      //   }
+      // },
   
   },
-    { headerName: "Total No. of Schools", field: "totalSchools" 
+    { headerName: "Total No. of Schools",minWidth:100, field: "totalSchools" , aggFunc: 'sum' 
   
   },
     {
       headerName: "Separate Room for Headmaster",
-      field: "schHaveSeparateRoomForHM",
+      minWidth:130,
+      field: "schHaveSeparateRoomForHM",aggFunc: 'sum'
     },
-    { headerName: "Land Available", field: "schHaveLandForExpansion" },
-    { headerName: "Electricity", field: "schHaveElectricity" },
-    { headerName: "Functional Electricity", field: "schHaveFuncElectricity" },
-    { headerName: "Solar Panel", field: "schHaveSolarPanels" },
-    { headerName: "Playground", field: "schHavePlayground" },
+    { headerName: "Land Available",minWidth:90, field: "schHaveLandForExpansion",aggFunc: 'sum' },
+    { headerName: "Electricity",minWidth:95, field: "schHaveElectricity",aggFunc: 'sum' },
+    { headerName: "Functional Electricity",minWidth:100, field: "schHaveFuncElectricity",aggFunc: 'sum' },
+    { headerName: "Solar Panel",minWidth:105, field: "schHaveSolarPanels",aggFunc: 'sum' },
+    { headerName: "Playground",minWidth:105, field: "schHavePlayground",aggFunc: 'sum' },
     {
       headerName: "Library or Reading Corner or Book Bank",
-      field: "schHaveLibrary",
+      minWidth:150,
+      field: "schHaveLibrary",aggFunc: 'sum'
     },
-    { headerName: "Librarian", field: "schHaveLibrarian" },
-    { headerName: "Newspaper", field: "schHaveNewsPaperSubscription" },
-    { headerName: "Kitchen Garden", field: "schHaveKitchenGarden" },
-    { headerName: "Furniture", field: "schHaveFurnitureForStudents" },
-    { headerName: "Boy's Toilet", field: "schHaveBoysToilet" },
-    { headerName: "Functional Boy's Toilet", field: "schHaveFuncBoysToilet" },
-    { headerName: "Girl's Toilet", field: "schHaveGirlsToilet" },
-    { headerName: "Functional Girl's Toilet", field: "schHaveFuncGirlsToilet" },
-    { headerName: "Toilet Facility", field: "schHaveToilet" },
-    { headerName: "Functional Toilet Facility", field: "schHaveFuncToilet" },
-    { headerName: "Functional Urinal Boy's", field: "schHaveFuncBoysUrinals" },
-    { headerName: "Functional Urinal", field: "schHaveFuncUrinals" },
+    { headerName: "Librarian",minWidth:90, field: "schHaveLibrarian",aggFunc: 'sum' },
+    { headerName: "Newspaper",minWidth:105, field: "schHaveNewsPaperSubscription",aggFunc: 'sum' },
+    { headerName: "Kitchen Garden",minWidth:90, field: "schHaveKitchenGarden",aggFunc: 'sum' },
+    { headerName: "Furniture",minWidth:90, field: "schHaveFurnitureForStudents",aggFunc: 'sum' },
+    { headerName: "Boy's Toilet",minWidth:100, field: "schHaveBoysToilet",aggFunc: 'sum' },
+    { headerName: "Functional Boy's Toilet", field: "schHaveFuncBoysToilet",aggFunc: 'sum' },
+    { headerName: "Girl's Toilet",minWidth:100, field: "schHaveGirlsToilet",aggFunc: 'sum' },
+    { headerName: "Functional Girl's Toilet",minWidth:110, field: "schHaveFuncGirlsToilet" ,aggFunc: 'sum'},
+    { headerName: "Toilet Facility", field: "schHaveToilet" ,aggFunc: 'sum'},
+    { headerName: "Functional Toilet Facility", field: "schHaveFuncToilet",aggFunc: 'sum' },
+    { headerName: "Functional Urinal Boy's", field: "schHaveFuncBoysUrinals",aggFunc: 'sum' },
+    { headerName: "Functional Urinal", field: "schHaveFuncUrinals",aggFunc: 'sum' },
     {
       headerName: "Functional Urinal Girl's",
-      field: "schHaveFuncGirlsUrinals",
+      field: "schHaveFuncGirlsUrinals",aggFunc: 'sum'
     },
-    { headerName: "Drinking Water", field: "schHaveDrinkWater" },
-    { headerName: "Functional Drinking Water", field: "schHaveFuncDrinkWater" },
-    { headerName: "Water Purifier", field: "schHaveWaterPurifier" },
+    { headerName: "Drinking Water", field: "schHaveDrinkWater",aggFunc: 'sum' },
+    { headerName: "Functional Drinking Water", field: "schHaveFuncDrinkWater",aggFunc: 'sum' },
+    { headerName: "Water Purifier", field: "schHaveWaterPurifier",aggFunc: 'sum' },
     {
       headerName: "Rain Water Harvesting",
-      field: "schHaveRainWaterHarvesting",
+      field: "schHaveRainWaterHarvesting",aggFunc: 'sum'
     },
-    { headerName: "Water Tested", field: "schHaveTestedWater" },
-    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets" },
-    { headerName: "Incinerator", field: "schHavingIncinerator" },
+    { headerName: "Water Tested", field: "schHaveTestedWater",aggFunc: 'sum',rowPinned: 'bottom'   },
+    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets" ,aggFunc: 'sum',rowPinned: 'bottom' },
+    { headerName: "Incinerator", field: "schHaveIncineratorInGirlsToilets",aggFunc: 'sum',rowPinned: 'bottom'  },
     {
       headerName: "WASH Facility(Drinking Water, Toilet and Handwash)",
-      field: "schHaveHandwashWithSoapBeforeAfterMeal",
+      minWidth:200,
+      field: "schHaveHandwashWithSoapBeforeAfterMeal",aggFunc: 'sum',rowPinned: 'bottom' 
     },
-    { headerName: "Ramps", field: "schHaveRamps" },
-    { headerName: "Hand-Rails", field: "schHaveHandRails" },
-    { headerName: "Medical Checkup", field: "schHaveMedicalCheckup" },
+    { headerName: "Ramps",minWidth:90, field: "schHaveRamps",aggFunc: 'sum',rowPinned: 'bottom'  },
+    { headerName: "Hand-Rails",minWidth:100, field: "schHaveHandRails",aggFunc: 'sum',rowPinned: 'bottom'  },
+    { headerName: "Medical Checkup",minWidth:100, field: "schHaveMedicalCheckup",aggFunc: 'sum',rowPinned: 'bottom'  },
     {
       headerName: "Complete Medical Checkup",
-      field: "schHavingCompleteMedicalCheckup",
+      field: "schHaveCompleteMedicalCheckup",aggFunc: 'sum',rowPinned: 'bottom' 
     },
-    { headerName: "Internet", field: "schHaveInternet" },
-    { headerName: "Computer Available", field: "schHaveComputers" },
+    { headerName: "Internet",minWidth:100, field: "schHaveInternet"  },
+    { headerName: "Computer Available",minWidth:100, field: "schHaveComputers" },
   ]);
+  
+  const pinedBottomRowData = [
+    { make: 'Total', model: '', schHaveInternet: calculateTotal('schHaveInternet'),
+     schHaveComputers: calculateTotal('schHaveComputers'),
+     totalSchools:calculateTotal("totalSchools"),
+    schHaveSeparateRoomForHM:calculateTotal("schHaveSeparateRoomForHM"),
+    schHaveComputers:calculateTotal("schHaveComputers"),
+    schHaveCompleteMedicalCheckup:calculateTotal("schHaveCompleteMedicalCheckup"),
+    schHaveMedicalCheckup:calculateTotal("schHaveMedicalCheckup"),
+    schHaveHandRails:calculateTotal("schHaveHandRails"),
+    schHaveRamps:calculateTotal("schHaveRamps"),
+    schHaveHandwashWithSoapBeforeAfterMeal:calculateTotal("schHaveHandwashWithSoapBeforeAfterMeal"),
+    schHaveIncineratorInGirlsToilets:calculateTotal("schHaveIncineratorInGirlsToilets"),
+    schHaveHandwashWithSoapForToilets:calculateTotal("schHaveHandwashWithSoapForToilets"),
+    schHaveTestedWater:calculateTotal("schHaveTestedWater"),
+    schHaveRainWaterHarvesting:calculateTotal("schHaveRainWaterHarvesting"),
+    schHaveWaterPurifier:calculateTotal("schHaveWaterPurifier"),
+    schHaveFuncDrinkWater:calculateTotal("schHaveFuncDrinkWater"),
+    schHaveDrinkWater:calculateTotal("schHaveDrinkWater"),
+    schHaveFuncUrinals:calculateTotal("schHaveFuncUrinals"),
+    schHaveFuncUrinals:calculateTotal("schHaveFuncUrinals"),
+    schHaveFuncBoysUrinals:calculateTotal("schHaveFuncBoysUrinals"),
+    schHaveFuncToilet:calculateTotal("schHaveFuncToilet"),
+    schHaveToilet:calculateTotal("schHaveToilet"),
+    schHaveFuncGirlsToilet:calculateTotal("schHaveFuncGirlsToilet"),
+    schHaveGirlsToilet:calculateTotal("schHaveGirlsToilet"),
+    schHaveFuncBoysToilet:calculateTotal("schHaveFuncBoysToilet"),
+    schHaveBoysToilet:calculateTotal("schHaveBoysToilet"),
+    schHaveFurnitureForStudents:calculateTotal("schHaveFurnitureForStudents"),
+    schHaveKitchenGarden:calculateTotal("schHaveKitchenGarden"),
+    schHaveNewsPaperSubscription:calculateTotal("schHaveNewsPaperSubscription"),
+    schHaveLibrarian:calculateTotal("schHaveLibrarian"),
+    schHaveLibrary:calculateTotal("schHaveLibrary"),
+    schHavePlayground:calculateTotal("schHavePlayground"),
+    schHaveSolarPanels:calculateTotal("schHaveSolarPanels"),
+    schHaveFuncElectricity:calculateTotal("schHaveFuncElectricity"),
+    schHaveElectricity:calculateTotal("schHaveElectricity"),
+    schHaveLandForExpansion:calculateTotal("schHaveLandForExpansion"),
+    schHaveSolarPanels:calculateTotal("schHaveSolarPanels"),
 
+    },
+  ];
+  
+  
+  function calculateTotal(fieldName) {
+    return school_data?.data?.data?.reduce((total, row) => total + parseFloat(row[fieldName] || 0), 0);
+}
+
+ 
+
+  
   const [defColumnDefs] = useState({
     flex: 1,
-    minWidth: 250,
+    minWidth: 150,
     // allow every column to be aggregated
     enableValue: true,
     // allow every column to be grouped
@@ -193,25 +246,15 @@ export default function Infrastructure3013() {
   }, []);
 
   useEffect(() => {
-    Promise.all([
-      dispatch(fetchSchoolCateMgtData()),
-      dispatch(fetchArchiveServicesSchoolData(schoolFilterYear)),
-    ]).then(([schoolCateMgtDataResult, archiveServicesSchoolDataResult]) => {
-      const school_data_list =  archiveServicesSchoolDataResult.payload.data;
-      const school_cat_mgt_list =  schoolCateMgtDataResult.payload.data;
-      if(school_data_list.length>0){
-        const mergedData = school_data_list?.map((item)=>{
-          const match_cate_name = school_cat_mgt_list.find((d) => d.cate_code === item.schCategoryCode);
-          const match_cate_mgt_name = school_cat_mgt_list.find((d) => d.mgt_code == item.schManagementCode);
-          if (match_cate_name || match_cate_mgt_name) {
-            // return { ...item, schCategoryCode: match_cate_name?.broad_category, schManagementCode: match_cate_mgt_name?.management_details };
-            return { ...item, schCategoryName: match_cate_name?.broad_category, schManagementName: match_cate_mgt_name?.management_details };
-          }
-          return item;
-        });
-          dispatch(updateMergeDataToActualData(mergedData));
-      }
-    });
+    dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
+
+    if(dispatchCount===1){
+      filterObj.regionType=21;
+      filterObj.regionCode=99;
+      dispatch(allFilter(filterObj));
+      setDispatchCount(prev=>prev+1);
+    }
+    
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
@@ -229,10 +272,10 @@ export default function Infrastructure3013() {
 
   useEffect(() => {
     if (!grid_column) {
-      gridApi?.columnApi?.api?.setColumnVisible("schLocationCode", false);
+      gridApi?.columnApi?.api?.setColumnVisible("regionName", false);
     }
     if (gridApi && gridApi.columnApi) {
-      gridApi.columnApi.api.setColumnVisible("schLocationCode", grid_column);
+      gridApi.columnApi.api.setColumnVisible("regionName", grid_column);
     }
   }, [grid_column, gridApi]);
   const handleHideAndShowFilter = () => {
@@ -274,6 +317,17 @@ export default function Infrastructure3013() {
 
     return rowsToExport;
   };
+  const styles = {
+    header: {
+      fontSize: 18,
+      marginBottom: 10,
+      textAlign: 'center',
+    },
+    paragraph: {
+      fontSize: 12,
+      marginBottom: 5,
+    },
+  };
 
   const getDocument = (gridApi) => {
     const columns = gridApi.api.getAllDisplayedColumns();
@@ -314,7 +368,9 @@ export default function Infrastructure3013() {
   };
 
   const handleGroupButtonClick = (e) => {
-    const groupObj = {"School Category":"schCategoryName","School Management":"schManagementName","Urban/Rural":"rural_urban"}
+
+    const groupObj = {"School Category":"schCategoryDesc","School Management":"schManagementDesc","Urban/Rural":"schLocationDesc"}
+
     const groupByColumn = groupObj[e];
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
     setCol((prevDefs) =>
@@ -325,7 +381,25 @@ export default function Infrastructure3013() {
     );
 
   };
-
+ 
+  
+ 
+  const scrollToRight = () => {
+    setHideScrollBtn(hideScrollBtn=>hideScrollBtn+1);
+    columns.map((item,idx)=>{
+        if((idx+1)===columnCount){
+          console.log((idx+1),'--------',columnCount)
+          gridApi.columnApi.api.ensureColumnVisible(item.field);
+          if(columnCount<=43){
+            setColumnCount(prevColumnCount=>prevColumnCount+10);
+          }
+        }
+    })
+  };
+  const scrollToLeft = () => {
+    setHideScrollBtn(20);
+    gridApi.columnApi.api.ensureColumnVisible("schLocationDesc");
+  };
   return (
     <>
       {school_data.isLoading && <GlobalLoading />}
@@ -377,11 +451,11 @@ export default function Infrastructure3013() {
               {/* Customize Filter END*/}
 
               <div className="col-md-12 col-lg-12">
-                {/* <div className="tab-text-infra download-rep" onClick={onBtExport}> */}
-                <div
+               <div className="tab-text-infra download-rep" onClick={onBtExport}>
+               {/* <div
                   className="tab-text-infra download-rep"
                   onClick={exportToPDF}
-                >
+                >  */}
                   Download Report{" "}
                   <span className="material-icons-round">download</span>
                 </div>
@@ -394,18 +468,18 @@ export default function Infrastructure3013() {
             <div className="row align-items-center report-inner-tab">
               <div className="col-md-12">
                 <h4 className="brudcrumb_heading">
-                  <span>{local_state}</span>
-                  <span> > </span>
+                 Showing Result for : <span>&nbsp;{local_state}</span>
+                   <span className="material-icons-round">chevron_right</span> 
                   {
                     local_district!=="District" && <>
                     <span>{local_district}</span>
-                    <span> > </span>
+                     <span className="material-icons-round">chevron_right</span> 
                     </>
                   }
                   {
                     local_block!=="Block" && <>
                       <span>{local_block}</span>
-                      <span> > </span>  
+                     <span className="material-icons-round">chevron_right</span> 
                     </>
                   }
                   
@@ -458,10 +532,19 @@ export default function Infrastructure3013() {
                     </div>
                   </Tab>
                   <Tab eventKey="table" title="Table">
+                    <div className="col-md-12 d-flex justify-content-end">
+                    {/* {hideScrollBtn!==3 && (<button onClick={() => scrollToRight()} className="scroll-right-btn" title="Scroll to Right "><span className="material-icons-round">arrow_right_alt</span> </button>)}
+                    {hideScrollBtn==3 && (<button onClick={() => scrollToLeft()} className="scroll-right-btn" title="Scroll to Right "><span className="material-icons-round">west</span> </button>)}
+                                     
+                   */}
+                    </div>
                     <div
                       className="ag-theme-material ag-theme-custom-height ag-theme-quartz"
-                      style={{ height: 600 }}
+                      style={{ height: 450 }}
                     >
+
+                     
+                      
                       <AgGridReact
                         rowData={
                           school_data?.data?.data === ""
@@ -472,9 +555,16 @@ export default function Infrastructure3013() {
                         defaultColDef={defColumnDefs}
                         onGridReady={onGridReady}
                         sideBar={filterShowHide ? sideBar : false}
-                        // groupIncludeFooter={true}
+                        pagination={true}
+                        paginateChildRows={true}
+                        pinnedBottomRowData={pinedBottomRowData}
+                       
+                     
+                         //groupIncludeFooter={true}
+
                         // groupIncludeTotalFooter={true}
                       />
+                           {/* <button onClick={() => scrollToLeft()}>Scroll to Left</button> */}
                     </div>
                   </Tab>
                   <Tab eventKey="graph" title="Chart"></Tab>

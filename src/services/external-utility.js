@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default axios.create({
-    baseURL: 'https://demo.udiseplus.gov.in/archive-services/v1.2/kpi/schools-basic-infra/public/',
+    baseURL: 'https://demo.udiseplus.gov.in/archive-services/v1.1/kpi/schools-basic-infra',
     headers: {
         'Content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',

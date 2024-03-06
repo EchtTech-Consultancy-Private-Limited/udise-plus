@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import pen from '../../assets/images/pen.svg'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import {useTranslation} from "react-i18next";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDashboardData } from '../../redux/thunks/dashboardThunk';
+import { convertToIndianNumberSystem } from '../../constants/constants';
+import Breadcrumb from './Breadcrumb';
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
@@ -86,6 +90,20 @@ var breaks = [];
 
 export default function TeacherDashboard() {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+    const schoolFilter = useSelector((state) => state.schoolFilter);
+    const filterObj = structuredClone(schoolFilter);
+
+    
+    useEffect(() => {
+        
+        dispatch(fetchDashboardData(filterObj));
+    }, [dispatch,schoolFilter]);
+
+    const dashData=useSelector((state)=>state?.dashboard?.data?.data?.[0]) || {}
+    console.log("")
+    const totalTeachers=(dashData?.totTeachersMale + dashData?.totTeachersFemale) || 0;
+  
     return (
         <>
             <section className="pgicategory vision-mission-card ptb-30">
@@ -93,6 +111,7 @@ export default function TeacherDashboard() {
                     <div className="row">
                         <div className="col-md-12 mb-4 p-0">
                             <h2 className="heading-blue">{t("teacher_dashboard")}</h2>
+                            <Breadcrumb/>
                         </div>
                         <div className="col-md-12 col-lg-12 p-0">
                             <div className="common-content text-start right-card-sec">
@@ -101,7 +120,7 @@ export default function TeacherDashboard() {
                                         <div className="col-md-9 col-lg-9">
                                             <div className="card-box row">
                                                 <div className="col-md-6 mb-5">
-                                                    <div className="main-text-c m-big">95.07 Lakhs</div>
+                                                    <div className="main-text-c m-big">{convertToIndianNumberSystem((totalTeachers) || 0)}</div>
                                                     <span className="sub-text-c text-green">{t("total_teachers")}</span>
                                                 </div>
                                                 <div className="col-md-6 mb-5">

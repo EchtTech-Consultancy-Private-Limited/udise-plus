@@ -3,7 +3,7 @@
 
 .map-main-card {
     .mapindia img {
-        width: 100%;
+        width: 97%;
         margin-top: 0px;
     }
 
@@ -26,7 +26,7 @@
         margin-top: 5px;
 
         .material-icons-round {
-            font-size: 20px !important;
+            font-size: 20px !important; 
             margin-right: 3px;
         }
 
@@ -682,17 +682,28 @@ button.header-dropdown-btn.open-map-btn {
     width: 142px;
 
     &:hover{
-        width: 500px;
+        width: 450px;
+
+        .filter-content h6 {
+            background: rgba(62, 62, 62, 0.43);
+            padding: 18px 24px;
+         }
+    }
+
+    .filter-content h6{
+        transition: all .3s ease-in-out;
     }
 
     .select-box.from-control li.nav-item.position-static:first-child ul.dropdown-menu.show.animation {
-        transform: translate(-44%, -21.9%) !important;
-        width: 500px !important;
+        transform: translate(-37.8%, -21.9%) !important;
+        width: 450px !important;
     }
 
     .select-box.from-control li.nav-item.position-static:last-child ul.dropdown-menu.show.animation {
-        transform: translate(-78.5%, -21.9%) !important;
-        width: 500px !important;
+        transform: translate(-76%, -21.9%) !important;
+        width: 450px !important;
     }
+
+    
 
 }
