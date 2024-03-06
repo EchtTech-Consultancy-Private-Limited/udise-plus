@@ -4,7 +4,7 @@ import Tabs from "react-bootstrap/Tabs";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
-import {allFilter} from "../../redux/slice/schoolFilterSlice";
+import { allFilter } from "../../redux/slice/schoolFilterSlice";
 import { useLocation, useSearchParams } from "react-router-dom";
 import FilterDropdown from "../Home/FilterDropdown";
 import allreportsdata from "../../json-data/allreports.json";
@@ -13,6 +13,8 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
+import { jsPDF } from "jspdf";
+import autoTable from 'jspdf-autotable'
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { ScrollToTopOnMount } from "../Scroll/ScrollToTopOnMount";
@@ -23,13 +25,13 @@ export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
   const { handleSchoolAPIResopnse } = useCheckError();
   const [report, setReport] = useState(null);
-  const [viewDataBy,setViewDataBy] = useState('');
+  const [viewDataBy, setViewDataBy] = useState('');
   const location = useLocation();
   const grid_column = useSelector((state) => state?.column?.column);
   const [queryParameters] = useSearchParams();
   const id = queryParameters.get("id");
   const type = queryParameters.get("type");
-   const schoolFilterYear = useSelector((state) => state?.schoolFilter);
+  const schoolFilterYear = useSelector((state) => state?.schoolFilter);
   //const schoolFilterYear = useSelector((state) => state?.testschoolFilter);
   const [filterShowHide, setFilterShowHide] = useState(false);
   const dispatch = useDispatch();
@@ -44,10 +46,18 @@ export default function Infrastructure3013() {
   const [totalSum, setTotalSum] = useState(0);
   const schoolFilter = useSelector((state) => state.schoolFilter);
   const filterObj = structuredClone(schoolFilter);
-  const [dispatchCount,setDispatchCount] = useState(1);
- 
+  const [dispatchCount, setDispatchCount] = useState(1);
+  const stateName = localStorage.getItem("state")
+  const [dateTime, setDateTime] = useState(new Date());
 
-  const [columns,setCol] = useState([
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setDateTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+  const [columns, setCol] = useState([
     {
       headerName: "Location",
       field: "regionName",
@@ -156,45 +166,46 @@ export default function Infrastructure3013() {
   ]);
 
   const pinedBottomRowData = [
-    { schTypeDesc: 'Total',
-    schHaveInternet: calculateTotal('schHaveInternet'),
-    schHaveFuncGirlsUrinals: calculateTotal('schHaveFuncGirlsUrinals'),
-     schHaveComputers: calculateTotal('schHaveComputers'),
-     totalSchools:calculateTotal("totalSchools"),
-    schHaveSeparateRoomForHM:calculateTotal("schHaveSeparateRoomForHM"),
-    schHaveComputers:calculateTotal("schHaveComputers"),
-    schHaveCompleteMedicalCheckup:calculateTotal("schHaveCompleteMedicalCheckup"),
-    schHaveMedicalCheckup:calculateTotal("schHaveMedicalCheckup"),
-    schHaveHandRails:calculateTotal("schHaveHandRails"),
-    schHaveRamps:calculateTotal("schHaveRamps"),
-    schHaveHandwashWithSoapBeforeAfterMeal:calculateTotal("schHaveHandwashWithSoapBeforeAfterMeal"),
-    schHaveIncineratorInGirlsToilets:calculateTotal("schHaveIncineratorInGirlsToilets"),
-    schHaveHandwashWithSoapForToilets:calculateTotal("schHaveHandwashWithSoapForToilets"),
-    schHaveTestedWater:calculateTotal("schHaveTestedWater"),
-    schHaveRainWaterHarvesting:calculateTotal("schHaveRainWaterHarvesting"),
-    schHaveWaterPurifier:calculateTotal("schHaveWaterPurifier"),
-    schHaveFuncDrinkWater:calculateTotal("schHaveFuncDrinkWater"),
-    schHaveDrinkWater:calculateTotal("schHaveDrinkWater"),
-    schHaveFuncUrinals:calculateTotal("schHaveFuncUrinals"),
-    schHaveFuncUrinals:calculateTotal("schHaveFuncUrinals"),
-    schHaveFuncBoysUrinals:calculateTotal("schHaveFuncBoysUrinals"),
-    schHaveFuncToilet:calculateTotal("schHaveFuncToilet"),
-    schHaveToilet:calculateTotal("schHaveToilet"),
-    schHaveFuncGirlsToilet:calculateTotal("schHaveFuncGirlsToilet"),
-    schHaveGirlsToilet:calculateTotal("schHaveGirlsToilet"),
-    schHaveFuncBoysToilet:calculateTotal("schHaveFuncBoysToilet"),
-    schHaveBoysToilet:calculateTotal("schHaveBoysToilet"),
-    schHaveFurnitureForStudents:calculateTotal("schHaveFurnitureForStudents"),
-    schHaveKitchenGarden:calculateTotal("schHaveKitchenGarden"),
-    schHaveNewsPaperSubscription:calculateTotal("schHaveNewsPaperSubscription"),
-    schHaveLibrarian:calculateTotal("schHaveLibrarian"),
-    schHaveLibrary:calculateTotal("schHaveLibrary"),
-    schHavePlayground:calculateTotal("schHavePlayground"),
-    schHaveSolarPanels:calculateTotal("schHaveSolarPanels"),
-    schHaveFuncElectricity:calculateTotal("schHaveFuncElectricity"),
-    schHaveElectricity:calculateTotal("schHaveElectricity"),
-    schHaveLandForExpansion:calculateTotal("schHaveLandForExpansion"),
-    schHaveSolarPanels:calculateTotal("schHaveSolarPanels"),
+    {
+      schTypeDesc: 'Total',
+      schHaveInternet: calculateTotal('schHaveInternet'),
+      schHaveFuncGirlsUrinals: calculateTotal('schHaveFuncGirlsUrinals'),
+      schHaveComputers: calculateTotal('schHaveComputers'),
+      totalSchools: calculateTotal("totalSchools"),
+      schHaveSeparateRoomForHM: calculateTotal("schHaveSeparateRoomForHM"),
+      schHaveComputers: calculateTotal("schHaveComputers"),
+      schHaveCompleteMedicalCheckup: calculateTotal("schHaveCompleteMedicalCheckup"),
+      schHaveMedicalCheckup: calculateTotal("schHaveMedicalCheckup"),
+      schHaveHandRails: calculateTotal("schHaveHandRails"),
+      schHaveRamps: calculateTotal("schHaveRamps"),
+      schHaveHandwashWithSoapBeforeAfterMeal: calculateTotal("schHaveHandwashWithSoapBeforeAfterMeal"),
+      schHaveIncineratorInGirlsToilets: calculateTotal("schHaveIncineratorInGirlsToilets"),
+      schHaveHandwashWithSoapForToilets: calculateTotal("schHaveHandwashWithSoapForToilets"),
+      schHaveTestedWater: calculateTotal("schHaveTestedWater"),
+      schHaveRainWaterHarvesting: calculateTotal("schHaveRainWaterHarvesting"),
+      schHaveWaterPurifier: calculateTotal("schHaveWaterPurifier"),
+      schHaveFuncDrinkWater: calculateTotal("schHaveFuncDrinkWater"),
+      schHaveDrinkWater: calculateTotal("schHaveDrinkWater"),
+      schHaveFuncUrinals: calculateTotal("schHaveFuncUrinals"),
+      schHaveFuncUrinals: calculateTotal("schHaveFuncUrinals"),
+      schHaveFuncBoysUrinals: calculateTotal("schHaveFuncBoysUrinals"),
+      schHaveFuncToilet: calculateTotal("schHaveFuncToilet"),
+      schHaveToilet: calculateTotal("schHaveToilet"),
+      schHaveFuncGirlsToilet: calculateTotal("schHaveFuncGirlsToilet"),
+      schHaveGirlsToilet: calculateTotal("schHaveGirlsToilet"),
+      schHaveFuncBoysToilet: calculateTotal("schHaveFuncBoysToilet"),
+      schHaveBoysToilet: calculateTotal("schHaveBoysToilet"),
+      schHaveFurnitureForStudents: calculateTotal("schHaveFurnitureForStudents"),
+      schHaveKitchenGarden: calculateTotal("schHaveKitchenGarden"),
+      schHaveNewsPaperSubscription: calculateTotal("schHaveNewsPaperSubscription"),
+      schHaveLibrarian: calculateTotal("schHaveLibrarian"),
+      schHaveLibrary: calculateTotal("schHaveLibrary"),
+      schHavePlayground: calculateTotal("schHavePlayground"),
+      schHaveSolarPanels: calculateTotal("schHaveSolarPanels"),
+      schHaveFuncElectricity: calculateTotal("schHaveFuncElectricity"),
+      schHaveElectricity: calculateTotal("schHaveElectricity"),
+      schHaveLandForExpansion: calculateTotal("schHaveLandForExpansion"),
+      schHaveSolarPanels: calculateTotal("schHaveSolarPanels"),
 
     },
   ];
@@ -204,7 +215,7 @@ export default function Infrastructure3013() {
     if (!school_data?.data?.data) return 0;
     return school_data.data.data.reduce((total, row) => total + parseFloat(row[fieldName] || 0), 0);
   }
- 
+
 
 
   const [defColumnDefs] = useState({
@@ -251,13 +262,13 @@ export default function Infrastructure3013() {
   useEffect(() => {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
 
-    if(dispatchCount===1){
-      filterObj.regionType=21;
-      filterObj.regionCode=99;
+    if (dispatchCount === 1) {
+      filterObj.regionType = 21;
+      filterObj.regionCode = 99;
       dispatch(allFilter(filterObj));
-      setDispatchCount(prev=>prev+1);
+      setDispatchCount(prev => prev + 1);
     }
-    
+
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
@@ -292,11 +303,12 @@ export default function Infrastructure3013() {
     const columns = gridApi.api.getAllDisplayedColumns();
 
     return columns.map((column) => {
-      const { field } = column.getColDef();
+      const { field,headerName } = column.getColDef();
       const sort = column.getSort();
       const headerNameUppercase = field[0].toUpperCase() + field.slice(1);
       const headerCell = {
         text: headerNameUppercase + (sort ? ` (${sort})` : ""),
+        headerName:headerName,
         bold: true,
         margin: [0, 12, 0, 0],
       };
@@ -335,40 +347,86 @@ export default function Infrastructure3013() {
   const getDocument = (gridApi) => {
     const columns = gridApi.api.getAllDisplayedColumns();
     const fontSize = 12 * 0.8;
-    // Calculate the width for each column
-    const columnWidths = Array(columns.length).fill(`${100 / columns.length}%`);
 
     const headerRow = getHeaderToExport(gridApi);
     const rows = getRowsToExport(gridApi);
 
-    return {
-      pageOrientation: "landscape",
-      content: [
-        {
-          table: {
-            headerRows: 1,
-            widths: columnWidths, // Set the width for each column
+    // Initialize jsPDF document
+    const doc = new jsPDF({
+      orientation: "landscape",
+      unit: "in",
+      format: [60, 60]
+    });
+    const totalPagesExp = "{total_pages_count_string}";
+const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true`
 
-            body: [headerRow, ...rows],
-            heights: (rowIndex) => (rowIndex === 0 ? 150 : 150),
-          },
-        },
-      ],
-      header: "simple text",
-      footer: {
-        columns: ["Left part", { text: "Right part", alignment: "right" }],
-      },
-      styles: {
-        // Adjust the font size for the entire document
-        defaultStyle: { fontSize: fontSize },
-      },
+    // Function to add header
+    const addHeader = () => {
+      doc.setFontSize(25);
+      doc.setTextColor("blue");
+      doc.setFont("bold");
+      doc.text("UDISE+", 0.6, 1);
+      doc.setFontSize(20);
+      doc.setTextColor("blue");
+      doc.text("Number of Schools by Availability of Infrastructure and Facilities, School Management and School Category", 0.6, 1.4,{ fontSize: 12, color: "red" });
+      doc.setFontSize(20);
+      doc.setTextColor("blue");
+      doc.text(`Report type : ${stateName}`, 0.6, 1.8,{ fontSize: 12, color: "red" });
+      doc.setFontSize(25);
+      doc.setTextColor("blue");
+      doc.setFont("bold");
+      doc.text(`Report Id : ${id}` , doc.internal.pageSize.width - 1, 1,{ align: 'right' });
+      doc.text(`Academic Year : ${local_year}` , doc.internal.pageSize.width - 1, 1.8,{ align: 'right' });
+     
+      doc.text(`Report generated on : ${dateTime}` , doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.5, { align: 'right' });
     };
-  };
+   
+    // Function to add footer
+    const addFooter = () => {
+      const pageCount = doc.internal.getNumberOfPages();
+      doc.setFontSize(10);
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.5, { align: 'right' });
+      }
+    };
+
+    const table = [];
+    table.push(headerRow.map(cell => cell.headerName));
+    rows.forEach(row => {
+      table.push(row.map(cell => cell.text));
+    });
+
+    doc.autoTable({
+      head: [table[0]],
+      body: table.slice(1),
+      startY: 2.2,
+      afterPageContent: addFooter
+    });
+
+    addHeader(); // Add header to first page
+    const totalPages = doc.internal.getNumberOfPages();
+    for (let i = 0; i < totalPages; i++) {
+      doc.setPage(i + 1);
+      doc.autoTable({
+        head: [table[0]],
+        body: table.slice(1),
+        startY: 2.2,
+        afterPageContent: addFooter
+      });
+      addHeader(); // Add header to subsequent pages
+    }
+
+    return doc;
+};
+
+
 
   const exportToPDF = () => {
     const doc = getDocument(gridApi);
-    pdfMake.createPdf(doc).open();
+    doc.save("Number of Schools by Availability of Infrastructure and Facilities, School Management and School Category.pdf");
   };
+
 
   const handleGroupButtonClick = (e) => {
 
@@ -452,11 +510,11 @@ export default function Infrastructure3013() {
               {/* Customize Filter END*/}
 
               <div className="col-md-12 col-lg-12">
-                <div className="tab-text-infra download-rep" onClick={onBtExport}>
-                  {/* <div
+                {/* <div className="tab-text-infra download-rep" onClick={onBtExport}>*/}
+                <div
                   className="tab-text-infra download-rep"
                   onClick={exportToPDF}
-                >  */}
+                >
                   Download Report{" "}
                   <span className="material-icons-round">download</span>
                 </div>
@@ -559,7 +617,7 @@ export default function Infrastructure3013() {
                         pagination={true}
                         paginateChildRows={true}
                         pinnedBottomRowData={pinedBottomRowData}
-                        
+
                       //groupIncludeFooter={true}
 
                       // groupIncludeTotalFooter={true}
