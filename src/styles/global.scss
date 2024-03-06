@@ -1002,6 +1002,14 @@ ul {
         transform: translate(-19%, -20.9%) !important;
     }
 
+    .filter_drodown.small-filter-box .select-box.from-control li.nav-item.position-static:last-child ul.dropdown-menu.show.animation {
+        transform: translate(-76%, -20.9%) !important;
+    }
+
+    .filter_drodown.small-filter-box .select-box.from-control li.nav-item.position-static:first-child ul.dropdown-menu.show.animation {
+        transform: translate(-37.8%, -20.9%) !important;
+    }
+
     .filter_drodown .select-box.from-control li.nav-item.position-static:last-child ul.dropdown-menu.show.animation {
         transform: translate(-86%, -20.9%) !important;
     }
@@ -1236,6 +1244,15 @@ ul {
     .filter_drodown {
         width: 130px;
     }
+
+    .filter_drodown .select-box.from-control li.nav-item.position-static:first-child ul.dropdown-menu.show.animation {
+        transform: translate(-19%, -20.9%) !important;
+    }
+
+    .filter_drodown.small-filter-box .select-box.from-control li.nav-item.position-static:last-child ul.dropdown-menu.show.animation {
+        transform: translate(-76%, -20.9%) !important;
+    }
+    
 
 }
 
