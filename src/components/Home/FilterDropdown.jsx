@@ -112,12 +112,16 @@ export default function FilterDropdown() {
       filterObj.regionType = specificSWiseregionType;
       filterObj.regionCode = state_code;
 
-      filterObj.dashboardRegionType = "s";
-      filterObj.dashboardRegionCode = state_code;
-
-      dispatch(allFilter(filterObj));
+    
+        filterObj.dashboardRegionType = "s";
+        filterObj.dashboardRegionCode = state_code;
+        dispatch(allFilter(filterObj));
+    
+    
       dispatch(hideShowColumn(false));
+      if(location.pathname!=="/"){
       dispatch(fetchDistrictDataByStateCode({ state_code: state_code, yearId: filterObj.yearId }));
+      }
       dispatch(removeAllDistrict());
       dispatch(removeAllBlock());
       setSelectedDistrictClone(state_name);
