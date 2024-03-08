@@ -12,6 +12,7 @@ import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import groupByKey, { nestedGroupByKey } from "../../utils/groupBy";
+import { TabPane } from "react-bootstrap";
 
 export default function Infrastructure({ id, report_name, type }) {
   const [show, setShow] = useState(false);
@@ -113,6 +114,33 @@ export default function Infrastructure({ id, report_name, type }) {
   const onGridReady = useCallback((params) => {
     setGridApi(params);
   }, []);
+  const handleFilter = (e) => {
+
+    const parentLi = e.target.closest('.nav-item');
+    const parentLi1 = document.querySelectorAll('.nav-item');
+
+    if (e.target.classList.contains('multibtn')) {
+        parentLi.classList.remove('multibtn');
+        parentLi1.classList.remove('multibtn');
+    } else {
+        parentLi.classList.add('multibtn');
+    }
+
+
+    const navLinks = document.querySelectorAll('.mul-tab-main .nav-link');
+
+    navLinks.forEach(link => {
+        if (link !== e.target && link.classList.contains('active')) {
+            link.classList.remove('active');
+        }
+    });
+
+    if (!e.target.classList.contains('active')) {
+        e.target.classList.add('active');
+    } else {
+        e.target.classList.remove('active');
+    }
+};
 
   useEffect(() => {
     if (!grid_column) {
@@ -280,7 +308,7 @@ export default function Infrastructure({ id, report_name, type }) {
         <div className="bg-grey2 ptb-30">
           <div className="container tab-for-graph">
             <div className="row align-items-center">
-              <div className="col-md-6 col-lg-6">
+              <div className="col-md-5 col-lg-5">
                 <div className="common-content text-start map-heading-map">
                   {report && (
                     <div className="common-content text-start map-heading-map">
@@ -290,7 +318,7 @@ export default function Infrastructure({ id, report_name, type }) {
                   )}
                 </div>
               </div>
-              <div className="col-md-6 col-lg-6">
+              <div className="col-md-7 col-lg-7">
                 <div className="tab-text-infra mb-1">View Data By</div>
                 <Tabs
                   activeKey={viewDataBy}
@@ -307,6 +335,27 @@ export default function Infrastructure({ id, report_name, type }) {
                   <Tab eventKey="School Type" title="School Type"></Tab>
                   <Tab eventKey="Urban/Rural" title="Urban / Rural"></Tab>
                 </Tabs>
+
+                {/* <ul class="nav nav-tabs mul-tab-main">
+
+                  <li class="nav-item">
+                    <button type="button" class="nav-link"  onClick={handleFilter}>School Management(Broad) </button>
+                    <button type="button" class="nav-link details-multi" id="school_mgt_details" onClick={handleFilter}>Datails View</button>
+                  </li>
+                
+                  <li class="nav-item">
+                    <button type="button" class="nav-link"  onClick={handleFilter}>School Category(Broad)</button>
+                    <button type="button" class="nav-link details-multi"  onClick={handleFilter}>Datails View</button>
+                  </li>     
+                              
+                  <li class="nav-item">
+                    <button type="button" class="nav-link"  onClick={handleFilter}>School Type</button>
+                  </li>
+                  <li class="nav-item">
+                    <button type="button" class="nav-link"  onClick={handleFilter}>Urban / Rural</button>
+                  </li>
+                </ul> */}
+
               </div>
 
               {/* Customize Filter Start*/}
@@ -524,11 +573,11 @@ export default function Infrastructure({ id, report_name, type }) {
                       style={{ height: 450 }}
                     >
                       <AgGridReact
-                        rowData={arrGroupedData?arrGroupedData:[]}
+                        rowData={arrGroupedData ? arrGroupedData : []}
                         columnDefs={columns}
                         defaultColDef={defColumnDefs}
                         onGridReady={onGridReady}
-                        // pinnedBottomRowData={pinedBottomRowData}
+                      // pinnedBottomRowData={pinedBottomRowData}
                       />
                     </div>
                   </Tab>

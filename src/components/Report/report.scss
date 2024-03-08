@@ -235,6 +235,36 @@
             }
         }
 
+        .mul-tab-main{
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+
+            .nav-link{padding: 9px 15px !important;}
+
+            .details-multi{display: none;}
+
+        .multibtn{
+            display: flex;
+            padding: 5px 8px;
+            background: #E2E2E2;
+            margin-bottom:8px;
+            border: 1px solid #E2E2E2;
+            border-radius: 50px;
+
+                .nav-link{    
+                    margin-bottom: 0px;
+                    font-size: 13px;
+                    padding: 5px 15px !important;
+                }
+                .details-multi{display: block;}
+
+            }
+
+        }
+
+        
+
 
     }
 
@@ -380,3 +410,4 @@ button.scroll-right-btn .material-icons-round {
 .ag-floating-bottom-container {
     font-weight: 700;
 }
+
