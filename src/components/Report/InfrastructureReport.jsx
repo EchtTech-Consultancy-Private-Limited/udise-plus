@@ -20,6 +20,10 @@ export default function Infrastructure({ id, report_name, type }) {
   const school_data = useSelector((state) => state.school);
   const schoolFilterYear = useSelector((state) => state?.schoolFilter);
   const schoolFilter = useSelector((state) => state.schoolFilter);
+  const local_state = window.localStorage.getItem("state");
+  const local_district = window.localStorage.getItem("district");
+  const local_block = window.localStorage.getItem("block");
+  const local_year = window.localStorage.getItem("year");
   const filterObj = structuredClone(schoolFilter);
   const [dispatchCount, setDispatchCount] = useState(1);
   const [report, setReport] = useState(null);
@@ -47,38 +51,18 @@ export default function Infrastructure({ id, report_name, type }) {
       dispatch(allFilter(filterObj));
       setDispatchCount((prev) => prev + 1);
     }
-
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
   useEffect(() => {
-    /* Grouping Data By School Management or Category schCategoryDesc */
-    const primaryKeys = ["regionName"];
-    const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
-    const updatedArrGroupedData = [];
-  
-    if (groupedData && typeof groupedData === "object") {
-      Object.keys(groupedData)?.forEach((item) => {
-        const itemsArray = groupedData[item];
-        let totalSchoolsHaveElectricity = 0;
-  
-        itemsArray.forEach((dataItem) => {
-          totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
-        });
-  
-        const appended = {
-          regionName: item,
-          schHaveElectricity: totalSchoolsHaveElectricity,
-        };
-  
-        updatedArrGroupedData.push(appended);
-      });
-  
-      setArrGroupedData(updatedArrGroupedData);
+    if(viewDataBy==="School Management"){
+        schoolManagementRow();
+    }else if(viewDataBy==="School Category"){
+        schoolCategoryRow();
+    }else{
+        schoolLocationRow();
     }
-  }, [school_data?.data?.data]); // Add relevant dependencies
-  
-  // Rest of your component code
+  }, [school_data?.data?.data]); 
   
 
   const [columns, setCol] = useState([
@@ -103,17 +87,17 @@ export default function Infrastructure({ id, report_name, type }) {
   const [defColumnDefs] = useState({
     flex: 1,
     minWidth: 150,
-    // allow every column to be aggregated
     enableValue: true,
-    // allow every column to be grouped
     enableRowGroup: true,
-    // allow every column to be pivoted
     enablePivot: true,
     filter: true,
   });
+
   const onGridReady = useCallback((params) => {
     setGridApi(params);
   }, []);
+
+
   const handleFilter = (e) => {
 
     const parentLi = e.target.closest('.nav-item');
@@ -177,129 +161,170 @@ export default function Infrastructure({ id, report_name, type }) {
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
     
     if(e==="School Category"){
-
-        const primaryKeys = ["schManagementDesc"];
-        const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
-        const updatedArrGroupedData = [];
-      
-        if (groupedData && typeof groupedData === "object") {
-            let state_gov_mgt_code = ["1","2","3","6","89","90","91"];
-            let gov_aided_mgt_code = ["4","7"];
-            let pvt_uaided_mgt_code = ["5"];
-            let ctrl_gov_mgt_code = ["92","93","94","95","96","101"];
-            let other_mgt_code = ["8","97","99","98","102"];
-    
-            let state_gov_total = 0;
-            let gov_aided_total = 0;
-            let pvt_uaided_total = 0;
-            let ctrl_gov_total = 0;
-            let other_total = 0;
-    
-          Object.keys(groupedData)?.forEach((item) => {
-            const itemsArray = groupedData[item];
-      
-            itemsArray.forEach((dataItem) => {
-                if(state_gov_mgt_code.includes(dataItem.schManagementCode)){
-                    state_gov_total += parseInt(dataItem.schHaveElectricity);
-                }else if(gov_aided_mgt_code.includes(dataItem.schManagementCode)){
-                    gov_aided_total += parseInt(dataItem.schHaveElectricity);
-                }
-                else if(pvt_uaided_mgt_code.includes(dataItem.schManagementCode)){
-                    pvt_uaided_total += parseInt(dataItem.schHaveElectricity);
-                }
-                else if(ctrl_gov_mgt_code.includes(dataItem.schManagementCode)){
-                    ctrl_gov_total += parseInt(dataItem.schHaveElectricity);
-                }else{
-                    // other
-                    if(other_mgt_code.includes(dataItem.schManagementCode)){
-                        other_total += parseInt(dataItem.schHaveElectricity);
-                    }
-                }
-              
-            });
-      
-          });
-         
-          const broadMgtArr = [
-                                {schManagementDesc:"State Government", schHaveElectricity:state_gov_total},
-                                {schManagementDesc:"Govt. Aided", schHaveElectricity:gov_aided_total},
-                                {schManagementDesc:"Private Unaided", schHaveElectricity:pvt_uaided_total},
-                                {schManagementDesc:"Central Government", schHaveElectricity:ctrl_gov_total},
-                                {schManagementDesc:"Others", schHaveElectricity:other_total},
-                              ];
-          updatedArrGroupedData.push(broadMgtArr)
-          setArrGroupedData(updatedArrGroupedData.flat());
-          gridApi.columnApi.api.setColumnVisible("schManagementDesc", true);
-          gridApi.columnApi.api.setColumnVisible("regionName", false);
-    
-        
+        if(viewDataBy===e){
+            schoolLocationRow();
+        }else{
+            schoolCategoryRow();
         }
-
     }else{
-        const primaryKeys = ["schManagementDesc"];
-        const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
-        const updatedArrGroupedData = [];
-      
-        if (groupedData && typeof groupedData === "object") {
-            let state_gov_mgt_code = ["1","2","3","6","89","90","91"];
-            let gov_aided_mgt_code = ["4","7"];
-            let pvt_uaided_mgt_code = ["5"];
-            let ctrl_gov_mgt_code = ["92","93","94","95","96","101"];
-            let other_mgt_code = ["8","97","99","98","102"];
-    
-            let state_gov_total = 0;
-            let gov_aided_total = 0;
-            let pvt_uaided_total = 0;
-            let ctrl_gov_total = 0;
-            let other_total = 0;
-    
-          Object.keys(groupedData)?.forEach((item) => {
-            const itemsArray = groupedData[item];
-      
-            itemsArray.forEach((dataItem) => {
-                if(state_gov_mgt_code.includes(dataItem.schManagementCode)){
-                    state_gov_total += parseInt(dataItem.schHaveElectricity);
-                }else if(gov_aided_mgt_code.includes(dataItem.schManagementCode)){
-                    gov_aided_total += parseInt(dataItem.schHaveElectricity);
-                }
-                else if(pvt_uaided_mgt_code.includes(dataItem.schManagementCode)){
-                    pvt_uaided_total += parseInt(dataItem.schHaveElectricity);
-                }
-                else if(ctrl_gov_mgt_code.includes(dataItem.schManagementCode)){
-                    ctrl_gov_total += parseInt(dataItem.schHaveElectricity);
-                }else{
-                    // other
-                    if(other_mgt_code.includes(dataItem.schManagementCode)){
-                        other_total += parseInt(dataItem.schHaveElectricity);
-                    }
-                }
-              
-            });
-      
-          });
-         
-          const broadMgtArr = [
-                                {schManagementDesc:"State Government", schHaveElectricity:state_gov_total},
-                                {schManagementDesc:"Govt. Aided", schHaveElectricity:gov_aided_total},
-                                {schManagementDesc:"Private Unaided", schHaveElectricity:pvt_uaided_total},
-                                {schManagementDesc:"Central Government", schHaveElectricity:ctrl_gov_total},
-                                {schManagementDesc:"Others", schHaveElectricity:other_total},
-                              ];
-          updatedArrGroupedData.push(broadMgtArr)
-          setArrGroupedData(updatedArrGroupedData.flat());
-          gridApi.columnApi.api.setColumnVisible("schManagementDesc", true);
-          gridApi.columnApi.api.setColumnVisible("regionName", false);
-    
-        
+        if(viewDataBy===e){
+            schoolLocationRow();
+        }else{
+            schoolManagementRow();
         }
     }
-    
  
-}
+  }
 
-  };
+};
+  const schoolLocationRow = ()=>{
+    const primaryKeys = ["regionName"];
+    const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
+    const updatedArrGroupedData = [];
+  
+    if (groupedData && typeof groupedData === "object") {
+      Object.keys(groupedData)?.forEach((item) => {
+        const itemsArray = groupedData[item];
+        let totalSchoolsHaveElectricity = 0;
+  
+        itemsArray.forEach((dataItem) => {
+          totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+        });
+  
+        const appended = {
+          regionName: item,
+          schHaveElectricity: totalSchoolsHaveElectricity,
+        };
+  
+        updatedArrGroupedData.push(appended);
+      });
+  
+      setArrGroupedData(updatedArrGroupedData);
+    }
 
-  console.log(arrGroupedData);
+          gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc",false);
+          gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", false);
+          gridApi?.columnApi?.api.setColumnVisible("regionName", true);
+  }
+
+
+  const schoolCategoryRow = ()=>{
+    const primaryKeys = ["schCategoryDesc"];
+        const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
+        const updatedArrGroupedData = [];
+      
+        if (groupedData && typeof groupedData === "object") {
+            let pr_sch_code = ["1"];
+            let upr_pr_code = ["2","4"];
+            let hr_sec_code = ["3","5","10","11"];
+            let sec_sch_code = ["6","7","8"];
+            let pre_pr_sch_code = ["12"];
+    
+            let pr_sch_total = 0;
+            let upr_pr_total = 0;
+            let hr_sec_total = 0;
+            let sec_sch_total = 0;
+            let pre_pr_sch_total = 0;
+    
+          Object.keys(groupedData)?.forEach((item) => {
+            const itemsArray = groupedData[item];
+      
+            itemsArray.forEach((dataItem) => {
+                if(pr_sch_code.includes(dataItem.schCategoryCode)){
+                    pr_sch_total += parseInt(dataItem.schHaveElectricity);
+                }else if(upr_pr_code.includes(dataItem.schCategoryCode)){
+                    upr_pr_total += parseInt(dataItem.schHaveElectricity);
+                }
+                else if(hr_sec_code.includes(dataItem.schCategoryCode)){
+                    hr_sec_total += parseInt(dataItem.schHaveElectricity);
+                }
+                else if(sec_sch_code.includes(dataItem.schCategoryCode)){
+                    sec_sch_total += parseInt(dataItem.schHaveElectricity);
+                }else{
+                    // other
+                    if(pre_pr_sch_code.includes(dataItem.schCategoryCode)){
+                        pre_pr_sch_total += parseInt(dataItem.schHaveElectricity);
+                    }
+                }
+              
+            });
+      
+          });
+         
+          const broadCatArr = [
+                                {schCategoryDesc:"Primary School", schHaveElectricity:pr_sch_total},
+                                {schCategoryDesc:"Upper primary School", schHaveElectricity:upr_pr_total},
+                                {schCategoryDesc:"Higher Secondary School", schHaveElectricity:hr_sec_total},
+                                {schCategoryDesc:"Secondary School", schHaveElectricity:sec_sch_total},
+                                {schCategoryDesc:"Pre-Primary School", schHaveElectricity:pre_pr_sch_total},
+                              ];
+          updatedArrGroupedData.push(broadCatArr);
+          setArrGroupedData(updatedArrGroupedData.flat());
+          gridApi.columnApi.api.setColumnVisible("schCategoryDesc", true);
+          gridApi.columnApi.api.setColumnVisible("schManagementDesc", false);
+          gridApi.columnApi.api.setColumnVisible("regionName", false);
+        }
+  }
+
+  const schoolManagementRow = ()=>{
+    const primaryKeys = ["schManagementDesc"];
+    const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
+    const updatedArrGroupedData = [];
+  
+    if (groupedData && typeof groupedData === "object") {
+        let state_gov_mgt_code = ["1","2","3","6","89","90","91"];
+        let gov_aided_mgt_code = ["4","7"];
+        let pvt_uaided_mgt_code = ["5"];
+        let ctrl_gov_mgt_code = ["92","93","94","95","96","101"];
+        let other_mgt_code = ["8","97","99","98","102"];
+
+        let state_gov_total = 0;
+        let gov_aided_total = 0;
+        let pvt_uaided_total = 0;
+        let ctrl_gov_total = 0;
+        let other_total = 0;
+
+      Object.keys(groupedData)?.forEach((item) => {
+        const itemsArray = groupedData[item];
+  
+        itemsArray.forEach((dataItem) => {
+            if(state_gov_mgt_code.includes(dataItem.schManagementCode)){
+                state_gov_total += parseInt(dataItem.schHaveElectricity);
+            }else if(gov_aided_mgt_code.includes(dataItem.schManagementCode)){
+                gov_aided_total += parseInt(dataItem.schHaveElectricity);
+            }
+            else if(pvt_uaided_mgt_code.includes(dataItem.schManagementCode)){
+                pvt_uaided_total += parseInt(dataItem.schHaveElectricity);
+            }
+            else if(ctrl_gov_mgt_code.includes(dataItem.schManagementCode)){
+                ctrl_gov_total += parseInt(dataItem.schHaveElectricity);
+            }else{
+                // other
+                if(other_mgt_code.includes(dataItem.schManagementCode)){
+                    other_total += parseInt(dataItem.schHaveElectricity);
+                }
+            }
+          
+        });
+  
+      });
+     
+      const broadMgtArr = [
+                            {schManagementDesc:"State Government", schHaveElectricity:state_gov_total},
+                            {schManagementDesc:"Govt. Aided", schHaveElectricity:gov_aided_total},
+                            {schManagementDesc:"Private Unaided", schHaveElectricity:pvt_uaided_total},
+                            {schManagementDesc:"Central Government", schHaveElectricity:ctrl_gov_total},
+                            {schManagementDesc:"Others", schHaveElectricity:other_total},
+                          ];
+      updatedArrGroupedData.push(broadMgtArr)
+      setArrGroupedData(updatedArrGroupedData.flat());
+      gridApi.columnApi.api.setColumnVisible("schManagementDesc", true);
+      gridApi.columnApi.api.setColumnVisible("schCategoryDesc", false);
+      gridApi.columnApi.api.setColumnVisible("regionName", false);
+
+    
+    }
+  }
 
   return (
     <>
@@ -522,6 +547,26 @@ export default function Infrastructure({ id, report_name, type }) {
         <div className="bg-grey ptb-30">
           <div className="container tab-for-graph">
             <div className="row align-items-center report-inner-tab">
+            <div className="col-md-12">
+                <h4 className="brudcrumb_heading">
+                  Showing Result for : <span>&nbsp;{local_state}</span>
+                  <span className="material-icons-round">chevron_right</span>
+                  {
+                    local_district !== "District" && <>
+                      <span>{local_district}</span>
+                      <span className="material-icons-round">chevron_right</span>
+                    </>
+                  }
+                  {
+                    local_block !== "Block" && <>
+                      <span>{local_block}</span>
+                      <span className="material-icons-round">chevron_right</span>
+                    </>
+                  }
+
+                  <span>{local_year}</span>
+                </h4>
+              </div>
               <div className="col-md-12 col-lg-12">
                 <Tabs
                   defaultActiveKey={type}
