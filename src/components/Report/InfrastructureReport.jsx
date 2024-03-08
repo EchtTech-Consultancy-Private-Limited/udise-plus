@@ -22,8 +22,10 @@ export default function Infrastructure({ id, report_name, type }) {
   const filterObj = structuredClone(schoolFilter);
   const [dispatchCount, setDispatchCount] = useState(1);
   const [report, setReport] = useState(null);
+  const grid_column = useSelector((state) => state?.column3016);
   const [gridApi, setGridApi] = useState();
-
+  const [viewDataBy, setViewDataBy] = useState('');
+  const [arrGroupedData,setArrGroupedData] = useState([]);
   useEffect(() => {
     for (const category in allreportsdata) {
       const foundReport = allreportsdata[category].find(
@@ -48,30 +50,35 @@ export default function Infrastructure({ id, report_name, type }) {
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
-  /*Grouping Data By School Management or Category schCategoryDesc*/
-  const primaryKeys = ["regionName"];
-  const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
-  const arrGroupedData = [];
-
-  let appended;
-  if (groupedData && typeof groupedData === "object") {
-    Object.keys(groupedData)?.map((item) => {
-      const itemsArray = groupedData[item];
-      let totalSchoolsHaveElectricity = 0;
-      
-      itemsArray.forEach((dataItem) => {
-        if (dataItem.schCategoryCode === "1") {
-          totalSchoolsHaveElectricity = totalSchoolsHaveElectricity + parseInt(dataItem.schHaveElectricity);
-        } 
+  useEffect(() => {
+    /* Grouping Data By School Management or Category schCategoryDesc */
+    const primaryKeys = ["regionName"];
+    const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
+    const updatedArrGroupedData = [];
+  
+    if (groupedData && typeof groupedData === "object") {
+      Object.keys(groupedData)?.forEach((item) => {
+        const itemsArray = groupedData[item];
+        let totalSchoolsHaveElectricity = 0;
+  
+        itemsArray.forEach((dataItem) => {
+          totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+        });
+  
+        const appended = {
+          regionName: item,
+          schHaveElectricity: totalSchoolsHaveElectricity,
+        };
+  
+        updatedArrGroupedData.push(appended);
       });
-      appended = {
-        regionName: item,
-        schHaveElectricity: totalSchoolsHaveElectricity,
-      };
-      arrGroupedData.push(appended);
-    });
-  }
-  /*end here*/
+  
+      setArrGroupedData(updatedArrGroupedData);
+    }
+  }, [school_data?.data?.data]); // Add relevant dependencies
+  
+  // Rest of your component code
+  
 
   const [columns, setCol] = useState([
     {
@@ -79,9 +86,17 @@ export default function Infrastructure({ id, report_name, type }) {
       field: "regionName",
     },
     {
-        headerName: "Total Schools with having Electricity",
+        headerName: "School Management",
+        field: "schManagementDesc",
+    },
+    {
+        headerName: "School Category",
+        field: "schCategoryDesc",
+    },
+    {
+        headerName: "No. Of Schools having Electricity",
         field: "schHaveElectricity",
-      },
+    },
   ]);
 
   const [defColumnDefs] = useState({
@@ -98,6 +113,165 @@ export default function Infrastructure({ id, report_name, type }) {
   const onGridReady = useCallback((params) => {
     setGridApi(params);
   }, []);
+
+  useEffect(() => {
+    if (!grid_column) {
+      gridApi?.columnApi?.api?.setColumnVisible("schManagementDesc", false);
+    }
+    if (gridApi && gridApi.columnApi) {
+      gridApi.columnApi.api.setColumnVisible("schManagementDesc", grid_column.column_mgt);
+    }
+
+    if (!grid_column) {
+        gridApi?.columnApi?.api?.setColumnVisible("schCategoryDesc", false);
+      }
+      if (gridApi && gridApi.columnApi) {
+        gridApi.columnApi.api.setColumnVisible("schCategoryDesc", grid_column.column_cat);
+      }
+  }, [grid_column, gridApi]);
+ 
+  
+
+
+  const handleGroupButtonClick = (e) => {
+    const groupObj = { "School Type": "schTypeDesc", "Urban/Rural": "schLocationDesc" }
+    const ignoreGroupingColumn = ['School Management','School Category'];
+    if(!ignoreGroupingColumn.includes(e)){
+    const groupByColumn = groupObj[e];
+    setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
+    setCol((prevDefs) =>
+      prevDefs.map((colDef) => ({
+        ...colDef,
+        rowGroup: viewDataBy === e ? false : colDef.field === groupByColumn,
+      }))
+    );
+}else{
+    setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
+    
+    if(e==="School Category"){
+
+        const primaryKeys = ["schManagementDesc"];
+        const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
+        const updatedArrGroupedData = [];
+      
+        if (groupedData && typeof groupedData === "object") {
+            let state_gov_mgt_code = ["1","2","3","6","89","90","91"];
+            let gov_aided_mgt_code = ["4","7"];
+            let pvt_uaided_mgt_code = ["5"];
+            let ctrl_gov_mgt_code = ["92","93","94","95","96","101"];
+            let other_mgt_code = ["8","97","99","98","102"];
+    
+            let state_gov_total = 0;
+            let gov_aided_total = 0;
+            let pvt_uaided_total = 0;
+            let ctrl_gov_total = 0;
+            let other_total = 0;
+    
+          Object.keys(groupedData)?.forEach((item) => {
+            const itemsArray = groupedData[item];
+      
+            itemsArray.forEach((dataItem) => {
+                if(state_gov_mgt_code.includes(dataItem.schManagementCode)){
+                    state_gov_total += parseInt(dataItem.schHaveElectricity);
+                }else if(gov_aided_mgt_code.includes(dataItem.schManagementCode)){
+                    gov_aided_total += parseInt(dataItem.schHaveElectricity);
+                }
+                else if(pvt_uaided_mgt_code.includes(dataItem.schManagementCode)){
+                    pvt_uaided_total += parseInt(dataItem.schHaveElectricity);
+                }
+                else if(ctrl_gov_mgt_code.includes(dataItem.schManagementCode)){
+                    ctrl_gov_total += parseInt(dataItem.schHaveElectricity);
+                }else{
+                    // other
+                    if(other_mgt_code.includes(dataItem.schManagementCode)){
+                        other_total += parseInt(dataItem.schHaveElectricity);
+                    }
+                }
+              
+            });
+      
+          });
+         
+          const broadMgtArr = [
+                                {schManagementDesc:"State Government", schHaveElectricity:state_gov_total},
+                                {schManagementDesc:"Govt. Aided", schHaveElectricity:gov_aided_total},
+                                {schManagementDesc:"Private Unaided", schHaveElectricity:pvt_uaided_total},
+                                {schManagementDesc:"Central Government", schHaveElectricity:ctrl_gov_total},
+                                {schManagementDesc:"Others", schHaveElectricity:other_total},
+                              ];
+          updatedArrGroupedData.push(broadMgtArr)
+          setArrGroupedData(updatedArrGroupedData.flat());
+          gridApi.columnApi.api.setColumnVisible("schManagementDesc", true);
+          gridApi.columnApi.api.setColumnVisible("regionName", false);
+    
+        
+        }
+
+    }else{
+        const primaryKeys = ["schManagementDesc"];
+        const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
+        const updatedArrGroupedData = [];
+      
+        if (groupedData && typeof groupedData === "object") {
+            let state_gov_mgt_code = ["1","2","3","6","89","90","91"];
+            let gov_aided_mgt_code = ["4","7"];
+            let pvt_uaided_mgt_code = ["5"];
+            let ctrl_gov_mgt_code = ["92","93","94","95","96","101"];
+            let other_mgt_code = ["8","97","99","98","102"];
+    
+            let state_gov_total = 0;
+            let gov_aided_total = 0;
+            let pvt_uaided_total = 0;
+            let ctrl_gov_total = 0;
+            let other_total = 0;
+    
+          Object.keys(groupedData)?.forEach((item) => {
+            const itemsArray = groupedData[item];
+      
+            itemsArray.forEach((dataItem) => {
+                if(state_gov_mgt_code.includes(dataItem.schManagementCode)){
+                    state_gov_total += parseInt(dataItem.schHaveElectricity);
+                }else if(gov_aided_mgt_code.includes(dataItem.schManagementCode)){
+                    gov_aided_total += parseInt(dataItem.schHaveElectricity);
+                }
+                else if(pvt_uaided_mgt_code.includes(dataItem.schManagementCode)){
+                    pvt_uaided_total += parseInt(dataItem.schHaveElectricity);
+                }
+                else if(ctrl_gov_mgt_code.includes(dataItem.schManagementCode)){
+                    ctrl_gov_total += parseInt(dataItem.schHaveElectricity);
+                }else{
+                    // other
+                    if(other_mgt_code.includes(dataItem.schManagementCode)){
+                        other_total += parseInt(dataItem.schHaveElectricity);
+                    }
+                }
+              
+            });
+      
+          });
+         
+          const broadMgtArr = [
+                                {schManagementDesc:"State Government", schHaveElectricity:state_gov_total},
+                                {schManagementDesc:"Govt. Aided", schHaveElectricity:gov_aided_total},
+                                {schManagementDesc:"Private Unaided", schHaveElectricity:pvt_uaided_total},
+                                {schManagementDesc:"Central Government", schHaveElectricity:ctrl_gov_total},
+                                {schManagementDesc:"Others", schHaveElectricity:other_total},
+                              ];
+          updatedArrGroupedData.push(broadMgtArr)
+          setArrGroupedData(updatedArrGroupedData.flat());
+          gridApi.columnApi.api.setColumnVisible("schManagementDesc", true);
+          gridApi.columnApi.api.setColumnVisible("regionName", false);
+    
+        
+        }
+    }
+    
+ 
+}
+
+  };
+
+  console.log(arrGroupedData);
 
   return (
     <>
@@ -119,15 +293,17 @@ export default function Infrastructure({ id, report_name, type }) {
               <div className="col-md-6 col-lg-6">
                 <div className="tab-text-infra mb-1">View Data By</div>
                 <Tabs
-                  defaultActiveKey="School Management"
+                  activeKey={viewDataBy}
                   id="uncontrolled-tab-example"
-                  className=""
+                  
+                  onSelect={(e) => handleGroupButtonClick(e)}
                 >
-                  <Tab eventKey="School Category" title="School Category"></Tab>
-                  <Tab
+                    <Tab
                     eventKey="School Management"
                     title="School Management"
                   ></Tab>
+
+                  <Tab eventKey="School Category" title="School Category"></Tab>
                   <Tab eventKey="School Type" title="School Type"></Tab>
                   <Tab eventKey="Urban/Rural" title="Urban / Rural"></Tab>
                 </Tabs>

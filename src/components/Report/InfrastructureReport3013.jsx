@@ -62,8 +62,6 @@ export default function Infrastructure3013() {
       headerName: "Location",
       field: "regionName",
       suppressColumnsToolPanel: true,
-
-
     },
     {
       headerName: "Rural/Urban",
@@ -477,7 +475,6 @@ const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short
                 <Tabs
                   activeKey={viewDataBy}
                   id="uncontrolled-tab-example"
-                  className=""
                   onSelect={(e) => handleGroupButtonClick(e)}
                 >
                   <Tab eventKey="School Category" title="School Category"></Tab>
