@@ -39,7 +39,7 @@ export default function Infrastructure({ id, report_name, type }) {
   useEffect(() => {
     dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
     if (dispatchCount === 1) {
-      filterObj.regionType = 10;
+      filterObj.regionType = 21;
       filterObj.regionCode = 99;
       dispatch(allFilter(filterObj));
       setDispatchCount((prev) => prev + 1);
@@ -49,39 +49,128 @@ export default function Infrastructure({ id, report_name, type }) {
   }, [schoolFilterYear]);
 
   /*Grouping Data By School Management or Category schCategoryDesc*/
-  const primaryKeys = ["regionName"];
+  const primaryKeys = ["schManagementDesc"];
   const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
   const arrGroupedData = [];
-
   let appended;
   if (groupedData && typeof groupedData === "object") {
     Object.keys(groupedData)?.map((item) => {
       const itemsArray = groupedData[item];
-      let totalSchoolsHaveElectricity = 0;
-      
+      let cat1_sum = 0;
+      let cat2_sum = 0;
+      let cat3_sum = 0;
+      let cat4_sum = 0;
+      let cat5_sum = 0;
+      let cat6_sum = 0;
+      let cat7_sum = 0;
+      let cat8_sum = 0;
+      let cat10_sum = 0;
+      let cat11_sum = 0;
       itemsArray.forEach((dataItem) => {
         if (dataItem.schCategoryCode === "1") {
-          totalSchoolsHaveElectricity = totalSchoolsHaveElectricity + parseInt(dataItem.schHaveElectricity);
-        } 
+          cat1_sum = cat1_sum + parseInt(dataItem.schHaveElectricity);
+        } else if (dataItem.schCategoryCode === "2") {
+          cat2_sum = cat2_sum + parseInt(dataItem.schHaveElectricity);
+        } else if (dataItem.schCategoryCode === "3") {
+          cat3_sum = cat3_sum + parseInt(dataItem.schHaveElectricity);
+        } else if (dataItem.schCategoryCode === "4") {
+          cat4_sum = cat4_sum + parseInt(dataItem.schHaveElectricity);
+        } else if (dataItem.schCategoryCode === "5") {
+          cat5_sum = cat5_sum + parseInt(dataItem.schHaveElectricity);
+        } else if (dataItem.schCategoryCode === "6") {
+          cat6_sum = cat6_sum + parseInt(dataItem.schHaveElectricity);
+        } else if (dataItem.schCategoryCode === "7") {
+          cat7_sum = cat7_sum + parseInt(dataItem.schHaveElectricity);
+        } else if (dataItem.schCategoryCode === "8") {
+          cat8_sum = cat8_sum + parseInt(dataItem.schHaveElectricity);
+        } else if (dataItem.schCategoryCode === "10") {
+          cat10_sum = cat10_sum + parseInt(dataItem.schHaveElectricity);
+        } else {
+          cat11_sum = cat11_sum + parseInt(dataItem.schHaveElectricity);
+        }
       });
+      let overAllTotal =
+        cat1_sum +
+        cat2_sum +
+        cat3_sum +
+        cat4_sum +
+        cat5_sum +
+        cat6_sum +
+        cat7_sum +
+        cat8_sum +
+        cat10_sum +
+        cat11_sum;
       appended = {
-        regionName: item,
-        schHaveElectricity: totalSchoolsHaveElectricity,
+        schManagementDesc: item,
+        cat1: cat1_sum,
+        cat2: cat2_sum,
+        cat3: cat3_sum,
+        cat4: cat4_sum,
+        cat5: cat5_sum,
+        cat6: cat6_sum,
+        cat7: cat7_sum,
+        cat8: cat8_sum,
+        cat10: cat10_sum,
+        cat11: cat11_sum,
+        total: overAllTotal,
       };
       arrGroupedData.push(appended);
     });
   }
+
+
   /*end here*/
 
   const [columns, setCol] = useState([
     {
-      headerName: "Location",
-      field: "regionName",
+      headerName: "School Management",
+      field: "schManagementDesc",
     },
     {
-        headerName: "Total Schools with having Electricity",
-        field: "schHaveElectricity",
-      },
+      headerName: "PS (I-V)",
+      field: "cat1",
+    },
+    {
+      headerName: "UPS (I-VIII)",
+      field: "cat2",
+    },
+    {
+      headerName: "HSS (I-XII)",
+      field: "cat3",
+    },
+    {
+      headerName: "UPS (VI-VIII)",
+      field: "cat4",
+    },
+    {
+      headerName: "HSS (VI-XII)",
+      field: "cat5",
+    },
+    {
+      headerName: "SS (I-X)",
+      field: "cat6",
+    },
+    {
+      headerName: "SS (VI-X)",
+      field: "cat7",
+    },
+    {
+      headerName: "SS (IX-X)",
+      field: "cat8",
+    },
+
+    {
+      headerName: "HSS (IX-XII)",
+      field: "cat10",
+    },
+    {
+      headerName: "HSS (XI-XII)",
+      field: "cat11",
+    },
+    {
+      headerName: "Total",
+      field: "total",
+    },
   ]);
 
   const [defColumnDefs] = useState({

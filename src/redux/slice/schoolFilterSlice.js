@@ -4,11 +4,10 @@ const schoolFilterSlice = createSlice({
   name: 'header',
   initialState: {
     yearId: 8,
-    regionType: 21,
-    regionCode: 99,
+    regionType: 10,  //21 //10 for all india 
+    regionCode: "99",
     categoryCode: 0,
     managementCode: 0,
-    locationCode: 0,
     locationCode: 0,
     schoolTypeCode:0,
     dashboardRegionType:"n",

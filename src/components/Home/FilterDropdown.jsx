@@ -395,6 +395,28 @@ export default function FilterDropdown() {
                 <MDBNavbarNav className='me-auto ps-lg-0 smallfilter'>
 
 
+                <MDBNavbarItem className="position-static">
+                    <MDBDropdown>
+                      <MDBDropdownToggle tag="a" className="nav-link">
+                        <div className="menu-sub-heading">Select Year</div>
+                        {selectedYear}
+                      </MDBDropdownToggle>
+                      <MDBDropdownMenu
+                        className="mt-0 w-100 justify-content-center"
+                        style={{
+                          borderTopLeftRadius: "0",
+                          borderTopRightRadius: "0",
+                        }}
+                      >
+                        <MDBContainer className="droplist">
+                          <MDBRow className="my-1">
+                            {<>{renderYearListGroup()}</>}
+                          </MDBRow>
+                        </MDBContainer>
+                      </MDBDropdownMenu>
+                    </MDBDropdown>
+                  </MDBNavbarItem>
+
 
                   <MDBNavbarItem className='position-static' onClick={() => handleStateDistBlockSearchState("state_search_update_state")}>
                     <MDBDropdown>
@@ -485,27 +507,7 @@ export default function FilterDropdown() {
                     </MDBNavbarItem>
                   )}
 
-                  <MDBNavbarItem className="position-static">
-                    <MDBDropdown>
-                      <MDBDropdownToggle tag="a" className="nav-link">
-                        <div className="menu-sub-heading">Select Year</div>
-                        {selectedYear}
-                      </MDBDropdownToggle>
-                      <MDBDropdownMenu
-                        className="mt-0 w-100 justify-content-center"
-                        style={{
-                          borderTopLeftRadius: "0",
-                          borderTopRightRadius: "0",
-                        }}
-                      >
-                        <MDBContainer className="droplist">
-                          <MDBRow className="my-1">
-                            {<>{renderYearListGroup()}</>}
-                          </MDBRow>
-                        </MDBContainer>
-                      </MDBDropdownMenu>
-                    </MDBDropdown>
-                  </MDBNavbarItem>
+                 
                 </MDBNavbarNav>
               </MDBContainer>
             </MDBNavbar>
