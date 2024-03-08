@@ -155,12 +155,15 @@ export default function Infrastructure3013() {
     { headerName: "Computer Available", minWidth: 100, field: "schHaveComputers" },
   ]);
 
+
+
   const pinedBottomRowData = [
-    { schTypeDesc: 'Total',
+    { 
+    schTypeDesc: 'Total',
     schHaveInternet: calculateTotal('schHaveInternet'),
     schHaveFuncGirlsUrinals: calculateTotal('schHaveFuncGirlsUrinals'),
-     schHaveComputers: calculateTotal('schHaveComputers'),
-     totalSchools:calculateTotal("totalSchools"),
+    schHaveComputers: calculateTotal('schHaveComputers'),
+    totalSchools:calculateTotal("totalSchools"),
     schHaveSeparateRoomForHM:calculateTotal("schHaveSeparateRoomForHM"),
     schHaveComputers:calculateTotal("schHaveComputers"),
     schHaveCompleteMedicalCheckup:calculateTotal("schHaveCompleteMedicalCheckup"),
