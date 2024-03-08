@@ -585,6 +585,7 @@ const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short
                       </p>
                     </div>
                   </Tab>
+                  
                   <Tab eventKey="table" title="Table">
                     <div className="col-md-12 d-flex justify-content-end">
                       {/* {hideScrollBtn!==3 && (<button onClick={() => scrollToRight()} className="scroll-right-btn" title="Scroll to Right "><span className="material-icons-round">arrow_right_alt</span> </button>)}
