@@ -146,18 +146,18 @@ export default function Infrastructure({ id, report_name, type }) {
               </div>
               <div className="col-md-7 col-lg-7">
                 <div className="tab-text-infra mb-1">View Data By</div>
-                {/* <Tabs defaultActiveKey="School Management" id="uncontrolled-tab-example" className="">                  
+                <Tabs defaultActiveKey="School Management" id="uncontrolled-tab-example" className="">                  
                     <Tab eventKey="School Management" title="School Management" className="multibtn-active"></Tab>
-                    <Tab eventKey="Management datails" title="datails" className="multibtn"></Tab>
+                    {/* <Tab eventKey="Management datails" title="datails" className="multibtn"></Tab> */}
                     
                     <Tab eventKey="School Category" title="School Category"></Tab>
-                    <Tab eventKey="Category datails" title="datails"></Tab>
+                    {/* <Tab eventKey="Category datails" title="datails"></Tab> */}
 
                     <Tab eventKey="School Type" title="School Type"></Tab>
                     <Tab eventKey="Urban/Rural" title="Urban / Rural"></Tab>
-                </Tabs> */}
+                </Tabs>
 
-                <ul class="nav nav-tabs mul-tab-main">
+                {/* <ul class="nav nav-tabs mul-tab-main">
 
                   <li class="nav-item">
                     <button type="button" class="nav-link"  onClick={handleFilter}>School Management(Broad) </button>
@@ -175,7 +175,7 @@ export default function Infrastructure({ id, report_name, type }) {
                   <li class="nav-item">
                     <button type="button" class="nav-link"  onClick={handleFilter}>Urban / Rural</button>
                   </li>
-                </ul>
+                </ul> */}
 
               </div>
 
