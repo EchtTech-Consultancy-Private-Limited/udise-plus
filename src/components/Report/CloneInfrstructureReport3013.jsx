@@ -9,7 +9,7 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import FilterDropdown from "../Home/FilterDropdown";
 import allreportsdata from "../../json-data/allreports.json";
 import { GlobalLoading } from "../GlobalLoading/GlobalLoading";
-import { AgGridReact, AgGridColumn } from "ag-grid-react";
+import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -43,7 +43,7 @@ export default function Infrastructure3013() {
   const [columnCount, setColumnCount] = useState(20);
   const [hideScrollBtn, setHideScrollBtn] = useState(0);
   const gridApiRef = useRef(null);
-  const [total, setTotal] = useState(0);
+  const [totalSum, setTotalSum] = useState(0);
   const schoolFilter = useSelector((state) => state.schoolFilter);
   const filterObj = structuredClone(schoolFilter);
   const [dispatchCount, setDispatchCount] = useState(1);
@@ -105,67 +105,65 @@ export default function Infrastructure3013() {
 
     },
     {
-      headerName: "Total No. of Schools", minWidth: 100, field: "totalSchools"
+      headerName: "Total No. of Schools", minWidth: 100, field: "totalSchools", aggFunc: 'sum'
 
     },
     {
       headerName: "Separate Room for Headmaster",
       minWidth: 130,
-      field: "schHaveSeparateRoomForHM"
+      field: "schHaveSeparateRoomForHM", aggFunc: 'sum'
     },
-    { headerName: "Land Available", minWidth: 90, field: "schHaveLandForExpansion" },
-    { headerName: "Electricity", minWidth: 95, field: "schHaveElectricity" },
-    { headerName: "Functional Electricity", minWidth: 100, field: "schHaveFuncElectricity" },
-    { headerName: "Solar Panel", minWidth: 105, field: "schHaveSolarPanels" },
-    { headerName: "Playground", minWidth: 105, field: "schHavePlayground" },
+    { headerName: "Land Available", minWidth: 90, field: "schHaveLandForExpansion", aggFunc: 'sum' },
+    { headerName: "Electricity", minWidth: 95, field: "schHaveElectricity", aggFunc: 'sum' },
+    { headerName: "Functional Electricity", minWidth: 100, field: "schHaveFuncElectricity", aggFunc: 'sum' },
+    { headerName: "Solar Panel", minWidth: 105, field: "schHaveSolarPanels", aggFunc: 'sum' },
+    { headerName: "Playground", minWidth: 105, field: "schHavePlayground", aggFunc: 'sum' },
     {
       headerName: "Library or Reading Corner or Book Bank",
       minWidth: 150,
-      field: "schHaveLibrary"
+      field: "schHaveLibrary", aggFunc: 'sum'
     },
-    { headerName: "Librarian", minWidth: 90, field: "schHaveLibrarian" },
-    { headerName: "Newspaper", minWidth: 105, field: "schHaveNewsPaperSubscription" },
-    { headerName: "Kitchen Garden", minWidth: 90, field: "schHaveKitchenGarden" },
-    { headerName: "Furniture", minWidth: 90, field: "schHaveFurnitureForStudents" },
-    { headerName: "Boy's Toilet", minWidth: 100, field: "schHaveBoysToilet" },
-    { headerName: "Functional Boy's Toilet", field: "schHaveFuncBoysToilet" },
-    { headerName: "Girl's Toilet", minWidth: 100, field: "schHaveGirlsToilet" },
-    { headerName: "Functional Girl's Toilet", minWidth: 110, field: "schHaveFuncGirlsToilet" },
-    { headerName: "Toilet Facility", field: "schHaveToilet" },
-    { headerName: "Functional Toilet Facility", field: "schHaveFuncToilet" },
-    { headerName: "Functional Urinal Boy's", field: "schHaveFuncBoysUrinals" },
-    { headerName: "Functional Urinal", field: "schHaveFuncUrinals" },
+    { headerName: "Librarian", minWidth: 90, field: "schHaveLibrarian", aggFunc: 'sum' },
+    { headerName: "Newspaper", minWidth: 105, field: "schHaveNewsPaperSubscription", aggFunc: 'sum' },
+    { headerName: "Kitchen Garden", minWidth: 90, field: "schHaveKitchenGarden", aggFunc: 'sum' },
+    { headerName: "Furniture", minWidth: 90, field: "schHaveFurnitureForStudents", aggFunc: 'sum' },
+    { headerName: "Boy's Toilet", minWidth: 100, field: "schHaveBoysToilet", aggFunc: 'sum' },
+    { headerName: "Functional Boy's Toilet", field: "schHaveFuncBoysToilet", aggFunc: 'sum' },
+    { headerName: "Girl's Toilet", minWidth: 100, field: "schHaveGirlsToilet", aggFunc: 'sum' },
+    { headerName: "Functional Girl's Toilet", minWidth: 110, field: "schHaveFuncGirlsToilet", aggFunc: 'sum' },
+    { headerName: "Toilet Facility", field: "schHaveToilet", aggFunc: 'sum' },
+    { headerName: "Functional Toilet Facility", field: "schHaveFuncToilet", aggFunc: 'sum' },
+    { headerName: "Functional Urinal Boy's", field: "schHaveFuncBoysUrinals", aggFunc: 'sum' },
+    { headerName: "Functional Urinal", field: "schHaveFuncUrinals", aggFunc: 'sum' },
     {
       headerName: "Functional Urinal Girl's",
-      field: "schHaveFuncGirlsUrinals"
+      field: "schHaveFuncGirlsUrinals", aggFunc: 'sum'
     },
-    { headerName: "Drinking Water", field: "schHaveDrinkWater" },
-    { headerName: "Functional Drinking Water", field: "schHaveFuncDrinkWater" },
-    { headerName: "Water Purifier", field: "schHaveWaterPurifier" },
+    { headerName: "Drinking Water", field: "schHaveDrinkWater", aggFunc: 'sum' },
+    { headerName: "Functional Drinking Water", field: "schHaveFuncDrinkWater", aggFunc: 'sum' },
+    { headerName: "Water Purifier", field: "schHaveWaterPurifier", aggFunc: 'sum' },
     {
       headerName: "Rain Water Harvesting",
-      field: "schHaveRainWaterHarvesting"
+      field: "schHaveRainWaterHarvesting", aggFunc: 'sum'
     },
-    { headerName: "Water Tested", field: "schHaveTestedWater", rowPinned: 'bottom' },
-    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets", rowPinned: 'bottom' },
-    { headerName: "Incinerator", field: "schHaveIncineratorInGirlsToilets", rowPinned: 'bottom' },
+    { headerName: "Water Tested", field: "schHaveTestedWater", aggFunc: 'sum', rowPinned: 'bottom' },
+    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets", aggFunc: 'sum', rowPinned: 'bottom' },
+    { headerName: "Incinerator", field: "schHaveIncineratorInGirlsToilets", aggFunc: 'sum', rowPinned: 'bottom' },
     {
       headerName: "WASH Facility(Drinking Water, Toilet and Handwash)",
       minWidth: 200,
-      field: "schHaveHandwashWithSoapBeforeAfterMeal", rowPinned: 'bottom'
+      field: "schHaveHandwashWithSoapBeforeAfterMeal", aggFunc: 'sum', rowPinned: 'bottom'
     },
-    { headerName: "Ramps", minWidth: 90, field: "schHaveRamps", rowPinned: 'bottom' },
-    { headerName: "Hand-Rails", minWidth: 100, field: "schHaveHandRails", rowPinned: 'bottom' },
-    { headerName: "Medical Checkup", minWidth: 100, field: "schHaveMedicalCheckup", rowPinned: 'bottom' },
+    { headerName: "Ramps", minWidth: 90, field: "schHaveRamps", aggFunc: 'sum', rowPinned: 'bottom' },
+    { headerName: "Hand-Rails", minWidth: 100, field: "schHaveHandRails", aggFunc: 'sum', rowPinned: 'bottom' },
+    { headerName: "Medical Checkup", minWidth: 100, field: "schHaveMedicalCheckup", aggFunc: 'sum', rowPinned: 'bottom' },
     {
       headerName: "Complete Medical Checkup",
-      field: "schHaveCompleteMedicalCheckup", rowPinned: 'bottom'
+      field: "schHaveCompleteMedicalCheckup", aggFunc: 'sum', rowPinned: 'bottom'
     },
     { headerName: "Internet", minWidth: 100, field: "schHaveInternet" },
     { headerName: "Computer Available", minWidth: 100, field: "schHaveComputers" },
   ]);
-
-
 
   const pinedBottomRowData = [
     {
@@ -175,6 +173,7 @@ export default function Infrastructure3013() {
       schHaveComputers: calculateTotal('schHaveComputers'),
       totalSchools: calculateTotal("totalSchools"),
       schHaveSeparateRoomForHM: calculateTotal("schHaveSeparateRoomForHM"),
+      schHaveComputers: calculateTotal("schHaveComputers"),
       schHaveCompleteMedicalCheckup: calculateTotal("schHaveCompleteMedicalCheckup"),
       schHaveMedicalCheckup: calculateTotal("schHaveMedicalCheckup"),
       schHaveHandRails: calculateTotal("schHaveHandRails"),
@@ -187,6 +186,7 @@ export default function Infrastructure3013() {
       schHaveWaterPurifier: calculateTotal("schHaveWaterPurifier"),
       schHaveFuncDrinkWater: calculateTotal("schHaveFuncDrinkWater"),
       schHaveDrinkWater: calculateTotal("schHaveDrinkWater"),
+      schHaveFuncUrinals: calculateTotal("schHaveFuncUrinals"),
       schHaveFuncUrinals: calculateTotal("schHaveFuncUrinals"),
       schHaveFuncBoysUrinals: calculateTotal("schHaveFuncBoysUrinals"),
       schHaveFuncToilet: calculateTotal("schHaveFuncToilet"),
@@ -205,6 +205,7 @@ export default function Infrastructure3013() {
       schHaveFuncElectricity: calculateTotal("schHaveFuncElectricity"),
       schHaveElectricity: calculateTotal("schHaveElectricity"),
       schHaveLandForExpansion: calculateTotal("schHaveLandForExpansion"),
+      schHaveSolarPanels: calculateTotal("schHaveSolarPanels"),
 
     },
   ];
@@ -214,6 +215,8 @@ export default function Infrastructure3013() {
     if (!school_data?.data?.data) return 0;
     return school_data.data.data.reduce((total, row) => total + parseFloat(row[fieldName] || 0), 0);
   }
+
+
 
   const [defColumnDefs] = useState({
     flex: 1,
@@ -443,6 +446,7 @@ const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short
     setHideScrollBtn(hideScrollBtn => hideScrollBtn + 1);
     columns.map((item, idx) => {
       if ((idx + 1) === columnCount) {
+        console.log((idx + 1), '--------', columnCount)
         gridApi.columnApi.api.ensureColumnVisible(item.field);
         if (columnCount <= 43) {
           setColumnCount(prevColumnCount => prevColumnCount + 10);
@@ -616,11 +620,7 @@ const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short
                       //groupIncludeFooter={true}
 
                       // groupIncludeTotalFooter={true}
-
                       />
-                           
-                       
-                      
                       {/* <button onClick={() => scrollToLeft()}>Scroll to Left</button> */}
                     </div>
                   </Tab>
