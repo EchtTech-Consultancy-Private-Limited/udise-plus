@@ -204,7 +204,7 @@ export default function Infrastructure({ id, report_name, type }) {
                   )}
                 </div>
               </div>
-              <div className="col-md-4 col-lg-4">
+              <div className="col-md-6 col-lg-6">
                 <div className="tab-text-infra mb-1">View Data By</div>
                 <Tabs
                   defaultActiveKey="School Management"
@@ -216,6 +216,7 @@ export default function Infrastructure({ id, report_name, type }) {
                     eventKey="School Management"
                     title="School Management"
                   ></Tab>
+                  <Tab eventKey="School Type" title="School Type"></Tab>
                   <Tab eventKey="Urban/Rural" title="Urban / Rural"></Tab>
                 </Tabs>
               </div>
