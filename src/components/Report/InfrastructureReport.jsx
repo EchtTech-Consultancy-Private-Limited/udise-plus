@@ -69,7 +69,40 @@ export default function Infrastructure({ id, report_name, type }) {
           schoolManagementRow();
         }
       }
-    } else if (viewDataBy === "School Category") {
+    } 
+    else if (viewDataBy === "Mgt Details") {
+      if (filterObj.regionType === 21 && filterObj.regionCode === "11") {
+        // state wise
+        schoolManagementDetailsRow("particular_or_state_wise");
+      } else {
+        if (
+          local_state !== "All India/National" &&
+          local_state !== "State Wise"
+        ) {
+          schoolManagementDetailsRow("particular_or_state_wise");
+        } else {
+          managementRowDetails();
+        }
+      }
+    } 
+
+    else if (viewDataBy === "Cat Details") {
+      if (filterObj.regionType === 21 && filterObj.regionCode === "11") {
+        // state wise
+        schoolCategoryDetailsRow("particular_or_state_wise");
+      } else {
+        if (
+          local_state !== "All India/National" &&
+          local_state !== "State Wise"
+        ) {
+          schoolCategoryDetailsRow("particular_or_state_wise");
+        } else {
+          categoryRowDetails();
+        }
+      }
+    } 
+    
+    else if (viewDataBy === "School Category") {
       if (filterObj.regionType === 21 && filterObj.regionCode === "11") {
         // state wise
         schoolCategoryRowFilterWise("particular_or_state_wise");
@@ -115,6 +148,7 @@ export default function Infrastructure({ id, report_name, type }) {
       schoolLocationRow();
     }
   }, [school_data?.data?.data]);
+
 
   const [columns, setCol] = useState([
     {
@@ -216,7 +250,9 @@ export default function Infrastructure({ id, report_name, type }) {
       "School Type": "schTypeDesc",
       "Urban/Rural": "schLocationDesc",
     };
-    const ignoreGroupingColumn = ["School Management", "School Category"];
+    
+    const ignoreGroupingColumn = ["School Management","Mgt Details","Cat Details", "School Category"];
+
     if (!ignoreGroupingColumn.includes(e)) {
       const groupByColumn = groupObj[e];
       setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
@@ -280,7 +316,50 @@ export default function Infrastructure({ id, report_name, type }) {
           }
           
         }
-      } else {
+      } 
+      else if (e === "Mgt Details") {
+        if (viewDataBy === e) {
+          schoolLocationRow();
+        } else {
+          if (filterObj.regionType === 21 && filterObj.regionCode === "11") {
+            // state wise
+            schoolManagementDetailsRow("particular_or_state_wise");
+          } else {
+            if (
+              local_state !== "All India/National" &&
+              local_state !== "State Wise"
+            ) {
+              schoolManagementDetailsRow("particular_or_state_wise");
+            } else {
+              managementRowDetails();
+            }
+          }
+          
+        }
+      } 
+      else if (e === "Cat Details") {
+        
+        if (viewDataBy === e) {
+          schoolLocationRow();
+        } else {
+          
+          if (filterObj.regionType === 21 && filterObj.regionCode === "11") {
+            // state wise
+            schoolCategoryDetailsRow("particular_or_state_wise");
+          } else {
+            if (
+              local_state !== "All India/National" &&
+              local_state !== "State Wise"
+            ) {
+              schoolCategoryDetailsRow("particular_or_state_wise");
+            } else {
+              categoryRowDetails();
+            }
+          }
+          
+        }
+      } 
+      else {
         if (viewDataBy === e) {
           schoolLocationRow();
         } else {
@@ -694,6 +773,71 @@ export default function Infrastructure({ id, report_name, type }) {
     }
   };
 
+  const managementRowDetails = () => {
+    const primaryKeys = ["schManagementDesc"];
+    const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
+    const updatedArrGroupedData = [];
+
+    if (groupedData && typeof groupedData === "object") {
+      Object.keys(groupedData)?.forEach((item) => {
+        const itemsArray = groupedData[item];
+        let totalSchoolsHaveElectricity = 0;
+
+        itemsArray.forEach((dataItem) => {
+          totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+        });
+
+        const appended = {
+          schManagementDesc: item,
+          schHaveElectricity: totalSchoolsHaveElectricity,
+        };
+
+        updatedArrGroupedData.push(appended);
+      });
+
+      setArrGroupedData(updatedArrGroupedData);
+    }
+
+    gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", false);
+    gridApi?.columnApi?.api.setColumnVisible("schManagementDesc",true);
+    gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", false);
+    gridApi?.columnApi?.api.setColumnVisible("regionName", false);
+    gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", false);
+  };
+
+  const categoryRowDetails = () => {
+    
+    const primaryKeys = ["schCategoryDesc"];
+    const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
+    const updatedArrGroupedData = [];
+
+    if (groupedData && typeof groupedData === "object") {
+      Object.keys(groupedData)?.forEach((item) => {
+        const itemsArray = groupedData[item];
+        let totalSchoolsHaveElectricity = 0;
+
+        itemsArray.forEach((dataItem) => {
+          totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+        });
+
+        const appended = {
+          schCategoryDesc: item,
+          schHaveElectricity: totalSchoolsHaveElectricity,
+        };
+
+        updatedArrGroupedData.push(appended);
+      });
+
+      setArrGroupedData(updatedArrGroupedData);
+    }
+
+    gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", true);
+    gridApi?.columnApi?.api.setColumnVisible("schManagementDesc",false);
+    gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", false);
+    gridApi?.columnApi?.api.setColumnVisible("regionName", false);
+    gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", false);
+  };
+
   const schoolTypeRowFilterWise = (filter_type = null) => {
     let girls = "Girls";
     let boys = "Boys";
@@ -1033,6 +1177,74 @@ export default function Infrastructure({ id, report_name, type }) {
     }
   };
 
+  /*Details*/
+  const schoolManagementDetailsRow = () => {
+    const primaryKeys = ["regionName","schManagementDesc"];
+    const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
+    const updatedArrGroupedData = [];
+
+    if (groupedData && typeof groupedData === "object") {
+      Object.keys(groupedData)?.forEach((item) => {
+        const itemsArray = groupedData[item];
+        let totalSchoolsHaveElectricity = 0;
+        itemsArray.forEach((dataItem) => {
+          totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+        });
+
+        const appended = {
+          regionName: item.split('@')[0],
+          schManagementDesc:item.split("@")[1],
+          schHaveElectricity: totalSchoolsHaveElectricity,
+        };
+
+        updatedArrGroupedData.push(appended);
+      });
+
+      setArrGroupedData(updatedArrGroupedData);
+    }
+
+    gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", false);
+    gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", true);
+    gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", false);
+    gridApi?.columnApi?.api.setColumnVisible("regionName", true);
+    gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", false);
+  };
+
+
+  const schoolCategoryDetailsRow = () => {
+    const primaryKeys = ["regionName","schCategoryDesc"];
+    const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
+    const updatedArrGroupedData = [];
+
+    if (groupedData && typeof groupedData === "object") {
+      Object.keys(groupedData)?.forEach((item) => {
+        const itemsArray = groupedData[item];
+        let totalSchoolsHaveElectricity = 0;
+        itemsArray.forEach((dataItem) => {
+          totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+        });
+
+        const appended = {
+          regionName: item.split('@')[0],
+          schCategoryDesc:item.split("@")[1],
+          schHaveElectricity: totalSchoolsHaveElectricity,
+        };
+
+        updatedArrGroupedData.push(appended);
+      });
+
+      setArrGroupedData(updatedArrGroupedData);
+    }
+
+    gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", true);
+    gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", false);
+    gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", false);
+    gridApi?.columnApi?.api.setColumnVisible("regionName", true);
+    gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", false);
+  };
+
+  /*end here*/
+
 
   return (
     <>
@@ -1062,8 +1274,20 @@ export default function Infrastructure({ id, report_name, type }) {
                     eventKey="School Management"
                     title="School Management"
                   ></Tab>
+{/*                   
+                  <Tab
+                    eventKey="Mgt Details"
+                    title="Details"
+                  ></Tab> */}
 
                   <Tab eventKey="School Category" title="School Category"></Tab>
+                  
+                  {/* <Tab
+                    eventKey="Cat Details"
+                    title="Details"
+                  ></Tab> */}
+
+
                   <Tab eventKey="School Type" title="School Type"></Tab>
                   <Tab eventKey="Urban/Rural" title="Urban / Rural"></Tab>
                 </Tabs>
