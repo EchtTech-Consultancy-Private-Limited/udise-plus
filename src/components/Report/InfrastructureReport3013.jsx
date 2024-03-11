@@ -62,45 +62,37 @@ export default function Infrastructure3013() {
       headerName: "Location",
       field: "regionName",
       suppressColumnsToolPanel: true,
+      
     },
     {
       headerName: "Rural/Urban",
       field: "schLocationDesc",
       suppressColumnsToolPanel: true,
+      showRowGroup:"schLocationDesc",
+      cellRenderer:"agGroupCellRenderer"
     },
     {
       headerName: "School Category",
       minWidth: 140,
       field: "schCategoryDesc",
-      //field: "schCategoryCode",
       suppressColumnsToolPanel: true,
+      showRowGroup:"schCategoryDesc",
+      cellRenderer:"agGroupCellRenderer"
     },
     {
       headerName: "School Management",
       minWidth: 170,
       field: "schManagementDesc",
-      //field: "schManagementCode",
       suppressColumnsToolPanel: true,
+      showRowGroup:"schManagementDesc",
+      cellRenderer:"agGroupCellRenderer"
     },
     {
-      headerName: "School Type", field: "schTypeDesc",
+      headerName: "School Type",
+      field: "schTypeDesc",
       minWidth: 85,
-      // valueGetter: function(params) {
-      //   const flagValue = params?.data?.schTypeCode;
-      //   switch (flagValue) {
-      //     case 0:
-      //       return "All";
-      //     case 1:
-      //       return "Boys";
-      //     case 2:
-      //       return "Girls";
-      //     case 3:
-      //     return "Co-Ed";
-      //     default:
-      //       return "";
-      //   }
-      // },
-
+      showRowGroup:"schTypeDesc",
+      cellRenderer:"agGroupCellRenderer"
     },
     {
       headerName: "Total No. of Schools", minWidth: 100, field: "totalSchools"
@@ -424,7 +416,7 @@ const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short
 
   const handleGroupButtonClick = (e) => {
 
-    const groupObj = { "School Category": "schCategoryDesc", "School Management": "schManagementDesc", "Urban/Rural": "schLocationDesc" }
+    const groupObj = { "School Category": "schCategoryDesc", "School Management": "schManagementDesc", "Urban/Rural": "schLocationDesc","School Type":"schTypeDesc" }
 
     const groupByColumn = groupObj[e];
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
@@ -477,11 +469,9 @@ const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short
                   id="uncontrolled-tab-example"
                   onSelect={(e) => handleGroupButtonClick(e)}
                 >
+                  <Tab eventKey="School Management" title="School Management"></Tab>
                   <Tab eventKey="School Category" title="School Category"></Tab>
-                  <Tab
-                    eventKey="School Management"
-                    title="School Management"
-                  ></Tab>
+                  <Tab eventKey="School Type" title="School Type"></Tab>
                   <Tab eventKey="Urban/Rural" title="Urban / Rural"></Tab>
                 </Tabs>
               </div>
@@ -610,8 +600,8 @@ const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short
                         pagination={true}
                         paginateChildRows={true}
                         pinnedBottomRowData={pinedBottomRowData}
-                        groupDisplayType={'groupRows'}
-                      
+                        groupDisplayType="custom"
+                        groupHideOpenParents={true}
 
                       />
                            

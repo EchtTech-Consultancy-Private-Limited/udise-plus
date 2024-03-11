@@ -622,6 +622,8 @@ export default function Infrastructure({ id, report_name, type }) {
                         columnDefs={columns}
                         defaultColDef={defColumnDefs}
                         onGridReady={onGridReady}
+                        groupDisplayType="custom"
+                        groupHideOpenParents={true}
                       // pinnedBottomRowData={pinedBottomRowData}
                       />
                     </div>
