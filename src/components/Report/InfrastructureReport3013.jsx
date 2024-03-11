@@ -421,7 +421,7 @@ const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short
     const groupByColumn = groupObj[e];
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
     setCol((prevDefs) =>
-      prevDefs.map((colDef) => ({
+      prevDefs.map((colDef,idx) => ({
         ...colDef,
         rowGroup: viewDataBy === e ? false : colDef.field === groupByColumn,
       }))

@@ -5,6 +5,9 @@ const Column3016Slice = createSlice({
     initialState:{
         column_mgt:false,
         column_cat:false,
+        column_ur:false,
+        column_sch_cat:false,
+        column_sch_type:false
     },
     reducers: {
       hideShowColumnMgt(state,action) {
