@@ -283,7 +283,6 @@ export default function Infrastructure({ id, report_name, type }) {
               schoolTypeRowFilterWise("particular_or_state_wise",false);
             } else {
               schoolTypeRow();
-              // multiGroupingRows();
             }
           }
         }
@@ -303,7 +302,6 @@ export default function Infrastructure({ id, report_name, type }) {
             ) {
               schoolUrbanRuralRowFilterWise("particular_or_state_wise",false);
             } else {
-              // multiGroupingRows();
               schoolUrbanRuralRow();
             }
           }
@@ -361,13 +359,9 @@ export default function Infrastructure({ id, report_name, type }) {
       else if (e === "Cat Details") {
         
         if (viewDataBy === e) {
-          setGroupKeys({...groupKeys,schCategoryDesc:false});
-          setCatDetail(false);
           schoolLocationRow();
         } else {
-          setGroupKeys({...groupKeys,schCategoryDesc:true});
-          setCatDetail(true);
-
+          
           if (filter_query) {
             // state wise
             schoolCategoryDetailsRow("particular_or_state_wise",true);
@@ -385,12 +379,9 @@ export default function Infrastructure({ id, report_name, type }) {
         }
       } 
       else {
-        
         if (viewDataBy === e) {
-          setGroupKeys({...groupKeys,schManagementDesc:false});
           schoolLocationRow();
         } else {
-          setGroupKeys({...groupKeys,schManagementDesc:true});
           if (filter_query) {
             // state wise
             schoolLocationRowFilterWise("particular_or_state_wise",true);
@@ -505,6 +496,7 @@ export default function Infrastructure({ id, report_name, type }) {
           });
         });
       }
+
       const primaryKeys2 = ["regionName", "schManagementDesc"];
       const groupedData2 = groupByKey(updatedArrGroupedData, primaryKeys2);
       const updatedArrGroupedData2 = [];
@@ -914,8 +906,6 @@ export default function Infrastructure({ id, report_name, type }) {
         });
       }
 
-      console.log(updatedArrGroupedData,' ddddddd')
-
       const primaryKeys2 = ["regionName", "schTypeDesc"];
       const groupedData2 = groupByKey(updatedArrGroupedData, primaryKeys2);
       const updatedArrGroupedData2 = [];
@@ -1272,43 +1262,43 @@ export default function Infrastructure({ id, report_name, type }) {
   };
 
 
-  const multiGroupingRows = (filter_type = null, flag) => {
-    const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
-  
-    if (primaryKeys.length > 0) {
-      const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
-      const updatedArrGroupedData = [];
-  
-      if (groupedData && typeof groupedData === "object") {
-        Object.keys(groupedData).forEach((item) => {
-          const itemsArray = groupedData[item];
-          let totalSchoolsHaveElectricity = 0;
-  
-          itemsArray.forEach((dataItem) => {
-            totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
-          });
-  
-          const appended = {};
-  
-          primaryKeys.forEach((key, index) => {
-            appended[key] = item.split("@")[index];
-          });
-          appended.schHaveElectricity = totalSchoolsHaveElectricity;
-          updatedArrGroupedData.push(appended);
-        });
-  
-        setArrGroupedData(updatedArrGroupedData);
-      }
-      
-      gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", groupKeys.schManagementDesc);
-      gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", groupKeys.schCategoryDesc);
-      gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", groupKeys.schTypeDesc);
-      gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", groupKeys.schLocationDesc);
-      gridApi?.columnApi?.api.setColumnVisible("regionName", flag);
+  const multiGroupingRows = (filter_type=null,flag) => {
+    const primaryKeys = ["schManagementDesc","schCategoryDesc","schTypeDesc"];
+    const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
+    const updatedArrGroupedData = [];
+
+    if (groupedData && typeof groupedData === "object") {
+      console.log(groupedData,' grouped data')
+      // Object.keys(groupedData)?.forEach((item) => {
+      //   const itemsArray = groupedData[item];
+      //   let totalSchoolsHaveElectricity = 0;
+      //   itemsArray.forEach((dataItem) => {
+      //     totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+      //   });
+
+      //   const appended = {
+      //     regionName: item.split('@')[0],
+      //     schCategoryDesc:item.split("@")[1],
+      //     schHaveElectricity: totalSchoolsHaveElectricity,
+      //   };
+
+      //   updatedArrGroupedData.push(appended);
+      // });
+
+      // setArrGroupedData(updatedArrGroupedData);
     }
+
+    // gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", true);
+    // gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", false);
+    // gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", false);
+    // gridApi?.columnApi?.api.setColumnVisible("regionName", flag);
+    // gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", false);
   };
-  
+
+
+
   /*end here*/
+  multiGroupingRows();
 
   return (
     <>
@@ -1356,23 +1346,23 @@ export default function Infrastructure({ id, report_name, type }) {
                   <Tab eventKey="Urban/Rural" title="Urban / Rural"></Tab>
                 </Tabs> */}
 
-                <ul className="nav nav-tabs mul-tab-main">
+                <ul class="nav nav-tabs mul-tab-main">
 
-                  <li className="nav-item">
-                    <button type="button" className="nav-link"  onClick={(e)=>handleGroupButtonClick("School Management",e)}>School Management(Broad) </button>
-                    <button type="button" className="nav-link details-multi" id="school_mgt_details" onClick={(e)=>handleGroupButtonClick("Mgt Details",e)}>Datails View</button>
+                  <li class="nav-item">
+                    <button type="button" class="nav-link"  onClick={(e)=>handleGroupButtonClick("School Management",e)}>School Management(Broad) </button>
+                    <button type="button" class="nav-link details-multi" id="school_mgt_details" onClick={(e)=>handleGroupButtonClick("Mgt Details",e)}>Datails View</button>
                   </li>
                 
-                  <li className="nav-item">
-                    <button type="button" className="nav-link"  onClick={(e)=>handleGroupButtonClick("School Category",e)}>School Category(Broad)</button>
-                    <button type="button" className="nav-link details-multi"  onClick={(e)=>handleGroupButtonClick("Cat Details",e)}>Datails View</button>
+                  <li class="nav-item">
+                    <button type="button" class="nav-link"  onClick={(e)=>handleGroupButtonClick("School Category",e)}>School Category(Broad)</button>
+                    <button type="button" class="nav-link details-multi"  onClick={(e)=>handleGroupButtonClick("Cat Details",e)}>Datails View</button>
                   </li>     
                               
-                  <li className="nav-item">
-                    <button type="button" className="nav-link"  onClick={(e)=>handleGroupButtonClick("School Type",e)}>School Type</button>
+                  <li class="nav-item">
+                    <button type="button" class="nav-link"  onClick={(e)=>handleGroupButtonClick("School Type",e)}>School Type</button>
                   </li>
-                  <li className="nav-item">
-                    <button type="button" className="nav-link"  onClick={(e)=>handleGroupButtonClick("Urban/Rural",e)}>Urban / Rural</button>
+                  <li class="nav-item">
+                    <button type="button" class="nav-link"  onClick={(e)=>handleGroupButtonClick("Urban/Rural",e)}>Urban / Rural</button>
                   </li>
                 </ul>
               </div>
