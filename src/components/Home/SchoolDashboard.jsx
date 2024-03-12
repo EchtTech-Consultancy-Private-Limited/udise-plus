@@ -7,7 +7,7 @@ import HighchartsReact from 'highcharts-react-official'
 import {useTranslation} from "react-i18next";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDashboardData } from '../../redux/thunks/dashboardThunk';
-import { convertToIndianNumberSystem } from '../../constants/constants';
+import { convertToIndianNumberSystem } from '../../utils/index';
 import Breadcrumb from './Breadcrumb';
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
