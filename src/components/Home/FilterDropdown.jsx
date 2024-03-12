@@ -137,6 +137,7 @@ export default function FilterDropdown() {
   const handleSchoolFilterDistrict = (district_name, district_code) => {
     if (district_name === districtWiseName) {
       filterObj.regionType = allDWiseregionType;
+      filterObj.regionCode = district_code;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
       dispatch(removeAllBlock());
@@ -166,6 +167,7 @@ export default function FilterDropdown() {
   const handleSchoolFilterBlock = (block_code, block_name) => {
     if (block_name === blockWiseName) {
       filterObj.regionType = allBWiseregionType;
+      filterObj.regionCode = block_code;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
     } else {
@@ -242,7 +244,7 @@ export default function FilterDropdown() {
     }
     if (location.pathname !== "/" && selectedDistrictclone !== district) {
       extra_col.unshift({
-        udiseDistrictCode: filterObj.regionCode,
+        udiseDistrictCode: "02",
         udiseDistrictName: "District Wise",
       });
     }
@@ -290,7 +292,7 @@ export default function FilterDropdown() {
     }
     if (location.pathname !== "/" && selectedBlockClone !== block) {
       extra_col.unshift({
-        udiseBlockCode: filterObj.regionCode,
+        udiseBlockCode: "0202",
         udiseBlockName: "Block Wise",
       });
     }

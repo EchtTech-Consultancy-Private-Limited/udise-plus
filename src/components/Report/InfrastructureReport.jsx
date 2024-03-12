@@ -131,15 +131,15 @@ export default function Infrastructure({ id, report_name, type }) {
         }
       }
     } else if (viewDataBy === "Urban/Rural") {
-      if (filterObj.regionType === 21 && filterObj.regionCode === "11") {
+      if ((filterObj.regionType === 21 && filterObj.regionCode === "11") || (filterObj.regionType === 22 && filterObj.regionCode === "02") || (filterObj.regionType === 23 && filterObj.regionCode === "0202")) {
         // state wise
-        schoolUrbanRuralRowFilterWise("particular_or_state_wise");
+        schoolUrbanRuralRowFilterWise("particular_or_state_wise",true);
       } else {
         if (
           local_state !== "All India/National" &&
           local_state !== "State Wise"
         ) {
-          schoolUrbanRuralRowFilterWise("particular_or_state_wise");
+          schoolUrbanRuralRowFilterWise("particular_or_state_wise",false);
         } else {
           schoolUrbanRuralRow();
         }
@@ -279,15 +279,15 @@ export default function Infrastructure({ id, report_name, type }) {
         if (viewDataBy === e) {
           schoolLocationRow();
         } else {
-          if (filterObj.regionType === 21 && filterObj.regionCode === "11") {
+          if ((filterObj.regionType === 21 && filterObj.regionCode === "11") || (filterObj.regionType === 22 && filterObj.regionCode === "02") || (filterObj.regionType === 23 && filterObj.regionCode === "0202")) {
             // state wise
-            schoolUrbanRuralRowFilterWise("particular_or_state_wise");
+            schoolUrbanRuralRowFilterWise("particular_or_state_wise",true);
           } else {
             if (
               local_state !== "All India/National" &&
               local_state !== "State Wise"
             ) {
-              schoolUrbanRuralRowFilterWise("particular_or_state_wise");
+              schoolUrbanRuralRowFilterWise("particular_or_state_wise",false);
             } else {
               schoolUrbanRuralRow();
             }
@@ -943,7 +943,7 @@ export default function Infrastructure({ id, report_name, type }) {
     }
   };
 
-  const schoolUrbanRuralRowFilterWise = (filter_type = null) => {
+  const schoolUrbanRuralRowFilterWise = (filter_type = null,flag) => {
     let urban = "Urban";
     let rural = "Rural";
 
@@ -1025,7 +1025,7 @@ export default function Infrastructure({ id, report_name, type }) {
       gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", false);
       gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", false);
       gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", true);
-      gridApi?.columnApi?.api.setColumnVisible("regionName", true);
+      gridApi?.columnApi?.api.setColumnVisible("regionName", flag);
       gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", false);
     }
   };
