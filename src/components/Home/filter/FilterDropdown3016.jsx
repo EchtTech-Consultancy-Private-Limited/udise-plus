@@ -12,21 +12,18 @@ import {
   MDBListGroupItem,
   MDBRow,
 } from "mdb-react-ui-kit";
-import { district,block,nWiseregionType,nWiseregionCode,selectedDYear,allSWiseregionType,allSWiseregionCode,specificSWiseregionType,allDWiseregionType,specificDWiseregionType,allBWiseregionType,specificBWiseregionType,nationalWiseName, stateWiseName,districtWiseName,blockWiseName } from "../../constants/constants";
+import { district,block,nWiseregionType,nWiseregionCode,selectedDYear,allSWiseregionType,allSWiseregionCode,specificSWiseregionType,allDWiseregionType,specificDWiseregionType,allBWiseregionType,specificBWiseregionType,nationalWiseName, stateWiseName,districtWiseName,blockWiseName ,filterItemsStatePerPage,filterItemsYearPerPage} from "../../../constants/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStateData, updateFilterState } from "../../redux/thunks/stateThunk";
-import { fetchDistrictDataByStateCode, removeAllDistrict, updateFilterDistrict } from "../../redux/thunks/districtThunk";
-import { fetchYearData } from "../../redux/thunks/yearThunk";
+import { fetchStateData, updateFilterState } from "../../../redux/thunks/stateThunk";
+import { fetchDistrictDataByStateCode, removeAllDistrict, updateFilterDistrict } from "../../../redux/thunks/districtThunk";
+import { fetchYearData } from "../../../redux/thunks/yearThunk";
 import {
   allFilter,
-} from "../../redux/slice/schoolFilterSlice";
+} from "../../../redux/slice/schoolFilterSlice";
 
-import { hideShowColumn } from "../../redux/slice/dataGridAPISlice";
-import {
-  filterItemsStatePerPage,
-  filterItemsYearPerPage,
-} from "../../constants/constants";
-import { fetchBlockByDistrictCode, removeAllBlock, updateFilterBlock } from "../../redux/thunks/blockThunk";
+import { hideShowColumn } from "../../../redux/slice/dataGridAPISlice";
+
+import { fetchBlockByDistrictCode, removeAllBlock, updateFilterBlock } from "../../../redux/thunks/blockThunk";
 import { useLocation } from "react-router-dom";
 
 export default function FilterDropdown() {
@@ -137,7 +134,6 @@ export default function FilterDropdown() {
   const handleSchoolFilterDistrict = (district_name, district_code) => {
     if (district_name === districtWiseName) {
       filterObj.regionType = allDWiseregionType;
-      filterObj.regionCode = district_code;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
       dispatch(removeAllBlock());
@@ -167,7 +163,6 @@ export default function FilterDropdown() {
   const handleSchoolFilterBlock = (block_code, block_name) => {
     if (block_name === blockWiseName) {
       filterObj.regionType = allBWiseregionType;
-      filterObj.regionCode = block_code;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
     } else {
@@ -244,7 +239,7 @@ export default function FilterDropdown() {
     }
     if (location.pathname !== "/" && selectedDistrictclone !== district) {
       extra_col.unshift({
-        udiseDistrictCode: "02",
+        udiseDistrictCode: filterObj.regionCode,
         udiseDistrictName: "District Wise",
       });
     }
@@ -292,7 +287,7 @@ export default function FilterDropdown() {
     }
     if (location.pathname !== "/" && selectedBlockClone !== block) {
       extra_col.unshift({
-        udiseBlockCode: "0202",
+        udiseBlockCode: filterObj.regionCode,
         udiseBlockName: "Block Wise",
       });
     }
