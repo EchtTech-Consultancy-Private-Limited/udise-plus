@@ -75,7 +75,6 @@ export default function Infrastructure({ id, report_name, type }) {
 
 
   useEffect(() => {
-    
     if (viewDataBy === "School Management") {
       setGroupKeys({ ...groupKeys, schManagementDesc: true });
     }else{
@@ -102,11 +101,20 @@ export default function Infrastructure({ id, report_name, type }) {
     if(viewDataBy==="" && allFalse){
       schoolLocationRow();
     }else{
-      multiGroupingRows(null,true);
+      multiGroupingRows();
     }
     
   }, [viewDataBy,school_data]);
-  const allFalse = Object.values(groupKeys).every(value => value === false);
+
+  useEffect(()=>{
+    const allFalse = Object.values(groupKeys).every(value => value === false);
+    if(viewDataBy==="" && allFalse){
+      schoolLocationRow();
+    }else{
+      multiGroupingRows();
+    }
+  },[groupKeys])
+
 
   const [columns, setCol] = useState([
     {
@@ -145,11 +153,31 @@ export default function Infrastructure({ id, report_name, type }) {
   });
 
   function onColumnVisible(event) {
-    // console.log("Column visibility changed:");
-    // console.log("Column ID: ", event.column.getId());
-    // console.log("New visibility: ", event.visible);
-}
-
+    const columnId = event.column.getColId();
+    const visible = event.visible;
+    if (columnId === "schManagementDesc") {
+      setGroupKeys(prev => ({
+        ...prev,
+        schManagementDesc: visible
+      }));
+    } else if (columnId === "schCategoryDesc") {
+      setGroupKeys(prev => ({
+        ...prev,
+        schCategoryDesc: visible
+      }));
+    } else if (columnId === "schTypeDesc") {
+      setGroupKeys(prev => ({
+        ...prev,
+        schTypeDesc: visible
+      }));
+    } else if (columnId === "schLocationDesc") {
+      setGroupKeys(prev => ({
+        ...prev,
+        schLocationDesc: visible
+      }));
+    }
+  }
+  
   const onGridReady = useCallback((params) => {
     setGridApi(params);
   }, []);
@@ -285,7 +313,6 @@ export default function Infrastructure({ id, report_name, type }) {
     // }
   };
 
-  console.log(multiCat, 'multi cat')
 
   useEffect(() => {
     if (!grid_column) {
@@ -347,7 +374,7 @@ export default function Infrastructure({ id, report_name, type }) {
     if(viewDataBy==="" && allFalse){
       schoolLocationRow();
     }else{
-      multiGroupingRows(null,true);
+      multiGroupingRows();
     }
 
 
@@ -1241,7 +1268,7 @@ export default function Infrastructure({ id, report_name, type }) {
 
 
 
-  const multiGroupingRows = (filter_type = null, flag) => {
+  const multiGroupingRows = () => {
     const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
     if (primaryKeys.length > 0) {
 
