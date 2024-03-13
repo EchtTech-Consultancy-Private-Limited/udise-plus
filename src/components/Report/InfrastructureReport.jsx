@@ -11,8 +11,8 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
-import groupByKey, { nestedGroupByKey } from "../../utils/groupBy";
-import { TabPane } from "react-bootstrap";
+import groupByKey from "../../utils/groupBy";
+
 
 export default function Infrastructure({ id, report_name, type }) {
   const [show, setShow] = useState(false);
@@ -50,6 +50,19 @@ export default function Infrastructure({ id, report_name, type }) {
 
   const filter_query = (filterObj.regionType === 21 && filterObj.regionCode === "11") || (filterObj.regionType === 22 && filterObj.regionCode === "02") || (filterObj.regionType === 23 && filterObj.regionCode === "0202");
 
+  
+  const pinedBottomRowData = [
+    {
+      schHaveElectricity:calculateTotal("schHaveElectricity")
+    },
+  ];
+
+
+  function calculateTotal(fieldName) {
+    if (!school_data?.data?.data) return 0;
+    return  school_data.data.data.reduce((total, row) => total + parseFloat(row[fieldName] || 0), 0);
+  }
+
   useEffect(() => {
     for (const category in allreportsdata) {
       const foundReport = allreportsdata[category].find(
@@ -72,27 +85,6 @@ export default function Infrastructure({ id, report_name, type }) {
     }
     // eslint-disable-next-line
   }, [schoolFilterYear]);
-
-
-  // useEffect(() => {
-  //   console.log("top ",viewDataBy)
-  //   if (viewDataBy === "School Management") {
-  //     setGroupKeys({ ...groupKeys, schManagementDesc: true });
-  //   }
-
-  //   if (viewDataBy === "Urban/Rural") {
-  //     setGroupKeys({ ...groupKeys, schLocationDesc: true });
-  //   }
-  //    if (viewDataBy === "School Category") {
-  //     setGroupKeys({ ...groupKeys, schCategoryDesc: true });
-  //   }
-    
-  //    if (viewDataBy === "School Type") {
-  //     setGroupKeys({ ...groupKeys, schTypeDesc: true});
-  //   } 
-
- 
-  // }, [viewDataBy,school_data]);
 
 
   useEffect(()=>{
@@ -152,30 +144,38 @@ export default function Infrastructure({ id, report_name, type }) {
   });
 
   function onColumnVisible(event) {
-    const columnId = event.column.getColId();
+    const columnId = event?.column?.getColId();
     const visible = event.visible;
     if (columnId === "schManagementDesc") {
+
       setGroupKeys(prev => ({
         ...prev,
         schManagementDesc: visible
       }));
+      setMgt(()=>visible?"active":"");
+      setMultiMgt(()=>visible?"multibtn":"")
     } 
     else if (columnId === "schTypeDesc") {
       setGroupKeys(prev => ({
         ...prev,
         schTypeDesc: visible
       }));
+      setSchType(()=>visible?"active":"");
     }
     else if (columnId === "schCategoryDesc") {
       setGroupKeys(prev => ({
         ...prev,
         schCategoryDesc: visible
       }));
+      setCat(()=>visible?"active":"");
+      setMultiCat(()=>visible?"multibtn":"");
+
     }  else if (columnId === "schLocationDesc") {
       setGroupKeys(prev => ({
         ...prev,
         schLocationDesc: visible
       }));
+      setUR(()=>visible?"active":"");
     }
   }
   
@@ -1295,12 +1295,12 @@ export default function Infrastructure({ id, report_name, type }) {
 
                   <li className={`nav-item ${multiMgt}`}>
                     <button type="button" className={`nav-link dark-active ${mgt}`}  onClick={(e)=>handleGroupButtonClick("School Management",e)}>School Management(Broad) </button>
-                    <button type="button" className={`nav-link dark-active details-multi ${mgt_Details}`} id="school_mgt_details" onClick={(e)=>handleGroupButtonClick("Mgt Details",e)}>Datails View</button>
+                    <button type="button" className={`nav-link dark-active details-multi ${mgt_Details}`} id="school_mgt_details" onClick={(e)=>handleGroupButtonClick("Mgt Details",e)}>Datailed View</button>
                   </li>
                 
                   <li className={`nav-item ${multiCat}`}>
                     <button type="button" className={`nav-link dark-active1 ${cat}`}  onClick={(e)=>handleGroupButtonClick("School Category",e)}>School Category(Broad)</button>
-                    <button type="button" className={`nav-link details-multi dark-active1 ${cat_Details}`}  onClick={(e)=>handleGroupButtonClick("Cat Details",e)}>Datails View</button>
+                    <button type="button" className={`nav-link details-multi dark-active1 ${cat_Details}`}  onClick={(e)=>handleGroupButtonClick("Cat Details",e)}>Datailed View</button>
                   </li>     
                               
                   <li className="nav-item">
@@ -1557,7 +1557,7 @@ export default function Infrastructure({ id, report_name, type }) {
                         groupDisplayType="custom"
                         groupHideOpenParents={true}
                         onColumnVisible={onColumnVisible}
-                        // pinnedBottomRowData={pinedBottomRowData}
+                        pinnedBottomRowData={pinedBottomRowData}
                       />
                     </div>
                   </Tab>
