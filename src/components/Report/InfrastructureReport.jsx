@@ -35,6 +35,19 @@ export default function Infrastructure({ id, report_name, type }) {
   const [mgtDetails,setMgtDetail] = useState(false);
   const [catDetails,setCatDetail] = useState(false);
 
+  const [mgt,setMgt] = useState("");
+  const [mgt_Details,setMgtDetails] = useState("");
+  
+  const [cat,setCat] = useState("");
+  const [cat_Details,setCatDetails] = useState("");
+
+  const [sch_type,setSchType] = useState("");
+  const [ur,setUR] = useState("");
+  const [multiMgt,setMultiMgt] = useState("");
+  const [multiCat,setMultiCat] = useState("");
+
+
+
   const filter_query = (filterObj.regionType === 21 && filterObj.regionCode === "11") || (filterObj.regionType === 22 && filterObj.regionCode === "02") || (filterObj.regionType === 23 && filterObj.regionCode === "0202");
 
   useEffect(() => {
@@ -166,34 +179,167 @@ export default function Infrastructure({ id, report_name, type }) {
     setGridApi(params);
   }, []);
 
-  const handleFilter = (e) => {
-    const parentLi = e.target.closest(".nav-item");
-    const parentLi1 = document.querySelectorAll(".nav-item");
+  const handleFilter = (value,e) => {
+    // const parentLi = e.target.closest(".nav-item");
+    // const parentLi1 = document.querySelectorAll(".nav-item");
 
-    if (e.target.classList.contains("multibtn")) {
-      parentLi.classList.remove("multibtn");
-      parentLi1.classList.remove("multibtn");
-    } else {
-      parentLi.classList.add("multibtn");
-    }
+    // if (e.target.classList.contains("multibtn")) {
+    //   parentLi.classList.remove("multibtn");
+    //   parentLi1.classList.remove("multibtn");
+    // } else {
+    //   parentLi.classList.add("multibtn");
+    // }
 
-    const navLinks = document.querySelectorAll(".mul-tab-main .nav-link");
 
-    navLinks.forEach((link) => {
-      if (link !== e.target && link.classList.contains("active")) {
-        link.classList.remove("active");
+    if(value==="School Management" || value==="Mgt Details"){
+      if(value==="School Management"){
+        if(mgt==="active"){
+          setMgt("");
+        }else{
+          setMgt("active");
+        }
+      }else{
+        setMgt("");
       }
-    });
+  
+      if(value==="Mgt Details"){
+        if(mgt_Details==="active"){
+          setMgtDetails("");
+        }else{
+          setMgtDetails("active");
+        }
+      }else{
+        setMgtDetails("");
+      }
 
-    if (!e.target.classList.contains("active")) {
-      e.target.classList.add("active");
-    } else {
-      e.target.classList.remove("active");
+      /*hide and show multi button class for details view*/
+      if(value==="School Management"){
+        if(mgt==="active"){
+          setMultiMgt("")
+        }else{
+          setMultiMgt("multibtn")
+        }
+      }
+      if(value==="Mgt Details"){
+        if(mgt_Details==="active"){
+          setMultiMgt("")
+        }else{
+          setMultiMgt("multibtn")
+        }
+      }
+
+     
+
+
+      /*end here*/
+    
+  
     }
+    
+    
+    if(value==="School Category" || value==="Cat Details"){
+      if(value==="School Category"){
+        if(cat==="active"){
+          setCat("");
+        }else{
+          setCat("active");
+        }
+      }else{
+        setCat("");
+      }
+  
+      if(value==="Cat Details"){
+        if(cat_Details==="active"){
+          setCatDetails("");
+        }else{
+          setCatDetails("active");
+        }
+
+          }else{
+            setCatDetails("");
+          }
+          
+
+          if(value==="School Category"){
+            if(cat==="active"){
+              setMultiCat("")
+            }else{
+              setMultiCat("multibtn")
+            }
+          }
+          if(value==="Cat Details"){
+            if(cat_Details==="active"){
+              setMultiCat("")
+            }else{
+              setMultiCat("multibtn")
+            }
+          }
+    }
+    
+    if(value==="School Type"){
+      if(sch_type==="active"){
+        setSchType("");
+      }else{
+        setSchType("active");
+      }
+    }
+
+    if(value==="Urban/Rural"){
+      if(ur==="active"){
+        setUR("");
+      }else{
+        setUR("active");
+      }
+    }
+
+    
+
+    // const navLinks = document.querySelectorAll(".dark-active");
+
+    // navLinks.forEach((link) => {
+    //   if (link !== e.target && link.classList.contains("active")) {
+    //     link.classList.remove("active");
+    //   }
+    // });
+
+ 
+    // if (!e.target.classList.contains("active")) {
+    //   e.target.classList.add("active");
+    // } else {
+    //   e.target.classList.remove("active");
+    // }
   };
 
+
+  useEffect(() => {
+    if (!grid_column) {
+      gridApi?.columnApi?.api?.setColumnVisible("schManagementDesc", false);
+      gridApi?.columnApi?.api?.setColumnVisible("schCategoryDesc", false);
+      gridApi?.columnApi?.api?.setColumnVisible("schLocationDesc", false);
+      gridApi?.columnApi?.api?.setColumnVisible("schTypeDesc", false);
+    }
+    if (gridApi && gridApi.columnApi) {
+      gridApi.columnApi.api.setColumnVisible(
+        "schManagementDesc",
+        grid_column.column_mgt
+      );
+      gridApi.columnApi.api.setColumnVisible(
+        "schCategoryDesc",
+        grid_column.column_cat
+      );
+      gridApi?.columnApi?.api?.setColumnVisible(
+        "schLocationDesc",
+        grid_column.column_ur
+      );
+      gridApi?.columnApi?.api?.setColumnVisible(
+        "schTypeDesc",
+        grid_column.column_sch_type
+      );
+    }
+  }, [grid_column, gridApi]);
+
   const handleGroupButtonClick = (e,currObj) => {
-    handleFilter(currObj);
+    handleFilter(e,currObj);
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
   if(e==="School Management"){
       if(e==="School Management"){
@@ -228,6 +374,34 @@ export default function Infrastructure({ id, report_name, type }) {
     }else{
       multiGroupingRows();
     }
+
+
+//     const darkActiveTabs = document.querySelectorAll(".dark-active");
+//     const darkActiveTabss = document.querySelectorAll(".dark-active.active");
+// let arr=[darkActiveTabs,darkActiveTabss]
+//     darkActiveTabs.forEach((element) => {
+//       element.addEventListener('click', function() {
+//         for(let i=0; i<arr.length;i++){
+//           if(arr[0]){
+//             if (element.classList.contains('active')) {
+         
+//               element.classList.remove('active');
+//             }
+//           }
+//           if(arr[1]){
+       
+//               element.classList.add('active');
+           
+//           }
+//         }
+         
+//       }); 
+//     });
+    
+
+
+
+
   };
   
   console.log(groupKeys,' group keys@@@@')
@@ -1182,21 +1356,21 @@ export default function Infrastructure({ id, report_name, type }) {
 
                 <ul className="nav nav-tabs mul-tab-main">
 
-                  <li className="nav-item">
-                    <button type="button" className="nav-link"  onClick={(e)=>handleGroupButtonClick("School Management",e)}>School Management(Broad) </button>
-                    <button type="button" className="nav-link details-multi" id="school_mgt_details" onClick={(e)=>handleGroupButtonClick("Mgt Details",e)}>Datails View</button>
+                  <li className={`nav-item ${multiMgt}`}>
+                    <button type="button" className={`nav-link dark-active ${mgt}`}  onClick={(e)=>handleGroupButtonClick("School Management",e)}>School Management(Broad) </button>
+                    <button type="button" className={`nav-link dark-active details-multi ${mgt_Details}`} id="school_mgt_details" onClick={(e)=>handleGroupButtonClick("Mgt Details",e)}>Datails View</button>
                   </li>
                 
-                  <li className="nav-item">
-                    <button type="button" className="nav-link"  onClick={(e)=>handleGroupButtonClick("School Category",e)}>School Category(Broad)</button>
-                    <button type="button" className="nav-link details-multi"  onClick={(e)=>handleGroupButtonClick("Cat Details",e)}>Datails View</button>
+                  <li className={`nav-item ${multiCat}`}>
+                    <button type="button" className={`nav-link dark-active1 ${cat}`}  onClick={(e)=>handleGroupButtonClick("School Category",e)}>School Category(Broad)</button>
+                    <button type="button" className={`nav-link details-multi dark-active1 ${cat_Details}`}  onClick={(e)=>handleGroupButtonClick("Cat Details",e)}>Datails View</button>
                   </li>     
                               
                   <li className="nav-item">
-                    <button type="button" className="nav-link"  onClick={(e)=>handleGroupButtonClick("School Type",e)}>School Type</button>
+                    <button type="button" className={`nav-link ${sch_type}`}  onClick={(e)=>handleGroupButtonClick("School Type",e)}>School Type</button>
                   </li>
                   <li className="nav-item">
-                    <button type="button" className="nav-link"  onClick={(e)=>handleGroupButtonClick("Urban/Rural",e)}>Urban / Rural</button>
+                    <button type="button" className={`nav-link ${ur}`}  onClick={(e)=>handleGroupButtonClick("Urban/Rural",e)}>Urban / Rural</button>
                   </li>
                 </ul>
               </div>
