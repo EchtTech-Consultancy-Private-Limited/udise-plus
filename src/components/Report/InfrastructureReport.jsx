@@ -74,32 +74,36 @@ export default function Infrastructure({ id, report_name, type }) {
   }, [schoolFilterYear]);
 
 
-  useEffect(() => {
-    if (viewDataBy === "School Management") {
-      setGroupKeys({ ...groupKeys, schManagementDesc: true });
-    }
+  // useEffect(() => {
+  //   console.log("top ",viewDataBy)
+  //   if (viewDataBy === "School Management") {
+  //     setGroupKeys({ ...groupKeys, schManagementDesc: true });
+  //   }
 
-    if (viewDataBy === "Urban/Rural") {
-      setGroupKeys({ ...groupKeys, schLocationDesc: true });
-    }
-     if (viewDataBy === "School Category") {
-      setGroupKeys({ ...groupKeys, schCategoryDesc: true });
-    }
+  //   if (viewDataBy === "Urban/Rural") {
+  //     setGroupKeys({ ...groupKeys, schLocationDesc: true });
+  //   }
+  //    if (viewDataBy === "School Category") {
+  //     setGroupKeys({ ...groupKeys, schCategoryDesc: true });
+  //   }
     
-     if (viewDataBy === "School Type") {
-      setGroupKeys({ ...groupKeys, schTypeDesc: true});
-    } 
+  //    if (viewDataBy === "School Type") {
+  //     setGroupKeys({ ...groupKeys, schTypeDesc: true});
+  //   } 
 
-    const allFalse = Object.values(groupKeys).every(value => value === false);
-    if(viewDataBy==="" && allFalse){
-      schoolLocationRow();
-    }else{
-      multiGroupingRows();
-    }
-    
-  }, [viewDataBy,school_data]);
+ 
+  // }, [viewDataBy,school_data]);
 
 
+  useEffect(()=>{
+      const allFalse = Object.values(groupKeys).every(value => value === false);
+      if(viewDataBy==="" && allFalse){
+        schoolLocationRow();
+      }else{
+        multiGroupingRows();
+      }
+  },[school_data]);
+  
 
   useEffect(()=>{
     const allFalse = Object.values(groupKeys).every(value => value === false);
@@ -311,100 +315,33 @@ export default function Infrastructure({ id, report_name, type }) {
   };
 
 
-  useEffect(() => {
-    if (!grid_column) {
-      gridApi?.columnApi?.api?.setColumnVisible("schManagementDesc", false);
-      gridApi?.columnApi?.api?.setColumnVisible("schCategoryDesc", false);
-      gridApi?.columnApi?.api?.setColumnVisible("schLocationDesc", false);
-      gridApi?.columnApi?.api?.setColumnVisible("schTypeDesc", false);
-    }
-    if (gridApi && gridApi.columnApi) {
-      gridApi.columnApi.api.setColumnVisible(
-        "schManagementDesc",
-        grid_column.column_mgt
-      );
-      gridApi.columnApi.api.setColumnVisible(
-        "schCategoryDesc",
-        grid_column.column_cat
-      );
-      gridApi?.columnApi?.api?.setColumnVisible(
-        "schLocationDesc",
-        grid_column.column_ur
-      );
-      gridApi?.columnApi?.api?.setColumnVisible(
-        "schTypeDesc",
-        grid_column.column_sch_type
-      );
-    }
-  }, [grid_column, gridApi]);
+  const handleGroupButtonClick = (e, currObj) => {
+    handleFilter(e, currObj);
+    setViewDataBy(prevViewDataBy => (prevViewDataBy === e ? "" : e));
 
-  const handleGroupButtonClick = (e,currObj) => {
-    handleFilter(e,currObj);
-    setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
-  if(e==="School Management"){
-      if(e==="School Management"){
-        setGroupKeys({...groupKeys,schManagementDesc:false});
-      }else{
-        setGroupKeys({...groupKeys,schManagementDesc:true});
-      }
-    }else if(e==="School Category"){
-      if(e==="School Category"){
-        setGroupKeys({...groupKeys,schCategoryDesc:false});
-      }else{
-        setGroupKeys({...groupKeys,schCategoryDesc:true});
-      }
-    }else if(e==="School Type"){
-      if(e==="School Type"){
-        setGroupKeys({...groupKeys,schTypeDesc:false});
-      }else{
-        setGroupKeys({...groupKeys,schTypeDesc:true});
-      }
-    }else if(e==="Urban/Rural"){
-      if(e==="Urban/Rural"){
-        setGroupKeys({...groupKeys,schLocationDesc:false});
-        console.log("bottom");
-      }else{
-        setGroupKeys({...groupKeys,schLocationDesc:true});
-      }
+    const updatedGroupKeys = { ...groupKeys };
+
+    if (e === "School Management") {
+        updatedGroupKeys.schManagementDesc = !groupKeys.schManagementDesc;
+    } else if (e === "School Category") {
+        updatedGroupKeys.schCategoryDesc = !groupKeys.schCategoryDesc;
+    } else if (e === "School Type") {
+        updatedGroupKeys.schTypeDesc = !groupKeys.schTypeDesc;
+    } else if (e === "Urban/Rural") {
+        updatedGroupKeys.schLocationDesc = !groupKeys.schLocationDesc;
     }
 
-    const allFalse = Object.values(groupKeys).every(value => value === false);
-    if(viewDataBy==="" && allFalse){
-      schoolLocationRow();
-    }else{
-      multiGroupingRows();
-    }
-
-
-//     const darkActiveTabs = document.querySelectorAll(".dark-active");
-//     const darkActiveTabss = document.querySelectorAll(".dark-active.active");
-// let arr=[darkActiveTabs,darkActiveTabss]
-//     darkActiveTabs.forEach((element) => {
-//       element.addEventListener('click', function() {
-//         for(let i=0; i<arr.length;i++){
-//           if(arr[0]){
-//             if (element.classList.contains('active')) {
-         
-//               element.classList.remove('active');
-//             }
-//           }
-//           if(arr[1]){
-       
-//               element.classList.add('active');
-           
-//           }
-//         }
-         
-//       }); 
-//     });
+    setGroupKeys(updatedGroupKeys);
+    const allFalse = Object.values(updatedGroupKeys).every(value => value === false);
     
+    if (viewDataBy === "" && allFalse) {
+        schoolLocationRow();
+    } else {
+        multiGroupingRows();
+    }
+};
 
-
-
-
-  };
   
-  console.log(groupKeys,' group keys@@@@')
   const schoolLocationRow = () => {
     const primaryKeys = ["regionName"];
     const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
