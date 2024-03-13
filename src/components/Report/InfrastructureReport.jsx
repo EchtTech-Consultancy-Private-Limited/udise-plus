@@ -62,29 +62,21 @@ export default function Infrastructure({ id, report_name, type }) {
 
 
   useEffect(() => {
-      console.log(viewDataBy,' view data by ')
     if (viewDataBy === "School Management") {
       setGroupKeys({ ...groupKeys, schManagementDesc: true });
-    }else{
-      setGroupKeys({ ...groupKeys, schManagementDesc: false });
     }
 
     if (viewDataBy === "Urban/Rural") {
       setGroupKeys({ ...groupKeys, schLocationDesc: true });
-    }else{
-      setGroupKeys({ ...groupKeys, schLocationDesc: false });
-    } 
+    }
      if (viewDataBy === "School Category") {
-      setGroupKeys({ ...groupKeys, schCategoryDesc: true });
-    }else{
       setGroupKeys({ ...groupKeys, schCategoryDesc: true });
     }
     
      if (viewDataBy === "School Type") {
       setGroupKeys({ ...groupKeys, schTypeDesc: true});
-    } else {
-      setGroupKeys({ ...groupKeys, schTypeDesc: false});
-    }
+    } 
+
     const allFalse = Object.values(groupKeys).every(value => value === false);
     if(viewDataBy==="" && allFalse){
       schoolLocationRow();
@@ -93,6 +85,8 @@ export default function Infrastructure({ id, report_name, type }) {
     }
     
   }, [viewDataBy,school_data]);
+
+
 
   useEffect(()=>{
     const allFalse = Object.values(groupKeys).every(value => value === false);
@@ -148,17 +142,19 @@ export default function Infrastructure({ id, report_name, type }) {
         ...prev,
         schManagementDesc: visible
       }));
-    } else if (columnId === "schCategoryDesc") {
-      setGroupKeys(prev => ({
-        ...prev,
-        schCategoryDesc: visible
-      }));
-    } else if (columnId === "schTypeDesc") {
+    } 
+    else if (columnId === "schTypeDesc") {
       setGroupKeys(prev => ({
         ...prev,
         schTypeDesc: visible
       }));
-    } else if (columnId === "schLocationDesc") {
+    }
+    else if (columnId === "schCategoryDesc") {
+      setGroupKeys(prev => ({
+        ...prev,
+        schCategoryDesc: visible
+      }));
+    }  else if (columnId === "schLocationDesc") {
       setGroupKeys(prev => ({
         ...prev,
         schLocationDesc: visible
@@ -199,32 +195,33 @@ export default function Infrastructure({ id, report_name, type }) {
   const handleGroupButtonClick = (e,currObj) => {
     handleFilter(currObj);
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
-    
   if(e==="School Management"){
-      if(viewDataBy===e){
+      if(e==="School Management"){
         setGroupKeys({...groupKeys,schManagementDesc:false});
       }else{
         setGroupKeys({...groupKeys,schManagementDesc:true});
       }
     }else if(e==="School Category"){
-      if(viewDataBy===e){
+      if(e==="School Category"){
         setGroupKeys({...groupKeys,schCategoryDesc:false});
       }else{
         setGroupKeys({...groupKeys,schCategoryDesc:true});
       }
     }else if(e==="School Type"){
-      if(viewDataBy===e){
+      if(e==="School Type"){
         setGroupKeys({...groupKeys,schTypeDesc:false});
       }else{
         setGroupKeys({...groupKeys,schTypeDesc:true});
       }
-    }else{
-      if(viewDataBy===e){
+    }else if(e==="Urban/Rural"){
+      if(e==="Urban/Rural"){
         setGroupKeys({...groupKeys,schLocationDesc:false});
+        console.log("bottom");
       }else{
         setGroupKeys({...groupKeys,schLocationDesc:true});
       }
     }
+
     const allFalse = Object.values(groupKeys).every(value => value === false);
     if(viewDataBy==="" && allFalse){
       schoolLocationRow();
@@ -233,6 +230,7 @@ export default function Infrastructure({ id, report_name, type }) {
     }
   };
   
+  console.log(groupKeys,' group keys@@@@')
   const schoolLocationRow = () => {
     const primaryKeys = ["regionName"];
     const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
