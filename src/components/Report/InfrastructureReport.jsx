@@ -37,8 +37,6 @@ export default function Infrastructure({ id, report_name, type }) {
 
   const filter_query = (filterObj.regionType === 21 && filterObj.regionCode === "11") || (filterObj.regionType === 22 && filterObj.regionCode === "02") || (filterObj.regionType === 23 && filterObj.regionCode === "0202");
 
-
-
   useEffect(() => {
     for (const category in allreportsdata) {
       const foundReport = allreportsdata[category].find(
@@ -62,101 +60,41 @@ export default function Infrastructure({ id, report_name, type }) {
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
+
   useEffect(() => {
-    if (viewDataBy === "School Management") {
-      if (filter_query) {
-        // state wise
-        schoolLocationRowFilterWise("particular_or_state_wise",true);
-      } else {
-        if (
-          local_state !== "All India/National" &&
-          local_state !== "State Wise"
-        ) {
-          schoolLocationRowFilterWise("particular_or_state_wise",false);
-        } else {
-          schoolManagementRow();
-        }
-      }
-    } 
-    else if (viewDataBy === "Mgt Details") {
-      if (filter_query) {
-        // state wise
-        schoolManagementDetailsRow("particular_or_state_wise",true);
-      } else {
-        if (
-          local_state !== "All India/National" &&
-          local_state !== "State Wise"
-        ) {
-          schoolManagementDetailsRow("particular_or_state_wise",false);
-        } else {
-          managementRowDetails();
-        }
-      }
-    } 
-
-    else if (viewDataBy === "Cat Details") {
-      if (filter_query) {
-        // state wise
-        schoolCategoryDetailsRow("particular_or_state_wise",true);
-      } else {
-        if (
-          local_state !== "All India/National" &&
-          local_state !== "State Wise"
-        ) {
-          schoolCategoryDetailsRow("particular_or_state_wise",false);
-        } else {
-          categoryRowDetails();
-        }
-      }
-    } 
     
-    else if (viewDataBy === "School Category") {
-      if (filter_query) {
-        // state wise
-        schoolCategoryRowFilterWise("particular_or_state_wise",true);
-      } else {
-        if (
-          local_state !== "All India/National" &&
-          local_state !== "State Wise"
-        ) {
-          schoolCategoryRowFilterWise("particular_or_state_wise",false);
-        } else {
-          schoolCategoryRow();
-        }
-      }
-    } else if (viewDataBy === "School Type") {
-      if (filter_query) {
-        // state wise
-        schoolTypeRowFilterWise("particular_or_state_wise",true);
-      } else {
-        if (
-          local_state !== "All India/National" &&
-          local_state !== "State Wise"
-        ) {
-          schoolTypeRowFilterWise("particular_or_state_wise",false);
-        } else {
-          schoolTypeRow();
-        }
-      }
-    } else if (viewDataBy === "Urban/Rural") {
-      if (filter_query) {
-        // state wise
-        schoolUrbanRuralRowFilterWise("particular_or_state_wise",true);
-      } else {
-        if (
-          local_state !== "All India/National" &&
-          local_state !== "State Wise"
-        ) {
-          schoolUrbanRuralRowFilterWise("particular_or_state_wise",false);
-        } else {
-          schoolUrbanRuralRow();
-        }
-      }
-    } else {
-      schoolLocationRow();
+    if (viewDataBy === "School Management") {
+      setGroupKeys({ ...groupKeys, schManagementDesc: true });
+    }else{
+      setGroupKeys({ ...groupKeys, schManagementDesc: false });
     }
-  }, [school_data?.data?.data]);
 
+    if (viewDataBy === "Urban/Rural") {
+      setGroupKeys({ ...groupKeys, schLocationDesc: true });
+    }else{
+      setGroupKeys({ ...groupKeys, schLocationDesc: false });
+    } 
+     if (viewDataBy === "School Category") {
+      setGroupKeys({ ...groupKeys, schCategoryDesc: true });
+    }else{
+      setGroupKeys({ ...groupKeys, schCategoryDesc: true });
+    }
+    
+     if (viewDataBy === "School Type") {
+      setGroupKeys({ ...groupKeys, schTypeDesc: true});
+    } else {
+      setGroupKeys({ ...groupKeys, schTypeDesc: false});
+    }
+    const allFalse = Object.values(groupKeys).every(value => value === false);
+    if(viewDataBy==="" && allFalse){
+      schoolLocationRow();
+    }else{
+      multiGroupingRows(null,true);
+    }
+    
+  }, [viewDataBy,school_data]);
+  const allFalse = Object.values(groupKeys).every(value => value === false);
+  console.log(allFalse,' all false useEffect');
 
   const [columns, setCol] = useState([
     {
@@ -164,22 +102,20 @@ export default function Infrastructure({ id, report_name, type }) {
       field: "regionName",
     },
     {
-      headerName: "Urban/Rural",
-      field: "schLocationDesc",
-    },
-
-    {
-      headerName: "School Type",
-      field: "schTypeDesc",
-    },
-
-    {
       headerName: "School Management",
       field: "schManagementDesc",
     },
     {
       headerName: "School Category",
       field: "schCategoryDesc",
+    },
+    {
+      headerName: "School Type",
+      field: "schTypeDesc",
+    },
+    {
+      headerName: "Urban/Rural",
+      field: "schLocationDesc",
     },
     {
       headerName: "No. Of Schools having Electricity",
@@ -255,151 +191,41 @@ export default function Infrastructure({ id, report_name, type }) {
 
   const handleGroupButtonClick = (e,currObj) => {
     handleFilter(currObj);
-    const groupObj = {
-      "School Type": "schTypeDesc",
-      "Urban/Rural": "schLocationDesc",
-    };
+    setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
     
-    const ignoreGroupingColumn = ["School Management","Mgt Details","Cat Details", "School Category"];
-
-    if (!ignoreGroupingColumn.includes(e)) {
-      const groupByColumn = groupObj[e];
-      setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
-
-      if (e === "School Type") {
-        setGroupKeys({...groupKeys,schTypeDesc:true});
-        if (viewDataBy === e) {
-          setGroupKeys({...groupKeys,schTypeDesc:false});
-          schoolLocationRow();
-        } else {
-          if (filter_query) {
-            // state wise
-            schoolTypeRowFilterWise("particular_or_state_wise",true);
-          } else {
-            if (
-              local_state !== "All India/National" &&
-              local_state !== "State Wise"
-            ) {
-              schoolTypeRowFilterWise("particular_or_state_wise",false);
-            } else {
-              schoolTypeRow();
-            }
-          }
-        }
-      } else {
-        if (viewDataBy === e) {
-          setGroupKeys({...groupKeys,schLocationDesc:false});
-          schoolLocationRow();
-        } else {
-          setGroupKeys({...groupKeys,schLocationDesc:true});
-          if (filter_query) {
-            // state wise
-            schoolUrbanRuralRowFilterWise("particular_or_state_wise",true);
-          } else {
-            if (
-              local_state !== "All India/National" &&
-              local_state !== "State Wise"
-            ) {
-              schoolUrbanRuralRowFilterWise("particular_or_state_wise",false);
-            } else {
-              schoolUrbanRuralRow();
-            }
-          }
-        }
+  if(e==="School Management"){
+      if(viewDataBy===e){
+        setGroupKeys({...groupKeys,schManagementDesc:false});
+      }else{
+        setGroupKeys({...groupKeys,schManagementDesc:true});
       }
-    } else {
-      setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
-
-      if (e === "School Category") {
-        if (viewDataBy === e) {
-          setGroupKeys({...groupKeys,schCategoryDesc:false});
-          schoolLocationRow();
-        } else {
-          setGroupKeys({...groupKeys,schCategoryDesc:true});
-          if (filter_query) {
-            // state wise
-            schoolCategoryRowFilterWise("particular_or_state_wise",true);
-          } else {
-            if (
-              local_state !== "All India/National" &&
-              local_state !== "State Wise"
-            ) {
-              schoolCategoryRowFilterWise("particular_or_state_wise",false);
-            } else {
-              schoolCategoryRow();
-            }
-          }
-          
-        }
-      } 
-      else if (e === "Mgt Details") {
-        if (viewDataBy === e) {
-          setGroupKeys({...groupKeys,schManagementDesc:false});
-          setMgtDetail(false);
-          schoolLocationRow();
-        } else {
-          setGroupKeys({...groupKeys,schManagementDesc:true});
-          setMgtDetail(true);
-          if (filter_query) {
-            // state wise
-            schoolManagementDetailsRow("particular_or_state_wise",true);
-          } else {
-            if (
-              local_state !== "All India/National" &&
-              local_state !== "State Wise"
-            ) {
-              schoolManagementDetailsRow("particular_or_state_wise",false);
-            } else {
-              managementRowDetails();
-            }
-          }
-          
-        }
-      } 
-      else if (e === "Cat Details") {
-        
-        if (viewDataBy === e) {
-          schoolLocationRow();
-        } else {
-          
-          if (filter_query) {
-            // state wise
-            schoolCategoryDetailsRow("particular_or_state_wise",true);
-          } else {
-            if (
-              local_state !== "All India/National" &&
-              local_state !== "State Wise"
-            ) {
-              schoolCategoryDetailsRow("particular_or_state_wise",false);
-            } else {
-              categoryRowDetails();
-            }
-          }
-          
-        }
-      } 
-      else {
-        if (viewDataBy === e) {
-          schoolLocationRow();
-        } else {
-          if (filter_query) {
-            // state wise
-            schoolLocationRowFilterWise("particular_or_state_wise",true);
-          } else {
-            if (
-              local_state !== "All India/National" &&
-              local_state !== "State Wise"
-            ) {
-              schoolLocationRowFilterWise("particular_or_state_wise",false);
-            } else {
-              schoolManagementRow();
-            }
-          }
-        }
+    }else if(e==="School Category"){
+      if(viewDataBy===e){
+        setGroupKeys({...groupKeys,schCategoryDesc:false});
+      }else{
+        setGroupKeys({...groupKeys,schCategoryDesc:true});
+      }
+    }else if(e==="School Type"){
+      if(viewDataBy===e){
+        setGroupKeys({...groupKeys,schTypeDesc:false});
+      }else{
+        setGroupKeys({...groupKeys,schTypeDesc:true});
+      }
+    }else{
+      if(viewDataBy===e){
+        setGroupKeys({...groupKeys,schLocationDesc:false});
+      }else{
+        setGroupKeys({...groupKeys,schLocationDesc:true});
       }
     }
+    const allFalse = Object.values(groupKeys).every(value => value === false);
+    if(viewDataBy==="" && allFalse){
+      schoolLocationRow();
+    }else{
+      multiGroupingRows(null,true);
+    }
   };
-
+  
   const schoolLocationRow = () => {
     const primaryKeys = ["regionName"];
     const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
@@ -421,7 +247,6 @@ export default function Infrastructure({ id, report_name, type }) {
 
         updatedArrGroupedData.push(appended);
       });
-
       setArrGroupedData(updatedArrGroupedData);
     }
 
@@ -1262,44 +1087,48 @@ export default function Infrastructure({ id, report_name, type }) {
   };
 
 
-  const multiGroupingRows = (filter_type=null,flag) => {
-    const primaryKeys = ["schManagementDesc","schCategoryDesc","schTypeDesc"];
-    const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
-    const updatedArrGroupedData = [];
 
-    if (groupedData && typeof groupedData === "object") {
-      console.log(groupedData,' grouped data')
-      // Object.keys(groupedData)?.forEach((item) => {
-      //   const itemsArray = groupedData[item];
-      //   let totalSchoolsHaveElectricity = 0;
-      //   itemsArray.forEach((dataItem) => {
-      //     totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
-      //   });
+  const multiGroupingRows = (filter_type = null, flag) => {
+    const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
+    if (primaryKeys.length > 0) {
 
-      //   const appended = {
-      //     regionName: item.split('@')[0],
-      //     schCategoryDesc:item.split("@")[1],
-      //     schHaveElectricity: totalSchoolsHaveElectricity,
-      //   };
+      filter_query && primaryKeys.push("regionName");
 
-      //   updatedArrGroupedData.push(appended);
-      // });
-
-      // setArrGroupedData(updatedArrGroupedData);
+      const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
+      const updatedArrGroupedData = [];
+      
+      if (groupedData && typeof groupedData === "object") {
+        
+        Object.keys(groupedData).forEach((item) => {
+          const itemsArray = groupedData[item];
+          let totalSchoolsHaveElectricity = 0;
+          let regionName = "";
+          itemsArray.forEach((dataItem) => {
+            regionName = dataItem.regionName;
+            totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+          });
+  
+          const appended = {};
+          primaryKeys.forEach((key, index) => {
+            appended.regionName = regionName
+            appended[key] = item.split("@")[index];
+          });
+          appended.schHaveElectricity = totalSchoolsHaveElectricity;
+          updatedArrGroupedData.push(appended);
+        });
+  
+        setArrGroupedData(updatedArrGroupedData);
+      }
+      
+      gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", groupKeys.schManagementDesc);
+      gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", groupKeys.schCategoryDesc);
+      gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", groupKeys.schTypeDesc);
+      gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", groupKeys.schLocationDesc);
+      gridApi?.columnApi?.api.setColumnVisible("regionName", flag);
     }
-
-    // gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", true);
-    // gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", false);
-    // gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", false);
-    // gridApi?.columnApi?.api.setColumnVisible("regionName", flag);
-    // gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", false);
   };
 
-
-
   /*end here*/
-  multiGroupingRows();
-
   return (
     <>
       <ScrollToTopOnMount />
@@ -1346,23 +1175,23 @@ export default function Infrastructure({ id, report_name, type }) {
                   <Tab eventKey="Urban/Rural" title="Urban / Rural"></Tab>
                 </Tabs> */}
 
-                <ul class="nav nav-tabs mul-tab-main">
+                <ul className="nav nav-tabs mul-tab-main">
 
-                  <li class="nav-item">
-                    <button type="button" class="nav-link"  onClick={(e)=>handleGroupButtonClick("School Management",e)}>School Management(Broad) </button>
-                    <button type="button" class="nav-link details-multi" id="school_mgt_details" onClick={(e)=>handleGroupButtonClick("Mgt Details",e)}>Datails View</button>
+                  <li className="nav-item">
+                    <button type="button" className="nav-link"  onClick={(e)=>handleGroupButtonClick("School Management",e)}>School Management(Broad) </button>
+                    <button type="button" className="nav-link details-multi" id="school_mgt_details" onClick={(e)=>handleGroupButtonClick("Mgt Details",e)}>Datails View</button>
                   </li>
                 
-                  <li class="nav-item">
-                    <button type="button" class="nav-link"  onClick={(e)=>handleGroupButtonClick("School Category",e)}>School Category(Broad)</button>
-                    <button type="button" class="nav-link details-multi"  onClick={(e)=>handleGroupButtonClick("Cat Details",e)}>Datails View</button>
+                  <li className="nav-item">
+                    <button type="button" className="nav-link"  onClick={(e)=>handleGroupButtonClick("School Category",e)}>School Category(Broad)</button>
+                    <button type="button" className="nav-link details-multi"  onClick={(e)=>handleGroupButtonClick("Cat Details",e)}>Datails View</button>
                   </li>     
                               
-                  <li class="nav-item">
-                    <button type="button" class="nav-link"  onClick={(e)=>handleGroupButtonClick("School Type",e)}>School Type</button>
+                  <li className="nav-item">
+                    <button type="button" className="nav-link"  onClick={(e)=>handleGroupButtonClick("School Type",e)}>School Type</button>
                   </li>
-                  <li class="nav-item">
-                    <button type="button" class="nav-link"  onClick={(e)=>handleGroupButtonClick("Urban/Rural",e)}>Urban / Rural</button>
+                  <li className="nav-item">
+                    <button type="button" className="nav-link"  onClick={(e)=>handleGroupButtonClick("Urban/Rural",e)}>Urban / Rural</button>
                   </li>
                 </ul>
               </div>
