@@ -1528,7 +1528,7 @@ export default function Infrastructure({ id, report_name, type }) {
 
               {/* Customize Filter END*/}
 
-              <div className="col-md-12 col-lg-12 ps-1">
+              <div className="col-md-12 col-lg-12">
                 <div className="tab-text-infra download-rep">
                   Download Report{" "}
                   <span className="material-icons-round">download</span>
