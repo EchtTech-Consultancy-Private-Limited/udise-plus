@@ -62,7 +62,7 @@ export default function Infrastructure({ id, report_name, type }) {
 
 
   useEffect(() => {
-    
+      console.log(viewDataBy,' view data by ')
     if (viewDataBy === "School Management") {
       setGroupKeys({ ...groupKeys, schManagementDesc: true });
     }else{
@@ -89,12 +89,20 @@ export default function Infrastructure({ id, report_name, type }) {
     if(viewDataBy==="" && allFalse){
       schoolLocationRow();
     }else{
-      multiGroupingRows(null,true);
+      multiGroupingRows();
     }
     
   }, [viewDataBy,school_data]);
-  const allFalse = Object.values(groupKeys).every(value => value === false);
-  console.log(allFalse,' all false useEffect');
+
+  useEffect(()=>{
+    const allFalse = Object.values(groupKeys).every(value => value === false);
+    if(viewDataBy==="" && allFalse){
+      schoolLocationRow();
+    }else{
+      multiGroupingRows();
+    }
+  },[groupKeys])
+
 
   const [columns, setCol] = useState([
     {
@@ -133,11 +141,31 @@ export default function Infrastructure({ id, report_name, type }) {
   });
 
   function onColumnVisible(event) {
-    // console.log("Column visibility changed:");
-    // console.log("Column ID: ", event.column.getId());
-    // console.log("New visibility: ", event.visible);
-}
-
+    const columnId = event.column.getColId();
+    const visible = event.visible;
+    if (columnId === "schManagementDesc") {
+      setGroupKeys(prev => ({
+        ...prev,
+        schManagementDesc: visible
+      }));
+    } else if (columnId === "schCategoryDesc") {
+      setGroupKeys(prev => ({
+        ...prev,
+        schCategoryDesc: visible
+      }));
+    } else if (columnId === "schTypeDesc") {
+      setGroupKeys(prev => ({
+        ...prev,
+        schTypeDesc: visible
+      }));
+    } else if (columnId === "schLocationDesc") {
+      setGroupKeys(prev => ({
+        ...prev,
+        schLocationDesc: visible
+      }));
+    }
+  }
+  
   const onGridReady = useCallback((params) => {
     setGridApi(params);
   }, []);
@@ -167,33 +195,6 @@ export default function Infrastructure({ id, report_name, type }) {
       e.target.classList.remove("active");
     }
   };
-
-  useEffect(() => {
-    if (!grid_column) {
-      gridApi?.columnApi?.api?.setColumnVisible("schManagementDesc", false);
-      gridApi?.columnApi?.api?.setColumnVisible("schCategoryDesc", false);
-      gridApi?.columnApi?.api?.setColumnVisible("schLocationDesc", false);
-      gridApi?.columnApi?.api?.setColumnVisible("schTypeDesc", false);
-    }
-    if (gridApi && gridApi.columnApi) {
-      gridApi.columnApi.api.setColumnVisible(
-        "schManagementDesc",
-        grid_column.column_mgt
-      );
-      gridApi.columnApi.api.setColumnVisible(
-        "schCategoryDesc",
-        grid_column.column_cat
-      );
-      gridApi?.columnApi?.api?.setColumnVisible(
-        "schLocationDesc",
-        grid_column.column_ur
-      );
-      gridApi?.columnApi?.api?.setColumnVisible(
-        "schTypeDesc",
-        grid_column.column_sch_type
-      );
-    }
-  }, [grid_column, gridApi]);
 
   const handleGroupButtonClick = (e,currObj) => {
     handleFilter(currObj);
@@ -228,7 +229,7 @@ export default function Infrastructure({ id, report_name, type }) {
     if(viewDataBy==="" && allFalse){
       schoolLocationRow();
     }else{
-      multiGroupingRows(null,true);
+      multiGroupingRows();
     }
   };
   
@@ -1094,7 +1095,7 @@ export default function Infrastructure({ id, report_name, type }) {
 
 
 
-  const multiGroupingRows = (filter_type = null, flag) => {
+  const multiGroupingRows = () => {
     const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
     if (primaryKeys.length > 0) {
 
