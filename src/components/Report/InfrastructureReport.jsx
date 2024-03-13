@@ -132,6 +132,12 @@ export default function Infrastructure({ id, report_name, type }) {
     filter: true,
   });
 
+  function onColumnVisible(event) {
+    // console.log("Column visibility changed:");
+    // console.log("Column ID: ", event.column.getId());
+    // console.log("New visibility: ", event.visible);
+}
+
   const onGridReady = useCallback((params) => {
     setGridApi(params);
   }, []);
@@ -1124,7 +1130,7 @@ export default function Infrastructure({ id, report_name, type }) {
       gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", groupKeys.schCategoryDesc);
       gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", groupKeys.schTypeDesc);
       gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", groupKeys.schLocationDesc);
-      gridApi?.columnApi?.api.setColumnVisible("regionName", flag);
+      gridApi?.columnApi?.api.setColumnVisible("regionName", filter_query);
     }
   };
 
@@ -1440,6 +1446,7 @@ export default function Infrastructure({ id, report_name, type }) {
                         onGridReady={onGridReady}
                         groupDisplayType="custom"
                         groupHideOpenParents={true}
+                        onColumnVisible={onColumnVisible}
                         // pinnedBottomRowData={pinedBottomRowData}
                       />
                     </div>
