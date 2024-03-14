@@ -44,7 +44,7 @@ const archiveServicesSlice = createSlice({
             "schHavingAvailableComputer": 0,
             "school_category": "HSS (I-XII)",
     }],
-    isLoading:false,
+    isLoading:true,
     isError:false,
     error:null
   },
