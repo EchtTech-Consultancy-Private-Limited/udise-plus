@@ -100,7 +100,26 @@ export default function Infrastructure({ id, report_name, type }) {
     }
   },[groupKeys])
 
+  useEffect(()=>{
+    const allFalse = Object.values(groupKeys).every(value => value === false);
+    if(viewDataBy==="" && allFalse){
+      schoolLocationRow();
+    }else{
+      multiGroupingRows();
+    }
 
+    handleCustomKeyInAPIResponse();
+},[school_data]);
+
+
+useEffect(()=>{
+  const allFalse = Object.values(groupKeys).every(value => value === false);
+  if(viewDataBy==="" && allFalse){
+    schoolLocationRow();
+  }else{
+    multiGroupingRows();
+  }
+},[groupKeys])
   const [columns, setCol] = useState([
     {
       headerName: "Location",
