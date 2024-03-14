@@ -372,22 +372,22 @@ th.report-name-width-50 {
 }
 
 .ag-header-row.ag-header-row-column {
-    background: #FAF6ED;
-    border-color: #e0e0e0;
-    color: #212121 !important;
-    font-weight: 600 !important;
+    background: #113689;
+    border-color: #113689;
+    color: #ffffff !important;
+    font-weight: 500 !important;
     padding: 12px 15px !important;
     white-space: nowrap;
-    font-size: 0.875rem;
+    // font-size: 14px !important;
 }
 .ag-header-cell, .ag-header-group-cell, .ag-cell {
     padding: 0px 11px !important;
 }
 
 button.scroll-right-btn {
-    background: #113689;
+    background: #113689 !important;
     color: #fff;
-    border: 1px solid #113689;
+    border: 1px solid #113689 !important;
     padding: 2px 8px;
     margin-top: 15px;
     position: static;
@@ -397,12 +397,17 @@ button.scroll-right-btn {
     border-radius: 5px;
 }
 
+.ag-header-cell:hover, .ag-tab{background: #113689 !important;}
+
 button.scroll-right-btn .material-icons-round{font-size: 60px;}
 
 button.scroll-right-btn:hover{
     background: #ffffff;
     color: #113689;
 }
+
+.ag-icon{color: #fff !important;cursor: pointer;}
+
 button.scroll-right-btn .material-icons-round {
     font-size: 35px;
     line-height: 30px;
@@ -417,9 +422,10 @@ button.scroll-right-btn .material-icons-round {
 }
 .pinnedData{
     background:#fff;
-    padding:7px;
+    padding:7px 15px 20px;
     font-weight: 700;
     font-size: 13px;
+    border-radius: 0 0 16px 16px;
 }
 
 .select-infra.button-group-filter select.form-select {
@@ -440,3 +446,14 @@ img.dropicon {
     right: 20px;
     top: 13px;
 }
+
+.ag-root-wrapper.ag-layout-normal {
+    height: 100%;
+    border-radius: 16px 16px 0 0;
+}
+
+.ag-header-cell::before{ background-color: #e2e2e200 !important;}
+.ag-row{border-bottom: transparent !important;}
+.ag-ltr .ag-cell{border-right: transparent !important;}
+
+.ag-row-animation .ag-row:nth-child(even){background:#F4F4F4;}
