@@ -400,9 +400,7 @@ function onColumnVisible(event) {
       unit: "in",
       format: [60, 60]
     });
-    const totalPagesExp = "{total_pages_count_string}";
-const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true`
-
+  
     // Function to add header
     const addHeader = () => {
       doc.setFontSize(25);
@@ -420,8 +418,8 @@ const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short
       doc.setFont("bold");
       doc.text(`Report Id : ${id}` , doc.internal.pageSize.width - 1, 1,{ align: 'right' });
       doc.text(`Academic Year : ${local_year}` , doc.internal.pageSize.width - 1, 1.8,{ align: 'right' });
-     
-      doc.text(`Report generated on : ${dateTime}` , doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.7, { align: 'right' });
+      doc.setFontSize(20);
+      doc.text(`Report generated on : ${dateTime}` , doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.2, { align: 'right' });
     };
    
     // Function to add footer
@@ -440,6 +438,8 @@ const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short
       table.push(row.map(cell => cell.text));
     });
 
+    addHeader(); 
+
     doc.autoTable({
       head: [table[0]],
       body: table.slice(1),
@@ -447,16 +447,10 @@ const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short
       afterPageContent: addFooter
     });
 
-    
     const totalPages = doc.internal.getNumberOfPages();
     for (let i = 0; i < totalPages; i++) {
       doc.setPage(i + 1);
      
-      addHeader(); 
-      doc.autoTable({
-        startY: 3.5,
-        
-      });
     }
 
     return doc;
