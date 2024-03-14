@@ -44,27 +44,18 @@ export default function Infrastructure3013() {
   const [columnCount, setColumnCount] = useState(20);
   const [hideScrollBtn, setHideScrollBtn] = useState(0);
   const gridApiRef = useRef(null);
-  const [total, setTotal] = useState(0);
   const schoolFilter = useSelector((state) => state.schoolFilter);
   const filterObj = structuredClone(schoolFilter);
   const [dispatchCount, setDispatchCount] = useState(1);
   const stateName = localStorage.getItem("state")
-  const [dateTime, setDateTime] = useState(new Date());
   const [arrGroupedData, setArrGroupedData] = useState([]);
   const [groupKeys,setGroupKeys] = useState({schManagementDesc:true,schCategoryDesc:true,schTypeDesc:true,schLocationDesc:true});
  
 
   const filter_query = (filterObj.regionType === 21 && filterObj.regionCode === "11") || (filterObj.regionType === 22 && filterObj.regionCode === "02") || (filterObj.regionType === 23 && filterObj.regionCode === "0202");
-  useEffect(() => {
+  
 
-    const intervalId = setInterval(() => {
-      setDateTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  let newArra=["total_Schools","schHaveSeparate_RoomForHM","schHaveLandForExpansion", ""]
+  
   const [columns, setCol] = useState([
     {
       headerName: "Location",
@@ -342,6 +333,7 @@ function onColumnVisible(event) {
   const onBtExport = () => {
     gridApi.api.exportDataAsExcel();
   };
+
   const getHeaderToExport = (gridApi) => {
     const columns = gridApi.api.getAllDisplayedColumns();
 
@@ -393,7 +385,16 @@ function onColumnVisible(event) {
 
     const headerRow = getHeaderToExport(gridApi);
     const rows = getRowsToExport(gridApi);
-
+    const date = new Date();
+const formattedDate = new Intl.DateTimeFormat('en-US', { 
+    year: 'numeric', 
+    month: 'short', 
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+}).format(date);
+   
     // Initialize jsPDF document
     const doc = new jsPDF({
       orientation: "landscape",
@@ -419,7 +420,7 @@ function onColumnVisible(event) {
       doc.text(`Report Id : ${id}` , doc.internal.pageSize.width - 1, 1,{ align: 'right' });
       doc.text(`Academic Year : ${local_year}` , doc.internal.pageSize.width - 1, 1.8,{ align: 'right' });
       doc.setFontSize(20);
-      doc.text(`Report generated on : ${dateTime}` , doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.2, { align: 'right' });
+      doc.text(`Report generated on : ${formattedDate}` , doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.2, { align: 'right' });
     };
    
     // Function to add footer
