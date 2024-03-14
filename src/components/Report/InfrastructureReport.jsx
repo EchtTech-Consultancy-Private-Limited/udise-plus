@@ -95,6 +95,27 @@ export default function Infrastructure({ id, report_name, type }) {
 
   }, [school_data?.data?.data]);
 
+  useEffect(()=>{
+    const allFalse = Object.values(groupKeys).every(value => value === false);
+    if(viewDataBy==="" && allFalse){
+      schoolLocationRow();
+    }else{
+      multiGroupingRows();
+    }
+
+ 
+    handleCustomKeyInAPIResponse();
+},[school_data]);
+
+
+useEffect(()=>{
+  const allFalse = Object.values(groupKeys).every(value => value === false);
+  if(viewDataBy==="" && allFalse){
+    schoolLocationRow();
+  }else{
+    multiGroupingRows();
+  }
+},[groupKeys])
 
   useEffect(() => {
 
@@ -111,6 +132,7 @@ export default function Infrastructure({ id, report_name, type }) {
   useEffect(() => {
     multiGroupingRows();
   }, [data]);
+
 
   const [columns, setCol] = useState([
     {
@@ -299,9 +321,9 @@ export default function Infrastructure({ id, report_name, type }) {
     let sec_sch_code = ["6", "7", "8"];
     let pre_pr_sch_code = ["12"];
 
-    const arr = [];
-    school_data.data.data.forEach((item, idx) => {
-      let appendedObj = { ...item };
+      const arr = [];
+    school_data?.data?.data?.forEach((item,idx)=>{
+      let appendedObj  ={...item};
 
       /* broad management key added*/
       if (state_gov_mgt_code.includes(item.schManagementCode)) {
