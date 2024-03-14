@@ -875,8 +875,9 @@ export default function Infrastructure({ id, report_name, type }) {
 
               <div className="col-md-2 col-lg-2">
                 <div className="select-infra button-group-filter">
+
                   <div className="indicator-select">
-                    <img src={Dropicon} alt="dropicon" className="dropicon" />
+                    {/* <img src={Dropicon} alt="dropicon" className="dropicon" /> */}
                     <select
                       className="form-select bg-grey2"
                       onChange={handleExportData}
@@ -884,6 +885,7 @@ export default function Infrastructure({ id, report_name, type }) {
                       <option defaultValue={""}>
                         Download Report
                       </option>
+
                       <option value="export_pdf">Download as PDF </option>
                       <option value="export_excel">Download as Excel</option>
                     </select>

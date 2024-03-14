@@ -658,7 +658,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
                 {/* <div className="tab-text-infra download-rep" onClick={onBtExport}>*/}
                 <div className="select-infra button-group-filter">
                   <div className="indicator-select">
-                    <img src={Dropicon} alt="dropicon" className="dropicon" />
+                    {/* <img src={Dropicon} alt="dropicon" className="dropicon" /> */}
                     <select
                       className="form-select bg-grey2"
                       onChange={handleExportData}
