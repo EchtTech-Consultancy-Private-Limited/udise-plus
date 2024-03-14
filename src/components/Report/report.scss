@@ -420,3 +420,21 @@ button.scroll-right-btn .material-icons-round {
     font-weight: 700;
     font-size: 13px;
 }
+
+.select-infra.button-group-filter select.form-select {
+    background: #e5e4e4;
+    font-weight: 500;
+    border: 0;
+    font-size: 16px;
+    appearance: none;
+    padding: 10px 25px;
+
+    option {
+        background: #fff !important;
+    }
+}
+img.dropicon {
+    position: absolute;
+    right: 20px;
+    top: 13px;
+}

@@ -12,6 +12,7 @@ import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import groupByKey from "../../utils/groupBy";
+import Dropicon from "../../assets/images/drop-icon.svg"
 
 
 export default function Infrastructure({ id, report_name, type }) {
@@ -31,30 +32,30 @@ export default function Infrastructure({ id, report_name, type }) {
   const [gridApi, setGridApi] = useState();
   const [viewDataBy, setViewDataBy] = useState("");
   const [arrGroupedData, setArrGroupedData] = useState([]);
-  
-  const [groupKeys,setGroupKeys] = useState({schManagementDesc:false,schManagementBroad:false,schCategoryDesc:false,schCategoryBroad:false,schTypeDesc:false,schLocationDesc:false});
 
-  const [mgtDetails,setMgtDetail] = useState(false);
-  const [catDetails,setCatDetail] = useState(false);
-  const [mgt,setMgt] = useState("");
-  const [mgt_Details,setMgtDetails] = useState("");
-  const [cat,setCat] = useState("");
-  const [cat_Details,setCatDetails] = useState("");
-  const [sch_type,setSchType] = useState("");
-  const [ur,setUR] = useState("");
-  const [multiMgt,setMultiMgt] = useState("");
-  const [multiCat,setMultiCat] = useState("");
-  const [data,setData] = useState([]);
+  const [groupKeys, setGroupKeys] = useState({ schManagementDesc: false, schManagementBroad: false, schCategoryDesc: false, schCategoryBroad: false, schTypeDesc: false, schLocationDesc: false });
+
+  const [mgtDetails, setMgtDetail] = useState(false);
+  const [catDetails, setCatDetail] = useState(false);
+  const [mgt, setMgt] = useState("");
+  const [mgt_Details, setMgtDetails] = useState("");
+  const [cat, setCat] = useState("");
+  const [cat_Details, setCatDetails] = useState("");
+  const [sch_type, setSchType] = useState("");
+  const [ur, setUR] = useState("");
+  const [multiMgt, setMultiMgt] = useState("");
+  const [multiCat, setMultiCat] = useState("");
+  const [data, setData] = useState([]);
 
 
 
   const filter_query = (filterObj.regionType === 21 && filterObj.regionCode === "11") || (filterObj.regionType === 22 && filterObj.regionCode === "02") || (filterObj.regionType === 23 && filterObj.regionCode === "0202");
 
- 
+
   function calculateTotal(fieldName) {
     if (!school_data?.data?.data) return 0;
     return school_data.data.data.reduce((total, row) => total + parseFloat(row[fieldName] || 0), 0);
-    
+
   }
 
   useEffect(() => {
@@ -79,37 +80,37 @@ export default function Infrastructure({ id, report_name, type }) {
     }
     // eslint-disable-next-line
   }, [schoolFilterYear]);
- 
 
- 
-  useEffect(()=>{
 
-      const allFalse = Object.values(groupKeys).every(value => value === false);
-      if(viewDataBy==="" && allFalse){
-        schoolLocationRow();
-      }else{
-          handleCustomKeyInAPIResponse();
-          multiGroupingRows();
-      }
 
-  },[school_data?.data?.data]);
-  
+  useEffect(() => {
 
-  useEffect(()=>{
-
-  const allFalse = Object.values(groupKeys).every(value => value === false);
-    if(viewDataBy==="" && allFalse){
+    const allFalse = Object.values(groupKeys).every(value => value === false);
+    if (viewDataBy === "" && allFalse) {
       schoolLocationRow();
-    }else{
-        handleCustomKeyInAPIResponse();
-        multiGroupingRows();
+    } else {
+      handleCustomKeyInAPIResponse();
+      multiGroupingRows();
     }
-  },[groupKeys])
+
+  }, [school_data?.data?.data]);
 
 
-  useEffect(()=>{
+  useEffect(() => {
+
+    const allFalse = Object.values(groupKeys).every(value => value === false);
+    if (viewDataBy === "" && allFalse) {
+      schoolLocationRow();
+    } else {
+      handleCustomKeyInAPIResponse();
+      multiGroupingRows();
+    }
+  }, [groupKeys])
+
+
+  useEffect(() => {
     multiGroupingRows();
-  },[data]);
+  }, [data]);
 
   const [columns, setCol] = useState([
     {
@@ -164,19 +165,19 @@ export default function Infrastructure({ id, report_name, type }) {
         ...prev,
         schManagementBroad: visible
       }));
-      setMgt(()=>visible?"active":"");
-      setMultiMgt(()=>visible?"multibtn":"")
-    } 
+      setMgt(() => visible ? "active" : "");
+      setMultiMgt(() => visible ? "multibtn" : "")
+    }
     if (columnId === "schManagementDesc") {
 
       setGroupKeys(prev => ({
         ...prev,
         schManagementDesc: visible
       }));
-      setMgtDetails(()=>visible?"active":"");
-      setMultiMgt(()=>visible?"multibtn":"")
-    } 
-     
+      setMgtDetails(() => visible ? "active" : "");
+      setMultiMgt(() => visible ? "multibtn" : "")
+    }
+
     //  if (columnId === "schCategoryBroad") {
     //   setGroupKeys(prev => ({
     //     ...prev,
@@ -201,18 +202,18 @@ export default function Infrastructure({ id, report_name, type }) {
         ...prev,
         schCategoryBroad: visible
       }));
-      setCat(()=>visible?"active":"");
-      setMultiCat(()=>visible?"multibtn":"")
-    } 
+      setCat(() => visible ? "active" : "");
+      setMultiCat(() => visible ? "multibtn" : "")
+    }
     if (columnId === "schCategoryDesc") {
 
       setGroupKeys(prev => ({
         ...prev,
         schCategoryDesc: visible
       }));
-      setCatDetails(()=>visible?"active":"");
-      setMultiCat(()=>visible?"multibtn":"")
-    } 
+      setCatDetails(() => visible ? "active" : "");
+      setMultiCat(() => visible ? "multibtn" : "")
+    }
 
 
 
@@ -221,15 +222,15 @@ export default function Infrastructure({ id, report_name, type }) {
         ...prev,
         schTypeDesc: visible
       }));
-      setSchType(()=>visible?"active":"");
+      setSchType(() => visible ? "active" : "");
     }
 
-     if (columnId === "schLocationDesc") {
+    if (columnId === "schLocationDesc") {
       setGroupKeys(prev => ({
         ...prev,
         schLocationDesc: visible
       }));
-      setUR(()=>visible?"active":"");
+      setUR(() => visible ? "active" : "");
     }
   }
   // function onColumnVisible(event) {
@@ -277,168 +278,168 @@ export default function Infrastructure({ id, report_name, type }) {
   //     setUR(()=>visible?"active":"");
   //   }
   // }
-  
-  
+
+
   const onGridReady = useCallback((params) => {
     setGridApi(params);
   }, []);
 
-  
-  const handleCustomKeyInAPIResponse = ()=>{
-    
+
+  const handleCustomKeyInAPIResponse = () => {
+
     let state_gov_mgt_code = ["1", "2", "3", "6", "89", "90", "91"];
-      let gov_aided_mgt_code = ["4", "7"];
-      let pvt_uaided_mgt_code = ["5"];
-      let ctrl_gov_mgt_code = ["92", "93", "94", "95", "96", "101"];
-      let other_mgt_code = ["8", "97", "99", "98", "102"];
+    let gov_aided_mgt_code = ["4", "7"];
+    let pvt_uaided_mgt_code = ["5"];
+    let ctrl_gov_mgt_code = ["92", "93", "94", "95", "96", "101"];
+    let other_mgt_code = ["8", "97", "99", "98", "102"];
 
-      let pr_sch_code = ["1"];
-      let upr_pr_code = ["2", "4"];
-      let hr_sec_code = ["3", "5", "10", "11"];
-      let sec_sch_code = ["6", "7", "8"];
-      let pre_pr_sch_code = ["12"];
+    let pr_sch_code = ["1"];
+    let upr_pr_code = ["2", "4"];
+    let hr_sec_code = ["3", "5", "10", "11"];
+    let sec_sch_code = ["6", "7", "8"];
+    let pre_pr_sch_code = ["12"];
 
-      const arr = [];
-    school_data.data.data.forEach((item,idx)=>{
-      let appendedObj  ={...item};
+    const arr = [];
+    school_data.data.data.forEach((item, idx) => {
+      let appendedObj = { ...item };
 
       /* broad management key added*/
-        if(state_gov_mgt_code.includes(item.schManagementCode)){
-          appendedObj.schManagementBroad= 'State Government';
-        }else if(gov_aided_mgt_code.includes(item.schManagementCode)){
-          appendedObj.schManagementBroad= 'Govt. Aided';
-        }
-        else if(pvt_uaided_mgt_code.includes(item.schManagementCode)){
-          appendedObj.schManagementBroad= 'Private Unaided';
-        }
-        else if(ctrl_gov_mgt_code.includes(item.schManagementCode)){
-          appendedObj.schManagementBroad= 'Central Government';
-        }
-        else if(other_mgt_code.includes(item.schManagementCode)){
-          appendedObj.schManagementBroad= 'Others';
-        }
-        
-        /* broad category key added*/
-         if(pr_sch_code.includes(item.schCategoryCode)){
-          appendedObj.schCategoryBroad= 'Primary (PRY)';
-        }
-        else if(upr_pr_code.includes(item.schCategoryCode)){
-          appendedObj.schCategoryBroad= 'Upper Primary (UPR)';
-        }
-        else if(hr_sec_code.includes(item.schCategoryCode)){
-          appendedObj.schCategoryBroad= 'Higher Secondary (HSEC)';
-        }
-        else if(sec_sch_code.includes(item.schCategoryCode)){
-          appendedObj.schCategoryBroad= 'Secondary (SEC)';
-        }
-        else if(pre_pr_sch_code.includes(item.schCategoryCode)){
-          appendedObj.schCategoryBroad= 'Pre-Primary (PRY)';
-        }
-        arr.push(appendedObj);
-      })
-      setData(arr);
+      if (state_gov_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = 'State Government';
+      } else if (gov_aided_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = 'Govt. Aided';
+      }
+      else if (pvt_uaided_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = 'Private Unaided';
+      }
+      else if (ctrl_gov_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = 'Central Government';
+      }
+      else if (other_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = 'Others';
+      }
+
+      /* broad category key added*/
+      if (pr_sch_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = 'Primary (PRY)';
+      }
+      else if (upr_pr_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = 'Upper Primary (UPR)';
+      }
+      else if (hr_sec_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = 'Higher Secondary (HSEC)';
+      }
+      else if (sec_sch_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = 'Secondary (SEC)';
+      }
+      else if (pre_pr_sch_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = 'Pre-Primary (PRY)';
+      }
+      arr.push(appendedObj);
+    })
+    setData(arr);
   }
 
-  
-  const handleFilter = (value,e) => {
 
-    if(value==="School Management" || value==="Mgt Details"){
-      if(value==="School Management"){
-        if(mgt==="active"){
+  const handleFilter = (value, e) => {
+
+    if (value === "School Management" || value === "Mgt Details") {
+      if (value === "School Management") {
+        if (mgt === "active") {
           setMgt("");
-        }else{
+        } else {
           setMgt("active");
         }
-      }else{
+      } else {
         setMgt("");
       }
-  
-      if(value==="Mgt Details"){
-        if(mgt_Details==="active"){
+
+      if (value === "Mgt Details") {
+        if (mgt_Details === "active") {
           setMgtDetails("");
-        }else{
+        } else {
           setMgtDetails("active");
         }
-      }else{
+      } else {
         setMgtDetails("");
       }
 
       /*hide and show multi button class for details view*/
-      if(value==="School Management"){
-        if(mgt==="active"){
+      if (value === "School Management") {
+        if (mgt === "active") {
           setMultiMgt("")
-        }else{
+        } else {
           setMultiMgt("multibtn")
         }
       }
-      if(value==="Mgt Details"){
-        if(mgt_Details==="active"){
+      if (value === "Mgt Details") {
+        if (mgt_Details === "active") {
           setMultiMgt("")
-        }else{
+        } else {
           setMultiMgt("multibtn")
         }
       }
 
-     
+
 
 
       /*end here*/
-    
-  
+
+
     }
-    
-    
-    if(value==="School Category" || value==="Cat Details"){
-      if(value==="School Category"){
-        if(cat==="active"){
+
+
+    if (value === "School Category" || value === "Cat Details") {
+      if (value === "School Category") {
+        if (cat === "active") {
           setCat("");
-        }else{
+        } else {
           setCat("active");
         }
-      }else{
+      } else {
         setCat("");
       }
-  
-      if(value==="Cat Details"){
-        if(cat_Details==="active"){
+
+      if (value === "Cat Details") {
+        if (cat_Details === "active") {
           setCatDetails("");
-        }else{
+        } else {
           setCatDetails("active");
         }
 
-          }else{
-            setCatDetails("");
-          }
-          
+      } else {
+        setCatDetails("");
+      }
 
-          if(value==="School Category"){
-            if(cat==="active"){
-              setMultiCat("")
-            }else{
-              setMultiCat("multibtn")
-            }
-          }
-          if(value==="Cat Details"){
-            if(cat_Details==="active"){
-              setMultiCat("")
-            }else{
-              setMultiCat("multibtn")
-            }
-          }
+
+      if (value === "School Category") {
+        if (cat === "active") {
+          setMultiCat("")
+        } else {
+          setMultiCat("multibtn")
+        }
+      }
+      if (value === "Cat Details") {
+        if (cat_Details === "active") {
+          setMultiCat("")
+        } else {
+          setMultiCat("multibtn")
+        }
+      }
     }
-    
-    if(value==="School Type"){
-      if(sch_type==="active"){
+
+    if (value === "School Type") {
+      if (sch_type === "active") {
         setSchType("");
-      }else{
+      } else {
         setSchType("active");
       }
     }
 
-    if(value==="Urban/Rural"){
-      if(ur==="active"){
+    if (value === "Urban/Rural") {
+      if (ur === "active") {
         setUR("");
-      }else{
+      } else {
         setUR("active");
       }
     }
@@ -452,42 +453,42 @@ export default function Infrastructure({ id, report_name, type }) {
 
     const updatedGroupKeys = { ...groupKeys };
     if (e === "School Management") {
-        updatedGroupKeys.schManagementBroad = !groupKeys.schManagementBroad;
-        updatedGroupKeys.schManagementDesc = false;
-    } 
+      updatedGroupKeys.schManagementBroad = !groupKeys.schManagementBroad;
+      updatedGroupKeys.schManagementDesc = false;
+    }
     else if (e === "Mgt Details") {
       updatedGroupKeys.schManagementDesc = !groupKeys.schManagementDesc;
       updatedGroupKeys.schManagementBroad = false;
     }
 
     else if (e === "School Category") {
-      updatedGroupKeys.schCategoryBroad =!groupKeys.schCategoryBroad;
-      updatedGroupKeys.schCategoryDesc =  false;
-    } 
+      updatedGroupKeys.schCategoryBroad = !groupKeys.schCategoryBroad;
+      updatedGroupKeys.schCategoryDesc = false;
+    }
     else if (e === "Cat Details") {
       updatedGroupKeys.schCategoryDesc = !groupKeys.schCategoryDesc;
       updatedGroupKeys.schCategoryBroad = false;
-    } 
+    }
 
 
     else if (e === "School Type") {
-        updatedGroupKeys.schTypeDesc = !groupKeys.schTypeDesc;
+      updatedGroupKeys.schTypeDesc = !groupKeys.schTypeDesc;
     } else if (e === "Urban/Rural") {
-        updatedGroupKeys.schLocationDesc = !groupKeys.schLocationDesc;
+      updatedGroupKeys.schLocationDesc = !groupKeys.schLocationDesc;
     }
 
     setGroupKeys(updatedGroupKeys);
     const allFalse = Object.values(updatedGroupKeys).every(value => value === false);
-     
+
     if (viewDataBy === "" && allFalse) {
-        schoolLocationRow();
+      schoolLocationRow();
     } else {
       handleCustomKeyInAPIResponse();
       multiGroupingRows();
     }
-};
+  };
 
-  
+
   const schoolLocationRow = () => {
     const primaryKeys = ["regionName"];
     const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
@@ -520,7 +521,7 @@ export default function Infrastructure({ id, report_name, type }) {
     gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", false);
     gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", false);
   };
-  
+
   const multiGroupingRows = () => {
     const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
     if (primaryKeys.length > 0) {
@@ -528,9 +529,9 @@ export default function Infrastructure({ id, report_name, type }) {
       filter_query && primaryKeys.push("regionName");
       const groupedData = groupByKey(data, primaryKeys);
       const updatedArrGroupedData = [];
-      
+
       if (groupedData && typeof groupedData === "object") {
-        
+
         Object.keys(groupedData).forEach((item) => {
           const itemsArray = groupedData[item];
           let totalSchoolsHaveElectricity = 0;
@@ -539,7 +540,7 @@ export default function Infrastructure({ id, report_name, type }) {
             regionName = dataItem.regionName;
             totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
           });
-  
+
           const appended = {};
           primaryKeys.forEach((key, index) => {
             appended.regionName = regionName
@@ -548,10 +549,10 @@ export default function Infrastructure({ id, report_name, type }) {
           appended.schHaveElectricity = totalSchoolsHaveElectricity;
           updatedArrGroupedData.push(appended);
         });
-  
+
         setArrGroupedData(updatedArrGroupedData);
       }
-      
+
       gridApi?.columnApi?.api.setColumnVisible("schManagementBroad", groupKeys.schManagementBroad);
       gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", groupKeys.schManagementDesc);
       gridApi?.columnApi?.api.setColumnVisible("schCategoryBroad", groupKeys.schCategoryBroad);
@@ -582,32 +583,32 @@ export default function Infrastructure({ id, report_name, type }) {
               </div>
               <div className="col-md-7 col-lg-7">
                 <div className="tab-text-infra mb-1">View Data By</div>
-             
+
 
                 <ul className="nav nav-tabs mul-tab-main">
 
                   <li className={`nav-item ${multiMgt}`}>
-                    <button type="button" className={`nav-link dark-active ${mgt}`}  onClick={(e)=>handleGroupButtonClick("School Management",e)}>School Management(Broad) </button>
-                    <button type="button" className={`nav-link dark-active details-multi ${mgt_Details}`} id="school_mgt_details" onClick={(e)=>handleGroupButtonClick("Mgt Details",e)}>Datailed View</button>
+                    <button type="button" className={`nav-link dark-active ${mgt}`} onClick={(e) => handleGroupButtonClick("School Management", e)}>School Management(Broad) </button>
+                    <button type="button" className={`nav-link dark-active details-multi ${mgt_Details}`} id="school_mgt_details" onClick={(e) => handleGroupButtonClick("Mgt Details", e)}>Datailed View</button>
                   </li>
-                
+
                   <li className={`nav-item ${multiCat}`}>
-                    <button type="button" className={`nav-link dark-active1 ${cat}`}  onClick={(e)=>handleGroupButtonClick("School Category",e)}>School Category(Broad)</button>
-                    <button type="button" className={`nav-link details-multi dark-active1 ${cat_Details}`}  onClick={(e)=>handleGroupButtonClick("Cat Details",e)}>Datailed View</button>
-                  </li>     
-                              
+                    <button type="button" className={`nav-link dark-active1 ${cat}`} onClick={(e) => handleGroupButtonClick("School Category", e)}>School Category(Broad)</button>
+                    <button type="button" className={`nav-link details-multi dark-active1 ${cat_Details}`} onClick={(e) => handleGroupButtonClick("Cat Details", e)}>Datailed View</button>
+                  </li>
+
                   <li className="nav-item">
-                    <button type="button" className={`nav-link ${sch_type}`}  onClick={(e)=>handleGroupButtonClick("School Type",e)}>School Type</button>
+                    <button type="button" className={`nav-link ${sch_type}`} onClick={(e) => handleGroupButtonClick("School Type", e)}>School Type</button>
                   </li>
                   <li className="nav-item">
-                    <button type="button" className={`nav-link ${ur}`}  onClick={(e)=>handleGroupButtonClick("Urban/Rural",e)}>Urban / Rural</button>
+                    <button type="button" className={`nav-link ${ur}`} onClick={(e) => handleGroupButtonClick("Urban/Rural", e)}>Urban / Rural</button>
                   </li>
                 </ul>
               </div>
 
               {/* Customize Filter Start*/}
 
-              <div className="col-md-2 col-lg-2 text-right pt-1 pe-0">
+              {/* <div className="col-md-2 col-lg-2 text-right pt-1 pe-0"> */}
                 {/* <button
                 className="header-dropdown-btn customize-btn"
                 onClick={() => setShow(!show)}
@@ -616,7 +617,7 @@ export default function Infrastructure({ id, report_name, type }) {
                 Customize
               </button> */}
 
-                <div
+                {/* <div
                   className={`custmize-filter-column ${show ? "show" : ""}`}
                   id="customize_filter"
                 >
@@ -753,14 +754,20 @@ export default function Infrastructure({ id, report_name, type }) {
                     </form>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* Customize Filter END*/}
 
-              <div className="col-md-12 col-lg-12">
-                <div className="tab-text-infra download-rep">
-                  Download Report{" "}
-                  <span className="material-icons-round">download</span>
+              <div className="col-md-2 col-lg-2">
+                <div className="select-infra button-group-filter">
+                  <div className="indicator-select">   
+                  <img src={Dropicon} alt="dropicon" className="dropicon" />                
+                    <select className="form-select bg-grey2">
+                      <option value="All">Download Report</option>
+                      <option value="Download as PDF">Download as PDF </option>
+                      <option value="Download as Excel">Download as Excel</option>                     
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -850,7 +857,7 @@ export default function Infrastructure({ id, report_name, type }) {
                         groupDisplayType="custom"
                         groupHideOpenParents={true}
                         onColumnVisible={onColumnVisible}
-                        // pinnedBottomRowData={pinedBottomRowData}
+                      // pinnedBottomRowData={pinedBottomRowData}
                       />
                       <div className="row">
                         <div className="col-md-6">

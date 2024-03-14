@@ -1074,9 +1074,18 @@ ul {
         padding: 10px 12px !important;
     }
 
+    .select-infra.button-group-filter select.form-select{
+        font-size: 14px !important;
+        padding: 10px 20px;
+    }
+
 }
 
 @media (max-width:1399px) and (min-width: 1024px) {
+    .select-infra.button-group-filter select.form-select{
+        font-size: 12px !important;
+        padding: 10px 14px;
+    }
     body {
         font-size: 12px;
     }
