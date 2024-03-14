@@ -259,6 +259,8 @@ export default function Infrastructure3013() {
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
+
+  
   useEffect(() => {
     for (const category in allreportsdata) {
       const foundReport = allreportsdata[category].find(
