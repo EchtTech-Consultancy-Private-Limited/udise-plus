@@ -106,10 +106,32 @@ export default function Infrastructure({ id, report_name, type }) {
     }
   },[groupKeys])
 
+  useEffect(()=>{
+    const allFalse = Object.values(groupKeys).every(value => value === false);
+    if(viewDataBy==="" && allFalse){
+      schoolLocationRow();
+    }else{
+      multiGroupingRows();
+    }
+
+ 
+    handleCustomKeyInAPIResponse();
+},[school_data]);
+
+
+useEffect(()=>{
+  const allFalse = Object.values(groupKeys).every(value => value === false);
+  if(viewDataBy==="" && allFalse){
+    schoolLocationRow();
+  }else{
+    multiGroupingRows();
+  }
+},[groupKeys])
 
   useEffect(()=>{
     multiGroupingRows();
   },[data]);
+
 
   const [columns, setCol] = useState([
     {
@@ -235,7 +257,7 @@ export default function Infrastructure({ id, report_name, type }) {
       let pre_pr_sch_code = ["12"];
 
       const arr = [];
-    school_data.data.data.forEach((item,idx)=>{
+    school_data?.data?.data?.forEach((item,idx)=>{
       let appendedObj  ={...item};
 
       /* broad management key added*/
