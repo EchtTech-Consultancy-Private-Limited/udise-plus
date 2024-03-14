@@ -145,7 +145,7 @@ export default function Infrastructure({ id, report_name, type }) {
     },
     {
       headerName: "No. Of Schools having Electricity",
-      field: "schHaveElectricity",
+      field: "totSchElectricity",
     },
   ]);
 
@@ -405,12 +405,12 @@ export default function Infrastructure({ id, report_name, type }) {
         let totalSchoolsHaveElectricity = 0;
 
         itemsArray.forEach((dataItem) => {
-          totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+          totalSchoolsHaveElectricity += parseInt(dataItem.totSchElectricity);
         });
 
         const appended = {
           regionName: item,
-          schHaveElectricity: totalSchoolsHaveElectricity,
+          totSchElectricity: totalSchoolsHaveElectricity,
         };
 
         updatedArrGroupedData.push(appended);
@@ -442,7 +442,7 @@ export default function Infrastructure({ id, report_name, type }) {
           itemsArray.forEach((dataItem) => {
             regionName = dataItem.regionName;
             totalSchoolsHaveElectricity += parseInt(
-              dataItem.schHaveElectricity
+              dataItem.totSchElectricity
             );
           });
 
@@ -451,7 +451,7 @@ export default function Infrastructure({ id, report_name, type }) {
             appended.regionName = regionName;
             appended[key] = item.split("@")[index];
           });
-          appended.schHaveElectricity = totalSchoolsHaveElectricity;
+          appended.totSchElectricity = totalSchoolsHaveElectricity;
           updatedArrGroupedData.push(appended);
         });
 
@@ -985,7 +985,7 @@ export default function Infrastructure({ id, report_name, type }) {
                         </div>
                         <div className="col-md-6 text-end">
                           <h6 className="pinnedData">
-                            {calculateTotal("schHaveElectricity")}
+                            {calculateTotal("totSchElectricity")}
                           </h6>
                         </div>
                       </div>
