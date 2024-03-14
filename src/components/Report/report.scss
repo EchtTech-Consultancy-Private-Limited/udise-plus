@@ -139,6 +139,7 @@
             font-weight: 600 !important;
             padding: 12px 15px !important;
             white-space: nowrap;
+            
         }
 
         .text-blue {
@@ -426,8 +427,9 @@ button.scroll-right-btn .material-icons-round {
     font-weight: 500;
     border: 0;
     font-size: 16px;
-    appearance: none;
+    appearance: auto;
     padding: 10px 25px;
+    border-right: 12px solid transparent;
 
     option {
         background: #fff !important;

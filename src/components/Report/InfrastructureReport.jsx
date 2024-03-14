@@ -832,7 +832,7 @@ const handleExportData = (e)=>{
               <div className="col-md-2 col-lg-2">
                 <div className="select-infra button-group-filter">
                   <div className="indicator-select">   
-                  <img src={Dropicon} alt="dropicon" className="dropicon" />                
+                  {/* <img src={Dropicon} alt="dropicon" className="dropicon" />                 */}
                     <select className="form-select bg-grey2" onChange={handleExportData}>
                       <option value="" disabled selected>Download Report</option>
                       <option value="export_pdf">Download as PDF </option>
