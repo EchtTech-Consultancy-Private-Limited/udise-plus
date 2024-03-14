@@ -19,6 +19,7 @@ import autoTable from 'jspdf-autotable'
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { ScrollToTopOnMount } from "../Scroll/ScrollToTopOnMount";
+import Dropicon from "../../assets/images/drop-icon.svg";
 import useCheckError from "../hooks/useCheckError";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -330,10 +331,6 @@ function onColumnVisible(event) {
     setFilterShowHide((filterShowHide) => !filterShowHide);
   };
 
-  const onBtExport = () => {
-    gridApi.api.exportDataAsExcel();
-  };
-
   const getHeaderToExport = (gridApi) => {
     const columns = gridApi.api.getAllDisplayedColumns();
 
@@ -366,19 +363,6 @@ function onColumnVisible(event) {
     }); 
 
     return rowsToExport;
-  };
-
-  
-  const styles = {
-    header: {
-      fontSize: 18,
-      marginBottom: 10,
-      textAlign: 'center',
-    },
-    paragraph: {
-      fontSize: 12,
-      marginBottom: 5,
-    },
   };
 
   const getDocument = (gridApi) => {
@@ -459,13 +443,23 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
     return doc;
 };
 
-
-
   const exportToPDF = () => {
     const doc = getDocument(gridApi);
     doc.save("Number of Schools by Availability of Infrastructure and Facilities, School Management and School Category.pdf");
   };
+  const exportToExcel = () => {
+    gridApi.api.exportDataAsExcel();
+  };
 
+  const handleExportData = (e) => {
+    const { value } = e.target;
+    if (value === "export_pdf") {
+      exportToPDF();
+    }
+    if (value === "export_excel") {
+      exportToExcel();
+    }
+  };
 
   const handleGroupButtonClick = (e) => {
 
@@ -477,6 +471,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
       prevDefs.map((colDef,idx) => ({
         ...colDef,
         rowGroup: viewDataBy === e ? false : colDef.field === groupByColumn,
+        
       }))
     );
 
@@ -659,14 +654,22 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 
               {/* Customize Filter END*/}
 
-              <div className="col-md-12 col-lg-12">
+              <div className="col-md-2 col-lg-2">
                 {/* <div className="tab-text-infra download-rep" onClick={onBtExport}>*/}
-                <div
-                  className="tab-text-infra download-rep"
-                  onClick={exportToPDF}
-                >
-                  Download Report{" "}
-                  <span className="material-icons-round">download</span>
+                <div className="select-infra button-group-filter">
+                  <div className="indicator-select">
+                    <img src={Dropicon} alt="dropicon" className="dropicon" />
+                    <select
+                      className="form-select bg-grey2"
+                      onChange={handleExportData}
+                    >
+                      <option defaultValue={""}>
+                        Download Report
+                      </option>
+                      <option value="export_pdf">Download as PDF </option>
+                      <option value="export_excel">Download as Excel</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
