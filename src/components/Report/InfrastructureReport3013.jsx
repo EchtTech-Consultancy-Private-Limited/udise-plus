@@ -48,15 +48,8 @@ export default function Infrastructure3013() {
   const filterObj = structuredClone(schoolFilter);
   const [dispatchCount, setDispatchCount] = useState(1);
   const stateName = localStorage.getItem("state")
-  const [dateTime, setDateTime] = useState(new Date());
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setDateTime(new Date());
-    }, 1000);
 
-    return () => clearInterval(intervalId);
-  }, []);
   const [columns, setCol] = useState([
     {
       headerName: "Location",
@@ -286,6 +279,7 @@ export default function Infrastructure3013() {
   const onBtExport = () => {
     gridApi.api.exportDataAsExcel();
   };
+
   const getHeaderToExport = (gridApi) => {
     const columns = gridApi.api.getAllDisplayedColumns();
 
@@ -337,7 +331,16 @@ export default function Infrastructure3013() {
 
     const headerRow = getHeaderToExport(gridApi);
     const rows = getRowsToExport(gridApi);
-
+    const date = new Date();
+const formattedDate = new Intl.DateTimeFormat('en-US', { 
+    year: 'numeric', 
+    month: 'short', 
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+}).format(date);
+   
     // Initialize jsPDF document
     const doc = new jsPDF({
       orientation: "landscape",
@@ -365,7 +368,7 @@ const liveTime= `dateTime.toLocaleString('en-US', {day: '2-digit', month: 'short
       doc.text(`Report Id : ${id}` , doc.internal.pageSize.width - 1, 1,{ align: 'right' });
       doc.text(`Academic Year : ${local_year}` , doc.internal.pageSize.width - 1, 1.8,{ align: 'right' });
      
-      doc.text(`Report generated on : ${dateTime}` , doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.7, { align: 'right' });
+      doc.text(`Report generated on : ${formattedDate}` , doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.7, { align: 'right' });
     };
    
     // Function to add footer

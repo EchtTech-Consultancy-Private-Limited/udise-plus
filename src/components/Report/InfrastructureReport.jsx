@@ -12,7 +12,7 @@ import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import groupByKey from "../../utils/groupBy";
-
+import { jsPDF } from "jspdf";
 
 export default function Infrastructure({ id, report_name, type }) {
   const [show, setShow] = useState(false);
@@ -177,24 +177,6 @@ export default function Infrastructure({ id, report_name, type }) {
       setMultiMgt(()=>visible?"multibtn":"")
     } 
      
-    //  if (columnId === "schCategoryBroad") {
-    //   setGroupKeys(prev => ({
-    //     ...prev,
-    //     schCategoryBroad: visible
-    //   }));
-    //   setCat(()=>visible?"active":"");
-    //   setMultiCat(()=>visible?"multibtn":"");
-
-    // }  
-    //  if (columnId === "schCategoryDesc") {
-    //   setGroupKeys(prev => ({
-    //     ...prev,
-    //     schCategoryDesc: visible
-    //   }));
-    //   setCatDetails(()=>visible?"active":"");
-    //   setMultiCat(()=>visible?"multibtn":"");
-
-    // } 
     if (columnId === "schCategoryBroad") {
 
       setGroupKeys(prev => ({
@@ -232,53 +214,7 @@ export default function Infrastructure({ id, report_name, type }) {
       setUR(()=>visible?"active":"");
     }
   }
-  // function onColumnVisible(event) {
-  //   const columnId = event?.column?.getColId();
-  //   const visible = event.visible;
-  //   if (columnId === "schManagementBroad") {
 
-  //     setGroupKeys(prev => ({
-  //       ...prev,
-  //       schManagement: visible
-  //     }));
-  //     setMgt(()=>visible?"active":"");
-  //     setMultiMgt(()=>visible?"multibtn":"")
-  //   }
-  //   else if (columnId === "schManagementDesc") {
-
-  //     setGroupKeys(prev => ({
-  //       ...prev,
-  //       schManagementDesc: visible
-  //     }));
-  //     setMgt(()=>visible?"active":"");
-  //     setMultiMgt(()=>visible?"multibtn":"")
-  //   }
-
-  //   else if (columnId === "schTypeDesc") {
-  //     setGroupKeys(prev => ({
-  //       ...prev,
-  //       schTypeDesc: visible
-  //     }));
-  //     setSchType(()=>visible?"active":"");
-  //   }
-  //   else if (columnId === "schCategoryDesc") {
-  //     setGroupKeys(prev => ({
-  //       ...prev,
-  //       schCategoryDesc: visible
-  //     }));
-  //     setCat(()=>visible?"active":"");
-  //     setMultiCat(()=>visible?"multibtn":"");
-
-  //   }  else if (columnId === "schLocationDesc") {
-  //     setGroupKeys(prev => ({
-  //       ...prev,
-  //       schLocationDesc: visible
-  //     }));
-  //     setUR(()=>visible?"active":"");
-  //   }
-  // }
-  
-  
   const onGridReady = useCallback((params) => {
     setGridApi(params);
   }, []);
@@ -527,6 +463,7 @@ export default function Infrastructure({ id, report_name, type }) {
 
       filter_query && primaryKeys.push("regionName");
       const groupedData = groupByKey(data, primaryKeys);
+      console.log(groupedData,' groupedData ')
       const updatedArrGroupedData = [];
       
       if (groupedData && typeof groupedData === "object") {
@@ -561,6 +498,132 @@ export default function Infrastructure({ id, report_name, type }) {
       gridApi?.columnApi?.api.setColumnVisible("regionName", filter_query);
     }
   };
+
+  /*export data to excel*/
+  const getHeaderToExport = (gridApi) => {
+    const columns = gridApi.api.getAllDisplayedColumns();
+
+    return columns.map((column) => {
+      const { field,headerName } = column.getColDef();
+      const sort = column.getSort();
+      const headerNameUppercase = field[0].toUpperCase() + field.slice(1);
+      const headerCell = {
+        text: headerNameUppercase + (sort ? ` (${sort})` : ""),
+        headerName:headerName,
+        bold: true,
+        margin: [0, 12, 0, 0],
+      };
+      return headerCell;
+    });
+  };
+
+  const getRowsToExport = (gridApi) => {
+    const columns = gridApi.api.getAllDisplayedColumns();
+
+    const getCellToExport = (column, node) => ({
+      text: gridApi.api.getValue(column, node) ?? "",
+    });
+
+    const rowsToExport = [];
+    gridApi.api.forEachNodeAfterFilterAndSort((node) => {
+      const rowToExport = columns.map((column) =>
+        getCellToExport(column, node)
+      );
+      rowsToExport.push(rowToExport);
+    });
+
+    return rowsToExport;
+  };
+  
+  const getDocument = (gridApi) => {
+    const headerRow = getHeaderToExport(gridApi);
+    const rows = getRowsToExport(gridApi);
+    const date = new Date();
+const formattedDate = new Intl.DateTimeFormat('en-US', { 
+    year: 'numeric', 
+    month: 'short', 
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+}).format(date);
+   
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "in",
+      format: [20, 20]
+    });
+
+    // Function to add header
+    const addHeader = () => {
+      doc.setFontSize(25);
+      doc.setTextColor("blue");
+      doc.setFont("bold");
+      doc.text("UDISE+", 0.6, 1);
+      doc.setFontSize(20);
+      doc.setTextColor("blue");
+      doc.text(`${report.report_name}`, 0.6, 1.4,{ fontSize: 12, color: "red" });
+      doc.setFontSize(20);
+      doc.setTextColor("blue");
+      doc.text(`Report type : ${"stateName"}`, 0.6, 1.8,{ fontSize: 12, color: "red" });
+     
+      doc.setTextColor("blue");
+      doc.setFont("bold");
+      doc.text(`Report Id : ${id}` , doc.internal.pageSize.width - 1, 1,{ align: 'right' });
+      doc.text(`Academic Year : ${local_year}` , doc.internal.pageSize.width - 1, 1.8,{ align: 'right' });
+      doc.setFontSize(20);
+      doc.text(`Report generated on : ${formattedDate}` , doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.2, { align: 'right' });
+    };
+   
+    // Function to add footer
+    const addFooter = () => {
+      const pageCount = doc.internal.getNumberOfPages();
+      doc.setFontSize(10);
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.5, { align: 'right' });
+      }
+    };
+
+    const table = [];
+    table.push(headerRow.map(cell => cell.headerName));
+    rows.forEach(row => {
+      table.push(row.map(cell => cell.text));
+    });
+    addHeader(); 
+    doc.autoTable({
+      head: [table[0]],
+      body: table.slice(1),
+      startY: 2.2,
+      afterPageContent: addFooter
+    });
+
+    
+    const totalPages = doc.internal.getNumberOfPages();
+    for (let i = 0; i < totalPages; i++) {
+      doc.setPage(i + 1);
+     
+      
+      doc.autoTable({
+        startY: 3.5,
+        
+      });
+    }
+
+    return doc;
+};
+
+const exportToPDF = () => {
+  const doc = getDocument(gridApi);
+  doc.save(`${report.report_name}.pdf`);
+};
+
+
+    const exportToExcel = () => {
+      gridApi.api.exportDataAsExcel();
+    };
+
+  /*end here*/
 
   /*end here*/
   return (
@@ -758,7 +821,10 @@ export default function Infrastructure({ id, report_name, type }) {
               {/* Customize Filter END*/}
 
               <div className="col-md-12 col-lg-12">
-                <div className="tab-text-infra download-rep">
+                <div className="tab-text-infra download-rep"
+                // onClick={exportToExcel}
+                onClick={exportToPDF}
+                >
                   Download Report{" "}
                   <span className="material-icons-round">download</span>
                 </div>
