@@ -363,10 +363,12 @@ function onColumnVisible(event) {
         getCellToExport(column, node)
       );
       rowsToExport.push(rowToExport);
-    });
+    }); 
 
     return rowsToExport;
   };
+
+  
   const styles = {
     header: {
       fontSize: 18,
