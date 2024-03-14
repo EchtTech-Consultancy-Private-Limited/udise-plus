@@ -158,31 +158,73 @@ export default function Infrastructure({ id, report_name, type }) {
   function onColumnVisible(event) {
     const columnId = event?.column?.getColId();
     const visible = event.visible;
+    if (columnId === "schManagementBroad") {
+
+      setGroupKeys(prev => ({
+        ...prev,
+        schManagementBroad: visible
+      }));
+      setMgt(()=>visible?"active":"");
+      setMultiMgt(()=>visible?"multibtn":"")
+    } 
     if (columnId === "schManagementDesc") {
 
       setGroupKeys(prev => ({
         ...prev,
         schManagementDesc: visible
       }));
-      setMgt(()=>visible?"active":"");
+      setMgtDetails(()=>visible?"active":"");
       setMultiMgt(()=>visible?"multibtn":"")
     } 
-    else if (columnId === "schTypeDesc") {
+     
+    //  if (columnId === "schCategoryBroad") {
+    //   setGroupKeys(prev => ({
+    //     ...prev,
+    //     schCategoryBroad: visible
+    //   }));
+    //   setCat(()=>visible?"active":"");
+    //   setMultiCat(()=>visible?"multibtn":"");
+
+    // }  
+    //  if (columnId === "schCategoryDesc") {
+    //   setGroupKeys(prev => ({
+    //     ...prev,
+    //     schCategoryDesc: visible
+    //   }));
+    //   setCatDetails(()=>visible?"active":"");
+    //   setMultiCat(()=>visible?"multibtn":"");
+
+    // } 
+    if (columnId === "schCategoryBroad") {
+
+      setGroupKeys(prev => ({
+        ...prev,
+        schCategoryBroad: visible
+      }));
+      setCat(()=>visible?"active":"");
+      setMultiCat(()=>visible?"multibtn":"")
+    } 
+    if (columnId === "schCategoryDesc") {
+
+      setGroupKeys(prev => ({
+        ...prev,
+        schCategoryDesc: visible
+      }));
+      setCatDetails(()=>visible?"active":"");
+      setMultiCat(()=>visible?"multibtn":"")
+    } 
+
+
+
+    if (columnId === "schTypeDesc") {
       setGroupKeys(prev => ({
         ...prev,
         schTypeDesc: visible
       }));
       setSchType(()=>visible?"active":"");
     }
-    else if (columnId === "schCategoryDesc") {
-      setGroupKeys(prev => ({
-        ...prev,
-        schCategoryDesc: visible
-      }));
-      setCat(()=>visible?"active":"");
-      setMultiCat(()=>visible?"multibtn":"");
 
-    }  else if (columnId === "schLocationDesc") {
+     if (columnId === "schLocationDesc") {
       setGroupKeys(prev => ({
         ...prev,
         schLocationDesc: visible
@@ -190,6 +232,51 @@ export default function Infrastructure({ id, report_name, type }) {
       setUR(()=>visible?"active":"");
     }
   }
+  // function onColumnVisible(event) {
+  //   const columnId = event?.column?.getColId();
+  //   const visible = event.visible;
+  //   if (columnId === "schManagementBroad") {
+
+  //     setGroupKeys(prev => ({
+  //       ...prev,
+  //       schManagement: visible
+  //     }));
+  //     setMgt(()=>visible?"active":"");
+  //     setMultiMgt(()=>visible?"multibtn":"")
+  //   }
+  //   else if (columnId === "schManagementDesc") {
+
+  //     setGroupKeys(prev => ({
+  //       ...prev,
+  //       schManagementDesc: visible
+  //     }));
+  //     setMgt(()=>visible?"active":"");
+  //     setMultiMgt(()=>visible?"multibtn":"")
+  //   }
+
+  //   else if (columnId === "schTypeDesc") {
+  //     setGroupKeys(prev => ({
+  //       ...prev,
+  //       schTypeDesc: visible
+  //     }));
+  //     setSchType(()=>visible?"active":"");
+  //   }
+  //   else if (columnId === "schCategoryDesc") {
+  //     setGroupKeys(prev => ({
+  //       ...prev,
+  //       schCategoryDesc: visible
+  //     }));
+  //     setCat(()=>visible?"active":"");
+  //     setMultiCat(()=>visible?"multibtn":"");
+
+  //   }  else if (columnId === "schLocationDesc") {
+  //     setGroupKeys(prev => ({
+  //       ...prev,
+  //       schLocationDesc: visible
+  //     }));
+  //     setUR(()=>visible?"active":"");
+  //   }
+  // }
   
   
   const onGridReady = useCallback((params) => {
@@ -254,16 +341,6 @@ export default function Infrastructure({ id, report_name, type }) {
 
   
   const handleFilter = (value,e) => {
-    // const parentLi = e.target.closest(".nav-item");
-    // const parentLi1 = document.querySelectorAll(".nav-item");
-
-    // if (e.target.classList.contains("multibtn")) {
-    //   parentLi.classList.remove("multibtn");
-    //   parentLi1.classList.remove("multibtn");
-    // } else {
-    //   parentLi.classList.add("multibtn");
-    // }
-
 
     if(value==="School Management" || value==="Mgt Details"){
       if(value==="School Management"){
@@ -366,22 +443,6 @@ export default function Infrastructure({ id, report_name, type }) {
       }
     }
 
-    
-
-    // const navLinks = document.querySelectorAll(".dark-active");
-
-    // navLinks.forEach((link) => {
-    //   if (link !== e.target && link.classList.contains("active")) {
-    //     link.classList.remove("active");
-    //   }
-    // });
-
- 
-    // if (!e.target.classList.contains("active")) {
-    //   e.target.classList.add("active");
-    // } else {
-    //   e.target.classList.remove("active");
-    // }
   };
 
 
@@ -400,8 +461,8 @@ export default function Infrastructure({ id, report_name, type }) {
     }
 
     else if (e === "School Category") {
+      updatedGroupKeys.schCategoryBroad =!groupKeys.schCategoryBroad;
       updatedGroupKeys.schCategoryDesc =  false;
-      updatedGroupKeys.schCategoryBroad =!groupKeys.schCategoryDesc;
     } 
     else if (e === "Cat Details") {
       updatedGroupKeys.schCategoryDesc = !groupKeys.schCategoryDesc;
