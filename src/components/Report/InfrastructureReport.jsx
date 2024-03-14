@@ -12,7 +12,7 @@ import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import groupByKey from "../../utils/groupBy";
-import Dropicon from "../../assets/images/drop-icon.svg"
+import Dropicon from "../../assets/images/drop-icon.svg";
 import { jsPDF } from "jspdf";
 
 export default function Infrastructure({ id, report_name, type }) {
@@ -32,8 +32,15 @@ export default function Infrastructure({ id, report_name, type }) {
   const [gridApi, setGridApi] = useState();
   const [viewDataBy, setViewDataBy] = useState("");
   const [arrGroupedData, setArrGroupedData] = useState([]);
-
-  const [groupKeys, setGroupKeys] = useState({ schManagementDesc: false, schManagementBroad: false, schCategoryDesc: false, schCategoryBroad: false, schTypeDesc: false, schLocationDesc: false });
+  const stateName = localStorage.getItem("state")
+  const [groupKeys, setGroupKeys] = useState({
+    schManagementDesc: false,
+    schManagementBroad: false,
+    schCategoryDesc: false,
+    schCategoryBroad: false,
+    schTypeDesc: false,
+    schLocationDesc: false,
+  });
 
   const [mgtDetails, setMgtDetail] = useState(false);
   const [catDetails, setCatDetail] = useState(false);
@@ -47,15 +54,17 @@ export default function Infrastructure({ id, report_name, type }) {
   const [multiCat, setMultiCat] = useState("");
   const [data, setData] = useState([]);
 
-
-
-  const filter_query = (filterObj.regionType === 21 && filterObj.regionCode === "11") || (filterObj.regionType === 22 && filterObj.regionCode === "02") || (filterObj.regionType === 23 && filterObj.regionCode === "0202");
-
+  const filter_query =
+    (filterObj.regionType === 21 && filterObj.regionCode === "11") ||
+    (filterObj.regionType === 22 && filterObj.regionCode === "02") ||
+    (filterObj.regionType === 23 && filterObj.regionCode === "0202");
 
   function calculateTotal(fieldName) {
     if (!school_data?.data?.data) return 0;
-    return school_data.data.data.reduce((total, row) => total + parseFloat(row[fieldName] || 0), 0);
-
+    return school_data.data.data.reduce(
+      (total, row) => total + parseFloat(row[fieldName] || 0),
+      0
+    );
   }
 
   useEffect(() => {
@@ -81,32 +90,25 @@ export default function Infrastructure({ id, report_name, type }) {
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
-
-
   useEffect(() => {
-
-    const allFalse = Object.values(groupKeys).every(value => value === false);
+    const allFalse = Object.values(groupKeys).every((value) => value === false);
     if (viewDataBy === "" && allFalse) {
       schoolLocationRow();
     } else {
       handleCustomKeyInAPIResponse();
       multiGroupingRows();
     }
-
   }, [school_data?.data?.data]);
 
-
   useEffect(() => {
-
-    const allFalse = Object.values(groupKeys).every(value => value === false);
+    const allFalse = Object.values(groupKeys).every((value) => value === false);
     if (viewDataBy === "" && allFalse) {
       schoolLocationRow();
     } else {
       handleCustomKeyInAPIResponse();
       multiGroupingRows();
     }
-  }, [groupKeys])
-
+  }, [groupKeys]);
 
   useEffect(() => {
     multiGroupingRows();
@@ -160,59 +162,53 @@ export default function Infrastructure({ id, report_name, type }) {
     const columnId = event?.column?.getColId();
     const visible = event.visible;
     if (columnId === "schManagementBroad") {
-
-      setGroupKeys(prev => ({
+      setGroupKeys((prev) => ({
         ...prev,
-        schManagementBroad: visible
+        schManagementBroad: visible,
       }));
-      setMgt(() => visible ? "active" : "");
-      setMultiMgt(() => visible ? "multibtn" : "")
+      setMgt(() => (visible ? "active" : ""));
+      setMultiMgt(() => (visible ? "multibtn" : ""));
     }
     if (columnId === "schManagementDesc") {
-
-      setGroupKeys(prev => ({
+      setGroupKeys((prev) => ({
         ...prev,
-        schManagementDesc: visible
+        schManagementDesc: visible,
       }));
-      setMgtDetails(() => visible ? "active" : "");
-      setMultiMgt(() => visible ? "multibtn" : "")
+      setMgtDetails(() => (visible ? "active" : ""));
+      setMultiMgt(() => (visible ? "multibtn" : ""));
     }
 
     if (columnId === "schCategoryBroad") {
-
-      setGroupKeys(prev => ({
+      setGroupKeys((prev) => ({
         ...prev,
-        schCategoryBroad: visible
+        schCategoryBroad: visible,
       }));
-      setCat(() => visible ? "active" : "");
-      setMultiCat(() => visible ? "multibtn" : "")
+      setCat(() => (visible ? "active" : ""));
+      setMultiCat(() => (visible ? "multibtn" : ""));
     }
     if (columnId === "schCategoryDesc") {
-
-      setGroupKeys(prev => ({
+      setGroupKeys((prev) => ({
         ...prev,
-        schCategoryDesc: visible
+        schCategoryDesc: visible,
       }));
-      setCatDetails(() => visible ? "active" : "");
-      setMultiCat(() => visible ? "multibtn" : "")
+      setCatDetails(() => (visible ? "active" : ""));
+      setMultiCat(() => (visible ? "multibtn" : ""));
     }
 
-
-
     if (columnId === "schTypeDesc") {
-      setGroupKeys(prev => ({
+      setGroupKeys((prev) => ({
         ...prev,
-        schTypeDesc: visible
+        schTypeDesc: visible,
       }));
-      setSchType(() => visible ? "active" : "");
+      setSchType(() => (visible ? "active" : ""));
     }
 
     if (columnId === "schLocationDesc") {
-      setGroupKeys(prev => ({
+      setGroupKeys((prev) => ({
         ...prev,
-        schLocationDesc: visible
+        schLocationDesc: visible,
       }));
-      setUR(() => visible ? "active" : "");
+      setUR(() => (visible ? "active" : ""));
     }
   }
 
@@ -220,9 +216,7 @@ export default function Infrastructure({ id, report_name, type }) {
     setGridApi(params);
   }, []);
 
-
   const handleCustomKeyInAPIResponse = () => {
-
     let state_gov_mgt_code = ["1", "2", "3", "6", "89", "90", "91"];
     let gov_aided_mgt_code = ["4", "7"];
     let pvt_uaided_mgt_code = ["5"];
@@ -241,44 +235,35 @@ export default function Infrastructure({ id, report_name, type }) {
 
       /* broad management key added*/
       if (state_gov_mgt_code.includes(item.schManagementCode)) {
-        appendedObj.schManagementBroad = 'State Government';
+        appendedObj.schManagementBroad = "State Government";
       } else if (gov_aided_mgt_code.includes(item.schManagementCode)) {
-        appendedObj.schManagementBroad = 'Govt. Aided';
-      }
-      else if (pvt_uaided_mgt_code.includes(item.schManagementCode)) {
-        appendedObj.schManagementBroad = 'Private Unaided';
-      }
-      else if (ctrl_gov_mgt_code.includes(item.schManagementCode)) {
-        appendedObj.schManagementBroad = 'Central Government';
-      }
-      else if (other_mgt_code.includes(item.schManagementCode)) {
-        appendedObj.schManagementBroad = 'Others';
+        appendedObj.schManagementBroad = "Govt. Aided";
+      } else if (pvt_uaided_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = "Private Unaided";
+      } else if (ctrl_gov_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = "Central Government";
+      } else if (other_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = "Others";
       }
 
       /* broad category key added*/
       if (pr_sch_code.includes(item.schCategoryCode)) {
-        appendedObj.schCategoryBroad = 'Primary (PRY)';
-      }
-      else if (upr_pr_code.includes(item.schCategoryCode)) {
-        appendedObj.schCategoryBroad = 'Upper Primary (UPR)';
-      }
-      else if (hr_sec_code.includes(item.schCategoryCode)) {
-        appendedObj.schCategoryBroad = 'Higher Secondary (HSEC)';
-      }
-      else if (sec_sch_code.includes(item.schCategoryCode)) {
-        appendedObj.schCategoryBroad = 'Secondary (SEC)';
-      }
-      else if (pre_pr_sch_code.includes(item.schCategoryCode)) {
-        appendedObj.schCategoryBroad = 'Pre-Primary (PRY)';
+        appendedObj.schCategoryBroad = "Primary (PRY)";
+      } else if (upr_pr_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = "Upper Primary (UPR)";
+      } else if (hr_sec_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = "Higher Secondary (HSEC)";
+      } else if (sec_sch_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = "Secondary (SEC)";
+      } else if (pre_pr_sch_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = "Pre-Primary (PRY)";
       }
       arr.push(appendedObj);
-    })
+    });
     setData(arr);
-  }
-
+  };
 
   const handleFilter = (value, e) => {
-
     if (value === "School Management" || value === "Mgt Details") {
       if (value === "School Management") {
         if (mgt === "active") {
@@ -303,27 +288,21 @@ export default function Infrastructure({ id, report_name, type }) {
       /*hide and show multi button class for details view*/
       if (value === "School Management") {
         if (mgt === "active") {
-          setMultiMgt("")
+          setMultiMgt("");
         } else {
-          setMultiMgt("multibtn")
+          setMultiMgt("multibtn");
         }
       }
       if (value === "Mgt Details") {
         if (mgt_Details === "active") {
-          setMultiMgt("")
+          setMultiMgt("");
         } else {
-          setMultiMgt("multibtn")
+          setMultiMgt("multibtn");
         }
       }
 
-
-
-
       /*end here*/
-
-
     }
-
 
     if (value === "School Category" || value === "Cat Details") {
       if (value === "School Category") {
@@ -342,24 +321,22 @@ export default function Infrastructure({ id, report_name, type }) {
         } else {
           setCatDetails("active");
         }
-
       } else {
         setCatDetails("");
       }
 
-
       if (value === "School Category") {
         if (cat === "active") {
-          setMultiCat("")
+          setMultiCat("");
         } else {
-          setMultiCat("multibtn")
+          setMultiCat("multibtn");
         }
       }
       if (value === "Cat Details") {
         if (cat_Details === "active") {
-          setMultiCat("")
+          setMultiCat("");
         } else {
-          setMultiCat("multibtn")
+          setMultiCat("multibtn");
         }
       }
     }
@@ -379,42 +356,35 @@ export default function Infrastructure({ id, report_name, type }) {
         setUR("active");
       }
     }
-
   };
-
 
   const handleGroupButtonClick = (e, currObj) => {
     handleFilter(e, currObj);
-    setViewDataBy(prevViewDataBy => (prevViewDataBy === e ? "" : e));
+    setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
 
     const updatedGroupKeys = { ...groupKeys };
     if (e === "School Management") {
       updatedGroupKeys.schManagementBroad = !groupKeys.schManagementBroad;
       updatedGroupKeys.schManagementDesc = false;
-    }
-    else if (e === "Mgt Details") {
+    } else if (e === "Mgt Details") {
       updatedGroupKeys.schManagementDesc = !groupKeys.schManagementDesc;
       updatedGroupKeys.schManagementBroad = false;
-    }
-
-    else if (e === "School Category") {
+    } else if (e === "School Category") {
       updatedGroupKeys.schCategoryBroad = !groupKeys.schCategoryBroad;
       updatedGroupKeys.schCategoryDesc = false;
-    }
-    else if (e === "Cat Details") {
+    } else if (e === "Cat Details") {
       updatedGroupKeys.schCategoryDesc = !groupKeys.schCategoryDesc;
       updatedGroupKeys.schCategoryBroad = false;
-    }
-
-
-    else if (e === "School Type") {
+    } else if (e === "School Type") {
       updatedGroupKeys.schTypeDesc = !groupKeys.schTypeDesc;
     } else if (e === "Urban/Rural") {
       updatedGroupKeys.schLocationDesc = !groupKeys.schLocationDesc;
     }
 
     setGroupKeys(updatedGroupKeys);
-    const allFalse = Object.values(updatedGroupKeys).every(value => value === false);
+    const allFalse = Object.values(updatedGroupKeys).every(
+      (value) => value === false
+    );
 
     if (viewDataBy === "" && allFalse) {
       schoolLocationRow();
@@ -423,7 +393,6 @@ export default function Infrastructure({ id, report_name, type }) {
       multiGroupingRows();
     }
   };
-
 
   const schoolLocationRow = () => {
     const primaryKeys = ["regionName"];
@@ -461,25 +430,25 @@ export default function Infrastructure({ id, report_name, type }) {
   const multiGroupingRows = () => {
     const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
     if (primaryKeys.length > 0) {
-
       filter_query && primaryKeys.push("regionName");
       const groupedData = groupByKey(data, primaryKeys);
       const updatedArrGroupedData = [];
 
       if (groupedData && typeof groupedData === "object") {
-
         Object.keys(groupedData).forEach((item) => {
           const itemsArray = groupedData[item];
           let totalSchoolsHaveElectricity = 0;
           let regionName = "";
           itemsArray.forEach((dataItem) => {
             regionName = dataItem.regionName;
-            totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+            totalSchoolsHaveElectricity += parseInt(
+              dataItem.schHaveElectricity
+            );
           });
 
           const appended = {};
           primaryKeys.forEach((key, index) => {
-            appended.regionName = regionName
+            appended.regionName = regionName;
             appended[key] = item.split("@")[index];
           });
           appended.schHaveElectricity = totalSchoolsHaveElectricity;
@@ -489,29 +458,46 @@ export default function Infrastructure({ id, report_name, type }) {
         setArrGroupedData(updatedArrGroupedData);
       }
 
-      gridApi?.columnApi?.api.setColumnVisible("schManagementBroad", groupKeys.schManagementBroad);
-      gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", groupKeys.schManagementDesc);
-      gridApi?.columnApi?.api.setColumnVisible("schCategoryBroad", groupKeys.schCategoryBroad);
-      gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", groupKeys.schCategoryDesc);
-      gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", groupKeys.schTypeDesc);
-      gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", groupKeys.schLocationDesc);
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schManagementBroad",
+        groupKeys.schManagementBroad
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schManagementDesc",
+        groupKeys.schManagementDesc
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schCategoryBroad",
+        groupKeys.schCategoryBroad
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schCategoryDesc",
+        groupKeys.schCategoryDesc
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schTypeDesc",
+        groupKeys.schTypeDesc
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schLocationDesc",
+        groupKeys.schLocationDesc
+      );
       gridApi?.columnApi?.api.setColumnVisible("regionName", filter_query);
     }
   };
   /*end here*/
-
 
   /*export data to excel*/
   const getHeaderToExport = (gridApi) => {
     const columns = gridApi.api.getAllDisplayedColumns();
 
     return columns.map((column) => {
-      const { field,headerName } = column.getColDef();
+      const { field, headerName } = column.getColDef();
       const sort = column.getSort();
       const headerNameUppercase = field[0].toUpperCase() + field.slice(1);
       const headerCell = {
         text: headerNameUppercase + (sort ? ` (${sort})` : ""),
-        headerName:headerName,
+        headerName: headerName,
         bold: true,
         margin: [0, 12, 0, 0],
       };
@@ -536,24 +522,24 @@ export default function Infrastructure({ id, report_name, type }) {
 
     return rowsToExport;
   };
-  
+
   const getDocument = (gridApi) => {
     const headerRow = getHeaderToExport(gridApi);
     const rows = getRowsToExport(gridApi);
     const date = new Date();
-const formattedDate = new Intl.DateTimeFormat('en-US', { 
-    year: 'numeric', 
-    month: 'short', 
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
-}).format(date);
-   
+    const formattedDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    }).format(date);
+
     const doc = new jsPDF({
       orientation: "portrait",
       unit: "in",
-      format: [20, 20]
+      format: [20, 20],
     });
 
     // Function to add header
@@ -564,76 +550,95 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
       doc.text("UDISE+", 0.6, 1);
       doc.setFontSize(20);
       doc.setTextColor("blue");
-      doc.text(`${report.report_name}`, 0.6, 1.4,{ fontSize: 12, color: "red" });
+      doc.text(`${report.report_name}`, 0.6, 1.4, {
+        fontSize: 12,
+        color: "red",
+      });
       doc.setFontSize(20);
       doc.setTextColor("blue");
-      doc.text(`Report type : ${"stateName"}`, 0.6, 1.8,{ fontSize: 12, color: "red" });
-     
+      doc.text(`Report type : ${stateName}`, 0.6, 1.8, {
+        fontSize: 12,
+        color: "red",
+      });
+
       doc.setTextColor("blue");
       doc.setFont("bold");
-      doc.text(`Report Id : ${id}` , doc.internal.pageSize.width - 1, 1,{ align: 'right' });
-      doc.text(`Academic Year : ${local_year}` , doc.internal.pageSize.width - 1, 1.8,{ align: 'right' });
+      doc.text(`Report Id : ${id}`, doc.internal.pageSize.width - 1, 1, {
+        align: "right",
+      });
+      doc.text(
+        `Academic Year : ${local_year}`,
+        doc.internal.pageSize.width - 1,
+        1.8,
+        { align: "right" }
+      );
       doc.setFontSize(20);
-      doc.text(`Report generated on : ${formattedDate}` , doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.2, { align: 'right' });
+      doc.text(
+        `Report generated on : ${formattedDate}`,
+        doc.internal.pageSize.width - 1,
+        doc.internal.pageSize.height - 0.2,
+        { align: "right" }
+      );
     };
-   
+
     // Function to add footer
     const addFooter = () => {
       const pageCount = doc.internal.getNumberOfPages();
       doc.setFontSize(10);
       for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
-        doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.5, { align: 'right' });
+        doc.text(
+          `Page ${i} of ${pageCount}`,
+          doc.internal.pageSize.width - 1,
+          doc.internal.pageSize.height - 0.5,
+          { align: "right" }
+        );
       }
     };
 
     const table = [];
-    table.push(headerRow.map(cell => cell.headerName));
-    rows.forEach(row => {
-      table.push(row.map(cell => cell.text));
+    table.push(headerRow.map((cell) => cell.headerName));
+    rows.forEach((row) => {
+      table.push(row.map((cell) => cell.text));
     });
-    addHeader(); 
+    addHeader();
     doc.autoTable({
       head: [table[0]],
       body: table.slice(1),
       startY: 2.2,
-      afterPageContent: addFooter
+      afterPageContent: addFooter,
     });
 
-    
     const totalPages = doc.internal.getNumberOfPages();
     for (let i = 0; i < totalPages; i++) {
       doc.setPage(i + 1);
-     
-      
+
       doc.autoTable({
         startY: 3.5,
-        
       });
     }
 
     return doc;
-};
+  };
 
-const exportToPDF = () => {
-  const doc = getDocument(gridApi);
-  doc.save(`${report.report_name}.pdf`);
-};
+  const exportToPDF = () => {
+    const doc = getDocument(gridApi);
+    doc.save(`${report.report_name}.pdf`);
+  };
 
+  const exportToExcel = () => {
+    gridApi.api.exportDataAsExcel();
+  };
 
-const exportToExcel = () => {
-  gridApi.api.exportDataAsExcel();
-};
-
-const handleExportData = (e)=>{
-      const {value} = e.target;
-      if(value==="export_pdf"){
-        exportToPDF();
-      }
-      if(value==="export_excel"){
-        exportToExcel();
-      }
-}
+  const handleExportData = (e) => {
+    const { value } = e.target;
+    if (value === "export_pdf") {
+      exportToPDF();
+    }
+    if (value === "export_excel") {
+      exportToExcel();
+    }
+  };
 
   return (
     <>
@@ -655,24 +660,63 @@ const handleExportData = (e)=>{
               <div className="col-md-7 col-lg-7">
                 <div className="tab-text-infra mb-1">View Data By</div>
 
-
                 <ul className="nav nav-tabs mul-tab-main">
-
                   <li className={`nav-item ${multiMgt}`}>
-                    <button type="button" className={`nav-link dark-active ${mgt}`} onClick={(e) => handleGroupButtonClick("School Management", e)}>School Management(Broad) </button>
-                    <button type="button" className={`nav-link dark-active details-multi ${mgt_Details}`} id="school_mgt_details" onClick={(e) => handleGroupButtonClick("Mgt Details", e)}>Datailed View</button>
+                    <button
+                      type="button"
+                      className={`nav-link dark-active ${mgt}`}
+                      onClick={(e) =>
+                        handleGroupButtonClick("School Management", e)
+                      }
+                    >
+                      School Management(Broad){" "}
+                    </button>
+                    <button
+                      type="button"
+                      className={`nav-link dark-active details-multi ${mgt_Details}`}
+                      id="school_mgt_details"
+                      onClick={(e) => handleGroupButtonClick("Mgt Details", e)}
+                    >
+                      Datailed View
+                    </button>
                   </li>
 
                   <li className={`nav-item ${multiCat}`}>
-                    <button type="button" className={`nav-link dark-active1 ${cat}`} onClick={(e) => handleGroupButtonClick("School Category", e)}>School Category(Broad)</button>
-                    <button type="button" className={`nav-link details-multi dark-active1 ${cat_Details}`} onClick={(e) => handleGroupButtonClick("Cat Details", e)}>Datailed View</button>
+                    <button
+                      type="button"
+                      className={`nav-link dark-active1 ${cat}`}
+                      onClick={(e) =>
+                        handleGroupButtonClick("School Category", e)
+                      }
+                    >
+                      School Category(Broad)
+                    </button>
+                    <button
+                      type="button"
+                      className={`nav-link details-multi dark-active1 ${cat_Details}`}
+                      onClick={(e) => handleGroupButtonClick("Cat Details", e)}
+                    >
+                      Datailed View
+                    </button>
                   </li>
 
                   <li className="nav-item">
-                    <button type="button" className={`nav-link ${sch_type}`} onClick={(e) => handleGroupButtonClick("School Type", e)}>School Type</button>
+                    <button
+                      type="button"
+                      className={`nav-link ${sch_type}`}
+                      onClick={(e) => handleGroupButtonClick("School Type", e)}
+                    >
+                      School Type
+                    </button>
                   </li>
                   <li className="nav-item">
-                    <button type="button" className={`nav-link ${ur}`} onClick={(e) => handleGroupButtonClick("Urban/Rural", e)}>Urban / Rural</button>
+                    <button
+                      type="button"
+                      className={`nav-link ${ur}`}
+                      onClick={(e) => handleGroupButtonClick("Urban/Rural", e)}
+                    >
+                      Urban / Rural
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -680,7 +724,7 @@ const handleExportData = (e)=>{
               {/* Customize Filter Start*/}
 
               {/* <div className="col-md-2 col-lg-2 text-right pt-1 pe-0"> */}
-                {/* <button
+              {/* <button
                 className="header-dropdown-btn customize-btn"
                 onClick={() => setShow(!show)}
               >
@@ -688,7 +732,7 @@ const handleExportData = (e)=>{
                 Customize
               </button> */}
 
-                {/* <div
+              {/* <div
                   className={`custmize-filter-column ${show ? "show" : ""}`}
                   id="customize_filter"
                 >
@@ -831,12 +875,17 @@ const handleExportData = (e)=>{
 
               <div className="col-md-2 col-lg-2">
                 <div className="select-infra button-group-filter">
-                  <div className="indicator-select">   
-                  <img src={Dropicon} alt="dropicon" className="dropicon" />                
-                    <select className="form-select bg-grey2" onChange={handleExportData}>
-                      <option value="" disabled selected>Download Report</option>
+                  <div className="indicator-select">
+                    <img src={Dropicon} alt="dropicon" className="dropicon" />
+                    <select
+                      className="form-select bg-grey2"
+                      onChange={handleExportData}
+                    >
+                      <option defaultValue={""}>
+                        Download Report
+                      </option>
                       <option value="export_pdf">Download as PDF </option>
-                      <option value="export_excel">Download as Excel</option>                     
+                      <option value="export_excel">Download as Excel</option>
                     </select>
                   </div>
                 </div>
@@ -928,14 +977,16 @@ const handleExportData = (e)=>{
                         groupDisplayType="custom"
                         groupHideOpenParents={true}
                         onColumnVisible={onColumnVisible}
-                      // pinnedBottomRowData={pinedBottomRowData}
+                        // pinnedBottomRowData={pinedBottomRowData}
                       />
                       <div className="row">
                         <div className="col-md-6">
                           <h6 className="pinnedData">Total</h6>
                         </div>
                         <div className="col-md-6 text-end">
-                          <h6 className="pinnedData">{calculateTotal('schHaveElectricity')}</h6>
+                          <h6 className="pinnedData">
+                            {calculateTotal("schHaveElectricity")}
+                          </h6>
                         </div>
                       </div>
                     </div>
