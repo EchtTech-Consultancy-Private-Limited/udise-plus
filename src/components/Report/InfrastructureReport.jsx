@@ -21,18 +21,19 @@ export default function Infrastructure({ id, report_name, type }) {
   const school_data = useSelector((state) => state.school);
   const schoolFilterYear = useSelector((state) => state?.schoolFilter);
   const schoolFilter = useSelector((state) => state.schoolFilter);
-  const local_state = window.localStorage.getItem("state");
+  const distBlockWiseData = useSelector((state)=>state.distBlockWise)
+  const local_state = window.localStorage.getItem("state_wise");
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
   const local_year = window.localStorage.getItem("year");
   const filterObj = structuredClone(schoolFilter);
   const [dispatchCount, setDispatchCount] = useState(1);
   const [report, setReport] = useState(null);
-  const grid_column = useSelector((state) => state?.column3016);
   const [gridApi, setGridApi] = useState();
   const [viewDataBy, setViewDataBy] = useState("");
   const [arrGroupedData, setArrGroupedData] = useState([]);
   const stateName = localStorage.getItem("state")
+
   const [groupKeys, setGroupKeys] = useState({
     schManagementDesc: false,
     schManagementBroad: false,
@@ -42,8 +43,6 @@ export default function Infrastructure({ id, report_name, type }) {
     schLocationDesc: false,
   });
 
-  const [mgtDetails, setMgtDetail] = useState(false);
-  const [catDetails, setCatDetail] = useState(false);
   const [mgt, setMgt] = useState("");
   const [mgt_Details, setMgtDetails] = useState("");
   const [cat, setCat] = useState("");
@@ -53,11 +52,10 @@ export default function Infrastructure({ id, report_name, type }) {
   const [multiMgt, setMultiMgt] = useState("");
   const [multiCat, setMultiCat] = useState("");
   const [data, setData] = useState([]);
-
   const filter_query =
     (filterObj.regionType === 21 && filterObj.regionCode === "11") ||
-    (filterObj.regionType === 22 && filterObj.regionCode === "02") ||
-    (filterObj.regionType === 23 && filterObj.regionCode === "0202");
+    (filterObj.regionType === 22 && filterObj.regionCode === distBlockWiseData.districtUdiseCode) ||
+    (filterObj.regionType === 23 && filterObj.regionCode === distBlockWiseData.blockUdiseCode);
 
   function calculateTotal(fieldName) {
     if (!school_data?.data?.data) return 0;
@@ -92,7 +90,7 @@ export default function Infrastructure({ id, report_name, type }) {
 
   useEffect(() => {
     const allFalse = Object.values(groupKeys).every((value) => value === false);
-    if (viewDataBy === "" && allFalse) {
+    if (allFalse) {
       schoolLocationRow();
     } else {
       handleCustomKeyInAPIResponse();
@@ -101,8 +99,9 @@ export default function Infrastructure({ id, report_name, type }) {
   }, [school_data?.data?.data]);
 
   useEffect(() => {
+    // console.log(groupKeys,' from use effect')
     const allFalse = Object.values(groupKeys).every((value) => value === false);
-    if (viewDataBy === "" && allFalse) {
+    if (allFalse) {
       schoolLocationRow();
     } else {
       handleCustomKeyInAPIResponse();
@@ -159,57 +158,58 @@ export default function Infrastructure({ id, report_name, type }) {
   });
 
   function onColumnVisible(event) {
-    const columnId = event?.column?.getColId();
-    const visible = event.visible;
-    if (columnId === "schManagementBroad") {
-      setGroupKeys((prev) => ({
-        ...prev,
-        schManagementBroad: visible,
-      }));
-      setMgt(() => (visible ? "active" : ""));
-      setMultiMgt(() => (visible ? "multibtn" : ""));
-    }
-    if (columnId === "schManagementDesc") {
-      setGroupKeys((prev) => ({
-        ...prev,
-        schManagementDesc: visible,
-      }));
-      setMgtDetails(() => (visible ? "active" : ""));
-      setMultiMgt(() => (visible ? "multibtn" : ""));
-    }
-
-    if (columnId === "schCategoryBroad") {
-      setGroupKeys((prev) => ({
-        ...prev,
-        schCategoryBroad: visible,
-      }));
-      setCat(() => (visible ? "active" : ""));
-      setMultiCat(() => (visible ? "multibtn" : ""));
-    }
-    if (columnId === "schCategoryDesc") {
-      setGroupKeys((prev) => ({
-        ...prev,
-        schCategoryDesc: visible,
-      }));
-      setCatDetails(() => (visible ? "active" : ""));
-      setMultiCat(() => (visible ? "multibtn" : ""));
-    }
-
-    if (columnId === "schTypeDesc") {
-      setGroupKeys((prev) => ({
-        ...prev,
-        schTypeDesc: visible,
-      }));
-      setSchType(() => (visible ? "active" : ""));
-    }
-
-    if (columnId === "schLocationDesc") {
-      setGroupKeys((prev) => ({
-        ...prev,
-        schLocationDesc: visible,
-      }));
-      setUR(() => (visible ? "active" : ""));
-    }
+      const columnId = event.column.getColId();
+      const visible = event.visible;
+      if (columnId === "schManagementBroad") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schManagementBroad: visible,
+        }));
+        setMgt(() => (visible ? "active" : ""));
+        setMultiMgt(() => (visible ? "multibtn" : ""));
+      }
+      if (columnId === "schManagementDesc") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schManagementDesc: visible,
+        }));
+        setMgtDetails(() => (visible ? "active" : ""));
+        setMultiMgt(() => (visible ? "multibtn" : ""));
+      }
+  
+      if (columnId === "schCategoryBroad") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schCategoryBroad: visible,
+        }));
+        setCat(() => (visible ? "active" : ""));
+        setMultiCat(() => (visible ? "multibtn" : ""));
+      }
+      if (columnId === "schCategoryDesc") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schCategoryDesc: visible,
+        }));
+        setCatDetails(() => (visible ? "active" : ""));
+        setMultiCat(() => (visible ? "multibtn" : ""));
+      }
+  
+      if (columnId === "schTypeDesc") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schTypeDesc: visible,
+        }));
+        setSchType(() => (visible ? "active" : ""));
+      }
+  
+      if (columnId === "schLocationDesc") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schLocationDesc: visible,
+        }));
+        setUR(() => (visible ? "active" : ""));
+      }
+     
   }
 
   const onGridReady = useCallback((params) => {
@@ -357,7 +357,7 @@ export default function Infrastructure({ id, report_name, type }) {
       }
     }
   };
-
+ 
   const handleGroupButtonClick = (e, currObj) => {
     handleFilter(e, currObj);
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
@@ -386,7 +386,7 @@ export default function Infrastructure({ id, report_name, type }) {
       (value) => value === false
     );
 
-    if (viewDataBy === "" && allFalse) {
+    if (allFalse) {
       schoolLocationRow();
     } else {
       handleCustomKeyInAPIResponse();
@@ -431,6 +431,7 @@ export default function Infrastructure({ id, report_name, type }) {
     const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
     if (primaryKeys.length > 0) {
       filter_query && primaryKeys.push("regionName");
+
       const groupedData = groupByKey(data, primaryKeys);
       const updatedArrGroupedData = [];
 
@@ -457,7 +458,7 @@ export default function Infrastructure({ id, report_name, type }) {
 
         setArrGroupedData(updatedArrGroupedData);
       }
-
+      console.log(groupKeys,' group keys')
       gridApi?.columnApi?.api.setColumnVisible(
         "schManagementBroad",
         groupKeys.schManagementBroad
