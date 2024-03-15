@@ -21,6 +21,7 @@ export default function Infrastructure({ id, report_name, type }) {
   const school_data = useSelector((state) => state.school);
   const schoolFilterYear = useSelector((state) => state?.schoolFilter);
   const schoolFilter = useSelector((state) => state.schoolFilter);
+  const distBlockWiseData = useSelector((state)=>state.distBlockWise)
   const local_state = window.localStorage.getItem("state");
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
@@ -42,8 +43,6 @@ export default function Infrastructure({ id, report_name, type }) {
     schLocationDesc: false,
   });
 
-  const [mgtDetails, setMgtDetail] = useState(false);
-  const [catDetails, setCatDetail] = useState(false);
   const [mgt, setMgt] = useState("");
   const [mgt_Details, setMgtDetails] = useState("");
   const [cat, setCat] = useState("");
@@ -55,8 +54,8 @@ export default function Infrastructure({ id, report_name, type }) {
   const [data, setData] = useState([]);
   const filter_query =
     (filterObj.regionType === 21 && filterObj.regionCode === "11") ||
-    (filterObj.regionType === 22 && filterObj.regionCode === "02") ||
-    (filterObj.regionType === 23 && filterObj.regionCode === "0202");
+    (filterObj.regionType === 22 && filterObj.regionCode === distBlockWiseData.districtUdiseCode) ||
+    (filterObj.regionType === 23 && filterObj.regionCode === distBlockWiseData.blockUdiseCode);
 
   function calculateTotal(fieldName) {
     if (!school_data?.data?.data) return 0;
@@ -91,7 +90,7 @@ export default function Infrastructure({ id, report_name, type }) {
 
   useEffect(() => {
     const allFalse = Object.values(groupKeys).every((value) => value === false);
-    if (viewDataBy === "" && allFalse) {
+    if (allFalse) {
       schoolLocationRow();
     } else {
       handleCustomKeyInAPIResponse();
@@ -100,15 +99,15 @@ export default function Infrastructure({ id, report_name, type }) {
   }, [school_data?.data?.data]);
 
   useEffect(() => {
-    console.log(groupKeys,' from use effect')
+    // console.log(groupKeys,' from use effect')
     const allFalse = Object.values(groupKeys).every((value) => value === false);
-    if (viewDataBy === "" && allFalse) {
+    if (allFalse) {
       schoolLocationRow();
     } else {
       handleCustomKeyInAPIResponse();
       multiGroupingRows();
     }
-  }, [groupKeys,viewDataBy]);
+  }, [groupKeys]);
 
   useEffect(() => {
     multiGroupingRows();
@@ -383,12 +382,11 @@ export default function Infrastructure({ id, report_name, type }) {
     }
 
     setGroupKeys(updatedGroupKeys);
-    console.log(updatedGroupKeys,' updated group keys')
     const allFalse = Object.values(updatedGroupKeys).every(
       (value) => value === false
     );
 
-    if (viewDataBy === "" && allFalse) {
+    if (allFalse) {
       schoolLocationRow();
     } else {
       handleCustomKeyInAPIResponse();
@@ -460,6 +458,7 @@ export default function Infrastructure({ id, report_name, type }) {
 
         setArrGroupedData(updatedArrGroupedData);
       }
+      console.log(groupKeys,' group keys')
       gridApi?.columnApi?.api.setColumnVisible(
         "schManagementBroad",
         groupKeys.schManagementBroad

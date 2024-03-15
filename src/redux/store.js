@@ -12,6 +12,7 @@ import dataGridAPISlice from "./slice/dataGridAPISlice";
 import dashboardSlice from "./slice/dashboardSlice";
 import dashboardFilterSlice from "./slice/dashboardFilter.slice";
 import Column3016Slice from "./slice/Column3016Slice";
+import DistBlockWiseSlice from "./slice/DistBlockWiseSlice";
 const store = configureStore({
     reducer:{
         header:headerSlice,
@@ -26,7 +27,8 @@ const store = configureStore({
         column3016:Column3016Slice,
         testschoolFilter:testschoolFilterSlice,
         dashboard:dashboardSlice,
-        dashboardFilter: dashboardFilterSlice
+        dashboardFilter: dashboardFilterSlice,
+        distBlockWise:DistBlockWiseSlice
         
     }
   });
