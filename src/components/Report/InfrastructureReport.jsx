@@ -678,7 +678,7 @@ export default function Infrastructure({ id, report_name, type }) {
                       id="school_mgt_details"
                       onClick={(e) => handleGroupButtonClick("Mgt Details", e)}
                     >
-                      Datailed View
+                      Detailed View
                     </button>
                   </li>
 
@@ -697,7 +697,7 @@ export default function Infrastructure({ id, report_name, type }) {
                       className={`nav-link details-multi dark-active1 ${cat_Details}`}
                       onClick={(e) => handleGroupButtonClick("Cat Details", e)}
                     >
-                      Datailed View
+                      Detailed View
                     </button>
                   </li>
 
