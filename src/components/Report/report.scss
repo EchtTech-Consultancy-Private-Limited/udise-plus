@@ -1,5 +1,20 @@
 .infrastructure-main-card {
     padding-bottom: 70px;
+    position: relative;
+
+.header-bar{
+    position: relative;
+    .box-circle-r {
+        height: 100%;
+        width: 260px;
+        background: #eff0f0;
+        position: absolute;
+        right: -7%;
+        top: 0;
+        border-radius: 100%;
+    }
+
+}
 
     .tab-for-graph {
 
@@ -455,7 +470,7 @@ button.scroll-right-btn .material-icons-round {
     border: 0;
     font-size: 16px;
     appearance: auto;
-    padding: 10px 25px;
+    padding: 10px 15px;
     border-right: 12px solid transparent;
 
     option {
@@ -479,6 +494,39 @@ img.dropicon {
 
 .ag-row-animation .ag-row:nth-child(even){background:#F4F4F4;}
 
+
+.table-text-i button#uncontrolled-tab-example-tab-table{
+ display: flex;
+ align-items: center;
+&:before {
+    content: "";
+    background: url('../../assets/images/table_cells.png');
+    width: 15px;
+    height: 15px;
+    background-size: cover;
+    display: block;
+    margin-right: 6px;
+}}
+
+.option-hide{height: 0px !important; font-size: 0px !important;}
+.right-devider-icon {
+    background: #FAFCFF;
+    position: absolute;
+    bottom: -5%;
+    left: 0;
+    // width: 300px;
+    // height: 300px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 2;
+    padding: 25px;
+    display: none;
+
+    img.icon-infra {
+        opacity: .5;
+    }
+}
 #webpack-dev-server-client-overlay-div{
     display: none;
 }

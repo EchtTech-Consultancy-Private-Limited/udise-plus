@@ -19,7 +19,7 @@ import autoTable from 'jspdf-autotable'
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { ScrollToTopOnMount } from "../Scroll/ScrollToTopOnMount";
-import Dropicon from "../../assets/images/drop-icon.svg";
+import Infraicon from "../../assets/images/infra-power.svg";
 import useCheckError from "../hooks/useCheckError";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -50,49 +50,49 @@ export default function Infrastructure3013() {
   const [dispatchCount, setDispatchCount] = useState(1);
   const stateName = localStorage.getItem("state")
   const [arrGroupedData, setArrGroupedData] = useState([]);
-  const [groupKeys,setGroupKeys] = useState({schManagementDesc:true,schCategoryDesc:true,schTypeDesc:true,schLocationDesc:true});
- 
+  const [groupKeys, setGroupKeys] = useState({ schManagementDesc: true, schCategoryDesc: true, schTypeDesc: true, schLocationDesc: true });
+
 
   const filter_query = (filterObj.regionType === 21 && filterObj.regionCode === "11") || (filterObj.regionType === 22 && filterObj.regionCode === "02") || (filterObj.regionType === 23 && filterObj.regionCode === "0202");
-  
 
-  
+
+
   const [columns, setCol] = useState([
     {
       headerName: "Location",
       field: "regionName",
       suppressColumnsToolPanel: true,
-      
+
     },
     {
       headerName: "Rural/Urban",
       field: "schLocationDesc",
       suppressColumnsToolPanel: true,
-      showRowGroup:"schLocationDesc",
-      cellRenderer:"agGroupCellRenderer"
+      showRowGroup: "schLocationDesc",
+      cellRenderer: "agGroupCellRenderer"
     },
     {
       headerName: "School Category",
       minWidth: 140,
       field: "schCategoryDesc",
       suppressColumnsToolPanel: true,
-      showRowGroup:"schCategoryDesc",
-      cellRenderer:"agGroupCellRenderer"
+      showRowGroup: "schCategoryDesc",
+      cellRenderer: "agGroupCellRenderer"
     },
     {
       headerName: "School Management",
       minWidth: 170,
       field: "schManagementDesc",
       suppressColumnsToolPanel: true,
-      showRowGroup:"schManagementDesc",
-      cellRenderer:"agGroupCellRenderer"
+      showRowGroup: "schManagementDesc",
+      cellRenderer: "agGroupCellRenderer"
     },
     {
       headerName: "School Type",
       field: "schTypeDesc",
       minWidth: 85,
-      showRowGroup:"schTypeDesc",
-      cellRenderer:"agGroupCellRenderer"
+      showRowGroup: "schTypeDesc",
+      cellRenderer: "agGroupCellRenderer"
     },
     {
       headerName: "Total No. of Schools", minWidth: 100, field: "totalSchools"
@@ -199,26 +199,26 @@ export default function Infrastructure3013() {
     },
   ];
 
-  useEffect(()=>{
+  useEffect(() => {
     const allFalse = Object.values(groupKeys).every(value => value === false);
-    if(viewDataBy==="" && allFalse){
+    if (viewDataBy === "" && allFalse) {
       schoolLocationRow();
-    }else{
+    } else {
       multiGroupingRows();
     }
 
-   
-},[school_data]);
+
+  }, [school_data]);
 
 
-useEffect(()=>{
-  multiGroupingRows();
-},[groupKeys])
+  useEffect(() => {
+    multiGroupingRows();
+  }, [groupKeys])
   function calculateTotal(fieldName) {
     if (!school_data?.data?.data) return 0;
     return school_data.data.data.reduce((total, row) => total + parseFloat(row[fieldName] || 0), 0);
   }
-function onColumnVisible(event) {
+  function onColumnVisible(event) {
     const columnId = event?.column?.getColId();
     const visible = event.visible;
     if (columnId === "schManagementDesc") {
@@ -227,23 +227,23 @@ function onColumnVisible(event) {
         ...prev,
         schManagementDesc: visible
       }));
-     
-    } 
+
+    }
     else if (columnId === "schTypeDesc") {
       setGroupKeys(prev => ({
         ...prev,
         schTypeDesc: visible
       }));
-     
+
     }
     else if (columnId === "schCategoryDesc") {
       setGroupKeys(prev => ({
         ...prev,
         schCategoryDesc: visible
       }));
-    
 
-    }  else if (columnId === "schLocationDesc") {
+
+    } else if (columnId === "schLocationDesc") {
       setGroupKeys(prev => ({
         ...prev,
         schLocationDesc: visible
@@ -335,12 +335,12 @@ function onColumnVisible(event) {
     const columns = gridApi.api.getAllDisplayedColumns();
 
     return columns.map((column) => {
-      const { field,headerName } = column.getColDef();
+      const { field, headerName } = column.getColDef();
       const sort = column.getSort();
       const headerNameUppercase = field[0].toUpperCase() + field.slice(1);
       const headerCell = {
         text: headerNameUppercase + (sort ? ` (${sort})` : ""),
-        headerName:headerName,
+        headerName: headerName,
         bold: true,
         margin: [0, 12, 0, 0],
       };
@@ -360,7 +360,7 @@ function onColumnVisible(event) {
         getCellToExport(column, node)
       );
       rowsToExport.push(rowToExport);
-    }); 
+    });
 
     return rowsToExport;
   };
@@ -372,22 +372,22 @@ function onColumnVisible(event) {
     const headerRow = getHeaderToExport(gridApi);
     const rows = getRowsToExport(gridApi);
     const date = new Date();
-const formattedDate = new Intl.DateTimeFormat('en-US', { 
-    year: 'numeric', 
-    month: 'short', 
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
-}).format(date);
-   
+    const formattedDate = new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    }).format(date);
+
     // Initialize jsPDF document
     const doc = new jsPDF({
       orientation: "landscape",
       unit: "in",
       format: [60, 60]
     });
-  
+
     // Function to add header
     const addHeader = () => {
       doc.setFontSize(25);
@@ -396,19 +396,19 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
       doc.text("UDISE+", 0.6, 1);
       doc.setFontSize(20);
       doc.setTextColor("blue");
-      doc.text("Number of Schools by Availability of Infrastructure and Facilities, School Management and School Category", 0.6, 1.4,{ fontSize: 12, color: "red" });
+      doc.text("Number of Schools by Availability of Infrastructure and Facilities, School Management and School Category", 0.6, 1.4, { fontSize: 12, color: "red" });
       doc.setFontSize(20);
       doc.setTextColor("blue");
-      doc.text(`Report type : ${stateName}`, 0.6, 1.8,{ fontSize: 12, color: "red" });
+      doc.text(`Report type : ${stateName}`, 0.6, 1.8, { fontSize: 12, color: "red" });
       doc.setFontSize(25);
       doc.setTextColor("blue");
       doc.setFont("bold");
-      doc.text(`Report Id : ${id}` , doc.internal.pageSize.width - 1, 1,{ align: 'right' });
-      doc.text(`Academic Year : ${local_year}` , doc.internal.pageSize.width - 1, 1.8,{ align: 'right' });
+      doc.text(`Report Id : ${id}`, doc.internal.pageSize.width - 1, 1, { align: 'right' });
+      doc.text(`Academic Year : ${local_year}`, doc.internal.pageSize.width - 1, 1.8, { align: 'right' });
       doc.setFontSize(20);
-      doc.text(`Report generated on : ${formattedDate}` , doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.2, { align: 'right' });
+      doc.text(`Report generated on : ${formattedDate}`, doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.2, { align: 'right' });
     };
-   
+
     // Function to add footer
     const addFooter = () => {
       const pageCount = doc.internal.getNumberOfPages();
@@ -425,7 +425,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
       table.push(row.map(cell => cell.text));
     });
 
-    addHeader(); 
+    addHeader();
 
     doc.autoTable({
       head: [table[0]],
@@ -437,11 +437,11 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
     const totalPages = doc.internal.getNumberOfPages();
     for (let i = 0; i < totalPages; i++) {
       doc.setPage(i + 1);
-     
+
     }
 
     return doc;
-};
+  };
 
   const exportToPDF = () => {
     const doc = getDocument(gridApi);
@@ -463,15 +463,15 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 
   const handleGroupButtonClick = (e) => {
 
-    const groupObj = { "School Category": "schCategoryDesc", "School Management": "schManagementDesc", "Urban/Rural": "schLocationDesc","School Type":"schTypeDesc" }
+    const groupObj = { "School Category": "schCategoryDesc", "School Management": "schManagementDesc", "Urban/Rural": "schLocationDesc", "School Type": "schTypeDesc" }
 
     const groupByColumn = groupObj[e];
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
     setCol((prevDefs) =>
-      prevDefs.map((colDef,idx) => ({
+      prevDefs.map((colDef, idx) => ({
         ...colDef,
         rowGroup: viewDataBy === e ? false : colDef.field === groupByColumn,
-        
+
       }))
     );
 
@@ -532,74 +532,74 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 
       const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
       const updatedArrGroupedData = [];
-      
-    
-        if (groupedData && typeof groupedData === "object") {
-            Object.keys(groupedData).forEach(item => {
-                const itemsArray = groupedData[item];
-                let regionName = "";
-                const totals = {
-                    totalSchools: 0,
-                    schHaveElectricity: 0,
-                    schHaveSeparateRoomForHM: 0,
-                    schHaveLandForExpansion: 0,
-                    schHaveFuncElectricity: 0,
-                    schHaveSolarPanels: 0,
-                    schHavePlayground:0,
-                    schHaveLibrary:0,
-                    schHaveLibrarian:0,
-                    schHaveNewsPaperSubscription:0,
-                    schHaveKitchenGarden:0,
-                    schHaveFurnitureForStudents:0,
-                    schHaveBoysToilet:0,
-                    schHaveFuncBoysToilet:0,
-                    schHaveGirlsToilet:0,
-                    schHaveFuncGirlsToilet:0,
-                    schHaveToilet:0,
-                    schHaveFuncToilet:0,
-                    schHaveFuncBoysUrinals:0,
-                    schHaveFuncUrinals:0,
-                    schHaveFuncGirlsUrinals:0,
-                    schHaveDrinkWater:0,
-                    schHaveFuncDrinkWater:0,
-                    schHaveWaterPurifier:0,
-                    schHaveRainWaterHarvesting:0,
-                    schHaveTestedWater:0,
-                    schHaveHandwashWithSoapForToilets:0,
-                    schHaveIncineratorInGirlsToilets:0,
-                    schHaveHandwashWithSoapBeforeAfterMeal:0,
-                    schHaveRamps:0,
-                    schHaveHandRails:0,
-                    schHaveMedicalCheckup:0,
-                    schHaveCompleteMedicalCheckup:0,
-                    schHaveInternet:0,
-                    schHaveComputers:0
 
-                    
-                };
 
-                itemsArray.forEach(dataItem => {
-                    regionName = dataItem.regionName;
-                    for (const field of Object.keys(totals)) {
-                        if (dataItem.hasOwnProperty(field)) {
-                            totals[field] += parseInt(dataItem[field]);
-                           
-                        }
-                    }
-                  
-                });
+      if (groupedData && typeof groupedData === "object") {
+        Object.keys(groupedData).forEach(item => {
+          const itemsArray = groupedData[item];
+          let regionName = "";
+          const totals = {
+            totalSchools: 0,
+            schHaveElectricity: 0,
+            schHaveSeparateRoomForHM: 0,
+            schHaveLandForExpansion: 0,
+            schHaveFuncElectricity: 0,
+            schHaveSolarPanels: 0,
+            schHavePlayground: 0,
+            schHaveLibrary: 0,
+            schHaveLibrarian: 0,
+            schHaveNewsPaperSubscription: 0,
+            schHaveKitchenGarden: 0,
+            schHaveFurnitureForStudents: 0,
+            schHaveBoysToilet: 0,
+            schHaveFuncBoysToilet: 0,
+            schHaveGirlsToilet: 0,
+            schHaveFuncGirlsToilet: 0,
+            schHaveToilet: 0,
+            schHaveFuncToilet: 0,
+            schHaveFuncBoysUrinals: 0,
+            schHaveFuncUrinals: 0,
+            schHaveFuncGirlsUrinals: 0,
+            schHaveDrinkWater: 0,
+            schHaveFuncDrinkWater: 0,
+            schHaveWaterPurifier: 0,
+            schHaveRainWaterHarvesting: 0,
+            schHaveTestedWater: 0,
+            schHaveHandwashWithSoapForToilets: 0,
+            schHaveIncineratorInGirlsToilets: 0,
+            schHaveHandwashWithSoapBeforeAfterMeal: 0,
+            schHaveRamps: 0,
+            schHaveHandRails: 0,
+            schHaveMedicalCheckup: 0,
+            schHaveCompleteMedicalCheckup: 0,
+            schHaveInternet: 0,
+            schHaveComputers: 0
 
-                const appended = { regionName };
-                primaryKeys.forEach((key, index) => {
-                    appended[key] = item.split("@")[index];
-                });
-                Object.assign(appended, totals);
-                updatedArrGroupedData.push(appended);
-            });
 
-            setArrGroupedData(updatedArrGroupedData);
-        }
-      
+          };
+
+          itemsArray.forEach(dataItem => {
+            regionName = dataItem.regionName;
+            for (const field of Object.keys(totals)) {
+              if (dataItem.hasOwnProperty(field)) {
+                totals[field] += parseInt(dataItem[field]);
+
+              }
+            }
+
+          });
+
+          const appended = { regionName };
+          primaryKeys.forEach((key, index) => {
+            appended[key] = item.split("@")[index];
+          });
+          Object.assign(appended, totals);
+          updatedArrGroupedData.push(appended);
+        });
+
+        setArrGroupedData(updatedArrGroupedData);
+      }
+
       gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", groupKeys.schManagementDesc);
       gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", groupKeys.schCategoryDesc);
       gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", groupKeys.schTypeDesc);
@@ -612,7 +612,8 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
       {school_data.isLoading && <GlobalLoading />}
       <ScrollToTopOnMount />
       <section className="infrastructure-main-card p-0" id="content">
-        <div className="bg-grey2 ptb-30">
+        <div className="bg-grey2 ptb-30 header-bar">
+          <div className="box-circle-r"></div>
           <div className="container tab-for-graph">
             <div className="row align-items-center">
               <div className="col-md-6 col-lg-6">
@@ -663,7 +664,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
                       className="form-select bg-grey2"
                       onChange={handleExportData}
                     >
-                      <option defaultValue={""}>
+                      <option defaultValue={""} className="option-hide">
                         Download Report
                       </option>
                       <option value="export_pdf">Download as PDF </option>
@@ -771,9 +772,9 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
                         groupHideOpenParents={true}
                         onColumnVisible={onColumnVisible}
                       />
-                           
-                       
-                      
+
+
+
                       {/* <button onClick={() => scrollToLeft()}>Scroll to Left</button> */}
                     </div>
                   </Tab>
@@ -785,6 +786,11 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
         </div>
         <FilterDropdown />
       </section>
+
+      <div className="right-devider-icon">
+        <img src={Infraicon} alt="icon" className="icon-infra" />
+      </div>
+
     </>
   );
 }

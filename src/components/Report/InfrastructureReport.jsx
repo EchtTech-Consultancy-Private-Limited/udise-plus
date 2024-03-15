@@ -12,7 +12,7 @@ import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import groupByKey from "../../utils/groupBy";
-import Dropicon from "../../assets/images/drop-icon.svg";
+import Infraicon from "../../assets/images/infra-power.svg";
 import { jsPDF } from "jspdf";
 
 export default function Infrastructure({ id, report_name, type }) {
@@ -645,7 +645,8 @@ export default function Infrastructure({ id, report_name, type }) {
     <>
       <ScrollToTopOnMount />
       <section className="infrastructure-main-card p-0" id="content">
-        <div className="bg-grey2 ptb-30">
+        <div className="bg-grey2 ptb-30 header-bar">
+          <div className="box-circle-r"></div>
           <div className="container tab-for-graph">
             <div className="row align-items-center">
               <div className="col-md-5 col-lg-5">
@@ -688,8 +689,7 @@ export default function Infrastructure({ id, report_name, type }) {
                       className={`nav-link dark-active1 ${cat}`}
                       onClick={(e) =>
                         handleGroupButtonClick("School Category", e)
-                      }
-                    >
+                      }>
                       School Category(Broad)
                     </button>
                     <button
@@ -883,7 +883,7 @@ export default function Infrastructure({ id, report_name, type }) {
                       className="form-select bg-grey2"
                       onChange={handleExportData}
                     >
-                      <option defaultValue={""}>
+                      <option defaultValue={""} disabled selected className="option-hide">
                         Download Report
                       </option>
 
@@ -922,7 +922,7 @@ export default function Infrastructure({ id, report_name, type }) {
                   <span>{local_year}</span>
                 </h4>
               </div>
-              <div className="col-md-12 col-lg-12">
+              <div className="col-md-12 col-lg-12 table-text-i">
                 <Tabs
                   defaultActiveKey={type}
                   id="uncontrolled-tab-example"
@@ -967,9 +967,9 @@ export default function Infrastructure({ id, report_name, type }) {
                       </p>
                     </div>
                   </Tab>
-                  <Tab eventKey="table" title="Table">
+                  <Tab eventKey="table" title="Table" className="tabledata-ukkl">
                     <div
-                      className="ag-theme-material ag-theme-custom-height ag-theme-quartz"
+                      className="ag-theme-material ag-theme-custom-height ag-theme-quartz h-300"
                       style={{ height: 450 }}
                     >
                       <AgGridReact
@@ -1000,7 +1000,12 @@ export default function Infrastructure({ id, report_name, type }) {
             </div>
           </div>
         </div>
+        {/* devider */}
+        <div className="right-devider-icon">
+        <img src={Infraicon} alt="icon" className="icon-infra" />
+      </div>
       </section>
+     
     </>
   );
 }
