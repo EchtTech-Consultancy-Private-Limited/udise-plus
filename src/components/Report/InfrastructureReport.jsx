@@ -28,11 +28,11 @@ export default function Infrastructure({ id, report_name, type }) {
   const filterObj = structuredClone(schoolFilter);
   const [dispatchCount, setDispatchCount] = useState(1);
   const [report, setReport] = useState(null);
-  const grid_column = useSelector((state) => state?.column3016);
   const [gridApi, setGridApi] = useState();
   const [viewDataBy, setViewDataBy] = useState("");
   const [arrGroupedData, setArrGroupedData] = useState([]);
   const stateName = localStorage.getItem("state")
+
   const [groupKeys, setGroupKeys] = useState({
     schManagementDesc: false,
     schManagementBroad: false,
@@ -53,7 +53,6 @@ export default function Infrastructure({ id, report_name, type }) {
   const [multiMgt, setMultiMgt] = useState("");
   const [multiCat, setMultiCat] = useState("");
   const [data, setData] = useState([]);
-
   const filter_query =
     (filterObj.regionType === 21 && filterObj.regionCode === "11") ||
     (filterObj.regionType === 22 && filterObj.regionCode === "02") ||
@@ -101,6 +100,7 @@ export default function Infrastructure({ id, report_name, type }) {
   }, [school_data?.data?.data]);
 
   useEffect(() => {
+    console.log(groupKeys,' from use effect')
     const allFalse = Object.values(groupKeys).every((value) => value === false);
     if (viewDataBy === "" && allFalse) {
       schoolLocationRow();
@@ -108,7 +108,7 @@ export default function Infrastructure({ id, report_name, type }) {
       handleCustomKeyInAPIResponse();
       multiGroupingRows();
     }
-  }, [groupKeys]);
+  }, [groupKeys,viewDataBy]);
 
   useEffect(() => {
     multiGroupingRows();
@@ -159,57 +159,58 @@ export default function Infrastructure({ id, report_name, type }) {
   });
 
   function onColumnVisible(event) {
-    const columnId = event?.column?.getColId();
-    const visible = event.visible;
-    if (columnId === "schManagementBroad") {
-      setGroupKeys((prev) => ({
-        ...prev,
-        schManagementBroad: visible,
-      }));
-      setMgt(() => (visible ? "active" : ""));
-      setMultiMgt(() => (visible ? "multibtn" : ""));
-    }
-    if (columnId === "schManagementDesc") {
-      setGroupKeys((prev) => ({
-        ...prev,
-        schManagementDesc: visible,
-      }));
-      setMgtDetails(() => (visible ? "active" : ""));
-      setMultiMgt(() => (visible ? "multibtn" : ""));
-    }
-
-    if (columnId === "schCategoryBroad") {
-      setGroupKeys((prev) => ({
-        ...prev,
-        schCategoryBroad: visible,
-      }));
-      setCat(() => (visible ? "active" : ""));
-      setMultiCat(() => (visible ? "multibtn" : ""));
-    }
-    if (columnId === "schCategoryDesc") {
-      setGroupKeys((prev) => ({
-        ...prev,
-        schCategoryDesc: visible,
-      }));
-      setCatDetails(() => (visible ? "active" : ""));
-      setMultiCat(() => (visible ? "multibtn" : ""));
-    }
-
-    if (columnId === "schTypeDesc") {
-      setGroupKeys((prev) => ({
-        ...prev,
-        schTypeDesc: visible,
-      }));
-      setSchType(() => (visible ? "active" : ""));
-    }
-
-    if (columnId === "schLocationDesc") {
-      setGroupKeys((prev) => ({
-        ...prev,
-        schLocationDesc: visible,
-      }));
-      setUR(() => (visible ? "active" : ""));
-    }
+      const columnId = event.column.getColId();
+      const visible = event.visible;
+      if (columnId === "schManagementBroad") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schManagementBroad: visible,
+        }));
+        setMgt(() => (visible ? "active" : ""));
+        setMultiMgt(() => (visible ? "multibtn" : ""));
+      }
+      if (columnId === "schManagementDesc") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schManagementDesc: visible,
+        }));
+        setMgtDetails(() => (visible ? "active" : ""));
+        setMultiMgt(() => (visible ? "multibtn" : ""));
+      }
+  
+      if (columnId === "schCategoryBroad") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schCategoryBroad: visible,
+        }));
+        setCat(() => (visible ? "active" : ""));
+        setMultiCat(() => (visible ? "multibtn" : ""));
+      }
+      if (columnId === "schCategoryDesc") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schCategoryDesc: visible,
+        }));
+        setCatDetails(() => (visible ? "active" : ""));
+        setMultiCat(() => (visible ? "multibtn" : ""));
+      }
+  
+      if (columnId === "schTypeDesc") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schTypeDesc: visible,
+        }));
+        setSchType(() => (visible ? "active" : ""));
+      }
+  
+      if (columnId === "schLocationDesc") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schLocationDesc: visible,
+        }));
+        setUR(() => (visible ? "active" : ""));
+      }
+     
   }
 
   const onGridReady = useCallback((params) => {
@@ -357,7 +358,7 @@ export default function Infrastructure({ id, report_name, type }) {
       }
     }
   };
-
+ 
   const handleGroupButtonClick = (e, currObj) => {
     handleFilter(e, currObj);
     setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
@@ -382,6 +383,7 @@ export default function Infrastructure({ id, report_name, type }) {
     }
 
     setGroupKeys(updatedGroupKeys);
+    console.log(updatedGroupKeys,' updated group keys')
     const allFalse = Object.values(updatedGroupKeys).every(
       (value) => value === false
     );
@@ -431,6 +433,7 @@ export default function Infrastructure({ id, report_name, type }) {
     const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
     if (primaryKeys.length > 0) {
       filter_query && primaryKeys.push("regionName");
+
       const groupedData = groupByKey(data, primaryKeys);
       const updatedArrGroupedData = [];
 
@@ -457,7 +460,6 @@ export default function Infrastructure({ id, report_name, type }) {
 
         setArrGroupedData(updatedArrGroupedData);
       }
-
       gridApi?.columnApi?.api.setColumnVisible(
         "schManagementBroad",
         groupKeys.schManagementBroad

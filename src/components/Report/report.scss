@@ -457,3 +457,7 @@ img.dropicon {
 .ag-ltr .ag-cell{border-right: transparent !important;}
 
 .ag-row-animation .ag-row:nth-child(even){background:#F4F4F4;}
+
+#webpack-dev-server-client-overlay-div{
+    display: none;
+}
