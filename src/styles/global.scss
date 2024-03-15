@@ -1079,9 +1079,24 @@ ul {
         padding: 10px 20px;
     }
 
+    .header-bar{
+        .box-circle-r {      
+            right: -9% !important;
+        }
+    
+    }
+
 }
 
 @media (max-width:1399px) and (min-width: 1024px) {
+
+    .header-bar{
+        .box-circle-r {      
+            right: -12% !important;
+        }
+    
+    }
+
     .select-infra.button-group-filter select.form-select{
         font-size: 12px !important;
         padding: 10px 10px;
@@ -1354,7 +1369,9 @@ ul {
         transition: all 0.3s ease-out;
     }
     .filter_drodown .filter-content{padding: 10px;}
-    
+
+
+   
     
 
 }
