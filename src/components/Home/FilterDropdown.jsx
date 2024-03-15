@@ -48,6 +48,7 @@ export default function FilterDropdown() {
   const blockData = useSelector((state) => state.block);
   const blockDataClone = useSelector((state) => state.block.dataClone);
   const [selectedState, setSelectedState] = useState(nationalWiseName);
+  const [selectedStateW, setSelectedStateW] = useState("State Wise");
   const [selectedDistrict, setSelectedDistrict] = useState(district);
   const [selectedDistrictclone, setSelectedDistrictClone] = useState(district);
   const [selectedYear, setSelectedYear] = useState(selectedDYear);
@@ -59,6 +60,7 @@ export default function FilterDropdown() {
   const districtSearch = districtDataClone;
   const blockSearch = blockDataClone;
   window.localStorage.setItem("state", selectedState);
+  window.localStorage.setItem("state_wise", selectedStateW);
   window.localStorage.setItem("district", selectedDistrict);
   window.localStorage.setItem("block", selectedBlock);
   window.localStorage.setItem("year", selectedYear);
@@ -84,6 +86,7 @@ export default function FilterDropdown() {
   };
   const handleSchoolFilterState = (state_code, state_name) => {
     setSelectedState(state_name);
+    setSelectedStateW(state_name);
     setSelectedDistrict(district);
     
     setSelectedBlock(block);

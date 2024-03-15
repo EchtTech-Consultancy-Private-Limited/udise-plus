@@ -22,7 +22,7 @@ export default function Infrastructure({ id, report_name, type }) {
   const schoolFilterYear = useSelector((state) => state?.schoolFilter);
   const schoolFilter = useSelector((state) => state.schoolFilter);
   const distBlockWiseData = useSelector((state)=>state.distBlockWise)
-  const local_state = window.localStorage.getItem("state");
+  const local_state = window.localStorage.getItem("state_wise");
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
   const local_year = window.localStorage.getItem("year");

@@ -3,6 +3,7 @@ export const filterItemsYearPerPage = 4;
 
 export const urls = ['/all-reports', '/school-reports', '/teacher-reports', '/infrastructure-reports3013'];
 
+// export const nationalWiseName = "All India/National";
 export const nationalWiseName = "All India/National";
 export const stateWiseName = "State Wise";
 export const districtWiseName = "District Wise"
