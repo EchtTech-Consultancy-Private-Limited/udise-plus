@@ -15,7 +15,7 @@ import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { jsPDF } from "jspdf";
-import autoTable from 'jspdf-autotable'
+import autoTable from "jspdf-autotable";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { ScrollToTopOnMount } from "../Scroll/ScrollToTopOnMount";
@@ -24,18 +24,12 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default function Infrastructure3013() {
   const [gridApi, setGridApi] = useState();
-  const { handleSchoolAPIResopnse } = useCheckError();
+ 
   const [report, setReport] = useState(null);
-  const [viewDataBy, setViewDataBy] = useState('');
-  const location = useLocation();
+  const [viewDataBy, setViewDataBy] = useState("");
+ 
   const grid_column = useSelector((state) => state?.column?.column);
   const [queryParameters] = useSearchParams();
-  const id = queryParameters.get("id");
-  const type = queryParameters.get("type");
-  const schoolFilterYear = useSelector((state) => state?.schoolFilter);
-  //const schoolFilterYear = useSelector((state) => state?.testschoolFilter);
-  const [filterShowHide, setFilterShowHide] = useState(false);
-  const dispatch = useDispatch();
   const school_data = useSelector((state) => state?.school);
   const local_state = window.localStorage.getItem("state");
   const local_district = window.localStorage.getItem("district");
@@ -47,205 +41,243 @@ export default function Infrastructure3013() {
   const schoolFilter = useSelector((state) => state.schoolFilter);
   const filterObj = structuredClone(schoolFilter);
   const [dispatchCount, setDispatchCount] = useState(1);
-  const stateName = localStorage.getItem("state")
+  const stateName = localStorage.getItem("state");
   const [arrGroupedData, setArrGroupedData] = useState([]);
-  const [groupKeys,setGroupKeys] = useState({schManagementDesc:true,schCategoryDesc:true,schTypeDesc:true,schLocationDesc:true});
+  
+  const [sch_type, setSchType] = useState("");
+  const [sch_cat, setSchCat] = useState("");
+  const [sch_mgt, setSchMgt] = useState("");
+  const [ur, setUR] = useState("");
  
+  const [groupKeys, setGroupKeys] = useState({
+    schManagementDesc: true,
+    schCategoryDesc: true,
+    schTypeDesc: true,
+    schLocationDesc: true,
+  });
+  const [groupsKeys, setGroupsKeys] = useState({
+    schManagementDesc: false,
+    schCategoryDesc: false,
+    schTypeDesc: false,
+    schLocationDesc: false,
+  });
 
-  const filter_query = (filterObj.regionType === 21 && filterObj.regionCode === "11") || (filterObj.regionType === 22 && filterObj.regionCode === "02") || (filterObj.regionType === 23 && filterObj.regionCode === "0202");
-  
+  const filter_query =
+    (filterObj.regionType === 21 && filterObj.regionCode === "11") ||
+    (filterObj.regionType === 22 && filterObj.regionCode === "02") ||
+    (filterObj.regionType === 23 && filterObj.regionCode === "0202");
 
-  
   const [columns, setCol] = useState([
     {
       headerName: "Location",
       field: "regionName",
       suppressColumnsToolPanel: true,
-      
     },
     {
       headerName: "Rural/Urban",
       field: "schLocationDesc",
       suppressColumnsToolPanel: true,
-      showRowGroup:"schLocationDesc",
-      cellRenderer:"agGroupCellRenderer"
+      showRowGroup: "schLocationDesc",
+      cellRenderer: "agGroupCellRenderer",
     },
     {
       headerName: "School Category",
       minWidth: 140,
       field: "schCategoryDesc",
       suppressColumnsToolPanel: true,
-      showRowGroup:"schCategoryDesc",
-      cellRenderer:"agGroupCellRenderer"
+      showRowGroup: "schCategoryDesc",
+      cellRenderer: "agGroupCellRenderer",
     },
     {
       headerName: "School Management",
       minWidth: 170,
       field: "schManagementDesc",
       suppressColumnsToolPanel: true,
-      showRowGroup:"schManagementDesc",
-      cellRenderer:"agGroupCellRenderer"
+      showRowGroup: "schManagementDesc",
+      cellRenderer: "agGroupCellRenderer",
     },
     {
       headerName: "School Type",
       field: "schTypeDesc",
       minWidth: 85,
-      showRowGroup:"schTypeDesc",
-      cellRenderer:"agGroupCellRenderer"
+      showRowGroup: "schTypeDesc",
+      cellRenderer: "agGroupCellRenderer",
     },
     {
-      headerName: "Total No. of Schools", minWidth: 100, field: "totalSchools"
-
+      headerName: "Total No. of Schools",
+      minWidth: 100,
+      field: "totSch",
     },
     {
       headerName: "Separate Room for Headmaster",
       minWidth: 130,
-      field: "schHaveSeparateRoomForHM"
+      field: "totSchSeprateRoomHm",
     },
-    { headerName: "Land Available", minWidth: 90, field: "schHaveLandForExpansion" },
-    { headerName: "Electricity", minWidth: 95, field: "schHaveElectricity" },
-    { headerName: "Functional Electricity", minWidth: 100, field: "schHaveFuncElectricity" },
-    { headerName: "Solar Panel", minWidth: 105, field: "schHaveSolarPanels" },
-    { headerName: "Playground", minWidth: 105, field: "schHavePlayground" },
+    {
+      headerName: "Land Available",
+      minWidth: 90,
+      field: "totSchLandAvail",
+    },
+    { headerName: "Electricity", minWidth: 95, field: "totSchElectricity" },
+    {
+      headerName: "Functional Electricity",
+      minWidth: 100,
+      field: "totSchFuncElectricity",
+    },
+    { headerName: "Solar Panel", minWidth: 105, field: "totSchSolarPanel" },
+    
+    { headerName: "Playground", minWidth: 105, field: "totSchPlayground" },
     {
       headerName: "Library or Reading Corner or Book Bank",
       minWidth: 150,
-      field: "schHaveLibrary"
+      field: "totSchLibrary",
     },
-    { headerName: "Librarian", minWidth: 90, field: "schHaveLibrarian" },
-    { headerName: "Newspaper", minWidth: 105, field: "schHaveNewsPaperSubscription" },
-    { headerName: "Kitchen Garden", minWidth: 90, field: "schHaveKitchenGarden" },
-    { headerName: "Furniture", minWidth: 90, field: "schHaveFurnitureForStudents" },
-    { headerName: "Boy's Toilet", minWidth: 100, field: "schHaveBoysToilet" },
-    { headerName: "Functional Boy's Toilet", field: "schHaveFuncBoysToilet" },
-    { headerName: "Girl's Toilet", minWidth: 100, field: "schHaveGirlsToilet" },
-    { headerName: "Functional Girl's Toilet", minWidth: 110, field: "schHaveFuncGirlsToilet" },
+   
+    { headerName: "Librarian", minWidth: 90, field: "totSchLibrarian" },
+    {
+      headerName: "Newspaper",
+      minWidth: 105,
+      field: "totSchNewspaper",
+    },
+    {
+      headerName: "Kitchen Garden",
+      minWidth: 90,
+      field: "totSchKitchenGarden",
+    },
+    {
+      headerName: "Furniture",
+      minWidth: 90,
+      field: "totSchFurniture",
+    },
+    { headerName: "Boy's Toilet", minWidth: 100, field: "totSchBoysToilet" },
+    { headerName: "Functional Boy's Toilet", field: "totSchFuncBoysToilet" },
+    { headerName: "Girl's Toilet", minWidth: 100, field: "totSchGirlsToilet" },
+    {
+      headerName: "Functional Girl's Toilet",
+      minWidth: 110,
+      field: "totSchFuncGirlsToilet",
+    },
     { headerName: "Toilet Facility", field: "schHaveToilet" },
-    { headerName: "Functional Toilet Facility", field: "schHaveFuncToilet" },
-    { headerName: "Functional Urinal Boy's", field: "schHaveFuncBoysUrinals" },
+    { headerName: "Functional Toilet Facility", field: "totSchFuncBoysToilet" },
+    { headerName: "Functional Urinal Boy's", field: "totSchFuncBoysUrinal" },
     { headerName: "Functional Urinal", field: "schHaveFuncUrinals" },
     {
       headerName: "Functional Urinal Girl's",
-      field: "schHaveFuncGirlsUrinals"
+      field: "totSchFuncGirlsUrinal",
     },
-    { headerName: "Drinking Water", field: "schHaveDrinkWater" },
-    { headerName: "Functional Drinking Water", field: "schHaveFuncDrinkWater" },
-    { headerName: "Water Purifier", field: "schHaveWaterPurifier" },
+    { headerName: "Drinking Water", field: "totSchDrinkingWater" },
+    { headerName: "Functional Drinking Water", field: "totSchFuncWaterPurifier" },
+    { headerName: "Water Purifier", field: "totSchWaterPurifier" },
     {
       headerName: "Rain Water Harvesting",
-      field: "schHaveRainWaterHarvesting"
+      field: "totSchRainWaterHarvesting",
     },
-    { headerName: "Water Tested", field: "schHaveTestedWater", rowPinned: 'bottom' },
-    { headerName: "Handwash", field: "schHaveHandwashWithSoapForToilets", rowPinned: 'bottom' },
-    { headerName: "Incinerator", field: "schHaveIncineratorInGirlsToilets", rowPinned: 'bottom' },
+    {
+      headerName: "Water Tested",
+      field: "totSchWaterTested",
+      rowPinned: "bottom",
+    },
+    {
+      headerName: "Handwash",
+      field: "totSchHandwashToilet",
+      rowPinned: "bottom",
+    },
+    {
+      headerName: "Incinerator",
+      field: "totSchIncinerator",
+      rowPinned: "bottom",
+    },
     {
       headerName: "WASH Facility(Drinking Water, Toilet and Handwash)",
       minWidth: 200,
-      field: "schHaveHandwashWithSoapBeforeAfterMeal", rowPinned: 'bottom'
+      field: "totSchHandwashMeals",
+      rowPinned: "bottom",
     },
-    { headerName: "Ramps", minWidth: 90, field: "schHaveRamps", rowPinned: 'bottom' },
-    { headerName: "Hand-Rails", minWidth: 100, field: "schHaveHandRails", rowPinned: 'bottom' },
-    { headerName: "Medical Checkup", minWidth: 100, field: "schHaveMedicalCheckup", rowPinned: 'bottom' },
+    {
+      headerName: "Ramps",
+      minWidth: 90,
+      field: "totSchRamps",
+      rowPinned: "bottom",
+    },
+    {
+      headerName: "Hand-Rails",
+      minWidth: 100,
+      field: "totSchHandRails",
+      rowPinned: "bottom",
+    },
+    {
+      headerName: "Medical Checkup",
+      minWidth: 100,
+      field: "totSchMedicalCheckup",
+      rowPinned: "bottom",
+    },
     {
       headerName: "Complete Medical Checkup",
-      field: "schHaveCompleteMedicalCheckup", rowPinned: 'bottom'
+      field: "schHaveCompleteMedicalCheckup",
+      rowPinned: "bottom",
     },
-    { headerName: "Internet", minWidth: 100, field: "schHaveInternet" },
-    { headerName: "Computer Available", minWidth: 100, field: "schHaveComputers" },
+    { headerName: "Internet", minWidth: 100, field: "totSchInternet" },
+    {
+      headerName: "Computer Available",
+      minWidth: 100,
+      field: "totSchCompAvail",
+    },
+   
   ]);
 
-
-
+  
   const pinedBottomRowData = [
-    {
-      schTypeDesc: 'Total',
-      schHaveInternet: calculateTotal('schHaveInternet'),
-      schHaveFuncGirlsUrinals: calculateTotal('schHaveFuncGirlsUrinals'),
-      schHaveComputers: calculateTotal('schHaveComputers'),
-      totalSchools: calculateTotal("totalSchools"),
-      schHaveSeparateRoomForHM: calculateTotal("schHaveSeparateRoomForHM"),
-      schHaveCompleteMedicalCheckup: calculateTotal("schHaveCompleteMedicalCheckup"),
-      schHaveMedicalCheckup: calculateTotal("schHaveMedicalCheckup"),
-      schHaveHandRails: calculateTotal("schHaveHandRails"),
-      schHaveRamps: calculateTotal("schHaveRamps"),
-      schHaveHandwashWithSoapBeforeAfterMeal: calculateTotal("schHaveHandwashWithSoapBeforeAfterMeal"),
-      schHaveIncineratorInGirlsToilets: calculateTotal("schHaveIncineratorInGirlsToilets"),
-      schHaveHandwashWithSoapForToilets: calculateTotal("schHaveHandwashWithSoapForToilets"),
-      schHaveTestedWater: calculateTotal("schHaveTestedWater"),
-      schHaveRainWaterHarvesting: calculateTotal("schHaveRainWaterHarvesting"),
-      schHaveWaterPurifier: calculateTotal("schHaveWaterPurifier"),
-      schHaveFuncDrinkWater: calculateTotal("schHaveFuncDrinkWater"),
-      schHaveDrinkWater: calculateTotal("schHaveDrinkWater"),
-      schHaveFuncUrinals: calculateTotal("schHaveFuncUrinals"),
-      schHaveFuncBoysUrinals: calculateTotal("schHaveFuncBoysUrinals"),
-      schHaveFuncToilet: calculateTotal("schHaveFuncToilet"),
-      schHaveToilet: calculateTotal("schHaveToilet"),
-      schHaveFuncGirlsToilet: calculateTotal("schHaveFuncGirlsToilet"),
-      schHaveGirlsToilet: calculateTotal("schHaveGirlsToilet"),
-      schHaveFuncBoysToilet: calculateTotal("schHaveFuncBoysToilet"),
-      schHaveBoysToilet: calculateTotal("schHaveBoysToilet"),
-      schHaveFurnitureForStudents: calculateTotal("schHaveFurnitureForStudents"),
-      schHaveKitchenGarden: calculateTotal("schHaveKitchenGarden"),
-      schHaveNewsPaperSubscription: calculateTotal("schHaveNewsPaperSubscription"),
-      schHaveLibrarian: calculateTotal("schHaveLibrarian"),
-      schHaveLibrary: calculateTotal("schHaveLibrary"),
-      schHavePlayground: calculateTotal("schHavePlayground"),
-      schHaveSolarPanels: calculateTotal("schHaveSolarPanels"),
-      schHaveFuncElectricity: calculateTotal("schHaveFuncElectricity"),
-      schHaveElectricity: calculateTotal("schHaveElectricity"),
-      schHaveLandForExpansion: calculateTotal("schHaveLandForExpansion"),
-
-    },
+    columns.slice(5).reduce(
+      (accumulatedRow, column) => {
+        accumulatedRow[column.field] = calculateTotal(column.field);
+        return accumulatedRow;
+      },
+      { schTypeDesc: "Total" }
+    ),
   ];
 
-  useEffect(()=>{
-    const allFalse = Object.values(groupKeys).every(value => value === false);
-    if(viewDataBy==="" && allFalse){
-      schoolLocationRow();
-    }else{
-      multiGroupingRows();
-    }
-
-   
-},[school_data]);
-
-
-useEffect(()=>{
-  multiGroupingRows();
-},[groupKeys])
   function calculateTotal(fieldName) {
     if (!school_data?.data?.data) return 0;
-    return school_data.data.data.reduce((total, row) => total + parseFloat(row[fieldName] || 0), 0);
+    return school_data.data.data.reduce(
+      (total, row) => total + parseFloat(row[fieldName] || 0),
+      0
+    );
   }
-function onColumnVisible(event) {
+  useEffect(() => {
+    const allFalse = Object.values(groupKeys).every((value) => value === false);
+    if (viewDataBy === "" && allFalse) {
+      schoolLocationRow();
+    } else {
+      multiGroupingRows();
+    }
+  }, [school_data]);
+
+  useEffect(() => {
+    multiGroupingRows();
+  }, [groupKeys]);
+
+  function onColumnVisible(event) {
     const columnId = event?.column?.getColId();
     const visible = event.visible;
     if (columnId === "schManagementDesc") {
-
-      setGroupKeys(prev => ({
+      setGroupKeys((prev) => ({
         ...prev,
-        schManagementDesc: visible
+        schManagementDesc: visible,
       }));
-     
-    } 
-    else if (columnId === "schTypeDesc") {
-      setGroupKeys(prev => ({
+    } else if (columnId === "schTypeDesc") {
+      setGroupKeys((prev) => ({
         ...prev,
-        schTypeDesc: visible
+        schTypeDesc: visible,
       }));
-     
-    }
-    else if (columnId === "schCategoryDesc") {
-      setGroupKeys(prev => ({
+    } else if (columnId === "schCategoryDesc") {
+      setGroupKeys((prev) => ({
         ...prev,
-        schCategoryDesc: visible
+        schCategoryDesc: visible,
       }));
-    
-
-    }  else if (columnId === "schLocationDesc") {
-      setGroupKeys(prev => ({
+    } else if (columnId === "schLocationDesc") {
+      setGroupKeys((prev) => ({
         ...prev,
-        schLocationDesc: visible
+        schLocationDesc: visible,
       }));
       // setUR(()=>visible?"active":"");
     }
@@ -298,12 +330,72 @@ function onColumnVisible(event) {
       filterObj.regionType = 21;
       filterObj.regionCode = 99;
       dispatch(allFilter(filterObj));
-      setDispatchCount(prev => prev + 1);
+      setDispatchCount((prev) => prev + 1);
     }
 
     // eslint-disable-next-line
   }, [schoolFilterYear]);
 
+  const handleFilter = (value, e) => {
+    if (value === "School Management") {
+      if (sch_mgt === "active") {
+        setSchMgt("");
+      } else {
+        setSchMgt("active");
+      }
+    }
+
+    if (value === "School Category") {
+      if (sch_cat === "active") {
+        setSchCat("");
+      } else {
+        setSchCat("active");
+      }
+    }
+    if (value === "School Type") {
+      if (sch_type === "active") {
+        setSchType("");
+      } else {
+        setSchType("active");
+      }
+    }
+
+    if (value === "Urban/Rural") {
+      if (ur === "active") {
+        setUR("");
+      } else {
+        setUR("active");
+      }
+    }
+  };
+  const handleGroupButtonClick = (e, currObj) => {
+    handleFilter(e, currObj);
+    setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
+   
+    const updatedGroupKeys = { ...groupsKeys };
+    if (e === "School Management") {
+        updatedGroupKeys.schManagementDesc = !groupsKeys.schManagementDesc;
+    } else if (e === "School Category") {
+        updatedGroupKeys.schCategoryDesc = !groupsKeys.schCategoryDesc;
+    } else if (e === "School Type") {
+        updatedGroupKeys.schTypeDesc = !groupsKeys.schTypeDesc;
+    } else if (e === "Urban/Rural") {
+        updatedGroupKeys.schLocationDesc = !groupsKeys.schLocationDesc;
+    }
+
+    setGroupsKeys(updatedGroupKeys);
+
+    const groupFields = Object.entries(updatedGroupKeys)
+        .filter(([key, value]) => value)
+        .map(([key]) => key);
+
+    setCol((prevDefs) =>
+        prevDefs.map((colDef) => ({
+            ...colDef,
+            rowGroup: groupFields.includes(colDef.field),
+        }))
+    );
+};
 
 
   useEffect(() => {
@@ -338,12 +430,12 @@ function onColumnVisible(event) {
     const columns = gridApi.api.getAllDisplayedColumns();
 
     return columns.map((column) => {
-      const { field,headerName } = column.getColDef();
+      const { field, headerName } = column.getColDef();
       const sort = column.getSort();
       const headerNameUppercase = field[0].toUpperCase() + field.slice(1);
       const headerCell = {
         text: headerNameUppercase + (sort ? ` (${sort})` : ""),
-        headerName:headerName,
+        headerName: headerName,
         bold: true,
         margin: [0, 12, 0, 0],
       };
@@ -371,7 +463,7 @@ function onColumnVisible(event) {
     header: {
       fontSize: 18,
       marginBottom: 10,
-      textAlign: 'center',
+      textAlign: "center",
     },
     paragraph: {
       fontSize: 12,
@@ -386,22 +478,22 @@ function onColumnVisible(event) {
     const headerRow = getHeaderToExport(gridApi);
     const rows = getRowsToExport(gridApi);
     const date = new Date();
-const formattedDate = new Intl.DateTimeFormat('en-US', { 
-    year: 'numeric', 
-    month: 'short', 
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
-}).format(date);
-   
+    const formattedDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    }).format(date);
+
     // Initialize jsPDF document
     const doc = new jsPDF({
       orientation: "landscape",
       unit: "in",
-      format: [60, 60]
+      format: [60, 60],
     });
-  
+
     // Function to add header
     const addHeader = () => {
       doc.setFontSize(25);
@@ -410,86 +502,110 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
       doc.text("UDISE+", 0.6, 1);
       doc.setFontSize(20);
       doc.setTextColor("blue");
-      doc.text("Number of Schools by Availability of Infrastructure and Facilities, School Management and School Category", 0.6, 1.4,{ fontSize: 12, color: "red" });
+      doc.text(
+        "Number of Schools by Availability of Infrastructure and Facilities, School Management and School Category",
+        0.6,
+        1.4,
+        { fontSize: 12, color: "red" }
+      );
       doc.setFontSize(20);
       doc.setTextColor("blue");
-      doc.text(`Report type : ${stateName}`, 0.6, 1.8,{ fontSize: 12, color: "red" });
+      doc.text(`Report type : ${stateName}`, 0.6, 1.8, {
+        fontSize: 12,
+        color: "red",
+      });
       doc.setFontSize(25);
       doc.setTextColor("blue");
       doc.setFont("bold");
-      doc.text(`Report Id : ${id}` , doc.internal.pageSize.width - 1, 1,{ align: 'right' });
-      doc.text(`Academic Year : ${local_year}` , doc.internal.pageSize.width - 1, 1.8,{ align: 'right' });
+      doc.text(`Report Id : ${id}`, doc.internal.pageSize.width - 1, 1, {
+        align: "right",
+      });
+      doc.text(
+        `Academic Year : ${local_year}`,
+        doc.internal.pageSize.width - 1,
+        1.8,
+        { align: "right" }
+      );
       doc.setFontSize(20);
-      doc.text(`Report generated on : ${formattedDate}` , doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.2, { align: 'right' });
+      doc.text(
+        `Report generated on : ${formattedDate}`,
+        doc.internal.pageSize.width - 1,
+        doc.internal.pageSize.height - 0.2,
+        { align: "right" }
+      );
     };
-   
+
     // Function to add footer
     const addFooter = () => {
       const pageCount = doc.internal.getNumberOfPages();
       doc.setFontSize(10);
       for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
-        doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.5, { align: 'right' });
+        doc.text(
+          `Page ${i} of ${pageCount}`,
+          doc.internal.pageSize.width - 1,
+          doc.internal.pageSize.height - 0.5,
+          { align: "right" }
+        );
       }
     };
 
     const table = [];
-    table.push(headerRow.map(cell => cell.headerName));
-    rows.forEach(row => {
-      table.push(row.map(cell => cell.text));
+    table.push(headerRow.map((cell) => cell.headerName));
+    rows.forEach((row) => {
+      table.push(row.map((cell) => cell.text));
     });
 
-    addHeader(); 
+    addHeader();
 
     doc.autoTable({
       head: [table[0]],
       body: table.slice(1),
       startY: 2.2,
-      afterPageContent: addFooter
+      afterPageContent: addFooter,
     });
 
     const totalPages = doc.internal.getNumberOfPages();
     for (let i = 0; i < totalPages; i++) {
       doc.setPage(i + 1);
-     
     }
 
     return doc;
-};
-
-
+  };
 
   const exportToPDF = () => {
     const doc = getDocument(gridApi);
-    doc.save("Number of Schools by Availability of Infrastructure and Facilities, School Management and School Category.pdf");
-  };
-
-
-  const handleGroupButtonClick = (e) => {
-
-    const groupObj = { "School Category": "schCategoryDesc", "School Management": "schManagementDesc", "Urban/Rural": "schLocationDesc","School Type":"schTypeDesc" }
-
-    const groupByColumn = groupObj[e];
-    setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
-    setCol((prevDefs) =>
-      prevDefs.map((colDef,idx) => ({
-        ...colDef,
-        rowGroup: viewDataBy === e ? false : colDef.field === groupByColumn,
-      }))
+    doc.save(
+      "Number of Schools by Availability of Infrastructure and Facilities, School Management and School Category.pdf"
     );
-
   };
+
+  // const handleGroupButtonClick = (e) => {
+
+  //   const groupObj = { "School Category": "schCategoryDesc", "School Management": "schManagementDesc", "Urban/Rural": "schLocationDesc","School Type":"schTypeDesc" }
+
+  //   const groupByColumn = groupObj[e];
+  //   console.log(groupByColumn, "groupByColumn")
+  //   setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e))
+  //   setCol((prevDefs) =>
+  //     prevDefs.map((colDef,idx) => ({
+  //       ...colDef,
+  //       rowGroup: viewDataBy === e ? false : colDef.field === groupByColumn,
+  //     }))
+  //   );
+
+  // };
 
   const scrollToRight = () => {
-    setHideScrollBtn(hideScrollBtn => hideScrollBtn + 1);
+    setHideScrollBtn((hideScrollBtn) => hideScrollBtn + 1);
     columns.map((item, idx) => {
-      if ((idx + 1) === columnCount) {
+      if (idx + 1 === columnCount) {
         gridApi.columnApi.api.ensureColumnVisible(item.field);
         if (columnCount <= 43) {
-          setColumnCount(prevColumnCount => prevColumnCount + 10);
+          setColumnCount((prevColumnCount) => prevColumnCount + 10);
         }
       }
-    })
+    });
   };
   const scrollToLeft = () => {
     setHideScrollBtn(20);
@@ -507,12 +623,12 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
         let totalSchoolsHaveElectricity = 0;
 
         itemsArray.forEach((dataItem) => {
-          totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+          totalSchoolsHaveElectricity += parseInt(dataItem.totSchElectricity);
         });
 
         const appended = {
           regionName: item,
-          schHaveElectricity: totalSchoolsHaveElectricity,
+          totSchElectricity: totalSchoolsHaveElectricity,
         };
 
         updatedArrGroupedData.push(appended);
@@ -530,83 +646,90 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
   const multiGroupingRows = () => {
     const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
     if (primaryKeys.length > 0) {
-
       filter_query && primaryKeys.push("regionName");
 
       const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
       const updatedArrGroupedData = [];
-      
-    
-        if (groupedData && typeof groupedData === "object") {
-            Object.keys(groupedData).forEach(item => {
-                const itemsArray = groupedData[item];
-                let regionName = "";
-                const totals = {
-                    totalSchools: 0,
-                    schHaveElectricity: 0,
-                    schHaveSeparateRoomForHM: 0,
-                    schHaveLandForExpansion: 0,
-                    schHaveFuncElectricity: 0,
-                    schHaveSolarPanels: 0,
-                    schHavePlayground:0,
-                    schHaveLibrary:0,
-                    schHaveLibrarian:0,
-                    schHaveNewsPaperSubscription:0,
-                    schHaveKitchenGarden:0,
-                    schHaveFurnitureForStudents:0,
-                    schHaveBoysToilet:0,
-                    schHaveFuncBoysToilet:0,
-                    schHaveGirlsToilet:0,
-                    schHaveFuncGirlsToilet:0,
-                    schHaveToilet:0,
-                    schHaveFuncToilet:0,
-                    schHaveFuncBoysUrinals:0,
-                    schHaveFuncUrinals:0,
-                    schHaveFuncGirlsUrinals:0,
-                    schHaveDrinkWater:0,
-                    schHaveFuncDrinkWater:0,
-                    schHaveWaterPurifier:0,
-                    schHaveRainWaterHarvesting:0,
-                    schHaveTestedWater:0,
-                    schHaveHandwashWithSoapForToilets:0,
-                    schHaveIncineratorInGirlsToilets:0,
-                    schHaveHandwashWithSoapBeforeAfterMeal:0,
-                    schHaveRamps:0,
-                    schHaveHandRails:0,
-                    schHaveMedicalCheckup:0,
-                    schHaveCompleteMedicalCheckup:0,
-                    schHaveInternet:0,
-                    schHaveComputers:0
 
-                    
-                };
+      if (groupedData && typeof groupedData === "object") {
+        Object.keys(groupedData).forEach((item) => {
+          const itemsArray = groupedData[item];
+          let regionName = "";
+          const totals = {
+            totSch: 0,
+            totSchElectricity: 0,
+            totSchSeprateRoomHm: 0,
+            totSchLandAvail: 0,
+            totSchFuncElectricity: 0,
+            totSchSolarPanel: 0,
+            totSchPlayground: 0,
+            totSchLibrary: 0,
+            totSchLibrarian: 0,
+            totSchNewspaper: 0,
+            totSchKitchenGarden: 0,
+            totSchFurniture: 0,
+            totSchBoysToilet: 0,
+            totSchFuncBoysToilet: 0,
+            totSchGirlsToilet: 0,
+            totSchFuncGirlsToilet: 0,
+            schHaveToilet: 0,
+            totSchFuncBoysToilet: 0,
+            totSchFuncBoysUrinal: 0,
+            schHaveFuncUrinals: 0,
+            totSchFuncGirlsUrinal: 0,
+            totSchDrinkingWater: 0,
+            totSchFuncWaterPurifier: 0,
+            totSchWaterPurifier: 0,
+            totSchRainWaterHarvesting: 0,
+            totSchWaterTested: 0,
+            totSchHandwashToilet: 0,
+            totSchIncinerator: 0,
+            totSchHandwashMeals: 0,
+            totSchRamps: 0,
+            totSchHandRails: 0,
+            totSchMedicalCheckup: 0,
+            schHaveCompleteMedicalCheckup: 0,
+            totSchInternet: 0,
+            totSchCompAvail: 0,
+            
+          };
 
-                itemsArray.forEach(dataItem => {
-                    regionName = dataItem.regionName;
-                    for (const field of Object.keys(totals)) {
-                        if (dataItem.hasOwnProperty(field)) {
-                            totals[field] += parseInt(dataItem[field]);
-                           
-                        }
-                    }
-                  
-                });
+          itemsArray.forEach((dataItem) => {
+            regionName = dataItem.regionName;
+            for (const field of Object.keys(totals)) {
+              if (dataItem.hasOwnProperty(field)) {
+                totals[field] += parseInt(dataItem[field]);
+              }
+            }
+          });
 
-                const appended = { regionName };
-                primaryKeys.forEach((key, index) => {
-                    appended[key] = item.split("@")[index];
-                });
-                Object.assign(appended, totals);
-                updatedArrGroupedData.push(appended);
-            });
+          const appended = { regionName };
+          primaryKeys.forEach((key, index) => {
+            appended[key] = item.split("@")[index];
+          });
+          Object.assign(appended, totals);
+          updatedArrGroupedData.push(appended);
+        });
 
-            setArrGroupedData(updatedArrGroupedData);
-        }
-      
-      gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", groupKeys.schManagementDesc);
-      gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", groupKeys.schCategoryDesc);
-      gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", groupKeys.schTypeDesc);
-      gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", groupKeys.schLocationDesc);
+        setArrGroupedData(updatedArrGroupedData);
+      }
+
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schManagementDesc",
+        groupKeys.schManagementDesc
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schCategoryDesc",
+        groupKeys.schCategoryDesc
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schTypeDesc",
+        groupKeys.schTypeDesc
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schLocationDesc",
+        groupKeys.schLocationDesc
+      );
       gridApi?.columnApi?.api.setColumnVisible("regionName", filter_query);
     }
   };
@@ -628,7 +751,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
                   )}
                 </div>
               </div>
-              <div className="col-md-4 col-lg-4">
+              {/* <div className="col-md-4 col-lg-4">
                 <div className="tab-text-infra mb-1">View Data By</div>
                 <Tabs
                   activeKey={viewDataBy}
@@ -640,6 +763,55 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
                   <Tab eventKey="School Type" title="School Type"></Tab>
                   <Tab eventKey="Urban/Rural" title="Urban / Rural"></Tab>
                 </Tabs>
+              </div> */}
+
+              <div className="col-md-4 col-lg-4">
+                <div className="tab-text-infra mb-1">View Data By</div>
+
+                <ul className="nav nav-tabs mul-tab-main">
+                  <li className="nav-item">
+                    <button
+                      type="button"
+                      className={`nav-link dark-active ${sch_mgt}`}
+                      onClick={(e) =>
+                        handleGroupButtonClick("School Management", e)
+                      }
+                    >
+                      School Management{" "}
+                    </button>
+                  </li>
+
+                  <li className="nav-item">
+                    <button
+                      type="button"
+                      className={`nav-link dark-active1 ${sch_cat}`}
+                      onClick={(e) =>
+                        handleGroupButtonClick("School Category", e)
+                      }
+                    >
+                      School Category
+                    </button>
+                  </li>
+
+                  <li className="nav-item">
+                    <button
+                      type="button"
+                      className={`nav-link ${sch_type}`}
+                      onClick={(e) => handleGroupButtonClick("School Type", e)}
+                    >
+                      School Type
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      type="button"
+                      className={`nav-link ${ur}`}
+                      onClick={(e) => handleGroupButtonClick("Urban/Rural", e)}
+                    >
+                      Urban / Rural
+                    </button>
+                  </li>
+                </ul>
               </div>
 
               {/* Customize Filter Start*/}
@@ -677,19 +849,22 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
                 <h4 className="brudcrumb_heading">
                   Showing Result for : <span>&nbsp;{local_state}</span>
                   <span className="material-icons-round">chevron_right</span>
-                  {
-                    local_district !== "District" && <>
+                  {local_district !== "District" && (
+                    <>
                       <span>{local_district}</span>
-                      <span className="material-icons-round">chevron_right</span>
+                      <span className="material-icons-round">
+                        chevron_right
+                      </span>
                     </>
-                  }
-                  {
-                    local_block !== "Block" && <>
+                  )}
+                  {local_block !== "Block" && (
+                    <>
                       <span>{local_block}</span>
-                      <span className="material-icons-round">chevron_right</span>
+                      <span className="material-icons-round">
+                        chevron_right
+                      </span>
                     </>
-                  }
-
+                  )}
                   <span>{local_year}</span>
                 </h4>
               </div>
@@ -750,9 +925,6 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
                       className="ag-theme-material ag-theme-custom-height ag-theme-quartz"
                       style={{ height: 450 }}
                     >
-
-
-
                       <AgGridReact
                         rowData={arrGroupedData ? arrGroupedData : []}
                         columnDefs={columns}
@@ -766,9 +938,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
                         groupHideOpenParents={true}
                         onColumnVisible={onColumnVisible}
                       />
-                           
-                       
-                      
+
                       {/* <button onClick={() => scrollToLeft()}>Scroll to Left</button> */}
                     </div>
                   </Tab>
