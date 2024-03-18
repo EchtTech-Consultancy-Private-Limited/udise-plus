@@ -12,19 +12,24 @@ import {
   MDBListGroupItem,
   MDBRow,
 } from "mdb-react-ui-kit";
-import { district,block,nWiseregionType,nWiseregionCode,selectedDYear,allSWiseregionType,allSWiseregionCode,specificSWiseregionType,allDWiseregionType,specificDWiseregionType,allBWiseregionType,specificBWiseregionType,nationalWiseName, stateWiseName,districtWiseName,blockWiseName ,filterItemsStatePerPage,filterItemsYearPerPage} from "../../../constants/constants";
+import { district,block,nWiseregionType,nWiseregionCode,selectedDYear,allSWiseregionType,allSWiseregionCode,specificSWiseregionType,allDWiseregionType,specificDWiseregionType,allBWiseregionType,specificBWiseregionType,nationalWiseName, stateWiseName,districtWiseName,blockWiseName } from "../../../constants/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStateData, updateFilterState } from "../../../redux/thunks/stateThunk";
 import { fetchDistrictDataByStateCode, removeAllDistrict, updateFilterDistrict } from "../../../redux/thunks/districtThunk";
 import { fetchYearData } from "../../../redux/thunks/yearThunk";
 import {
   allFilter,
-} from "../../../redux/slice/schoolFilterSlice";
+} from "../../../redux/slice/schoolFilterSlice3016";
 
 import { hideShowColumn } from "../../../redux/slice/dataGridAPISlice";
-
+import { updateUdiseBlockCode,updateUdiseDistrictCode } from "../../../redux/slice/DistBlockWiseSlice";
+import {
+  filterItemsStatePerPage,
+  filterItemsYearPerPage,
+} from "../../../constants/constants";
 import { fetchBlockByDistrictCode, removeAllBlock, updateFilterBlock } from "../../../redux/thunks/blockThunk";
 import { useLocation } from "react-router-dom";
+
 
 export default function FilterDropdown() {
   const [itemsPerPage] = useState(filterItemsStatePerPage);
@@ -43,16 +48,19 @@ export default function FilterDropdown() {
   const blockData = useSelector((state) => state.block);
   const blockDataClone = useSelector((state) => state.block.dataClone);
   const [selectedState, setSelectedState] = useState(nationalWiseName);
+  const [selectedStateW, setSelectedStateW] = useState("State Wise");
   const [selectedDistrict, setSelectedDistrict] = useState(district);
   const [selectedDistrictclone, setSelectedDistrictClone] = useState(district);
   const [selectedYear, setSelectedYear] = useState(selectedDYear);
   const [selectedBlock, setSelectedBlock] = useState(block);
   const [selectedBlockClone, setSelectedBlockClone] = useState(block);
+  const distBlockWiseData = useSelector((state)=>state.distBlockWise)
   const filterObj = structuredClone(schoolFilter);
   const stateSearch = stateDataClone;
   const districtSearch = districtDataClone;
   const blockSearch = blockDataClone;
   window.localStorage.setItem("state", selectedState);
+  window.localStorage.setItem("state_wise", selectedStateW);
   window.localStorage.setItem("district", selectedDistrict);
   window.localStorage.setItem("block", selectedBlock);
   window.localStorage.setItem("year", selectedYear);
@@ -78,62 +86,58 @@ export default function FilterDropdown() {
   };
   const handleSchoolFilterState = (state_code, state_name) => {
     setSelectedState(state_name);
+    setSelectedStateW(state_name);
     setSelectedDistrict(district);
-
     setSelectedBlock(block);
     setSelectedBlockClone(block);
+
+    //
+    dispatch(updateUdiseDistrictCode(state_code));
+  //
+
+  /*--------------------Filter by National----------------------*/
     if (state_name === nationalWiseName) {
 
       filterObj.regionType = nWiseregionType;
       filterObj.regionCode = nWiseregionCode;
-      filterObj.dashboardRegionType = "n";
-      filterObj.dashboardRegionCode = 100;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
       dispatch(removeAllDistrict());
       dispatch(removeAllBlock());
       setSelectedDistrictClone(district);
     } else if (state_name === stateWiseName) {
-
-      // filterObj.regionType = "sw";
+/*--------------------Filter by State Wise----------------------*/
       filterObj.regionType = allSWiseregionType;
       filterObj.regionCode = allSWiseregionCode;
-      filterObj.dashboardRegionType = "s";
-      filterObj.dashboardRegionCode = state_code;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
       dispatch(removeAllDistrict());
       dispatch(removeAllBlock());
       setSelectedDistrictClone(district);
     } else {
+/*--------------------Filter by Particular State ----------------------*/
       filterObj.regionType = specificSWiseregionType;
       filterObj.regionCode = state_code;
-
-    
-        filterObj.dashboardRegionType = "s";
-        filterObj.dashboardRegionCode = state_code;
-        dispatch(allFilter(filterObj));
-    
-    
+      dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(false));
-      if(location.pathname!=="/"){
       dispatch(fetchDistrictDataByStateCode({ state_code: state_code, yearId: filterObj.yearId }));
-      }
       dispatch(removeAllDistrict());
       dispatch(removeAllBlock());
       setSelectedDistrictClone(state_name);
     }
 
-
-     dispatch(updateFilterState(stateDataClone.data));
+    dispatch(updateFilterState(stateDataClone.data));
     window.localStorage.setItem("state", state_name);
     hideOpendFilterBox();
   };
 
   
   const handleSchoolFilterDistrict = (district_name, district_code) => {
+
+    dispatch(updateUdiseBlockCode(district_code));
     if (district_name === districtWiseName) {
       filterObj.regionType = allDWiseregionType;
+      filterObj.regionCode = district_code;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
       dispatch(removeAllBlock());
@@ -163,6 +167,7 @@ export default function FilterDropdown() {
   const handleSchoolFilterBlock = (block_code, block_name) => {
     if (block_name === blockWiseName) {
       filterObj.regionType = allBWiseregionType;
+      filterObj.regionCode = block_code;
       dispatch(allFilter(filterObj));
       dispatch(hideShowColumn(true));
     } else {
@@ -179,20 +184,14 @@ export default function FilterDropdown() {
 
   const renderStateListGroup = () => {
     const groups = [];
-    //let extra_col = JSON.parse(JSON.stringify(stateData.data.data));
     let extra_col;
-
     if (stateData.data && stateData.data.data) {
       extra_col = JSON.parse(JSON.stringify(stateData.data.data));
     } else {
-
       extra_col = [];
     }
 
-    if (location.pathname !== "/") {
-      // extra_col.unshift({ udiseStateCode: "sw", udiseStateName: "State Wise" });
-      extra_col.unshift({ udiseStateCode: allSWiseregionType, udiseStateName: stateWiseName });
-    }
+    extra_col.unshift({ udiseStateCode: allSWiseregionType, udiseStateName: stateWiseName });
       extra_col.unshift({
         udiseStateCode: nWiseregionType,
         udiseStateName: nationalWiseName,
@@ -225,21 +224,18 @@ export default function FilterDropdown() {
     return groups;
   };
 
+  
   const renderDistrictListGroup = () => {
     const groups = [];
-
-    //let extra_col = JSON.parse(JSON.stringify(districtData?.data?.data));
     let extra_col;
-
     if (districtData.data && districtData.data.data) {
       extra_col = JSON.parse(JSON.stringify(districtData?.data?.data));
     } else {
-
       extra_col = [];
     }
-    if (location.pathname !== "/" && selectedDistrictclone !== district) {
+    if (selectedDistrictclone !== district) {
       extra_col.unshift({
-        udiseDistrictCode: filterObj.regionCode,
+        udiseDistrictCode: distBlockWiseData.districtUdiseCode,
         udiseDistrictName: "District Wise",
       });
     }
@@ -271,27 +267,19 @@ export default function FilterDropdown() {
 
   const renderBlockListGroup = () => {
     const groups = [];
-    // let extra_col;
-    // if (blockData?.data?.data.length > 0) {
-    //   extra_col = JSON.parse(JSON.stringify(blockData?.data?.data));
-    // } else {
-    //   extra_col = [];
-    // }
     let extra_col;
-
     if (blockData.data && blockData.data.data) {
       extra_col = JSON.parse(JSON.stringify(blockData.data.data));
     } else {
 
       extra_col = [];
     }
-    if (location.pathname !== "/" && selectedBlockClone !== block) {
+    if (selectedBlockClone !== block) {
       extra_col.unshift({
-        udiseBlockCode: filterObj.regionCode,
+        udiseBlockCode: distBlockWiseData.blockUdiseCode,
         udiseBlockName: "Block Wise",
       });
     }
-
     for (let i = 0; i < extra_col?.length; i += itemsPerPage) {
       const groupItems = [];
       for (let j = i; j < i + itemsPerPage && j < extra_col?.length; j++) {
@@ -317,6 +305,7 @@ export default function FilterDropdown() {
     }
     return groups;
   };
+
   const renderYearListGroup = () => {
     const yearGroups = [];
     for (let i = 0; i < yearData.data.data.length; i += yearItemsPerPage) {
@@ -349,6 +338,7 @@ export default function FilterDropdown() {
     }
     return yearGroups;
   };
+
   const hideOpendFilterBox = () => {
     const boxes = document.querySelectorAll(".dropdown-menu");
     boxes.forEach((box) => {

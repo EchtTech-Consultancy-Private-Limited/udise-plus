@@ -3,7 +3,6 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { allFilter } from "../../redux/slice/schoolFilterSlice3016";
 import { fetchArchiveServicesSchoolData } from "../../redux/thunks/archiveServicesThunk";
 import allreportsdata from "../../json-data/allreports.json";
 import { ScrollToTopOnMount } from "../Scroll/ScrollToTopOnMount";
@@ -16,10 +15,10 @@ import Infraicon from "../../assets/images/infra-power.svg";
 import { jsPDF } from "jspdf";
 import { json } from "react-router-dom";
 
-export default function Infrastructure({ id, report_name, type }) {
-  const [show, setShow] = useState(false);
+export default function Infrastructure({ id, type }) {
   const dispatch = useDispatch();
   const school_data = useSelector((state) => state.school);
+  const schoolFilter = useSelector((state) => state.schoolFilter3016);
   const rowDatas=school_data?.data?.data
   const schoolFilterYear = useSelector((state) => state?.schoolFilter);
   const schoolFilter = useSelector((state) => state.schoolFilter);
@@ -29,10 +28,8 @@ export default function Infrastructure({ id, report_name, type }) {
   const local_block = window.localStorage.getItem("block");
   const local_year = window.localStorage.getItem("year");
   const filterObj = structuredClone(schoolFilter);
-  const [dispatchCount, setDispatchCount] = useState(1);
   const [report, setReport] = useState(null);
   const [gridApi, setGridApi] = useState();
-  const [viewDataBy, setViewDataBy] = useState("");
   const [arrGroupedData, setArrGroupedData] = useState([]);
   const stateName = localStorage.getItem("state")
   const [showTransposed, setShowTransposed] = useState(false);
@@ -56,12 +53,25 @@ console.log(groupKeys)
   const [multiMgt, setMultiMgt] = useState("");
   const [multiCat, setMultiCat] = useState("");
   const [data, setData] = useState([]);
+  const [ dummy ,setDummy] = useState([]);
   
   const [rowDataclone, setRowDataclone]=useState(data)
   const filter_query =
     (filterObj.regionType === 21 && filterObj.regionCode === "11") ||
     (filterObj.regionType === 22 && filterObj.regionCode === distBlockWiseData.districtUdiseCode) ||
     (filterObj.regionType === 23 && filterObj.regionCode === distBlockWiseData.blockUdiseCode);
+
+
+    const getLastTrueToShowTotal = ()=>{
+      const lastTrueKey = Object.keys(groupKeys).reduce((lastKey, key) => {
+        if (groupKeys[key]) {
+          return key;
+        }
+        return lastKey;
+      }, null);
+
+      return lastTrueKey;
+    }
 
   function calculateTotal(fieldName) {
     if (!school_data?.data?.data) return 0;
@@ -84,15 +94,9 @@ console.log(groupKeys)
   }, [id]);
 
   useEffect(() => {
-    dispatch(fetchArchiveServicesSchoolData(schoolFilterYear));
-    if (dispatchCount === 1) {
-      filterObj.regionType = 10;
-      filterObj.regionCode = 99;
-      dispatch(allFilter(filterObj));
-      setDispatchCount((prev) => prev + 1);
-    }
+    dispatch(fetchArchiveServicesSchoolData(schoolFilter));
     // eslint-disable-next-line
-  }, [schoolFilterYear]);
+  }, [schoolFilter]);
 
   useEffect(() => {
     const allFalse = Object.values(groupKeys).every((value) => value === false);
@@ -119,7 +123,7 @@ console.log(groupKeys)
     multiGroupingRows();
   }, [data]);
 
-  const [columns, setCol] = useState([
+  const [columns,setColumn] = useState([
     {
       headerName: "Location",
       field: "regionName",
@@ -127,37 +131,57 @@ console.log(groupKeys)
     {
       headerName: "School Management(Broad)",
       field: "schManagementBroad",
+      suppressColumnsToolPanel: true,
+      hide:true
       hide:true
     },
     {
       headerName: "School Management(Detailed)",
       field: "schManagementDesc",
+      suppressColumnsToolPanel: true,
+      hide:true
       hide:true
     },
     {
       headerName: "School Category(Broad)",
       field: "schCategoryBroad",
+      suppressColumnsToolPanel: true,
+      hide:true
       hide:true
     },
     {
       headerName: "School Category(Detailed)",
       field: "schCategoryDesc",
+      suppressColumnsToolPanel: true,
+      hide:true
       hide:true
     },
     {
       headerName: "School Type",
       field: "schTypeDesc",
+      suppressColumnsToolPanel: true,
+      hide:true
       hide:true
     },
     {
       headerName: "Urban/Rural",
       field: "schLocationDesc",
+      suppressColumnsToolPanel: true,
+      hide:true
       hide:true
     },
     {
-      headerName: "No. Of Schools having Electricity",
-      field: "totSchElectricity",
+      headerName: "Total No. of Schools",
+      field: "totSch",
     },
+    {
+      headerName: "Functional Electricity",
+      field: "totSchFuncElectricity",
+    },
+    {
+      headerName: "No. of Schools having Electricity",
+      field: "totSchElectricity",
+    }
   ]);
   const[cloneCols, setCloneCols]=useState(columns)
 
@@ -269,6 +293,7 @@ console.log(groupKeys)
     filter: true,
   });
 
+  
   function onColumnVisible(event) {
       const columnId = event.column.getColId();
       const visible = event.visible;
@@ -472,8 +497,6 @@ console.log(groupKeys)
  
   const handleGroupButtonClick = (e, currObj) => {
     handleFilter(e, currObj);
-    setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
-
     const updatedGroupKeys = { ...groupKeys };
     if (e === "School Management") {
       updatedGroupKeys.schManagementBroad = !groupKeys.schManagementBroad;
@@ -515,14 +538,19 @@ console.log(groupKeys)
       Object.keys(groupedData)?.forEach((item) => {
         const itemsArray = groupedData[item];
         let totalSchoolsHaveElectricity = 0;
-
+        let totalFunElectricity = 0;
+        let totalSchools = 0;
         itemsArray.forEach((dataItem) => {
           totalSchoolsHaveElectricity += parseInt(dataItem.totSchElectricity);
+          totalSchools += parseInt(dataItem.totSch);
+          totalFunElectricity += parseInt(dataItem.totSchFuncElectricity);
         });
 
         const appended = {
           regionName: item,
+          totSch : totalSchools,
           totSchElectricity: totalSchoolsHaveElectricity,
+          totSchFuncElectricity: totalFunElectricity,
         };
 
         updatedArrGroupedData.push(appended);
@@ -551,12 +579,14 @@ console.log(groupKeys)
         Object.keys(groupedData).forEach((item) => {
           const itemsArray = groupedData[item];
           let totalSchoolsHaveElectricity = 0;
+          let totalFunElectricity = 0;
+          let totalSchools = 0;
           let regionName = "";
           itemsArray.forEach((dataItem) => {
             regionName = dataItem.regionName;
-            totalSchoolsHaveElectricity += parseInt(
-              dataItem.totSchElectricity
-            );
+            totalSchoolsHaveElectricity += parseInt(dataItem.totSchElectricity);
+            totalSchools += parseInt(dataItem.totSch);
+            totalFunElectricity += parseInt(dataItem.totSchFuncElectricity);
           });
 
           const appended = {};
@@ -565,8 +595,11 @@ console.log(groupKeys)
             appended[key] = item.split("@")[index];
           });
           appended.totSchElectricity = totalSchoolsHaveElectricity;
+          appended.totSch = totalSchools;
+          appended.totSchFuncElectricity = totalFunElectricity;
           updatedArrGroupedData.push(appended);
         });
+        setDummy(updatedArrGroupedData);
         setRowData(updatedArrGroupedData)
         setArrGroupedData(updatedArrGroupedData);
       }
@@ -772,6 +805,7 @@ console.log(groupKeys)
                 </div>
               </div>
               <div className="col-md-7 col-lg-7">
+              {/* <button onClick={switchColumnsToRows}>{showTransposed ? 'Show Original' : 'Switch to Rows'}</button> */}
                 <div className="tab-text-infra mb-1">View Data By</div>
 
                 <ul className="nav nav-tabs mul-tab-main">
@@ -994,8 +1028,9 @@ console.log(groupKeys)
                     <select
                       className="form-select bg-grey2"
                       onChange={handleExportData}
+                      defaultValue={""}
                     >
-                      <option defaultValue={""} disabled selected className="option-hide">
+                      <option  className="option-hide">
                         Download Report
                       </option>
 
@@ -1008,7 +1043,7 @@ console.log(groupKeys)
             </div>
           </div>
         </div>
-        <div className="bg-grey ptb-30">
+        <div className="bg-grey ptb-30 mb-5">
           <div className="container tab-for-graph">
             <div className="row align-items-center report-inner-tab">
               <div className="col-md-12">
@@ -1093,18 +1128,28 @@ console.log(groupKeys)
                         groupDisplayType="custom"
                         groupHideOpenParents={true}
                         onColumnVisible={onColumnVisible}
-                        // pinnedBottomRowData={pinedBottomRowData}
+                        pinnedBottomRowData={pinedBottomRowData}
                       />
-                      <div className="row">
-                        <div className="col-md-6">
+                      {/* <div className="row">
+                        <div className="col-md-3">
                           <h6 className="pinnedData">Total</h6>
                         </div>
-                        <div className="col-md-6 text-end">
+                        <div className="col-md-3 text-end">
+                          <h6 className="pinnedData">
+                            {calculateTotal("totSch")}
+                          </h6>
+                        </div>
+                        <div className="col-md-3 text-end">
+                          <h6 className="pinnedData">
+                            {calculateTotal("totSchFuncElectricity")}
+                          </h6>
+                        </div>
+                        <div className="col-md-3 text-end">
                           <h6 className="pinnedData">
                             {calculateTotal("totSchElectricity")}
                           </h6>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </Tab>
                   <Tab eventKey="graph" title="Chart"></Tab>
