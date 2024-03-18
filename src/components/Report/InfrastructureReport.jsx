@@ -12,49 +12,63 @@ import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import groupByKey from "../../utils/groupBy";
+import Infraicon from "../../assets/images/infra-power.svg";
 import { jsPDF } from "jspdf";
+import { json } from "react-router-dom";
 
 export default function Infrastructure({ id, report_name, type }) {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const school_data = useSelector((state) => state.school);
+  const rowDatas=school_data?.data?.data
   const schoolFilterYear = useSelector((state) => state?.schoolFilter);
   const schoolFilter = useSelector((state) => state.schoolFilter);
-  const local_state = window.localStorage.getItem("state");
+  const distBlockWiseData = useSelector((state)=>state.distBlockWise)
+  const local_state = window.localStorage.getItem("state_wise");
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
   const local_year = window.localStorage.getItem("year");
   const filterObj = structuredClone(schoolFilter);
   const [dispatchCount, setDispatchCount] = useState(1);
   const [report, setReport] = useState(null);
-  const grid_column = useSelector((state) => state?.column3016);
   const [gridApi, setGridApi] = useState();
   const [viewDataBy, setViewDataBy] = useState("");
   const [arrGroupedData, setArrGroupedData] = useState([]);
+  const stateName = localStorage.getItem("state")
+  const [showTransposed, setShowTransposed] = useState(false);
+  const[rowData, setRowData]=useState(rowDatas);
   
-  const [groupKeys,setGroupKeys] = useState({schManagementDesc:false,schManagementBroad:false,schCategoryDesc:false,schCategoryBroad:false,schTypeDesc:false,schLocationDesc:false});
+  const [groupKeys, setGroupKeys] = useState({
+    schManagementDesc: false,
+    schManagementBroad: false,
+    schCategoryDesc: false,
+    schCategoryBroad: false,
+    schTypeDesc: false,
+    schLocationDesc: false,
+  });
+console.log(groupKeys)
+  const [mgt, setMgt] = useState("");
+  const [mgt_Details, setMgtDetails] = useState("");
+  const [cat, setCat] = useState("");
+  const [cat_Details, setCatDetails] = useState("");
+  const [sch_type, setSchType] = useState("");
+  const [ur, setUR] = useState("");
+  const [multiMgt, setMultiMgt] = useState("");
+  const [multiCat, setMultiCat] = useState("");
+  const [data, setData] = useState([]);
+  
+  const [rowDataclone, setRowDataclone]=useState(data)
+  const filter_query =
+    (filterObj.regionType === 21 && filterObj.regionCode === "11") ||
+    (filterObj.regionType === 22 && filterObj.regionCode === distBlockWiseData.districtUdiseCode) ||
+    (filterObj.regionType === 23 && filterObj.regionCode === distBlockWiseData.blockUdiseCode);
 
-  const [mgtDetails,setMgtDetail] = useState(false);
-  const [catDetails,setCatDetail] = useState(false);
-  const [mgt,setMgt] = useState("");
-  const [mgt_Details,setMgtDetails] = useState("");
-  const [cat,setCat] = useState("");
-  const [cat_Details,setCatDetails] = useState("");
-  const [sch_type,setSchType] = useState("");
-  const [ur,setUR] = useState("");
-  const [multiMgt,setMultiMgt] = useState("");
-  const [multiCat,setMultiCat] = useState("");
-  const [data,setData] = useState([]);
-
-
-
-  const filter_query = (filterObj.regionType === 21 && filterObj.regionCode === "11") || (filterObj.regionType === 22 && filterObj.regionCode === "02") || (filterObj.regionType === 23 && filterObj.regionCode === "0202");
-
- 
   function calculateTotal(fieldName) {
     if (!school_data?.data?.data) return 0;
-    return school_data.data.data.reduce((total, row) => total + parseFloat(row[fieldName] || 0), 0);
-    
+    return school_data.data.data.reduce(
+      (total, row) => total + parseFloat(row[fieldName] || 0),
+      0
+    );
   }
 
   useEffect(() => {
@@ -79,59 +93,31 @@ export default function Infrastructure({ id, report_name, type }) {
     }
     // eslint-disable-next-line
   }, [schoolFilterYear]);
- 
 
- 
-  useEffect(()=>{
-
-      const allFalse = Object.values(groupKeys).every(value => value === false);
-      if(viewDataBy==="" && allFalse){
-        schoolLocationRow();
-      }else{
-          handleCustomKeyInAPIResponse();
-          multiGroupingRows();
-      }
-
-  },[school_data?.data?.data]);
-  
-
-  useEffect(()=>{
-
-  const allFalse = Object.values(groupKeys).every(value => value === false);
-    if(viewDataBy==="" && allFalse){
+  useEffect(() => {
+    const allFalse = Object.values(groupKeys).every((value) => value === false);
+    if (allFalse) {
       schoolLocationRow();
-    }else{
-        handleCustomKeyInAPIResponse();
-        multiGroupingRows();
-    }
-  },[groupKeys])
-
-  useEffect(()=>{
-    const allFalse = Object.values(groupKeys).every(value => value === false);
-    if(viewDataBy==="" && allFalse){
-      schoolLocationRow();
-    }else{
+    } else {
+      handleCustomKeyInAPIResponse();
       multiGroupingRows();
     }
+  }, [school_data?.data?.data]);
 
- 
-    handleCustomKeyInAPIResponse();
-},[school_data]);
+  useEffect(() => {
 
+    const allFalse = Object.values(groupKeys).every((value) => value === false);
+    if (allFalse) {
+      schoolLocationRow();
+    } else {
+      handleCustomKeyInAPIResponse();
+      multiGroupingRows();
+    }
+  }, [groupKeys]);
 
-useEffect(()=>{
-  const allFalse = Object.values(groupKeys).every(value => value === false);
-  if(viewDataBy==="" && allFalse){
-    schoolLocationRow();
-  }else{
+  useEffect(() => {
     multiGroupingRows();
-  }
-},[groupKeys])
-
-  useEffect(()=>{
-    multiGroupingRows();
-  },[data]);
-
+  }, [data]);
 
   const [columns, setCol] = useState([
     {
@@ -141,33 +127,139 @@ useEffect(()=>{
     {
       headerName: "School Management(Broad)",
       field: "schManagementBroad",
+      hide:true
     },
     {
       headerName: "School Management(Detailed)",
       field: "schManagementDesc",
+      hide:true
     },
     {
       headerName: "School Category(Broad)",
       field: "schCategoryBroad",
+      hide:true
     },
     {
       headerName: "School Category(Detailed)",
       field: "schCategoryDesc",
+      hide:true
     },
     {
       headerName: "School Type",
       field: "schTypeDesc",
+      hide:true
     },
     {
       headerName: "Urban/Rural",
       field: "schLocationDesc",
+      hide:true
     },
     {
       headerName: "No. Of Schools having Electricity",
-      field: "schHaveElectricity",
+      field: "totSchElectricity",
     },
   ]);
+  const[cloneCols, setCloneCols]=useState(columns)
 
+
+
+  useEffect(() => {
+    setRowDataclone([...arrGroupedData]);
+  }, [arrGroupedData]);
+  console.log("arrGroupedData------",arrGroupedData,columns);
+  const switchColumnsToRows = () => {
+    if (groupKeys.schCategoryBroad) { // Check if schCategoryDesc is true
+      if (!showTransposed) {
+        const arr = [];
+        const uniqueLocation = new Set(); 
+        const uniqueKeys = new Set(); 
+    
+        arrGroupedData?.forEach(row => {
+          const location = row?.regionName;
+          const School_Management_broad= row?.schManagementBroad
+          uniqueLocation.add(location); 
+          uniqueLocation.add(location, School_Management_broad); 
+    
+          const key = row?.schCategoryBroad;
+          if (!uniqueKeys.has(key)) {
+            uniqueKeys.add(key); 
+          }
+    
+          const existingDataIndex = arr.findIndex(data => data.Location === location);
+          if (existingDataIndex !== -1) {
+            arr[existingDataIndex][key] = (arr[existingDataIndex][key] || 0) + parseInt(row?.totSchElectricity, 10);
+          } else {
+            const newData = { Location: location };
+            newData[key] = parseInt(row?.totSchElectricity, 10);
+            arr.push(newData);
+          }
+        });
+    
+        // Convert uniqueKeys to array
+        const columnHeaders = ['Location', ...Array.from(uniqueKeys)];
+    
+        // Update state with arr and column headers
+        setArrGroupedData(arr);
+        setCol(columnHeaders.map(header => ({ headerName: header, field: header })));
+      } else {
+        // Reset to original state
+        setArrGroupedData([...rowData]); 
+        setCloneCols([...cloneCols,
+          {
+          headerName: "School Management(Broad)",
+          field: "schManagementBroad",
+          suppressColumnsToolPanel: true,
+          hide:!groupKeys.schManagementBroad
+        },
+        {
+          headerName: "School Management(Detailed)",
+          field: "schManagementDesc",
+          suppressColumnsToolPanel: true,
+          hide:!groupKeys.schManagementDesc
+        },
+        {
+          headerName: "School Category(Broad)",
+          field: "schCategoryBroad",
+          suppressColumnsToolPanel: true,
+          hide:!groupKeys.schCategoryBroad
+        },
+        {
+          headerName: "School Category(Detailed)",
+          field: "schCategoryDesc",
+          suppressColumnsToolPanel: true,
+          hide:!groupKeys.schCategoryDesc
+        },
+        {
+          headerName: "School Type",
+          field: "schTypeDesc",
+          suppressColumnsToolPanel: true,
+          hide:!groupKeys.schTypeDesc
+        },
+        {
+          headerName: "Urban/Rural",
+          field: "schLocationDesc",
+          suppressColumnsToolPanel: true,
+          hide:!groupKeys.schLocationDesc
+        },
+      ]);
+        setShowTransposed(false); // Set showTransposed to false explicitly
+        
+      }
+      
+      // Toggle showTransposed state at the end
+      setShowTransposed(!showTransposed);
+    } else {
+      console.log("schCategoryDesc is not true, so switching columns to rows will not be performed.");
+    }
+  };
+  
+  
+  
+  
+  
+  
+  
+  
   const [defColumnDefs] = useState({
     flex: 1,
     minWidth: 150,
@@ -178,274 +270,242 @@ useEffect(()=>{
   });
 
   function onColumnVisible(event) {
-    const columnId = event?.column?.getColId();
-    const visible = event.visible;
-    if (columnId === "schManagementBroad") {
-
-      setGroupKeys(prev => ({
-        ...prev,
-        schManagementBroad: visible
-      }));
-      setMgt(()=>visible?"active":"");
-      setMultiMgt(()=>visible?"multibtn":"")
-    } 
-    if (columnId === "schManagementDesc") {
-
-      setGroupKeys(prev => ({
-        ...prev,
-        schManagementDesc: visible
-      }));
-      setMgtDetails(()=>visible?"active":"");
-      setMultiMgt(()=>visible?"multibtn":"")
-    } 
+      const columnId = event.column.getColId();
+      const visible = event.visible;
+      if (columnId === "schManagementBroad") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schManagementBroad: visible,
+        }));
+        setMgt(() => (visible ? "active" : ""));
+        setMultiMgt(() => (visible ? "multibtn" : ""));
+      }
+      if (columnId === "schManagementDesc") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schManagementDesc: visible,
+        }));
+        setMgtDetails(() => (visible ? "active" : ""));
+        setMultiMgt(() => (visible ? "multibtn" : ""));
+      }
+  
+      if (columnId === "schCategoryBroad") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schCategoryBroad: visible,
+        }));
+        setCat(() => (visible ? "active" : ""));
+        setMultiCat(() => (visible ? "multibtn" : ""));
+      }
+      if (columnId === "schCategoryDesc") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schCategoryDesc: visible,
+        }));
+        setCatDetails(() => (visible ? "active" : ""));
+        setMultiCat(() => (visible ? "multibtn" : ""));
+      }
+  
+      if (columnId === "schTypeDesc") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schTypeDesc: visible,
+        }));
+        setSchType(() => (visible ? "active" : ""));
+      }
+  
+      if (columnId === "schLocationDesc") {
+        setGroupKeys((prev) => ({
+          ...prev,
+          schLocationDesc: visible,
+        }));
+        setUR(() => (visible ? "active" : ""));
+      }
      
-    if (columnId === "schCategoryBroad") {
-
-      setGroupKeys(prev => ({
-        ...prev,
-        schCategoryBroad: visible
-      }));
-      setCat(()=>visible?"active":"");
-      setMultiCat(()=>visible?"multibtn":"")
-    } 
-    if (columnId === "schCategoryDesc") {
-
-      setGroupKeys(prev => ({
-        ...prev,
-        schCategoryDesc: visible
-      }));
-      setCatDetails(()=>visible?"active":"");
-      setMultiCat(()=>visible?"multibtn":"")
-    } 
-
-
-
-    if (columnId === "schTypeDesc") {
-      setGroupKeys(prev => ({
-        ...prev,
-        schTypeDesc: visible
-      }));
-      setSchType(()=>visible?"active":"");
-    }
-
-     if (columnId === "schLocationDesc") {
-      setGroupKeys(prev => ({
-        ...prev,
-        schLocationDesc: visible
-      }));
-      setUR(()=>visible?"active":"");
-    }
   }
 
   const onGridReady = useCallback((params) => {
     setGridApi(params);
   }, []);
 
-  
-  const handleCustomKeyInAPIResponse = ()=>{
-    
+  const handleCustomKeyInAPIResponse = () => {
     let state_gov_mgt_code = ["1", "2", "3", "6", "89", "90", "91"];
-      let gov_aided_mgt_code = ["4", "7"];
-      let pvt_uaided_mgt_code = ["5"];
-      let ctrl_gov_mgt_code = ["92", "93", "94", "95", "96", "101"];
-      let other_mgt_code = ["8", "97", "99", "98", "102"];
+    let gov_aided_mgt_code = ["4", "7"];
+    let pvt_uaided_mgt_code = ["5"];
+    let ctrl_gov_mgt_code = ["92", "93", "94", "95", "96", "101"];
+    let other_mgt_code = ["8", "97", "99", "98", "102"];
 
-      let pr_sch_code = ["1"];
-      let upr_pr_code = ["2", "4"];
-      let hr_sec_code = ["3", "5", "10", "11"];
-      let sec_sch_code = ["6", "7", "8"];
-      let pre_pr_sch_code = ["12"];
+    let pr_sch_code = ["1"];
+    let upr_pr_code = ["2", "4"];
+    let hr_sec_code = ["3", "5", "10", "11"];
+    let sec_sch_code = ["6", "7", "8"];
+    let pre_pr_sch_code = ["12"];
 
-      const arr = [];
-    school_data?.data?.data?.forEach((item,idx)=>{
-      let appendedObj  ={...item};
+    const arr = [];
+    school_data.data.data.forEach((item, idx) => {
+      let appendedObj = { ...item };
 
       /* broad management key added*/
-        if(state_gov_mgt_code.includes(item.schManagementCode)){
-          appendedObj.schManagementBroad= 'State Government';
-        }else if(gov_aided_mgt_code.includes(item.schManagementCode)){
-          appendedObj.schManagementBroad= 'Govt. Aided';
-        }
-        else if(pvt_uaided_mgt_code.includes(item.schManagementCode)){
-          appendedObj.schManagementBroad= 'Private Unaided';
-        }
-        else if(ctrl_gov_mgt_code.includes(item.schManagementCode)){
-          appendedObj.schManagementBroad= 'Central Government';
-        }
-        else if(other_mgt_code.includes(item.schManagementCode)){
-          appendedObj.schManagementBroad= 'Others';
-        }
-        
-        /* broad category key added*/
-         if(pr_sch_code.includes(item.schCategoryCode)){
-          appendedObj.schCategoryBroad= 'Primary (PRY)';
-        }
-        else if(upr_pr_code.includes(item.schCategoryCode)){
-          appendedObj.schCategoryBroad= 'Upper Primary (UPR)';
-        }
-        else if(hr_sec_code.includes(item.schCategoryCode)){
-          appendedObj.schCategoryBroad= 'Higher Secondary (HSEC)';
-        }
-        else if(sec_sch_code.includes(item.schCategoryCode)){
-          appendedObj.schCategoryBroad= 'Secondary (SEC)';
-        }
-        else if(pre_pr_sch_code.includes(item.schCategoryCode)){
-          appendedObj.schCategoryBroad= 'Pre-Primary (PRY)';
-        }
-        arr.push(appendedObj);
-      })
-      setData(arr);
-  }
+      if (state_gov_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = "State Government";
+      } else if (gov_aided_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = "Govt. Aided";
+      } else if (pvt_uaided_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = "Private Unaided";
+      } else if (ctrl_gov_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = "Central Government";
+      } else if (other_mgt_code.includes(item.schManagementCode)) {
+        appendedObj.schManagementBroad = "Others";
+      }
 
-  
-  const handleFilter = (value,e) => {
+      /* broad category key added*/
+      if (pr_sch_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = "Primary (PRY)";
+      } else if (upr_pr_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = "Upper Primary (UPR)";
+      } else if (hr_sec_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = "Higher Secondary (HSEC)";
+      } else if (sec_sch_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = "Secondary (SEC)";
+      } else if (pre_pr_sch_code.includes(item.schCategoryCode)) {
+        appendedObj.schCategoryBroad = "Pre-Primary (PRY)";
+      }
+      arr.push(appendedObj);
+    });
+    setData(arr);
+  };
 
-    if(value==="School Management" || value==="Mgt Details"){
-      if(value==="School Management"){
-        if(mgt==="active"){
+  const handleFilter = (value, e) => {
+    if (value === "School Management" || value === "Mgt Details") {
+      if (value === "School Management") {
+        if (mgt === "active") {
           setMgt("");
-        }else{
+        } else {
           setMgt("active");
         }
-      }else{
+      } else {
         setMgt("");
       }
-  
-      if(value==="Mgt Details"){
-        if(mgt_Details==="active"){
+
+      if (value === "Mgt Details") {
+        if (mgt_Details === "active") {
           setMgtDetails("");
-        }else{
+        } else {
           setMgtDetails("active");
         }
-      }else{
+      } else {
         setMgtDetails("");
       }
 
       /*hide and show multi button class for details view*/
-      if(value==="School Management"){
-        if(mgt==="active"){
-          setMultiMgt("")
-        }else{
-          setMultiMgt("multibtn")
+      if (value === "School Management") {
+        if (mgt === "active") {
+          setMultiMgt("");
+        } else {
+          setMultiMgt("multibtn");
         }
       }
-      if(value==="Mgt Details"){
-        if(mgt_Details==="active"){
-          setMultiMgt("")
-        }else{
-          setMultiMgt("multibtn")
+      if (value === "Mgt Details") {
+        if (mgt_Details === "active") {
+          setMultiMgt("");
+        } else {
+          setMultiMgt("multibtn");
         }
       }
-
-     
-
 
       /*end here*/
-    
-  
     }
-    
-    
-    if(value==="School Category" || value==="Cat Details"){
-      if(value==="School Category"){
-        if(cat==="active"){
+
+    if (value === "School Category" || value === "Cat Details") {
+      if (value === "School Category") {
+        if (cat === "active") {
           setCat("");
-        }else{
+        } else {
           setCat("active");
         }
-      }else{
+      } else {
         setCat("");
       }
-  
-      if(value==="Cat Details"){
-        if(cat_Details==="active"){
+
+      if (value === "Cat Details") {
+        if (cat_Details === "active") {
           setCatDetails("");
-        }else{
+        } else {
           setCatDetails("active");
         }
+      } else {
+        setCatDetails("");
+      }
 
-          }else{
-            setCatDetails("");
-          }
-          
-
-          if(value==="School Category"){
-            if(cat==="active"){
-              setMultiCat("")
-            }else{
-              setMultiCat("multibtn")
-            }
-          }
-          if(value==="Cat Details"){
-            if(cat_Details==="active"){
-              setMultiCat("")
-            }else{
-              setMultiCat("multibtn")
-            }
-          }
+      if (value === "School Category") {
+        if (cat === "active") {
+          setMultiCat("");
+        } else {
+          setMultiCat("multibtn");
+        }
+      }
+      if (value === "Cat Details") {
+        if (cat_Details === "active") {
+          setMultiCat("");
+        } else {
+          setMultiCat("multibtn");
+        }
+      }
     }
-    
-    if(value==="School Type"){
-      if(sch_type==="active"){
+
+    if (value === "School Type") {
+      if (sch_type === "active") {
         setSchType("");
-      }else{
+      } else {
         setSchType("active");
       }
     }
 
-    if(value==="Urban/Rural"){
-      if(ur==="active"){
+    if (value === "Urban/Rural") {
+      if (ur === "active") {
         setUR("");
-      }else{
+      } else {
         setUR("active");
       }
     }
-
   };
-
-
+ 
   const handleGroupButtonClick = (e, currObj) => {
     handleFilter(e, currObj);
-    setViewDataBy(prevViewDataBy => (prevViewDataBy === e ? "" : e));
+    setViewDataBy((prevViewDataBy) => (prevViewDataBy === e ? "" : e));
 
     const updatedGroupKeys = { ...groupKeys };
     if (e === "School Management") {
-        updatedGroupKeys.schManagementBroad = !groupKeys.schManagementBroad;
-        updatedGroupKeys.schManagementDesc = false;
-    } 
-    else if (e === "Mgt Details") {
+      updatedGroupKeys.schManagementBroad = !groupKeys.schManagementBroad;
+      updatedGroupKeys.schManagementDesc = false;
+    } else if (e === "Mgt Details") {
       updatedGroupKeys.schManagementDesc = !groupKeys.schManagementDesc;
       updatedGroupKeys.schManagementBroad = false;
-    }
-
-    else if (e === "School Category") {
-      updatedGroupKeys.schCategoryBroad =!groupKeys.schCategoryBroad;
-      updatedGroupKeys.schCategoryDesc =  false;
-    } 
-    else if (e === "Cat Details") {
+    } else if (e === "School Category") {
+      updatedGroupKeys.schCategoryBroad = !groupKeys.schCategoryBroad;
+      updatedGroupKeys.schCategoryDesc = false;
+    } else if (e === "Cat Details") {
       updatedGroupKeys.schCategoryDesc = !groupKeys.schCategoryDesc;
       updatedGroupKeys.schCategoryBroad = false;
-    } 
-
-
-    else if (e === "School Type") {
-        updatedGroupKeys.schTypeDesc = !groupKeys.schTypeDesc;
+    } else if (e === "School Type") {
+      updatedGroupKeys.schTypeDesc = !groupKeys.schTypeDesc;
     } else if (e === "Urban/Rural") {
-        updatedGroupKeys.schLocationDesc = !groupKeys.schLocationDesc;
+      updatedGroupKeys.schLocationDesc = !groupKeys.schLocationDesc;
     }
 
     setGroupKeys(updatedGroupKeys);
-    const allFalse = Object.values(updatedGroupKeys).every(value => value === false);
-     
-    if (viewDataBy === "" && allFalse) {
-        schoolLocationRow();
+    const allFalse = Object.values(updatedGroupKeys).every(
+      (value) => value === false
+    );
+
+    if (allFalse) {
+      schoolLocationRow();
     } else {
       handleCustomKeyInAPIResponse();
       multiGroupingRows();
     }
-};
+  };
 
-  
   const schoolLocationRow = () => {
     const primaryKeys = ["regionName"];
     const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
@@ -457,12 +517,12 @@ useEffect(()=>{
         let totalSchoolsHaveElectricity = 0;
 
         itemsArray.forEach((dataItem) => {
-          totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+          totalSchoolsHaveElectricity += parseInt(dataItem.totSchElectricity);
         });
 
         const appended = {
           regionName: item,
-          schHaveElectricity: totalSchoolsHaveElectricity,
+          totSchElectricity: totalSchoolsHaveElectricity,
         };
 
         updatedArrGroupedData.push(appended);
@@ -478,60 +538,79 @@ useEffect(()=>{
     gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", false);
     gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", false);
   };
-  
+
   const multiGroupingRows = () => {
     const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
     if (primaryKeys.length > 0) {
-
       filter_query && primaryKeys.push("regionName");
+
       const groupedData = groupByKey(data, primaryKeys);
-      console.log(groupedData,' groupedData ')
       const updatedArrGroupedData = [];
-      
+
       if (groupedData && typeof groupedData === "object") {
-        
         Object.keys(groupedData).forEach((item) => {
           const itemsArray = groupedData[item];
           let totalSchoolsHaveElectricity = 0;
           let regionName = "";
           itemsArray.forEach((dataItem) => {
             regionName = dataItem.regionName;
-            totalSchoolsHaveElectricity += parseInt(dataItem.schHaveElectricity);
+            totalSchoolsHaveElectricity += parseInt(
+              dataItem.totSchElectricity
+            );
           });
-  
+
           const appended = {};
           primaryKeys.forEach((key, index) => {
-            appended.regionName = regionName
+            appended.regionName = regionName;
             appended[key] = item.split("@")[index];
           });
-          appended.schHaveElectricity = totalSchoolsHaveElectricity;
+          appended.totSchElectricity = totalSchoolsHaveElectricity;
           updatedArrGroupedData.push(appended);
         });
-  
+        setRowData(updatedArrGroupedData)
         setArrGroupedData(updatedArrGroupedData);
       }
       
-      gridApi?.columnApi?.api.setColumnVisible("schManagementBroad", groupKeys.schManagementBroad);
-      gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", groupKeys.schManagementDesc);
-      gridApi?.columnApi?.api.setColumnVisible("schCategoryBroad", groupKeys.schCategoryBroad);
-      gridApi?.columnApi?.api.setColumnVisible("schCategoryDesc", groupKeys.schCategoryDesc);
-      gridApi?.columnApi?.api.setColumnVisible("schTypeDesc", groupKeys.schTypeDesc);
-      gridApi?.columnApi?.api.setColumnVisible("schLocationDesc", groupKeys.schLocationDesc);
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schManagementBroad",
+        groupKeys.schManagementBroad
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schManagementDesc",
+        groupKeys.schManagementDesc
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schCategoryBroad",
+        groupKeys.schCategoryBroad
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schCategoryDesc",
+        groupKeys.schCategoryDesc
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schTypeDesc",
+        groupKeys.schTypeDesc
+      );
+      gridApi?.columnApi?.api.setColumnVisible(
+        "schLocationDesc",
+        groupKeys.schLocationDesc
+      );
       gridApi?.columnApi?.api.setColumnVisible("regionName", filter_query);
     }
   };
+  /*end here*/
 
   /*export data to excel*/
   const getHeaderToExport = (gridApi) => {
     const columns = gridApi.api.getAllDisplayedColumns();
 
     return columns.map((column) => {
-      const { field,headerName } = column.getColDef();
+      const { field, headerName } = column.getColDef();
       const sort = column.getSort();
       const headerNameUppercase = field[0].toUpperCase() + field.slice(1);
       const headerCell = {
         text: headerNameUppercase + (sort ? ` (${sort})` : ""),
-        headerName:headerName,
+        headerName: headerName,
         bold: true,
         margin: [0, 12, 0, 0],
       };
@@ -556,24 +635,24 @@ useEffect(()=>{
 
     return rowsToExport;
   };
-  
+
   const getDocument = (gridApi) => {
     const headerRow = getHeaderToExport(gridApi);
     const rows = getRowsToExport(gridApi);
     const date = new Date();
-const formattedDate = new Intl.DateTimeFormat('en-US', { 
-    year: 'numeric', 
-    month: 'short', 
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
-}).format(date);
-   
+    const formattedDate = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    }).format(date);
+
     const doc = new jsPDF({
       orientation: "portrait",
       unit: "in",
-      format: [20, 20]
+      format: [20, 20],
     });
 
     // Function to add header
@@ -584,75 +663,102 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
       doc.text("UDISE+", 0.6, 1);
       doc.setFontSize(20);
       doc.setTextColor("blue");
-      doc.text(`${report.report_name}`, 0.6, 1.4,{ fontSize: 12, color: "red" });
+      doc.text(`${report.report_name}`, 0.6, 1.4, {
+        fontSize: 12,
+        color: "red",
+      });
       doc.setFontSize(20);
       doc.setTextColor("blue");
-      doc.text(`Report type : ${"stateName"}`, 0.6, 1.8,{ fontSize: 12, color: "red" });
-     
+      doc.text(`Report type : ${stateName}`, 0.6, 1.8, {
+        fontSize: 12,
+        color: "red",
+      });
+
       doc.setTextColor("blue");
       doc.setFont("bold");
-      doc.text(`Report Id : ${id}` , doc.internal.pageSize.width - 1, 1,{ align: 'right' });
-      doc.text(`Academic Year : ${local_year}` , doc.internal.pageSize.width - 1, 1.8,{ align: 'right' });
+      doc.text(`Report Id : ${id}`, doc.internal.pageSize.width - 1, 1, {
+        align: "right",
+      });
+      doc.text(
+        `Academic Year : ${local_year}`,
+        doc.internal.pageSize.width - 1,
+        1.8,
+        { align: "right" }
+      );
       doc.setFontSize(20);
-      doc.text(`Report generated on : ${formattedDate}` , doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.2, { align: 'right' });
+      doc.text(
+        `Report generated on : ${formattedDate}`,
+        doc.internal.pageSize.width - 1,
+        doc.internal.pageSize.height - 0.2,
+        { align: "right" }
+      );
     };
-   
+
     // Function to add footer
     const addFooter = () => {
       const pageCount = doc.internal.getNumberOfPages();
       doc.setFontSize(10);
       for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
-        doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width - 1, doc.internal.pageSize.height - 0.5, { align: 'right' });
+        doc.text(
+          `Page ${i} of ${pageCount}`,
+          doc.internal.pageSize.width - 1,
+          doc.internal.pageSize.height - 0.5,
+          { align: "right" }
+        );
       }
     };
 
     const table = [];
-    table.push(headerRow.map(cell => cell.headerName));
-    rows.forEach(row => {
-      table.push(row.map(cell => cell.text));
+    table.push(headerRow.map((cell) => cell.headerName));
+    rows.forEach((row) => {
+      table.push(row.map((cell) => cell.text));
     });
-    addHeader(); 
+    addHeader();
     doc.autoTable({
       head: [table[0]],
       body: table.slice(1),
       startY: 2.2,
-      afterPageContent: addFooter
+      afterPageContent: addFooter,
     });
 
-    
     const totalPages = doc.internal.getNumberOfPages();
     for (let i = 0; i < totalPages; i++) {
       doc.setPage(i + 1);
-     
-      
+
       doc.autoTable({
         startY: 3.5,
-        
       });
     }
 
     return doc;
-};
+  };
 
-const exportToPDF = () => {
-  const doc = getDocument(gridApi);
-  doc.save(`${report.report_name}.pdf`);
-};
+  const exportToPDF = () => {
+    const doc = getDocument(gridApi);
+    doc.save(`${report.report_name}.pdf`);
+  };
 
+  const exportToExcel = () => {
+    gridApi.api.exportDataAsExcel();
+  };
 
-    const exportToExcel = () => {
-      gridApi.api.exportDataAsExcel();
-    };
+  const handleExportData = (e) => {
+    const { value } = e.target;
+    if (value === "export_pdf") {
+      exportToPDF();
+    }
+    if (value === "export_excel") {
+      exportToExcel();
+    }
+  };
 
-  /*end here*/
-
-  /*end here*/
   return (
     <>
       <ScrollToTopOnMount />
       <section className="infrastructure-main-card p-0" id="content">
-        <div className="bg-grey2 ptb-30">
+        <div className="bg-grey2 ptb-30 header-bar">
+          <div className="box-circle-r"></div>
           <div className="container tab-for-graph">
             <div className="row align-items-center">
               <div className="col-md-5 col-lg-5">
@@ -667,33 +773,71 @@ const exportToPDF = () => {
               </div>
               <div className="col-md-7 col-lg-7">
                 <div className="tab-text-infra mb-1">View Data By</div>
-             
 
                 <ul className="nav nav-tabs mul-tab-main">
-
                   <li className={`nav-item ${multiMgt}`}>
-                    <button type="button" className={`nav-link dark-active ${mgt}`}  onClick={(e)=>handleGroupButtonClick("School Management",e)}>School Management(Broad) </button>
-                    <button type="button" className={`nav-link dark-active details-multi ${mgt_Details}`} id="school_mgt_details" onClick={(e)=>handleGroupButtonClick("Mgt Details",e)}>Datailed View</button>
+                    <button
+                      type="button"
+                      className={`nav-link dark-active ${mgt}`}
+                      onClick={(e) =>
+                        handleGroupButtonClick("School Management", e)
+                      }
+                    >
+                      School Management(Broad){" "}
+                    </button>
+                    <button
+                      type="button"
+                      className={`nav-link dark-active details-multi ${mgt_Details}`}
+                      id="school_mgt_details"
+                      onClick={(e) => handleGroupButtonClick("Mgt Details", e)}
+                    >
+                      Detailed View
+                    </button>
                   </li>
-                
+
                   <li className={`nav-item ${multiCat}`}>
-                    <button type="button" className={`nav-link dark-active1 ${cat}`}  onClick={(e)=>handleGroupButtonClick("School Category",e)}>School Category(Broad)</button>
-                    <button type="button" className={`nav-link details-multi dark-active1 ${cat_Details}`}  onClick={(e)=>handleGroupButtonClick("Cat Details",e)}>Datailed View</button>
-                  </li>     
-                              
+                    <button
+                      type="button"
+                      className={`nav-link dark-active1 ${cat}`}
+                      onClick={(e) =>
+                        handleGroupButtonClick("School Category", e)
+                      }>
+                      School Category(Broad)
+                    </button>
+                    <button
+                      type="button"
+                      className={`nav-link details-multi dark-active1 ${cat_Details}`}
+                      onClick={(e) => handleGroupButtonClick("Cat Details", e)}
+                    >
+                      Detailed View
+                    </button>
+                  </li>
+
                   <li className="nav-item">
-                    <button type="button" className={`nav-link ${sch_type}`}  onClick={(e)=>handleGroupButtonClick("School Type",e)}>School Type</button>
+                    <button
+                      type="button"
+                      className={`nav-link ${sch_type}`}
+                      onClick={(e) => handleGroupButtonClick("School Type", e)}
+                    >
+                      School Type
+                    </button>
                   </li>
                   <li className="nav-item">
-                    <button type="button" className={`nav-link ${ur}`}  onClick={(e)=>handleGroupButtonClick("Urban/Rural",e)}>Urban / Rural</button>
+                    <button
+                      type="button"
+                      className={`nav-link ${ur}`}
+                      onClick={(e) => handleGroupButtonClick("Urban/Rural", e)}
+                    >
+                      Urban / Rural
+                    </button>
                   </li>
                 </ul>
               </div>
 
               {/* Customize Filter Start*/}
 
-              <div className="col-md-2 col-lg-2 text-right pt-1 pe-0">
-                {/* <button
+              {/* <div className="col-md-2 col-lg-2 text-right pt-1 pe-0"> */}
+              {/* <button
                 className="header-dropdown-btn customize-btn"
                 onClick={() => setShow(!show)}
               >
@@ -701,7 +845,7 @@ const exportToPDF = () => {
                 Customize
               </button> */}
 
-                <div
+              {/* <div
                   className={`custmize-filter-column ${show ? "show" : ""}`}
                   id="customize_filter"
                 >
@@ -838,17 +982,27 @@ const exportToPDF = () => {
                     </form>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* Customize Filter END*/}
 
-              <div className="col-md-12 col-lg-12">
-                <div className="tab-text-infra download-rep"
-                // onClick={exportToExcel}
-                onClick={exportToPDF}
-                >
-                  Download Report{" "}
-                  <span className="material-icons-round">download</span>
+              <div className="col-md-2 col-lg-2">
+                <div className="select-infra button-group-filter">
+
+                  <div className="indicator-select">
+                    {/* <img src={Dropicon} alt="dropicon" className="dropicon" /> */}
+                    <select
+                      className="form-select bg-grey2"
+                      onChange={handleExportData}
+                    >
+                      <option defaultValue={""} disabled selected className="option-hide">
+                        Download Report
+                      </option>
+
+                      <option value="export_pdf">Download as PDF </option>
+                      <option value="export_excel">Download as Excel</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -880,7 +1034,7 @@ const exportToPDF = () => {
                   <span>{local_year}</span>
                 </h4>
               </div>
-              <div className="col-md-12 col-lg-12">
+              <div className="col-md-12 col-lg-12 table-text-i">
                 <Tabs
                   defaultActiveKey={type}
                   id="uncontrolled-tab-example"
@@ -925,9 +1079,10 @@ const exportToPDF = () => {
                       </p>
                     </div>
                   </Tab>
-                  <Tab eventKey="table" title="Table">
+                  <Tab eventKey="table" title="Table" className="tabledata-ukkl">
+                  <button onClick={switchColumnsToRows}>{showTransposed ? 'Show Original' : 'Switch to Rows'}</button>
                     <div
-                      className="ag-theme-material ag-theme-custom-height ag-theme-quartz"
+                      className="ag-theme-material ag-theme-custom-height ag-theme-quartz h-300"
                       style={{ height: 450 }}
                     >
                       <AgGridReact
@@ -945,7 +1100,9 @@ const exportToPDF = () => {
                           <h6 className="pinnedData">Total</h6>
                         </div>
                         <div className="col-md-6 text-end">
-                          <h6 className="pinnedData">{calculateTotal('schHaveElectricity')}</h6>
+                          <h6 className="pinnedData">
+                            {calculateTotal("totSchElectricity")}
+                          </h6>
                         </div>
                       </div>
                     </div>
@@ -956,7 +1113,12 @@ const exportToPDF = () => {
             </div>
           </div>
         </div>
+        {/* devider */}
+        <div className="right-devider-icon">
+        <img src={Infraicon} alt="icon" className="icon-infra" />
+      </div>
       </section>
+     
     </>
   );
 }

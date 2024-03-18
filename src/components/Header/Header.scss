@@ -2,7 +2,7 @@
 @import 'src/styles/_variables.scss';
 
 .header-top {
-    background-color: $light-grey;
+    background-color: #F7F7F7;
     padding: 6px 0;
     font-family: 'Roboto', sans-serif;
 
@@ -19,7 +19,7 @@
         }
     }
 
-    &-skipwrap {
+    &-skipwrap { 
         ul {
             @include d_flex_between;
 

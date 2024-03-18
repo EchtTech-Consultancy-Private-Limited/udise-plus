@@ -30,6 +30,12 @@ export default function Infrastructure3013() {
  
   const grid_column = useSelector((state) => state?.column?.column);
   const [queryParameters] = useSearchParams();
+  const id = queryParameters.get("id");
+  const type = queryParameters.get("type");
+  const schoolFilterYear = useSelector((state) => state?.schoolFilter);
+  //const schoolFilterYear = useSelector((state) => state?.testschoolFilter);
+  const [filterShowHide, setFilterShowHide] = useState(false);
+  const dispatch = useDispatch();
   const school_data = useSelector((state) => state?.school);
   const local_state = window.localStorage.getItem("state");
   const local_district = window.localStorage.getItem("district");
@@ -579,7 +585,20 @@ export default function Infrastructure3013() {
       "Number of Schools by Availability of Infrastructure and Facilities, School Management and School Category.pdf"
     );
   };
+  
 
+  const exportToExcel = () => {
+    gridApi.api.exportDataAsExcel();
+  };
+  const handleExportData = (e) => {
+    const { value } = e.target;
+    if (value === "export_pdf") {
+      exportToPDF();
+    }
+    if (value === "export_excel") {
+      exportToExcel();
+    }
+  };
   // const handleGroupButtonClick = (e) => {
 
   //   const groupObj = { "School Category": "schCategoryDesc", "School Management": "schManagementDesc", "Urban/Rural": "schLocationDesc","School Type":"schTypeDesc" }
@@ -829,14 +848,23 @@ export default function Infrastructure3013() {
 
               {/* Customize Filter END*/}
 
-              <div className="col-md-12 col-lg-12">
-                {/* <div className="tab-text-infra download-rep" onClick={onBtExport}>*/}
-                <div
-                  className="tab-text-infra download-rep"
-                  onClick={exportToPDF}
-                >
-                  Download Report{" "}
-                  <span className="material-icons-round">download</span>
+              <div className="col-md-2 col-lg-2">
+                <div className="select-infra button-group-filter">
+
+                  <div className="indicator-select">
+                    {/* <img src={Dropicon} alt="dropicon" className="dropicon" /> */}
+                    <select
+                      className="form-select bg-grey2"
+                      onChange={handleExportData}
+                    >
+                      <option defaultValue={""} disabled selected className="option-hide">
+                        Download Report
+                      </option>
+
+                      <option value="export_pdf">Download as PDF </option>
+                      <option value="export_excel">Download as Excel</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
