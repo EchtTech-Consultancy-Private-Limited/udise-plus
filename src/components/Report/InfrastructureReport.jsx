@@ -667,6 +667,7 @@ export default function Infrastructure({ id, type }) {
       data.forEach(row => {
         transposedRowData['regionName'] = row.regionName;
         transposedRowData[row.schCategoryBroad] = row.totSchElectricity;
+
       });
       setData([transposedRowData]);
       setColumn(Object.keys(transposedRowData).map(name => ({ headerName: name, field: name })));
@@ -681,7 +682,7 @@ export default function Infrastructure({ id, type }) {
     {
       ...(getLastTrueToShowTotal() ? { [getLastTrueToShowTotal()]: 'Total' } : {regionName: 'Total'}),
       totSch: calculateTotal('totSch'),
-      totSchElectricity: calculateTotal('totSch'),
+      totSchElectricity: calculateTotal('totSchElectricity'),
       totSchFuncElectricity: calculateTotal('totSchFuncElectricity')
     },
   ];
