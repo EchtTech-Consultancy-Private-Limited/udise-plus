@@ -13,10 +13,12 @@ import dashboardSlice from "./slice/dashboardSlice";
 import dashboardFilterSlice from "./slice/dashboardFilter.slice";
 import Column3016Slice from "./slice/Column3016Slice";
 import DistBlockWiseSlice from "./slice/DistBlockWiseSlice";
+import schoolFilterSlice3016 from "./slice/schoolFilterSlice3016";
 const store = configureStore({
     reducer:{
         header:headerSlice,
         schoolFilter:schoolFilterSlice,
+        schoolFilter3016:schoolFilterSlice3016,
         state:stateSlice,
         distrct:districtSlice,
         block:blockSlice,

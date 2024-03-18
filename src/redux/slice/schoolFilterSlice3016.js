@@ -4,14 +4,16 @@ const schoolFilterSlice = createSlice({
   name: 'header/report-3016',
   initialState: {
     yearId: 8,
-    regionType: 10,  //21 //10 for all india 
-    regionCode: "99",
+    regionType: 21,  //21statewise //10 for all india 
+    regionCode: "11", // 11statewise //99 for all india
     categoryCode: 0,
     managementCode: 0,
     locationCode: 0,
     schoolTypeCode:0,
+    dashboardRegionType:"n",
+    dashboardRegionCode:100
   },
-
+ 
 
   reducers: {
     allFilter(state, action) {
@@ -20,5 +22,5 @@ const schoolFilterSlice = createSlice({
   },
 })
 
-export const {  allFilter } = schoolFilterSlice.actions
+export const {allFilter } = schoolFilterSlice.actions
 export default schoolFilterSlice.reducer
