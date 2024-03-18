@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const schoolFilterSlice = createSlice({
-  name: 'header',
+  name: 'header/report-3016',
   initialState: {
     yearId: 8,
     regionType: 21,  //21statewise //10 for all india 
@@ -16,20 +16,11 @@ const schoolFilterSlice = createSlice({
  
 
   reducers: {
-    changeYearFilter(state, action) {
-      state.yearId = action.payload;
-    },
-    changeDistrictFilter(state, action) {
-      state.regionCode = action.payload;
-    },
-    changeStateFilter(state, action) {
-      state.regionType = action.payload;
-    },
     allFilter(state, action) {
       Object.assign(state, action.payload);
     }
   },
 })
 
-export const { changeYearFilter, changeDistrictFilter, changeStateFilter, allFilter } = schoolFilterSlice.actions
+export const {allFilter } = schoolFilterSlice.actions
 export default schoolFilterSlice.reducer

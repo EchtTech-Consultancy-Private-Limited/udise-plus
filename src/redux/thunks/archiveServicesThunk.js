@@ -13,7 +13,6 @@ const fetchArchiveServicesSchoolData = createAsyncThunk(
   "archive-services/fetchArchiveServicesSchoolData",
   async (filterObj) => {
     const response = await externalAxios.post(`/public`,filterObj);
-    
     return response.data;
   }
 );
