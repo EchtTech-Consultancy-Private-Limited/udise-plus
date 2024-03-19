@@ -38,6 +38,9 @@ export default function Infrastructure({ id, type }) {
     schLocationDesc: false,
   });
 
+
+  const [showTransposed, setShowTransposed] = useState(false);
+  const [showTransposedMgt, setShowTransposedMgt] = useState(false);
   const [mgt, setMgt] = useState("");
   const [mgt_Details, setMgtDetails] = useState("");
   const [cat, setCat] = useState("");
@@ -47,13 +50,15 @@ export default function Infrastructure({ id, type }) {
   const [multiMgt, setMultiMgt] = useState("");
   const [multiCat, setMultiCat] = useState("");
   const [data, setData] = useState([]);
-  const [ dummy ,setDummy] = useState([]);
+  const [ cloneFilterData ,setCloneFilterData] = useState([]);
+  const [pinnedBottomRowDataByRows,setPinnedBottomRowDataByRows] = useState([]);
   const filter_query =
     (filterObj.regionType === 21 && filterObj.regionCode === "11") ||
     (filterObj.regionType === 22 && filterObj.regionCode === distBlockWiseData.districtUdiseCode) ||
     (filterObj.regionType === 23 && filterObj.regionCode === distBlockWiseData.blockUdiseCode);
 
-
+    const filter_query_by_location = ((local_state!=="State Wise") && (local_district!=="District Wise") && (local_block!=="Block Wise"))
+    
     const getLastTrueToShowTotal = ()=>{
       const lastTrueKey = Object.keys(groupKeys).reduce((lastKey, key) => {
         if (groupKeys[key]) {
@@ -66,12 +71,13 @@ export default function Infrastructure({ id, type }) {
     }
 
   function calculateTotal(fieldName) {
-    if (!school_data?.data?.data) return 0;
-    return school_data.data.data.reduce(
+    if (!arrGroupedData) return 0;
+    return arrGroupedData.reduce(
       (total, row) => total + parseFloat(row[fieldName] || 0),
       0
     );
   }
+
 
   useEffect(() => {
     for (const category in allreportsdata) {
@@ -92,11 +98,17 @@ export default function Infrastructure({ id, type }) {
 
   useEffect(() => {
     const allFalse = Object.values(groupKeys).every((value) => value === false);
-    if (allFalse) {
-      schoolLocationRow();
-    } else {
-      handleCustomKeyInAPIResponse();
-      multiGroupingRows();
+    if(showTransposed){
+      switchColumnsToRows();
+    }else if(showTransposedMgt){
+      switchColumnsToRowsMgt();
+    }else{
+      if (allFalse) {
+        schoolLocationRow();
+      } else {
+        handleCustomKeyInAPIResponse();
+        multiGroupingRows();
+      }
     }
   }, [school_data?.data?.data]);
 
@@ -118,6 +130,7 @@ export default function Infrastructure({ id, type }) {
     {
       headerName: "Location",
       field: "regionName",
+      hide:!filter_query_by_location
     },
     {
       headerName: "School Management(Broad)",
@@ -160,12 +173,12 @@ export default function Infrastructure({ id, type }) {
       field: "totSch",
     },
     {
-      headerName: "Functional Electricity",
-      field: "totSchFuncElectricity",
-    },
-    {
       headerName: "No. of Schools having Electricity",
       field: "totSchElectricity",
+    },
+    {
+      headerName: "Functional Electricity",
+      field: "totSchFuncElectricity",
     }
   ]);
 
@@ -408,12 +421,20 @@ export default function Infrastructure({ id, type }) {
       (value) => value === false
     );
 
-    if (allFalse) {
-      schoolLocationRow();
-    } else {
-      handleCustomKeyInAPIResponse();
-      multiGroupingRows();
+    if(showTransposed){
+      switchColumnsToRows();
+    }else if(showTransposedMgt){
+      switchColumnsToRowsMgt();
+    }else{
+      if (allFalse) {
+        schoolLocationRow();
+      } else {
+        handleCustomKeyInAPIResponse();
+        multiGroupingRows();
+      }
     }
+
+    
   };
 
   const schoolLocationRow = () => {
@@ -443,6 +464,7 @@ export default function Infrastructure({ id, type }) {
         updatedArrGroupedData.push(appended);
       });
       setArrGroupedData(updatedArrGroupedData);
+      setCloneFilterData(updatedArrGroupedData);
     }
 
     gridApi?.columnApi?.api.setColumnVisible("regionName", true);
@@ -486,7 +508,7 @@ export default function Infrastructure({ id, type }) {
           appended.totSchFuncElectricity = totalFunElectricity;
           updatedArrGroupedData.push(appended);
         });
-        setDummy(updatedArrGroupedData);
+        setCloneFilterData(updatedArrGroupedData);
         setArrGroupedData(updatedArrGroupedData);
       }
       gridApi?.columnApi?.api.setColumnVisible(
@@ -672,51 +694,67 @@ export default function Infrastructure({ id, type }) {
   };
 /*test*/ 
   
-  const [showTransposed, setShowTransposed] = useState(false);
-  
   const switchColumnsToRows = () => {
+    setShowTransposedMgt(false);
     if (!showTransposed) {
       const arr = [];
       const uniqueLocation = new Set();
       const uniqueKeys = new Set(); 
-      // const uniqueMgt = new Set(); 
   
-      arrGroupedData?.forEach(row => {
+      cloneFilterData.forEach(row => {
        
-        const location = row?.regionName;
+       
+          let  location;
+          let key;  
+          if(groupKeys.schManagementBroad){
+            location = row.schManagementBroad;
+          }else if(groupKeys.schManagementDesc){
+            location = row.schManagementDesc;
+          }else{
+            location = row.regionName;
+          }
+       
+          /*row wise data for category*/ 
+          if(groupKeys.schCategoryBroad){
+            key = row.schCategoryBroad;
+          }else if(groupKeys.schCategoryDesc){
+            key = row.schCategoryDesc;
+          }
+
+          /*end here*/
+
         uniqueLocation.add(location);
-  
        
-        const key = row?.schCategoryBroad;
+        key = key?.replace(/\./g, '');
+
         if (!uniqueKeys.has(key)) { 
           uniqueKeys.add(key); 
         }
-        
-        // const keyMgt = row?.schManagementBroad;
-        // if (!uniqueMgt.has(keyMgt)) { 
-        //   uniqueMgt.add(keyMgt); 
-        // }
   
         const existingDataIndex = arr.findIndex(data => data.Location === location);
         if (existingDataIndex !== -1) {
-          arr[existingDataIndex][key] = (arr[existingDataIndex][key] || 0) + parseInt(row?.totSchElectricity, 10);
+          arr[existingDataIndex][key] = (arr[existingDataIndex][key] || 0) + parseInt(row.totSchElectricity, 10);
+          
         } else {
           const newData = { Location: location };
-          newData[key] = parseInt(row?.totSchElectricity, 10);
-          // newData[keyMgt] = parseInt(row?.totSchElectricity, 10);
+          newData[key] = parseInt(row.totSchElectricity, 10);
           arr.push(newData);
         }
-      });
-      
-      const columnHeaders = ['Location', ...Array.from(uniqueKeys)];
-  
-      // Update state with arr and column headers
-      setArrGroupedData(arr);
-      setColumn(columnHeaders.map(header => ({ headerName: header, field: header })));
-    } else {
-      setArrGroupedData(dummy);
 
-      setColumn([...cloneC,
+
+      });
+      const columnHeaders = ['Location', ...Array.from(uniqueKeys)];
+      setColumn(columnHeaders.map(header => ({ headerName: header, field: header?.replace(/\./g, '') })));
+      setArrGroupedData(arr);
+      
+    } else {
+      setArrGroupedData(cloneFilterData);
+      setColumn([
+        {
+          headerName: "Location",
+          field: "regionName",
+          hide:!filter_query
+        },
         {
         headerName: "School Management(Broad)",
         field: "schManagementBroad",
@@ -753,11 +791,136 @@ export default function Infrastructure({ id, type }) {
         suppressColumnsToolPanel: true,
         hide:!groupKeys.schLocationDesc
       },
+      {
+        headerName: "Total No. of Schools",
+        field: "totSch",
+      },
+      {
+        headerName: "No. of Schools having Electricity",
+        field: "totSchElectricity",
+      },
+      {
+        headerName: "Functional Electricity",
+        field: "totSchFuncElectricity",
+      }
     ]);
     }
     setShowTransposed(!showTransposed);
   };
 
+  const switchColumnsToRowsMgt = () => {
+    setShowTransposed(false);
+    if (!showTransposedMgt) {
+      const arr = [];
+      const uniqueLocation = new Set();
+      const uniqueKeys = new Set(); 
+  
+      cloneFilterData.forEach(row => {
+       
+          let  location;
+          let key;  
+          if(groupKeys.schCategoryBroad){
+            location = row.schCategoryBroad;
+          }else if(groupKeys.schCategoryDesc){
+            location = row.schCategoryDesc;
+          }else{
+            location = row.regionName;
+          }
+       
+          /*row wise data for category*/ 
+          if(groupKeys.schManagementBroad){
+            key = row.schManagementBroad;
+          }else if(groupKeys.schManagementDesc){
+            key = row.schManagementDesc;
+          }
+
+          /*end here*/
+
+        uniqueLocation.add(location);
+       
+        key = key?.replace(/\./g, '');
+
+        if (!uniqueKeys.has(key)) { 
+          uniqueKeys.add(key); 
+        }
+  
+        const existingDataIndex = arr.findIndex(data => data.Location === location);
+        if (existingDataIndex !== -1) {
+          arr[existingDataIndex][key] = (arr[existingDataIndex][key] || 0) + parseInt(row.totSchElectricity, 10);
+          
+        } else {
+          const newData = { Location: location };
+          newData[key] = parseInt(row.totSchElectricity, 10);
+          arr.push(newData);
+        }
+
+
+      });
+      const columnHeaders = ['Location', ...Array.from(uniqueKeys)];
+      setColumn(columnHeaders.map(header => ({ headerName: header, field: header?.replace(/\./g, '') })));
+      setArrGroupedData(arr);
+    } else {
+      setArrGroupedData(cloneFilterData);
+      setColumn([
+        {
+          headerName: "Location",
+          field: "regionName",
+          hide:!filter_query
+        },
+        {
+        headerName: "School Management(Broad)",
+        field: "schManagementBroad",
+        suppressColumnsToolPanel: true,
+        hide:!groupKeys.schManagementBroad
+      },
+      {
+        headerName: "School Management(Detailed)",
+        field: "schManagementDesc",
+        suppressColumnsToolPanel: true,
+        hide:!groupKeys.schManagementDesc
+      },
+      {
+        headerName: "School Category(Broad)",
+        field: "schCategoryBroad",
+        suppressColumnsToolPanel: true,
+        hide:!groupKeys.schCategoryBroad
+      },
+      {
+        headerName: "School Category(Detailed)",
+        field: "schCategoryDesc",
+        suppressColumnsToolPanel: true,
+        hide:!groupKeys.schCategoryDesc
+      },
+      {
+        headerName: "School Type",
+        field: "schTypeDesc",
+        suppressColumnsToolPanel: true,
+        hide:!groupKeys.schTypeDesc
+      },
+      {
+        headerName: "Urban/Rural",
+        field: "schLocationDesc",
+        suppressColumnsToolPanel: true,
+        hide:!groupKeys.schLocationDesc
+      },
+      {
+        headerName: "Total No. of Schools",
+        field: "totSch",
+      },
+      {
+        headerName: "No. of Schools having Electricity",
+        field: "totSchElectricity",
+      },
+      {
+        headerName: "Functional Electricity",
+        field: "totSchFuncElectricity",
+      }
+    ]);
+    }
+    
+    setShowTransposedMgt(!showTransposedMgt);
+  };
+  
 
   const pinedBottomRowData = [
     {
@@ -767,9 +930,27 @@ export default function Infrastructure({ id, type }) {
       totSchFuncElectricity: calculateTotal('totSchFuncElectricity')
     },
   ];
-  
 
+  useEffect(()=>{
+    
+    if(showTransposed || showTransposedMgt){
+      const appendedObj = {};
+      columns.forEach((item)=>{
+        if(item.field==="Location"){
+          appendedObj[item.field] = "Total"
+        }else{
+          appendedObj[item.field] = calculateTotal(item.field)
+        }
+      })
+      setPinnedBottomRowDataByRows([appendedObj]);
+    }
+
+      
+  },[columns])
+  
   /*testing*/ 
+
+
 
   return (
     <>
@@ -790,7 +971,6 @@ export default function Infrastructure({ id, type }) {
                 </div>
               </div>
               <div className="col-md-7 col-lg-7">
-              {/* <button onClick={switchColumnsToRows}>{showTransposed ? 'Show Original' : 'Switch to Rows'}</button> */}
                 <div className="tab-text-infra mb-1">View Data By</div>
 
                 <ul className="nav nav-tabs mul-tab-main">
@@ -812,6 +992,15 @@ export default function Infrastructure({ id, type }) {
                     >
                       Detailed View
                     </button>
+                    <button
+                      type="button"
+                      className={`nav-link dark-active details-multi`}
+                      id="mgt_row_column"
+                      onClick={(e) => switchColumnsToRowsMgt()}
+                    >
+                     By {showTransposedMgt ? 'Column' : 'Rows'}
+                    </button>
+                   
                   </li>
 
                   <li className={`nav-item ${multiCat}`}>
@@ -829,6 +1018,14 @@ export default function Infrastructure({ id, type }) {
                       onClick={(e) => handleGroupButtonClick("Cat Details", e)}
                     >
                       Detailed View
+                    </button>
+                    <button
+                      type="button"
+                      className={`nav-link dark-active details-multi`}
+                      id="cat_row_column"
+                      onClick={(e) => switchColumnsToRows()}
+                    >
+                     By {showTransposed ? 'Column' : 'Rows'}
                     </button>
                   </li>
 
@@ -1112,7 +1309,7 @@ export default function Infrastructure({ id, type }) {
                         groupDisplayType="custom"
                         groupHideOpenParents={true}
                         onColumnVisible={onColumnVisible}
-                        pinnedBottomRowData={pinedBottomRowData}
+                        pinnedBottomRowData={showTransposed||showTransposedMgt?pinnedBottomRowDataByRows:pinedBottomRowData}
                       />
                       {/* <div className="row">
                         <div className="col-md-3">

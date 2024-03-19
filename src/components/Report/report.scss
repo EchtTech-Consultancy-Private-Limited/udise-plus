@@ -81,7 +81,8 @@
             padding: 8px 20px;
             float: right;
             margin-top: 15px;
-            position: static;
+            z-index: 9999;
+            position: sticky !important;
 
             @media (max-width:1599px) and (min-width: 1361px) {
                 font-size: 14px;
