@@ -98,6 +98,7 @@ export default function Reports() {
     document.body.removeChild(link);
   };
   const { t } = useTranslation();
+
   return (
     <>
     <ScrollToTopOnMount/>
@@ -146,8 +147,7 @@ export default function Reports() {
                     <div className="col-md-3 col-lg-3 mt-3 pt-1">
                       <button
                         className="header-dropdown-btn"
-                        onClick={handleFilterReport}
-                      >
+                        onClick={handleFilterReport}>
                         SUBMIT
                       </button>
                     </div>
