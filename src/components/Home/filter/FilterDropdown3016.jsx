@@ -12,7 +12,7 @@ import {
   MDBListGroupItem,
   MDBRow,
 } from "mdb-react-ui-kit";
-import { district,block,nWiseregionType,nWiseregionCode,selectedDYear,allSWiseregionType,allSWiseregionCode,specificSWiseregionType,allDWiseregionType,specificDWiseregionType,allBWiseregionType,specificBWiseregionType,nationalWiseName, stateWiseName,districtWiseName,blockWiseName } from "../../../constants/constants";
+import { district, block, nWiseregionType, nWiseregionCode, selectedDYear, allSWiseregionType, allSWiseregionCode, specificSWiseregionType, allDWiseregionType, specificDWiseregionType, allBWiseregionType, specificBWiseregionType, nationalWiseName, stateWiseName, districtWiseName, blockWiseName } from "../../../constants/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStateData, updateFilterState } from "../../../redux/thunks/stateThunk";
 import { fetchDistrictDataByStateCode, removeAllDistrict, updateFilterDistrict } from "../../../redux/thunks/districtThunk";
@@ -22,16 +22,20 @@ import {
 } from "../../../redux/slice/schoolFilterSlice3016";
 
 import { hideShowColumn } from "../../../redux/slice/dataGridAPISlice";
-import { updateUdiseBlockCode,updateUdiseDistrictCode } from "../../../redux/slice/DistBlockWiseSlice";
+import { updateUdiseBlockCode, updateUdiseDistrictCode } from "../../../redux/slice/DistBlockWiseSlice";
 import {
   filterItemsStatePerPage,
   filterItemsYearPerPage,
 } from "../../../constants/constants";
 import { fetchBlockByDistrictCode, removeAllBlock, updateFilterBlock } from "../../../redux/thunks/blockThunk";
 import { useLocation } from "react-router-dom";
+// import 'antd/dist/antd.css';
+import { Select } from 'antd';
 
-
+const OPTIONS = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
 export default function FilterDropdown() {
+  const [selectedItems, setSelectedItems] = useState([]);
+  const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
   const [itemsPerPage] = useState(filterItemsStatePerPage);
   const [yearItemsPerPage] = useState(filterItemsYearPerPage);
   const dispatch = useDispatch();
@@ -41,9 +45,9 @@ export default function FilterDropdown() {
   const stateDataClone = useSelector((state) => state.state.dataClone);
   const yearData = useSelector((state) => state.year);
   const schoolFilter = useSelector((state) => state.schoolFilter);
- 
+
   const districtData = useSelector((state) => state.distrct);
-  
+
   const districtDataClone = useSelector((state) => state.distrct.dataClone);
   const blockData = useSelector((state) => state.block);
   const blockDataClone = useSelector((state) => state.block.dataClone);
@@ -54,7 +58,7 @@ export default function FilterDropdown() {
   const [selectedYear, setSelectedYear] = useState(selectedDYear);
   const [selectedBlock, setSelectedBlock] = useState(block);
   const [selectedBlockClone, setSelectedBlockClone] = useState(block);
-  const distBlockWiseData = useSelector((state)=>state.distBlockWise)
+  const distBlockWiseData = useSelector((state) => state.distBlockWise)
   const filterObj = structuredClone(schoolFilter);
   const stateSearch = stateDataClone;
   const districtSearch = districtDataClone;
@@ -93,9 +97,9 @@ export default function FilterDropdown() {
 
     //
     dispatch(updateUdiseDistrictCode(state_code));
-  //
+    //
 
-  /*--------------------Filter by National----------------------*/
+    /*--------------------Filter by National----------------------*/
     if (state_name === nationalWiseName) {
 
       filterObj.regionType = nWiseregionType;
@@ -106,7 +110,7 @@ export default function FilterDropdown() {
       dispatch(removeAllBlock());
       setSelectedDistrictClone(district);
     } else if (state_name === stateWiseName) {
-/*--------------------Filter by State Wise----------------------*/
+      /*--------------------Filter by State Wise----------------------*/
       filterObj.regionType = allSWiseregionType;
       filterObj.regionCode = allSWiseregionCode;
       dispatch(allFilter(filterObj));
@@ -115,7 +119,7 @@ export default function FilterDropdown() {
       dispatch(removeAllBlock());
       setSelectedDistrictClone(district);
     } else {
-/*--------------------Filter by Particular State ----------------------*/
+      /*--------------------Filter by Particular State ----------------------*/
       filterObj.regionType = specificSWiseregionType;
       filterObj.regionCode = state_code;
       dispatch(allFilter(filterObj));
@@ -131,7 +135,7 @@ export default function FilterDropdown() {
     hideOpendFilterBox();
   };
 
-  
+
   const handleSchoolFilterDistrict = (district_name, district_code) => {
 
     dispatch(updateUdiseBlockCode(district_code));
@@ -163,7 +167,7 @@ export default function FilterDropdown() {
     hideOpendFilterBox();
   };
 
-  
+
   const handleSchoolFilterBlock = (block_code, block_name) => {
     if (block_name === blockWiseName) {
       filterObj.regionType = allBWiseregionType;
@@ -192,11 +196,11 @@ export default function FilterDropdown() {
     }
 
     extra_col.unshift({ udiseStateCode: allSWiseregionType, udiseStateName: stateWiseName });
-      extra_col.unshift({
-        udiseStateCode: nWiseregionType,
-        udiseStateName: nationalWiseName,
-      });
-   
+    extra_col.unshift({
+      udiseStateCode: nWiseregionType,
+      udiseStateName: nationalWiseName,
+    });
+
 
     for (let i = 0; i < extra_col.length; i += itemsPerPage) {
       const groupItems = [];
@@ -224,7 +228,7 @@ export default function FilterDropdown() {
     return groups;
   };
 
-  
+
   const renderDistrictListGroup = () => {
     const groups = [];
     let extra_col;
@@ -315,7 +319,7 @@ export default function FilterDropdown() {
         j < i + yearItemsPerPage && j < yearData.data.data.length;
         j++
       ) {
-        
+
         groupItems.push(
           <MDBListGroupItem
             key={j}
@@ -371,6 +375,9 @@ export default function FilterDropdown() {
     }
   }
 
+
+  const [show, setShow] = useState(false);
+
   return (
     <>
       <div className={`filter_drodown `}>
@@ -382,7 +389,7 @@ export default function FilterDropdown() {
                 <MDBNavbarNav className='me-auto ps-lg-0 smallfilter'>
 
 
-                <MDBNavbarItem className="position-static">
+                  <MDBNavbarItem className="position-static">
                     <MDBDropdown>
                       <MDBDropdownToggle tag="a" className="nav-link">
                         <div className="menu-sub-heading">Select Year</div>
@@ -494,13 +501,55 @@ export default function FilterDropdown() {
                     </MDBNavbarItem>
                   )}
 
-                 
+
                 </MDBNavbarNav>
               </MDBContainer>
             </MDBNavbar>
           </div>
         </div>
       </div>
+
+
+
+      <div className="Side_filter">
+        <div className="open-btn" onClick={() => setShow(!show)}>
+          {
+            !show ? <span className="material-icons-round">sort</span> : <span className="material-icons-round">expand_more</span>
+          }
+        </div>
+      </div>
+
+      <div className={`custmize-filter-column ${show ? "show" : ""}`} id="customize_filter">
+       
+          <div className="search-f-box">
+          <div className="heading-sm main-title d-flex align-items-center">
+            <span className="material-icons-round text-blue me-3">sort</span> Apply Filters
+          </div>
+       
+        <div className="box-cont-cust">
+          <div className="search-box-div">
+            <span className="select-lable-title">Select Year</span>
+            <Select
+              mode="single"
+              showSearch={true}
+              placeholder="Inserted are removed"
+              value={selectedItems}
+              onChange={setSelectedItems}
+              style={{
+                width: '100%',
+              }}
+              options={filteredOptions.map((item) => ({
+                value: item,
+                label: item,
+              }))}
+            />
+          </div>
+        </div>
+          </div>
+
+
+      </div>
+
     </>
   );
 }

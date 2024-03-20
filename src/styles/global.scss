@@ -951,7 +951,7 @@ ul {
 }
 
 .bg-grey2 {
-    background: #F6F7F8;
+    background:#F2F0F0;
 }
 
 @media (min-width: 1600px) {
@@ -1099,7 +1099,8 @@ ul {
 
     .select-infra.button-group-filter select.form-select{
         font-size: 12px !important;
-        padding: 10px 10px;
+        padding: 5px 10px;
+        height: 30px;
     }
     body {
         font-size: 12px;
@@ -1276,8 +1277,15 @@ ul {
     .filter_drodown.small-filter-box .select-box.from-control li.nav-item.position-static:last-child ul.dropdown-menu.show.animation {
         transform: translate(-76%, -20.9%) !important;
     }
-    
 
+    .infrastructure-main-card .tab-for-graph .blue-strip{padding: 14px 0 !important;margin-bottom: 10px;}
+    .bg-grey2.pb-4.pt-0.header-bar.tab-for-graph {
+        padding-bottom: 14px !important;
+    }
+    .ptb-30 {
+        padding: 25px 0;
+    }
+    h4.brudcrumb_heading{margin-bottom: 12px !important;font-size: 14px !important;}
 }
 
 @media (max-width: 991px) {
@@ -1524,3 +1532,47 @@ h4.brudcrumb_heading {
 }
 
 .ag-header-cell-comp-wrapper .ag-header-cell-text{white-space: break-spaces;}
+
+// side-filter
+
+.Side_filter{
+    height: 60px;
+    width: 60px;
+    background: #113689;
+    color: #fff;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    bottom: 2%;
+    right: 2%;
+    z-index: 99999999999999999999999;
+
+    span.material-icons-round {
+        font-size: 40px;
+        transform: rotateY(180deg);
+        line-height: 52px;
+    }
+}
+
+.custmize-filter-column{
+    .heading-sm.main-title {
+        padding: 15px 20px;
+        background: #113689;
+        margin: 0;
+        border-top-left-radius: 10px;
+        color: #fff;
+        font-size: 18px;
+    }
+    .box-cont-cust {
+        padding: 15px 20px;
+    }
+    :where(.css-dev-only-do-not-override-djtmh8).ant-select-single {
+        font-size: 14px;
+        height: 50px;
+    }
+}
+
+:where(.css-dev-only-do-not-override-djtmh8).ant-select-dropdown{z-index: 9999999999999999999 !important;}
