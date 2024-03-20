@@ -190,6 +190,7 @@ export default function Infrastructure({ id, type }) {
       switchColumnsToRowsMgt(false,true);
     }
   },[cloneFilterData,groupKeys])
+
   useEffect(() => {
     if (showTransposed || showTransposedMgt) {
       const appendedObj = {};
@@ -423,18 +424,21 @@ export default function Infrastructure({ id, type }) {
     const allFalse = Object.values(updatedGroupKeys).every(
       (value) => value === false
     );
+
+    if (allFalse) {
+      schoolLocationRow();
+    } else {
+      handleCustomKeyInAPIResponse();
+      multiGroupingRows();
+    }
+
     if (showTransposed) {
       switchColumnsToRows();
     } else if (showTransposedMgt) {
       switchColumnsToRowsMgt();
-    } else {
-      if (allFalse) {
-        schoolLocationRow();
-      } else {
-        handleCustomKeyInAPIResponse();
-        multiGroupingRows();
-      }
-    }
+    } 
+      
+    
   };
 
   const schoolLocationRow = () => {
@@ -687,15 +691,15 @@ export default function Infrastructure({ id, type }) {
     }
     return total;
   };
-
+  
   const switchColumnsToRows = (e,flag=false) => {
     setShowTransposedMgt(false);
     if (flag || !showTransposed) {
-      console.log('true part ')
       const arr = [];
       const uniqueLocation = new Set();
       const uniqueKeys = new Set();
       let customColumnName = "";
+
       cloneFilterData.forEach((row) => {
         let location;
         let key;
@@ -724,19 +728,16 @@ export default function Infrastructure({ id, type }) {
         if (!uniqueKeys.has(key)) {
           uniqueKeys.add(key);
         }
-        const existingDataIndex = arr.findIndex(
-          (data) => data[customColumnName] === location
-        );
+        const existingDataIndex = arr.findIndex((data) => data[customColumnName] === location);
         if (existingDataIndex !== -1) {
-          arr[existingDataIndex][key] =
-            (arr[existingDataIndex][key] || 0) +
-            parseInt(row.totSchElectricity, 10);
+          arr[existingDataIndex][key] = (arr[existingDataIndex][key] || 0) + parseInt(row.totSchElectricity, 10);
         } else {
           let newData = { [customColumnName]: location, Total: 0 };
           newData[key] = parseInt(row.totSchElectricity, 10);
           arr.push(newData);
         }
       });
+
       const columnHeaders = [
         customColumnName,
         ...Array.from(uniqueKeys),
