@@ -13,12 +13,11 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import groupByKey from "../../utils/groupBy";
 import Infraicon from "../../assets/images/infra-power.svg";
 import { jsPDF } from "jspdf";
-
 export default function Infrastructure({ id, type }) {
   const dispatch = useDispatch();
   const school_data = useSelector((state) => state.school);
   const schoolFilter = useSelector((state) => state.schoolFilter3016);
-  const distBlockWiseData = useSelector((state)=>state.distBlockWise)
+  const distBlockWiseData = useSelector((state) => state.distBlockWise);
   const local_state = window.localStorage.getItem("state_wise");
   const local_district = window.localStorage.getItem("district");
   const local_block = window.localStorage.getItem("block");
@@ -27,8 +26,7 @@ export default function Infrastructure({ id, type }) {
   const [report, setReport] = useState(null);
   const [gridApi, setGridApi] = useState();
   const [arrGroupedData, setArrGroupedData] = useState([]);
-  const stateName = localStorage.getItem("state")
-
+  const stateName = localStorage.getItem("state");
   const [groupKeys, setGroupKeys] = useState({
     schManagementDesc: false,
     schManagementBroad: false,
@@ -37,8 +35,6 @@ export default function Infrastructure({ id, type }) {
     schTypeDesc: false,
     schLocationDesc: false,
   });
-
-
   const [showTransposed, setShowTransposed] = useState(false);
   const [showTransposedMgt, setShowTransposedMgt] = useState(false);
   const [mgt, setMgt] = useState("");
@@ -50,25 +46,87 @@ export default function Infrastructure({ id, type }) {
   const [multiMgt, setMultiMgt] = useState("");
   const [multiCat, setMultiCat] = useState("");
   const [data, setData] = useState([]);
-  const [ cloneFilterData ,setCloneFilterData] = useState([]);
-  const [pinnedBottomRowDataByRows,setPinnedBottomRowDataByRows] = useState([]);
+  const [cloneFilterData, setCloneFilterData] = useState([]);
+  const [customColumnName, setCustomColumn] = useState("");
+  const [pinnedBottomRowDataByRows, setPinnedBottomRowDataByRows] = useState([]);
+ 
+
   const filter_query =
     (filterObj.regionType === 21 && filterObj.regionCode === "11") ||
-    (filterObj.regionType === 22 && filterObj.regionCode === distBlockWiseData.districtUdiseCode) ||
-    (filterObj.regionType === 23 && filterObj.regionCode === distBlockWiseData.blockUdiseCode);
+    (filterObj.regionType === 22 &&
+      filterObj.regionCode === distBlockWiseData.districtUdiseCode) ||
+    (filterObj.regionType === 23 &&
+      filterObj.regionCode === distBlockWiseData.blockUdiseCode);
 
-    const filter_query_by_location = ((local_state!=="State Wise") && (local_district!=="District Wise") && (local_block!=="Block Wise"))
-    
-    const getLastTrueToShowTotal = ()=>{
-      const lastTrueKey = Object.keys(groupKeys).reduce((lastKey, key) => {
-        if (groupKeys[key]) {
-          return key;
-        }
-        return lastKey;
-      }, null);
+  const filter_query_by_location =
+    local_state === "State Wise" ||
+    local_district === "District Wise" ||
+    local_block === "Block Wise";
 
-      return lastTrueKey;
-    }
+  const [columns, setColumn] = useState([
+      {
+        headerName: "Location",
+        field: "regionName",
+        hide: filter_query_by_location,
+      },
+      {
+        headerName: "School Management(Broad)",
+        field: "schManagementBroad",
+        suppressColumnsToolPanel: true,
+        hide: true,
+      },
+      {
+        headerName: "School Management(Detailed)",
+        field: "schManagementDesc",
+        suppressColumnsToolPanel: true,
+        hide: true,
+      },
+      {
+        headerName: "School Category(Broad)",
+        field: "schCategoryBroad",
+        suppressColumnsToolPanel: true,
+        hide: true,
+      },
+      {
+        headerName: "School Category(Detailed)",
+        field: "schCategoryDesc",
+        suppressColumnsToolPanel: true,
+        hide: true,
+      },
+      {
+        headerName: "School Type",
+        field: "schTypeDesc",
+        suppressColumnsToolPanel: true,
+        hide: true,
+      },
+      {
+        headerName: "Urban/Rural",
+        field: "schLocationDesc",
+        suppressColumnsToolPanel: true,
+        hide: true,
+      },
+      {
+        headerName: "Total No. of Schools",
+        field: "totSch",
+      },
+      {
+        headerName: "No. of Schools having Electricity",
+        field: "totSchElectricity",
+      },
+      {
+        headerName: "Functional Electricity",
+        field: "totSchFuncElectricity",
+  },]);
+
+  const getLastTrueToShowTotal = () => {
+    const lastTrueKey = Object.keys(groupKeys).reduce((lastKey, key) => {
+      if (groupKeys[key]) {
+        return key;
+      }
+      return lastKey;
+    }, null);
+    return lastTrueKey;
+  };
 
   function calculateTotal(fieldName) {
     if (!arrGroupedData) return 0;
@@ -77,7 +135,6 @@ export default function Infrastructure({ id, type }) {
       0
     );
   }
-
 
   useEffect(() => {
     for (const category in allreportsdata) {
@@ -98,18 +155,13 @@ export default function Infrastructure({ id, type }) {
 
   useEffect(() => {
     const allFalse = Object.values(groupKeys).every((value) => value === false);
-    if(showTransposed){
-      switchColumnsToRows();
-    }else if(showTransposedMgt){
-      switchColumnsToRowsMgt();
-    }else{
-      if (allFalse) {
-        schoolLocationRow();
-      } else {
-        handleCustomKeyInAPIResponse();
-        multiGroupingRows();
-      }
+    if (allFalse) {
+      schoolLocationRow();
+    } else {
+      handleCustomKeyInAPIResponse();
+      multiGroupingRows();
     }
+    gridApi?.columnApi?.api.setColumnVisible("regionName", filter_query_by_location);
   }, [school_data?.data?.data]);
 
   useEffect(() => {
@@ -117,73 +169,42 @@ export default function Infrastructure({ id, type }) {
     if (allFalse) {
       schoolLocationRow();
     } else {
-      handleCustomKeyInAPIResponse();
+      // handleCustomKeyInAPIResponse();
       multiGroupingRows();
     }
   }, [groupKeys]);
 
   useEffect(() => {
     multiGroupingRows();
-  }, [data]);
-
-  const [columns,setColumn] = useState([
-    {
-      headerName: "Location",
-      field: "regionName",
-      hide:!filter_query_by_location
-    },
-    {
-      headerName: "School Management(Broad)",
-      field: "schManagementBroad",
-      suppressColumnsToolPanel: true,
-      hide:true
-    },
-    {
-      headerName: "School Management(Detailed)",
-      field: "schManagementDesc",
-      suppressColumnsToolPanel: true,
-      hide:true
-    },
-    {
-      headerName: "School Category(Broad)",
-      field: "schCategoryBroad",
-      suppressColumnsToolPanel: true,
-      hide:true
-    },
-    {
-      headerName: "School Category(Detailed)",
-      field: "schCategoryDesc",
-      suppressColumnsToolPanel: true,
-      hide:true
-    },
-    {
-      headerName: "School Type",
-      field: "schTypeDesc",
-      suppressColumnsToolPanel: true,
-      hide:true
-    },
-    {
-      headerName: "Urban/Rural",
-      field: "schLocationDesc",
-      suppressColumnsToolPanel: true,
-      hide:true
-    },
-    {
-      headerName: "Total No. of Schools",
-      field: "totSch",
-    },
-    {
-      headerName: "No. of Schools having Electricity",
-      field: "totSchElectricity",
-    },
-    {
-      headerName: "Functional Electricity",
-      field: "totSchFuncElectricity",
+    if (showTransposed) {
+      switchColumnsToRows(false,true);
+    } else if (showTransposedMgt) {
+      switchColumnsToRowsMgt(false,true);
     }
-  ]);
+  }, [data]);
+ 
+  useEffect(()=>{
+    if (showTransposed) {
+      switchColumnsToRows(false,true);
+    } else if (showTransposedMgt) {
+      switchColumnsToRowsMgt(false,true);
+    }
+  },[cloneFilterData,groupKeys])
+  useEffect(() => {
+    if (showTransposed || showTransposedMgt) {
+      const appendedObj = {};
+      columns.forEach((item) => {
+        if (item.field === customColumnName) {
+          appendedObj[item.field] = "Total";
+        } else {
+          appendedObj[item.field] = calculateTotal(item.field);
+        }
+      });
+      setPinnedBottomRowDataByRows([appendedObj]);
+    }
+  }, [columns]);
 
-  const [cloneC,setClone] = useState(columns)
-
+  
   const [defColumnDefs] = useState({
     flex: 1,
     minWidth: 150,
@@ -193,60 +214,55 @@ export default function Infrastructure({ id, type }) {
     filter: true,
   });
 
-  
   function onColumnVisible(event) {
-      const columnId = event.column.getColId();
-      const visible = event.visible;
-      if (columnId === "schManagementBroad") {
-        setGroupKeys((prev) => ({
-          ...prev,
-          schManagementBroad: visible,
-        }));
-        setMgt(() => (visible ? "active" : ""));
-        setMultiMgt(() => (visible ? "multibtn" : ""));
-      }
-      if (columnId === "schManagementDesc") {
-        setGroupKeys((prev) => ({
-          ...prev,
-          schManagementDesc: visible,
-        }));
-        setMgtDetails(() => (visible ? "active" : ""));
-        setMultiMgt(() => (visible ? "multibtn" : ""));
-      }
-  
-      if (columnId === "schCategoryBroad") {
-        setGroupKeys((prev) => ({
-          ...prev,
-          schCategoryBroad: visible,
-        }));
-        setCat(() => (visible ? "active" : ""));
-        setMultiCat(() => (visible ? "multibtn" : ""));
-      }
-      if (columnId === "schCategoryDesc") {
-        setGroupKeys((prev) => ({
-          ...prev,
-          schCategoryDesc: visible,
-        }));
-        setCatDetails(() => (visible ? "active" : ""));
-        setMultiCat(() => (visible ? "multibtn" : ""));
-      }
-  
-      if (columnId === "schTypeDesc") {
-        setGroupKeys((prev) => ({
-          ...prev,
-          schTypeDesc: visible,
-        }));
-        setSchType(() => (visible ? "active" : ""));
-      }
-  
-      if (columnId === "schLocationDesc") {
-        setGroupKeys((prev) => ({
-          ...prev,
-          schLocationDesc: visible,
-        }));
-        setUR(() => (visible ? "active" : ""));
-      }
-     
+    const columnId = event.column.getColId();
+    const visible = event.visible;
+    if (columnId === "schManagementBroad") {
+      setGroupKeys((prev) => ({
+        ...prev,
+        schManagementBroad: visible,
+      }));
+      setMgt(() => (visible ? "active" : ""));
+      setMultiMgt(() => (visible ? "multibtn" : ""));
+    }
+    if (columnId === "schManagementDesc") {
+      setGroupKeys((prev) => ({
+        ...prev,
+        schManagementDesc: visible,
+      }));
+      setMgtDetails(() => (visible ? "active" : ""));
+      setMultiMgt(() => (visible ? "multibtn" : ""));
+    }
+    if (columnId === "schCategoryBroad") {
+      setGroupKeys((prev) => ({
+        ...prev,
+        schCategoryBroad: visible,
+      }));
+      setCat(() => (visible ? "active" : ""));
+      setMultiCat(() => (visible ? "multibtn" : ""));
+    }
+    if (columnId === "schCategoryDesc") {
+      setGroupKeys((prev) => ({
+        ...prev,
+        schCategoryDesc: visible,
+      }));
+      setCatDetails(() => (visible ? "active" : ""));
+      setMultiCat(() => (visible ? "multibtn" : ""));
+    }
+    if (columnId === "schTypeDesc") {
+      setGroupKeys((prev) => ({
+        ...prev,
+        schTypeDesc: visible,
+      }));
+      setSchType(() => (visible ? "active" : ""));
+    }
+    if (columnId === "schLocationDesc") {
+      setGroupKeys((prev) => ({
+        ...prev,
+        schLocationDesc: visible,
+      }));
+      setUR(() => (visible ? "active" : ""));
+    }
   }
 
   const onGridReady = useCallback((params) => {
@@ -259,17 +275,14 @@ export default function Infrastructure({ id, type }) {
     let pvt_uaided_mgt_code = ["5"];
     let ctrl_gov_mgt_code = ["92", "93", "94", "95", "96", "101"];
     let other_mgt_code = ["8", "97", "99", "98", "102"];
-
     let pr_sch_code = ["1"];
     let upr_pr_code = ["2", "4"];
     let hr_sec_code = ["3", "5", "10", "11"];
     let sec_sch_code = ["6", "7", "8"];
     let pre_pr_sch_code = ["12"];
-
     const arr = [];
     school_data.data.data.forEach((item, idx) => {
       let appendedObj = { ...item };
-
       /* broad management key added*/
       if (state_gov_mgt_code.includes(item.schManagementCode)) {
         appendedObj.schManagementBroad = "State Government";
@@ -282,7 +295,6 @@ export default function Infrastructure({ id, type }) {
       } else if (other_mgt_code.includes(item.schManagementCode)) {
         appendedObj.schManagementBroad = "Others";
       }
-
       /* broad category key added*/
       if (pr_sch_code.includes(item.schCategoryCode)) {
         appendedObj.schCategoryBroad = "Primary (PRY)";
@@ -311,7 +323,6 @@ export default function Infrastructure({ id, type }) {
       } else {
         setMgt("");
       }
-
       if (value === "Mgt Details") {
         if (mgt_Details === "active") {
           setMgtDetails("");
@@ -321,7 +332,6 @@ export default function Infrastructure({ id, type }) {
       } else {
         setMgtDetails("");
       }
-
       /*hide and show multi button class for details view*/
       if (value === "School Management") {
         if (mgt === "active") {
@@ -337,10 +347,8 @@ export default function Infrastructure({ id, type }) {
           setMultiMgt("multibtn");
         }
       }
-
       /*end here*/
     }
-
     if (value === "School Category" || value === "Cat Details") {
       if (value === "School Category") {
         if (cat === "active") {
@@ -351,7 +359,6 @@ export default function Infrastructure({ id, type }) {
       } else {
         setCat("");
       }
-
       if (value === "Cat Details") {
         if (cat_Details === "active") {
           setCatDetails("");
@@ -361,7 +368,6 @@ export default function Infrastructure({ id, type }) {
       } else {
         setCatDetails("");
       }
-
       if (value === "School Category") {
         if (cat === "active") {
           setMultiCat("");
@@ -377,7 +383,6 @@ export default function Infrastructure({ id, type }) {
         }
       }
     }
-
     if (value === "School Type") {
       if (sch_type === "active") {
         setSchType("");
@@ -385,7 +390,6 @@ export default function Infrastructure({ id, type }) {
         setSchType("active");
       }
     }
-
     if (value === "Urban/Rural") {
       if (ur === "active") {
         setUR("");
@@ -394,7 +398,7 @@ export default function Infrastructure({ id, type }) {
       }
     }
   };
- 
+
   const handleGroupButtonClick = (e, currObj) => {
     handleFilter(e, currObj);
     const updatedGroupKeys = { ...groupKeys };
@@ -415,17 +419,15 @@ export default function Infrastructure({ id, type }) {
     } else if (e === "Urban/Rural") {
       updatedGroupKeys.schLocationDesc = !groupKeys.schLocationDesc;
     }
-
     setGroupKeys(updatedGroupKeys);
     const allFalse = Object.values(updatedGroupKeys).every(
       (value) => value === false
     );
-
-    if(showTransposed){
+    if (showTransposed) {
       switchColumnsToRows();
-    }else if(showTransposedMgt){
+    } else if (showTransposedMgt) {
       switchColumnsToRowsMgt();
-    }else{
+    } else {
       if (allFalse) {
         schoolLocationRow();
       } else {
@@ -433,15 +435,12 @@ export default function Infrastructure({ id, type }) {
         multiGroupingRows();
       }
     }
-
-    
   };
 
   const schoolLocationRow = () => {
     const primaryKeys = ["regionName"];
     const groupedData = groupByKey(school_data?.data?.data, primaryKeys);
     const updatedArrGroupedData = [];
-
     if (groupedData && typeof groupedData === "object") {
       Object.keys(groupedData)?.forEach((item) => {
         const itemsArray = groupedData[item];
@@ -453,20 +452,17 @@ export default function Infrastructure({ id, type }) {
           totalSchools += parseInt(dataItem.totSch);
           totalFunElectricity += parseInt(dataItem.totSchFuncElectricity);
         });
-
         const appended = {
           regionName: item,
-          totSch : totalSchools,
+          totSch: totalSchools,
           totSchElectricity: totalSchoolsHaveElectricity,
           totSchFuncElectricity: totalFunElectricity,
         };
-
         updatedArrGroupedData.push(appended);
       });
       setArrGroupedData(updatedArrGroupedData);
       setCloneFilterData(updatedArrGroupedData);
     }
-
     gridApi?.columnApi?.api.setColumnVisible("regionName", true);
     gridApi?.columnApi?.api.setColumnVisible("schManagementBroad", false);
     gridApi?.columnApi?.api.setColumnVisible("schManagementDesc", false);
@@ -480,10 +476,8 @@ export default function Infrastructure({ id, type }) {
     const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
     if (primaryKeys.length > 0) {
       filter_query && primaryKeys.push("regionName");
-
       const groupedData = groupByKey(data, primaryKeys);
       const updatedArrGroupedData = [];
-
       if (groupedData && typeof groupedData === "object") {
         Object.keys(groupedData).forEach((item) => {
           const itemsArray = groupedData[item];
@@ -497,7 +491,6 @@ export default function Infrastructure({ id, type }) {
             totalSchools += parseInt(dataItem.totSch);
             totalFunElectricity += parseInt(dataItem.totSchFuncElectricity);
           });
-
           const appended = {};
           primaryKeys.forEach((key, index) => {
             appended.regionName = regionName;
@@ -538,12 +531,11 @@ export default function Infrastructure({ id, type }) {
       gridApi?.columnApi?.api.setColumnVisible("regionName", filter_query);
     }
   };
-  /*end here*/
+ 
 
-  /*export data to excel*/
+  /*------------Export data to Excel and PDF-------------*/
   const getHeaderToExport = (gridApi) => {
     const columns = gridApi.api.getAllDisplayedColumns();
-
     return columns.map((column) => {
       const { field, headerName } = column.getColDef();
       const sort = column.getSort();
@@ -560,11 +552,9 @@ export default function Infrastructure({ id, type }) {
 
   const getRowsToExport = (gridApi) => {
     const columns = gridApi.api.getAllDisplayedColumns();
-
     const getCellToExport = (column, node) => ({
       text: gridApi.api.getValue(column, node) ?? "",
     });
-
     const rowsToExport = [];
     gridApi.api.forEachNodeAfterFilterAndSort((node) => {
       const rowToExport = columns.map((column) =>
@@ -572,7 +562,6 @@ export default function Infrastructure({ id, type }) {
       );
       rowsToExport.push(rowToExport);
     });
-
     return rowsToExport;
   };
 
@@ -588,13 +577,11 @@ export default function Infrastructure({ id, type }) {
       minute: "2-digit",
       hour12: true,
     }).format(date);
-
     const doc = new jsPDF({
       orientation: "portrait",
       unit: "in",
       format: [20, 20],
     });
-
     // Function to add header
     const addHeader = () => {
       doc.setFontSize(25);
@@ -613,7 +600,6 @@ export default function Infrastructure({ id, type }) {
         fontSize: 12,
         color: "red",
       });
-
       doc.setTextColor("blue");
       doc.setFont("bold");
       doc.text(`Report Id : ${id}`, doc.internal.pageSize.width - 1, 1, {
@@ -633,7 +619,6 @@ export default function Infrastructure({ id, type }) {
         { align: "right" }
       );
     };
-
     // Function to add footer
     const addFooter = () => {
       const pageCount = doc.internal.getNumberOfPages();
@@ -648,7 +633,6 @@ export default function Infrastructure({ id, type }) {
         );
       }
     };
-
     const table = [];
     table.push(headerRow.map((cell) => cell.headerName));
     rows.forEach((row) => {
@@ -661,16 +645,13 @@ export default function Infrastructure({ id, type }) {
       startY: 2.2,
       afterPageContent: addFooter,
     });
-
     const totalPages = doc.internal.getNumberOfPages();
     for (let i = 0; i < totalPages; i++) {
       doc.setPage(i + 1);
-
       doc.autoTable({
         startY: 3.5,
       });
     }
-
     return doc;
   };
 
@@ -692,266 +673,288 @@ export default function Infrastructure({ id, type }) {
       exportToExcel();
     }
   };
-/*test*/ 
-  
-  const switchColumnsToRows = () => {
+  /*----------------end here---------------------*/
+
+
+  /*-----------Transposed rows  and column wise data------------*/
+  const countTotalPinnedWithRight = (obj) => {
+    let total = 0;
+    for (const key in obj) {
+      const value = obj[key];
+      if (Number.isInteger(value)) {
+        total += value;
+      }
+    }
+    return total;
+  };
+
+  const switchColumnsToRows = (e,flag=false) => {
     setShowTransposedMgt(false);
-    if (!showTransposed) {
+    if (flag || !showTransposed) {
+      console.log('true part ')
       const arr = [];
       const uniqueLocation = new Set();
-      const uniqueKeys = new Set(); 
-  
-      cloneFilterData.forEach(row => {
-       
-       
-          let  location;
-          let key;  
-          if(groupKeys.schManagementBroad){
-            location = row.schManagementBroad;
-          }else if(groupKeys.schManagementDesc){
-            location = row.schManagementDesc;
-          }else{
-            location = row.regionName;
-          }
-       
-          /*row wise data for category*/ 
-          if(groupKeys.schCategoryBroad){
-            key = row.schCategoryBroad;
-          }else if(groupKeys.schCategoryDesc){
-            key = row.schCategoryDesc;
-          }
-
-          /*end here*/
-
-        uniqueLocation.add(location);
-       
-        key = key?.replace(/\./g, '');
-
-        if (!uniqueKeys.has(key)) { 
-          uniqueKeys.add(key); 
-        }
-  
-        const existingDataIndex = arr.findIndex(data => data.Location === location);
-        if (existingDataIndex !== -1) {
-          arr[existingDataIndex][key] = (arr[existingDataIndex][key] || 0) + parseInt(row.totSchElectricity, 10);
-          
+      const uniqueKeys = new Set();
+      let customColumnName = "";
+      cloneFilterData.forEach((row) => {
+        let location;
+        let key;
+        if (groupKeys.schManagementBroad) {
+          location = row.schManagementBroad;
+          customColumnName = "School Management(Broad)";
+          setCustomColumn("School Management(Broad)");
+        } else if (groupKeys.schManagementDesc) {
+          location = row.schManagementDesc;
+          customColumnName = "School Management(Detailed)";
+          setCustomColumn("School Management(Detailed)");
         } else {
-          const newData = { Location: location };
+          location = row.regionName;
+          customColumnName = "Location";
+          setCustomColumn("Location");
+        }
+        /*row wise data for category*/
+        if (groupKeys.schCategoryBroad) {
+          key = row.schCategoryBroad;
+        } else if (groupKeys.schCategoryDesc) {
+          key = row.schCategoryDesc;
+        }
+        /*end here*/
+        uniqueLocation.add(location);
+        key = key?.replace(/\./g, "");
+        if (!uniqueKeys.has(key)) {
+          uniqueKeys.add(key);
+        }
+        const existingDataIndex = arr.findIndex(
+          (data) => data[customColumnName] === location
+        );
+        if (existingDataIndex !== -1) {
+          arr[existingDataIndex][key] =
+            (arr[existingDataIndex][key] || 0) +
+            parseInt(row.totSchElectricity, 10);
+        } else {
+          let newData = { [customColumnName]: location, Total: 0 };
           newData[key] = parseInt(row.totSchElectricity, 10);
           arr.push(newData);
         }
-
-
       });
-      const columnHeaders = ['Location', ...Array.from(uniqueKeys)];
-      setColumn(columnHeaders.map(header => ({ headerName: header, field: header?.replace(/\./g, '') })));
-      setArrGroupedData(arr);
-      
+      const columnHeaders = [
+        customColumnName,
+        ...Array.from(uniqueKeys),
+        "Total",
+      ];
+      setColumn(
+        columnHeaders.map((header) => ({
+          headerName: header,
+          field: header?.replace(/\./g, ""),
+        }))
+      );
+      const newArr = arr.map((item) => {
+        return { ...item, Total: countTotalPinnedWithRight(item) };
+      });
+      setArrGroupedData(newArr);
     } else {
       setArrGroupedData(cloneFilterData);
       setColumn([
         {
           headerName: "Location",
           field: "regionName",
-          hide:!filter_query
+          hide: !filter_query,
         },
         {
-        headerName: "School Management(Broad)",
-        field: "schManagementBroad",
-        suppressColumnsToolPanel: true,
-        hide:!groupKeys.schManagementBroad
-      },
-      {
-        headerName: "School Management(Detailed)",
-        field: "schManagementDesc",
-        suppressColumnsToolPanel: true,
-        hide:!groupKeys.schManagementDesc
-      },
-      {
-        headerName: "School Category(Broad)",
-        field: "schCategoryBroad",
-        suppressColumnsToolPanel: true,
-        hide:!groupKeys.schCategoryBroad
-      },
-      {
-        headerName: "School Category(Detailed)",
-        field: "schCategoryDesc",
-        suppressColumnsToolPanel: true,
-        hide:!groupKeys.schCategoryDesc
-      },
-      {
-        headerName: "School Type",
-        field: "schTypeDesc",
-        suppressColumnsToolPanel: true,
-        hide:!groupKeys.schTypeDesc
-      },
-      {
-        headerName: "Urban/Rural",
-        field: "schLocationDesc",
-        suppressColumnsToolPanel: true,
-        hide:!groupKeys.schLocationDesc
-      },
-      {
-        headerName: "Total No. of Schools",
-        field: "totSch",
-      },
-      {
-        headerName: "No. of Schools having Electricity",
-        field: "totSchElectricity",
-      },
-      {
-        headerName: "Functional Electricity",
-        field: "totSchFuncElectricity",
-      }
-    ]);
+          headerName: "School Management(Broad)",
+          field: "schManagementBroad",
+          suppressColumnsToolPanel: true,
+          hide: !groupKeys.schManagementBroad,
+        },
+        {
+          headerName: "School Management(Detailed)",
+          field: "schManagementDesc",
+          suppressColumnsToolPanel: true,
+          hide: !groupKeys.schManagementDesc,
+        },
+        {
+          headerName: "School Category(Broad)",
+          field: "schCategoryBroad",
+          suppressColumnsToolPanel: true,
+          hide: !groupKeys.schCategoryBroad,
+        },
+        {
+          headerName: "School Category(Detailed)",
+          field: "schCategoryDesc",
+          suppressColumnsToolPanel: true,
+          hide: !groupKeys.schCategoryDesc,
+        },
+        {
+          headerName: "School Type",
+          field: "schTypeDesc",
+          suppressColumnsToolPanel: true,
+          hide: !groupKeys.schTypeDesc,
+        },
+        {
+          headerName: "Urban/Rural",
+          field: "schLocationDesc",
+          suppressColumnsToolPanel: true,
+          hide: !groupKeys.schLocationDesc,
+        },
+        {
+          headerName: "Total No. of Schools",
+          field: "totSch",
+        },
+        {
+          headerName: "No. of Schools having Electricity",
+          field: "totSchElectricity",
+        },
+        {
+          headerName: "Functional Electricity",
+          field: "totSchFuncElectricity",
+        },
+      ]);
     }
-    setShowTransposed(!showTransposed);
+
+    if(!flag){
+      setShowTransposed(!showTransposed);
+    }
+
   };
 
-  const switchColumnsToRowsMgt = () => {
+  const switchColumnsToRowsMgt = (e,flag=false) => {
     setShowTransposed(false);
-    if (!showTransposedMgt) {
+    if (flag || !showTransposedMgt) {
       const arr = [];
       const uniqueLocation = new Set();
-      const uniqueKeys = new Set(); 
-  
-      cloneFilterData.forEach(row => {
-       
-          let  location;
-          let key;  
-          if(groupKeys.schCategoryBroad){
-            location = row.schCategoryBroad;
-          }else if(groupKeys.schCategoryDesc){
-            location = row.schCategoryDesc;
-          }else{
-            location = row.regionName;
-          }
-       
-          /*row wise data for category*/ 
-          if(groupKeys.schManagementBroad){
-            key = row.schManagementBroad;
-          }else if(groupKeys.schManagementDesc){
-            key = row.schManagementDesc;
-          }
-
-          /*end here*/
-
-        uniqueLocation.add(location);
-       
-        key = key?.replace(/\./g, '');
-
-        if (!uniqueKeys.has(key)) { 
-          uniqueKeys.add(key); 
-        }
-  
-        const existingDataIndex = arr.findIndex(data => data.Location === location);
-        if (existingDataIndex !== -1) {
-          arr[existingDataIndex][key] = (arr[existingDataIndex][key] || 0) + parseInt(row.totSchElectricity, 10);
-          
+      const uniqueKeys = new Set();
+      let customColumnName = "";
+      cloneFilterData.forEach((row) => {
+        let location;
+        let key;
+        if (groupKeys.schCategoryBroad) {
+          location = row.schCategoryBroad;
+          customColumnName = "School Category(Broad)";
+          setCustomColumn("School Category(Broad)");
+        } else if (groupKeys.schCategoryDesc) {
+          location = row.schCategoryDesc;
+          customColumnName = "School Category(Detailed)";
+          setCustomColumn("School Category(Detailed)");
         } else {
-          const newData = { Location: location };
+          location = row.regionName;
+          customColumnName = "Location";
+          setCustomColumn("Location");
+        }
+        /*row wise data for category*/
+        if (groupKeys.schManagementBroad) {
+          key = row.schManagementBroad;
+        } else if (groupKeys.schManagementDesc) {
+          key = row.schManagementDesc;
+        }
+        /*end here*/
+        uniqueLocation.add(location);
+        key = key?.replace(/\./g, "");
+        if (!uniqueKeys.has(key)) {
+          uniqueKeys.add(key);
+        }
+        const existingDataIndex = arr.findIndex(
+          (data) => data[customColumnName] === location
+        );
+        if (existingDataIndex !== -1) {
+          arr[existingDataIndex][key] =
+            (arr[existingDataIndex][key] || 0) +
+            parseInt(row.totSchElectricity, 10);
+        } else {
+          const newData = { [customColumnName]: location };
           newData[key] = parseInt(row.totSchElectricity, 10);
           arr.push(newData);
         }
-
-
       });
-      const columnHeaders = ['Location', ...Array.from(uniqueKeys)];
-      setColumn(columnHeaders.map(header => ({ headerName: header, field: header?.replace(/\./g, '') })));
-      setArrGroupedData(arr);
+      const columnHeaders = [
+        customColumnName,
+        ...Array.from(uniqueKeys),
+        "Total",
+      ];
+      setColumn(
+        columnHeaders.map((header) => ({
+          headerName: header,
+          field: header?.replace(/\./g, ""),
+        }))
+      );
+      const newArr = arr.map((item) => {
+        return { ...item, Total: countTotalPinnedWithRight(item) };
+      });
+      setArrGroupedData(newArr);
     } else {
       setArrGroupedData(cloneFilterData);
       setColumn([
         {
           headerName: "Location",
           field: "regionName",
-          hide:!filter_query
+          hide: !filter_query,
         },
         {
-        headerName: "School Management(Broad)",
-        field: "schManagementBroad",
-        suppressColumnsToolPanel: true,
-        hide:!groupKeys.schManagementBroad
-      },
-      {
-        headerName: "School Management(Detailed)",
-        field: "schManagementDesc",
-        suppressColumnsToolPanel: true,
-        hide:!groupKeys.schManagementDesc
-      },
-      {
-        headerName: "School Category(Broad)",
-        field: "schCategoryBroad",
-        suppressColumnsToolPanel: true,
-        hide:!groupKeys.schCategoryBroad
-      },
-      {
-        headerName: "School Category(Detailed)",
-        field: "schCategoryDesc",
-        suppressColumnsToolPanel: true,
-        hide:!groupKeys.schCategoryDesc
-      },
-      {
-        headerName: "School Type",
-        field: "schTypeDesc",
-        suppressColumnsToolPanel: true,
-        hide:!groupKeys.schTypeDesc
-      },
-      {
-        headerName: "Urban/Rural",
-        field: "schLocationDesc",
-        suppressColumnsToolPanel: true,
-        hide:!groupKeys.schLocationDesc
-      },
-      {
-        headerName: "Total No. of Schools",
-        field: "totSch",
-      },
-      {
-        headerName: "No. of Schools having Electricity",
-        field: "totSchElectricity",
-      },
-      {
-        headerName: "Functional Electricity",
-        field: "totSchFuncElectricity",
-      }
-    ]);
+          headerName: "School Management(Broad)",
+          field: "schManagementBroad",
+          suppressColumnsToolPanel: true,
+          hide: !groupKeys.schManagementBroad,
+        },
+        {
+          headerName: "School Management(Detailed)",
+          field: "schManagementDesc",
+          suppressColumnsToolPanel: true,
+          hide: !groupKeys.schManagementDesc,
+        },
+        {
+          headerName: "School Category(Broad)",
+          field: "schCategoryBroad",
+          suppressColumnsToolPanel: true,
+          hide: !groupKeys.schCategoryBroad,
+        },
+        {
+          headerName: "School Category(Detailed)",
+          field: "schCategoryDesc",
+          suppressColumnsToolPanel: true,
+          hide: !groupKeys.schCategoryDesc,
+        },
+        {
+          headerName: "School Type",
+          field: "schTypeDesc",
+          suppressColumnsToolPanel: true,
+          hide: !groupKeys.schTypeDesc,
+        },
+        {
+          headerName: "Urban/Rural",
+          field: "schLocationDesc",
+          suppressColumnsToolPanel: true,
+          hide: !groupKeys.schLocationDesc,
+        },
+        {
+          headerName: "Total No. of Schools",
+          field: "totSch",
+        },
+        {
+          headerName: "No. of Schools having Electricity",
+          field: "totSchElectricity",
+        },
+        {
+          headerName: "Functional Electricity",
+          field: "totSchFuncElectricity",
+        },
+      ]);
     }
-    
-    setShowTransposedMgt(!showTransposedMgt);
+    if(!flag){
+      setShowTransposedMgt(!showTransposedMgt);
+    }
   };
-  
+  /*------------------End here------------------*/
 
   const pinedBottomRowData = [
     {
-      ...(getLastTrueToShowTotal() ? { [getLastTrueToShowTotal()]: 'Total' } : {regionName: 'Total'}),
-      totSch: calculateTotal('totSch'),
-      totSchElectricity: calculateTotal('totSchElectricity'),
-      totSchFuncElectricity: calculateTotal('totSchFuncElectricity')
+      ...(getLastTrueToShowTotal()
+        ? { [getLastTrueToShowTotal()]: "Total" }
+        : { regionName: "Total" }),
+      totSch: calculateTotal("totSch"),
+      totSchElectricity: calculateTotal("totSchElectricity"),
+      totSchFuncElectricity: calculateTotal("totSchFuncElectricity"),
     },
   ];
-
-  useEffect(()=>{
-    
-    if(showTransposed || showTransposedMgt){
-      const appendedObj = {};
-      columns.forEach((item)=>{
-        if(item.field==="Location"){
-          appendedObj[item.field] = "Total"
-        }else{
-          appendedObj[item.field] = calculateTotal(item.field)
-        }
-      })
-      setPinnedBottomRowDataByRows([appendedObj]);
-    }
-
-      
-  },[columns])
-  
-  /*testing*/ 
-
-
-
+ 
   return (
     <>
       <ScrollToTopOnMount />
@@ -972,7 +975,6 @@ export default function Infrastructure({ id, type }) {
               </div>
               <div className="col-md-7 col-lg-7">
                 <div className="tab-text-infra mb-1">View Data By</div>
-
                 <ul className="nav nav-tabs mul-tab-main">
                   <li className={`nav-item ${multiMgt}`}>
                     <button
@@ -998,18 +1000,17 @@ export default function Infrastructure({ id, type }) {
                       id="mgt_row_column"
                       onClick={(e) => switchColumnsToRowsMgt()}
                     >
-                     By {showTransposedMgt ? 'Column' : 'Rows'}
+                      By {showTransposedMgt ? "Column" : "Rows"}
                     </button>
-                   
                   </li>
-
                   <li className={`nav-item ${multiCat}`}>
                     <button
                       type="button"
                       className={`nav-link dark-active1 ${cat}`}
                       onClick={(e) =>
                         handleGroupButtonClick("School Category", e)
-                      }>
+                      }
+                    >
                       School Category(Broad)
                     </button>
                     <button
@@ -1025,10 +1026,9 @@ export default function Infrastructure({ id, type }) {
                       id="cat_row_column"
                       onClick={(e) => switchColumnsToRows()}
                     >
-                     By {showTransposed ? 'Column' : 'Rows'}
+                      By {showTransposed ? "Column" : "Rows"}
                     </button>
                   </li>
-
                   <li className="nav-item">
                     <button
                       type="button"
@@ -1049,9 +1049,7 @@ export default function Infrastructure({ id, type }) {
                   </li>
                 </ul>
               </div>
-
               {/* Customize Filter Start*/}
-
               {/* <div className="col-md-2 col-lg-2 text-right pt-1 pe-0"> */}
               {/* <button
                 className="header-dropdown-btn customize-btn"
@@ -1060,7 +1058,6 @@ export default function Infrastructure({ id, type }) {
                 <span className="material-icons-round">dashboard</span>{" "}
                 Customize
               </button> */}
-
               {/* <div
                   className={`custmize-filter-column ${show ? "show" : ""}`}
                   id="customize_filter"
@@ -1079,7 +1076,6 @@ export default function Infrastructure({ id, type }) {
                       <span className="material-icons-round">close</span>
                     </button>
                   </div>
-
                   <div className="box-cont-cust">
                     <form action="">
                       <div className="form-group search">
@@ -1089,7 +1085,6 @@ export default function Infrastructure({ id, type }) {
                           placeholder="search..."
                         />
                       </div>
-
                       <div className="form-group checkbox">
                         <input
                           type="checkbox"
@@ -1199,12 +1194,9 @@ export default function Infrastructure({ id, type }) {
                   </div>
                 </div>
               </div> */}
-
               {/* Customize Filter END*/}
-
               <div className="col-md-2 col-lg-2">
                 <div className="select-infra button-group-filter">
-
                   <div className="indicator-select">
                     {/* <img src={Dropicon} alt="dropicon" className="dropicon" /> */}
                     <select
@@ -1212,10 +1204,7 @@ export default function Infrastructure({ id, type }) {
                       onChange={handleExportData}
                       defaultValue={""}
                     >
-                      <option  className="option-hide">
-                        Download Report
-                      </option>
-
+                      <option className="option-hide">Download Report</option>
                       <option value="export_pdf">Download as PDF </option>
                       <option value="export_excel">Download as Excel</option>
                     </select>
@@ -1296,7 +1285,11 @@ export default function Infrastructure({ id, type }) {
                       </p>
                     </div>
                   </Tab>
-                  <Tab eventKey="table" title="Table" className="tabledata-ukkl">
+                  <Tab
+                    eventKey="table"
+                    title="Table"
+                    className="tabledata-ukkl"
+                  >
                     <div
                       className="ag-theme-material ag-theme-custom-height ag-theme-quartz h-300"
                       style={{ height: 450 }}
@@ -1309,7 +1302,11 @@ export default function Infrastructure({ id, type }) {
                         groupDisplayType="custom"
                         groupHideOpenParents={true}
                         onColumnVisible={onColumnVisible}
-                        pinnedBottomRowData={showTransposed||showTransposedMgt?pinnedBottomRowDataByRows:pinedBottomRowData}
+                        pinnedBottomRowData={
+                          showTransposed || showTransposedMgt
+                            ? pinnedBottomRowDataByRows
+                            : pinedBottomRowData
+                        }
                       />
                       {/* <div className="row">
                         <div className="col-md-3">
@@ -1341,10 +1338,9 @@ export default function Infrastructure({ id, type }) {
         </div>
         {/* devider */}
         <div className="right-devider-icon">
-        <img src={Infraicon} alt="icon" className="icon-infra" />
-      </div>
+          <img src={Infraicon} alt="icon" className="icon-infra" />
+        </div>
       </section>
-     
     </>
   );
 }
