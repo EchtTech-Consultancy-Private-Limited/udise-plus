@@ -1578,7 +1578,10 @@ h4.brudcrumb_heading {
         border-top-left-radius: 10px;
         color: #fff;
         font-size: 18px;
-
+        @media (max-width:1599px) and (min-width: 1361px) {
+            font-size: 15px !important;
+            padding: 10px 20px;
+        }
         @media (max-width:1399px) and (min-width: 1024px){
             font-size: 15px;
             padding: 10px 20px;
@@ -1587,8 +1590,8 @@ h4.brudcrumb_heading {
     .box-cont-cust {
         padding: 25px 20px;
 
-        @media (max-width:1399px) and (min-width: 1024px){
-            padding: 17px 20px;
+        @media (max-width:1599px) and (min-width: 1024px){
+            padding: 10px;
         }
 
         .search-box-div {
