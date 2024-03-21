@@ -780,6 +780,10 @@ export default function Infrastructure({ id, type }) {
       const uniqueLocation = new Set();
       const uniqueKeys = new Set();
       let customColumnName = "";
+      const primaryKey = Object.keys(groupKeys).filter((key) => groupKeys[key]);
+      // filter_query && primaryKey.push("regionName");
+      const groupedData = groupByKey(data, primaryKey);
+      console.log(groupedData,' groupedData')
       cloneFilterData.forEach((row) => {
         let location;
         let key;
@@ -818,7 +822,7 @@ export default function Infrastructure({ id, type }) {
         }
       });
 
-      const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
+      const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key] && (key === 'schTypeDesc' || key === 'schLocationDesc'));
 
       const columnHeaders = [
         customColumnName,
@@ -827,11 +831,12 @@ export default function Infrastructure({ id, type }) {
         "Total",
       ];
 
-      console.log(columnHeaders,' column header')
+      console.log(columnHeaders.flat(),' column header')
      
       const newArr = arr.map((item) => {
         return { ...item, Total: countTotalPinnedWithRight(item) };
       });
+      console.log(newArr,' new Array ')
      
   }
   
