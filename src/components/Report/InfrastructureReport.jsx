@@ -773,6 +773,68 @@ export default function Infrastructure({ id, type }) {
     }
     return total;
   };
+ 
+
+  const custom = ()=>{
+      const arr = [];
+      const uniqueLocation = new Set();
+      const uniqueKeys = new Set();
+      let customColumnName = "";
+      cloneFilterData.forEach((row) => {
+        let location;
+        let key;
+        if (groupKeys.schManagementBroad) {
+          location = row.schManagementBroad;
+          customColumnName = "School Management(Broad)";
+          setCustomColumn("School Management(Broad)");
+        } else if (groupKeys.schManagementDesc) {
+          location = row.schManagementDesc;
+          customColumnName = "School Management(Detailed)";
+          setCustomColumn("School Management(Detailed)");
+        } else {
+          location = row.regionName;
+          customColumnName = "Location";
+          setCustomColumn("Location");
+        }
+        /*row wise data for category*/
+        if (groupKeys.schCategoryBroad) {
+          key = row.schCategoryBroad;
+        } else if (groupKeys.schCategoryDesc) {
+          key = row.schCategoryDesc;
+        }
+        /*end here*/
+        uniqueLocation.add(location);
+        key = key?.replace(/\./g, "");
+        if (!uniqueKeys.has(key)) {
+          uniqueKeys.add(key);
+        }
+        const existingDataIndex = arr.findIndex((data) => data[customColumnName] === location);
+        if (existingDataIndex !== -1) {
+          arr[existingDataIndex][key] = (arr[existingDataIndex][key] || 0) + parseInt(row.totSchElectricity, 10);
+        } else {
+          let newData = { [customColumnName]: location, Total: 0 };
+          newData[key] = parseInt(row.totSchElectricity, 10);
+          arr.push(newData);
+        }
+      });
+
+      const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key]);
+
+      const columnHeaders = [
+        customColumnName,
+        primaryKeys,
+        ...Array.from(uniqueKeys),
+        "Total",
+      ];
+
+      console.log(columnHeaders,' column header')
+     
+      const newArr = arr.map((item) => {
+        return { ...item, Total: countTotalPinnedWithRight(item) };
+      });
+     
+  }
+  
   
   const switchColumnsToRows = (e,flag=false) => {
     setShowTransposedMgt(false);
@@ -781,7 +843,7 @@ export default function Infrastructure({ id, type }) {
       const uniqueLocation = new Set();
       const uniqueKeys = new Set();
       let customColumnName = "";
-
+      custom();
       cloneFilterData.forEach((row) => {
         let location;
         let key;
