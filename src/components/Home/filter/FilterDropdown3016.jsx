@@ -75,6 +75,13 @@ export default function FilterDropdown() {
     } else {
       filter_drodown?.classList?.remove("small-filter-box");
     }
+
+    document.getElementById('content').addEventListener("click",function(e){
+      setShow(false);
+    })
+    return ()=>{
+      document.getElementById('content').removeEventListener('click');
+    }
   }, []);
 
   const handleSchoolFilterYear = (e) => {
