@@ -1844,9 +1844,9 @@ export default function Infrastructure({ id, type }) {
                               <h2 className="heading-sm">Performance By School Management</h2>
                             </div>
 
-                            <Tabs defaultActiveKey="State" id="uncontrolled-tab-example" className="">
+                            <Tabs defaultActiveKey="School Category" id="uncontrolled-tab-example" className="">
 
-                              <Tab eventKey="State" title="State">
+                              <Tab eventKey="School Category" title="School Category">
 
                                 <div className="piechart-box row mt-4 align-items-center">
                                   <div className="col-md-3">
@@ -1955,7 +1955,7 @@ export default function Infrastructure({ id, type }) {
                                 </div>
 
                               </Tab>
-                              <Tab eventKey="District" title="District">
+                              <Tab eventKey="School Management" title="School Management">
                               <div className="piechart-box row mt-4 align-items-center">
                                   <div className="col-md-3">
                                     <div className="chart-left-text">
@@ -2062,114 +2062,7 @@ export default function Infrastructure({ id, type }) {
                                   </div>
                                 </div>
                               </Tab>
-                              <Tab eventKey="Block" title="Block">
-                              <div className="piechart-box row mt-4 align-items-center">
-                                  <div className="col-md-3">
-                                    <div className="chart-left-text">
-                                      <h6>KPI</h6>
-                                      <h2 className="heading-md">
-                                        Functional Electricity
-                                      </h2>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-9">
-                                    <HighchartsReact
-                                      highcharts={Highcharts}
-                                      options={
-                                        {
-                                          chart: {
-                                            type: 'packedbubble',
-                                            // height: '80%'
-                                          },
-                                          title: {
-                                            text: 'KPI Functional Electricity'
-                                          },
-                                          subTitle: {
-                                            text: 'Coffee consumption'
-                                          },
-                                          tooltip: {
-                                            valueSuffix: '%'
-                                          },
-                                          credits: {
-                                            enabled: false
-                                          },
-                                          plotOptions: {
-                                            packedbubble: {
-                                              minSize: 50,
-                                              maxSize: 320,
-                                              dataLabels: {
-                                                enabled: true,
-                                                format: '{point.name}',
-                                                style: {
-                                                  color: 'black',
-                                                  textOutline: 'none',
-                                                  fontWeight: 'normal'
-                                                }
-                                              },
-                                              minPointSize: 5
-                                            }
-                                          },
-                                          series: [{
-                                            showInLegend: false,
-                                            name: 'Uttar Pradesh',
-                                            color: "#bce263",
-                                            data: [{
-                                              value: 65,
-                                              // name: 'Uttar Pradesh',
-                                              name: '65%',
-                                              color: "#bce263",
-                                            }]
-                                          }, {
-                                            showInLegend: false,
-                                            name: 'Goa',
-                                            color: "#e6694a",
-                                            data: [{
-                                              value: 5,
-                                              // name: 'Goa',
-                                              name: '5%',
-                                              color: "#e6694a",
-                                            }]
-                                          }, {
-                                            showInLegend: false,
-                                            name: 'Assam',
-                                            color: "#e6694a",
-                                            data: [{
-                                              value: 10,
-                                              name: '10%',
-                                              // name: 'Assam',
-                                              color: "#e6694a",
-                                            }]
-                                          }, {
-                                            showInLegend: false,
-                                            name: 'Bihar',
-                                            color: "#e6694a",
-                                            data: [{
-                                              value: 5,
-                                              name: '5%',
-                                              // name: 'Bihar',
-                                              color: "#e6694a",
-                                            }]
-                                          }, {
-                                            showInLegend: false,
-                                            name: 'Arunanchal Pradesh',
-                                            color: '#f5bf55',
-                                            data: [{
-                                              value: 15,
-                                              name: '15%',
-                                              // name: 'Arunanchal Pradesh',
-                                              color: '#f5bf55'
-                                            }]
-                                          }]
-
-                                        }
-                                      }
-                                      // allowChartUpdate={true}
-                                      immutable={true}
-                                    />
-                                  </div>
-                                </div>
-                              </Tab>
-
+                            
                             </Tabs>
 
 
