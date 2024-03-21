@@ -56,7 +56,7 @@ export default function Infrastructure({ id, type }) {
   const [cloneFilterData, setCloneFilterData] = useState([]);
   const [customColumnName, setCustomColumn] = useState("");
   const [pinnedBottomRowDataByRows, setPinnedBottomRowDataByRows] = useState([]);
- 
+
   (function (H) {
     H.seriesTypes.pie.prototype.animate = function (init) {
       const series = this,
@@ -145,59 +145,59 @@ export default function Infrastructure({ id, type }) {
     local_block === "Block Wise";
 
   const [columns, setColumn] = useState([
-      {
-        headerName: "Location",
-        field: "regionName",
-        hide: filter_query_by_location,
-      },
-      {
-        headerName: "School Management(Broad)",
-        field: "schManagementBroad",
-        suppressColumnsToolPanel: true,
-        hide: true,
-      },
-      {
-        headerName: "School Management(Detailed)",
-        field: "schManagementDesc",
-        suppressColumnsToolPanel: true,
-        hide: true,
-      },
-      {
-        headerName: "School Category(Broad)",
-        field: "schCategoryBroad",
-        suppressColumnsToolPanel: true,
-        hide: true,
-      },
-      {
-        headerName: "School Category(Detailed)",
-        field: "schCategoryDesc",
-        suppressColumnsToolPanel: true,
-        hide: true,
-      },
-      {
-        headerName: "School Type",
-        field: "schTypeDesc",
-        suppressColumnsToolPanel: true,
-        hide: true,
-      },
-      {
-        headerName: "Urban/Rural",
-        field: "schLocationDesc",
-        suppressColumnsToolPanel: true,
-        hide: true,
-      },
-      {
-        headerName: "Total No. of Schools",
-        field: "totSch",
-      },
-      {
-        headerName: "No. of Schools having Electricity",
-        field: "totSchElectricity",
-      },
-      {
-        headerName: "Functional Electricity",
-        field: "totSchFuncElectricity",
-  },]);
+    {
+      headerName: "Location",
+      field: "regionName",
+      hide: filter_query_by_location,
+    },
+    {
+      headerName: "School Management(Broad)",
+      field: "schManagementBroad",
+      suppressColumnsToolPanel: true,
+      hide: true,
+    },
+    {
+      headerName: "School Management(Detailed)",
+      field: "schManagementDesc",
+      suppressColumnsToolPanel: true,
+      hide: true,
+    },
+    {
+      headerName: "School Category(Broad)",
+      field: "schCategoryBroad",
+      suppressColumnsToolPanel: true,
+      hide: true,
+    },
+    {
+      headerName: "School Category(Detailed)",
+      field: "schCategoryDesc",
+      suppressColumnsToolPanel: true,
+      hide: true,
+    },
+    {
+      headerName: "School Type",
+      field: "schTypeDesc",
+      suppressColumnsToolPanel: true,
+      hide: true,
+    },
+    {
+      headerName: "Urban/Rural",
+      field: "schLocationDesc",
+      suppressColumnsToolPanel: true,
+      hide: true,
+    },
+    {
+      headerName: "Total No. of Schools",
+      field: "totSch",
+    },
+    {
+      headerName: "No. of Schools having Electricity",
+      field: "totSchElectricity",
+    },
+    {
+      headerName: "Functional Electricity",
+      field: "totSchFuncElectricity",
+    },]);
 
   const getLastTrueToShowTotal = () => {
     const lastTrueKey = Object.keys(groupKeys).reduce((lastKey, key) => {
@@ -258,19 +258,19 @@ export default function Infrastructure({ id, type }) {
   useEffect(() => {
     multiGroupingRows();
     if (showTransposed) {
-      switchColumnsToRows(false,true);
+      switchColumnsToRows(false, true);
     } else if (showTransposedMgt) {
-      switchColumnsToRowsMgt(false,true);
+      switchColumnsToRowsMgt(false, true);
     }
   }, [data]);
- 
-  useEffect(()=>{
+
+  useEffect(() => {
     if (showTransposed) {
-      switchColumnsToRows(false,true);
+      switchColumnsToRows(false, true);
     } else if (showTransposedMgt) {
-      switchColumnsToRowsMgt(false,true);
+      switchColumnsToRowsMgt(false, true);
     }
-  },[cloneFilterData,groupKeys])
+  }, [cloneFilterData, groupKeys])
 
   useEffect(() => {
     if (showTransposed || showTransposedMgt) {
@@ -286,7 +286,7 @@ export default function Infrastructure({ id, type }) {
     }
   }, [columns]);
 
-  
+
   const [defColumnDefs] = useState({
     flex: 1,
     minWidth: 150,
@@ -518,9 +518,9 @@ export default function Infrastructure({ id, type }) {
       switchColumnsToRows();
     } else if (showTransposedMgt) {
       switchColumnsToRowsMgt();
-    } 
-      
-    
+    }
+
+
   };
 
   const schoolLocationRow = () => {
@@ -617,7 +617,7 @@ export default function Infrastructure({ id, type }) {
       gridApi?.columnApi?.api.setColumnVisible("regionName", filter_query);
     }
   };
- 
+
 
   /*------------Export data to Excel and PDF-------------*/
   const getHeaderToExport = (gridApi) => {
@@ -773,8 +773,8 @@ export default function Infrastructure({ id, type }) {
     }
     return total;
   };
-  
-  const switchColumnsToRows = (e,flag=false) => {
+
+  const switchColumnsToRows = (e, flag = false) => {
     setShowTransposedMgt(false);
     if (flag || !showTransposed) {
       const arr = [];
@@ -894,13 +894,13 @@ export default function Infrastructure({ id, type }) {
       ]);
     }
 
-    if(!flag){
+    if (!flag) {
       setShowTransposed(!showTransposed);
     }
 
   };
 
-  const switchColumnsToRowsMgt = (e,flag=false) => {
+  const switchColumnsToRowsMgt = (e, flag = false) => {
     setShowTransposed(false);
     if (flag || !showTransposedMgt) {
       const arr = [];
@@ -1021,7 +1021,7 @@ export default function Infrastructure({ id, type }) {
         },
       ]);
     }
-    if(!flag){
+    if (!flag) {
       setShowTransposedMgt(!showTransposedMgt);
     }
   };
@@ -1037,15 +1037,15 @@ export default function Infrastructure({ id, type }) {
       totSchFuncElectricity: calculateTotal("totSchFuncElectricity"),
     },
   ];
- 
+
   return (
     <>
       <ScrollToTopOnMount />
       <section className="infrastructure-main-card p-0" id="content">
         <div className="bg-grey2 pb-4 pt-0 header-bar tab-for-graph">
           <div className="blue-strip">
-             <div className="container">
-             <div className="row align-items-center">
+            <div className="container">
+              <div className="row align-items-center">
                 <div className="col-md-10 col-lg-10">
                   <div className="common-content text-start map-heading-map">
                     {report && (
@@ -1078,9 +1078,9 @@ export default function Infrastructure({ id, type }) {
                   </div>
                 </div>
               </div>
-             </div>
             </div>
-          <div className="container">           
+          </div>
+          <div className="container">
             <div className="row">
               <div className="col-md-12 col-lg-12 d-flex align-items-center">
                 <div className="tab-text-infra me-4">View Data By</div>
@@ -1431,104 +1431,339 @@ export default function Infrastructure({ id, type }) {
 
                     <div className="card-box-impact tab-for-graph mt-4">
                       <div className="row">
-                        <div className="col-md-6 col-lg-6">
+                        <div className="col-md-12 col-lg-12">
                           <div className="impact-box-content-education">
                             <div className="text-btn-d">
-                              <h2 className="heading-sm">Chart Heading</h2>
+                              <h2 className="heading-sm">Top Five States Having School Having Functional Electricty Connection</h2>
                             </div>
 
-                            <div className="piechart-box row mt-4">
-                              <div className="col-md-12">
-                                <HighchartsReact
-                                  highcharts={Highcharts}
-                                  options={
-                                    {
-                                      chart: {
-                                        type: 'packedbubble',
-                                        // height: '80%'
-                                      },
-                                      title: {
-                                        text: 'Simple packed bubble'
-                                      },
-                                      // subTitle: {
-                                      //   text: 'Coffee consumption'
-                                      // },
-                                      tooltip: {
-                                        valueSuffix: '%'
-                                      },
-                                      credits: {
-                                        enabled: false
-                                      },
-                                      plotOptions: {
-                                        packedbubble: {
-                                          minSize: 50,
-                                          maxSize: 280,
-                                          dataLabels: {
-                                            enabled: true,
-                                            format: '{point.name}',
-                                            style: {
-                                              color: 'black',
-                                              textOutline: 'none',
-                                              fontWeight: 'normal'
+                            <Tabs defaultActiveKey="State" id="uncontrolled-tab-example" className="">
+
+                              <Tab eventKey="State" title="State">
+
+                                <div className="piechart-box row mt-4 align-items-center">
+                                  <div className="col-md-3">
+                                    <div className="chart-left-text">
+                                      <h6>KPI</h6>
+                                      <h2 className="heading-md">
+                                        Functional Electricity
+                                      </h2>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-9">
+                                    <HighchartsReact
+                                      highcharts={Highcharts}
+                                      options={
+                                        {
+                                          chart: {
+                                            type: 'packedbubble',
+                                            // height: '80%'
+                                          },
+                                          title: {
+                                            text: 'KPI Functional Electricity'
+                                          },
+                                          subTitle: {
+                                            text: 'Coffee consumption'
+                                          },
+                                          tooltip: {
+                                            valueSuffix: '%'
+                                          },
+                                          credits: {
+                                            enabled: false
+                                          },
+                                          plotOptions: {
+                                            packedbubble: {
+                                              minSize: 50,
+                                              maxSize: 320,
+                                              dataLabels: {
+                                                enabled: true,
+                                                format: '{point.name}',
+                                                style: {
+                                                  color: 'black',
+                                                  textOutline: 'none',
+                                                  fontWeight: 'normal'
+                                                }
+                                              },
+                                              minPointSize: 5
                                             }
                                           },
-                                          minPointSize: 5
-                                        }
-                                      },
-                                      series: [{
-                                        name: 'Uttar Pradesh',
-                                        color: "#bce263",
-                                        data: [{
-                                          value: 65,
-                                          // name: 'Uttar Pradesh',
-                                          name: '65%',
-                                          color: "#bce263",
-                                        }]
-                                      }, {
-                                        name: 'Goa',
-                                        color: "#e6694a",
-                                        data: [{
-                                          value: 5,
-                                          // name: 'Goa',
-                                          name: '5%',
-                                          color: "#e6694a",
-                                        }]
-                                      }, {
-                                        name: 'Assam',
-                                        color: "#e6694a",
-                                        data: [{
-                                          value: 10,
-                                          name: '10%',
-                                          // name: 'Assam',
-                                          color: "#e6694a",
-                                        }]
-                                      }, {
-                                        name: 'Bihar',
-                                        color: "#e6694a",
-                                        data: [{
-                                          value: 5,
-                                          name: '5%',
-                                          // name: 'Bihar',
-                                          color: "#e6694a",
-                                        }]
-                                      }, {
-                                        name: 'Arunanchal Pradesh',
-                                        color: '#f5bf55',
-                                        data: [{
-                                          value: 15,
-                                          name: '15%',
-                                          // name: 'Arunanchal Pradesh',
-                                          color: '#f5bf55'
-                                        }]
-                                      }]
+                                          series: [{
+                                            showInLegend: false,
+                                            name: 'Uttar Pradesh',
+                                            color: "#bce263",
+                                            data: [{
+                                              value: 65,
+                                              // name: 'Uttar Pradesh',
+                                              name: '65%',
+                                              color: "#bce263",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Goa',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              // name: 'Goa',
+                                              name: '5%',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Assam',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 10,
+                                              name: '10%',
+                                              // name: 'Assam',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Bihar',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              name: '5%',
+                                              // name: 'Bihar',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Arunanchal Pradesh',
+                                            color: '#f5bf55',
+                                            data: [{
+                                              value: 15,
+                                              name: '15%',
+                                              // name: 'Arunanchal Pradesh',
+                                              color: '#f5bf55'
+                                            }]
+                                          }]
 
-                                    }
-                                  }
-                                  // allowChartUpdate={true}
-                                  immutable={true}
-                                />
-                              </div>
-                            </div>
+                                        }
+                                      }
+                                      // allowChartUpdate={true}
+                                      immutable={true}
+                                    />
+                                  </div>
+                                </div>
+
+                              </Tab>
+                              <Tab eventKey="District" title="District">
+                              <div className="piechart-box row mt-4 align-items-center">
+                                  <div className="col-md-3">
+                                    <div className="chart-left-text">
+                                      <h6>KPI</h6>
+                                      <h2 className="heading-md">
+                                        Functional Electricity
+                                      </h2>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-9">
+                                    <HighchartsReact
+                                      highcharts={Highcharts}
+                                      options={
+                                        {
+                                          chart: {
+                                            type: 'packedbubble',
+                                            // height: '80%'
+                                          },
+                                          title: {
+                                            text: 'KPI Functional Electricity'
+                                          },
+                                          subTitle: {
+                                            text: 'Coffee consumption'
+                                          },
+                                          tooltip: {
+                                            valueSuffix: '%'
+                                          },
+                                          credits: {
+                                            enabled: false
+                                          },
+                                          plotOptions: {
+                                            packedbubble: {
+                                              minSize: 50,
+                                              maxSize: 320,
+                                              dataLabels: {
+                                                enabled: true,
+                                                format: '{point.name}',
+                                                style: {
+                                                  color: 'black',
+                                                  textOutline: 'none',
+                                                  fontWeight: 'normal'
+                                                }
+                                              },
+                                              minPointSize: 5
+                                            }
+                                          },
+                                          series: [{
+                                            showInLegend: false,
+                                            name: 'Uttar Pradesh',
+                                            color: "#bce263",
+                                            data: [{
+                                              value: 65,
+                                              // name: 'Uttar Pradesh',
+                                              name: '65%',
+                                              color: "#bce263",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Goa',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              // name: 'Goa',
+                                              name: '5%',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Assam',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 10,
+                                              name: '10%',
+                                              // name: 'Assam',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Bihar',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              name: '5%',
+                                              // name: 'Bihar',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Arunanchal Pradesh',
+                                            color: '#f5bf55',
+                                            data: [{
+                                              value: 15,
+                                              name: '15%',
+                                              // name: 'Arunanchal Pradesh',
+                                              color: '#f5bf55'
+                                            }]
+                                          }]
+
+                                        }
+                                      }
+                                      // allowChartUpdate={true}
+                                      immutable={true}
+                                    />
+                                  </div>
+                                </div>
+                              </Tab>
+                              <Tab eventKey="Block" title="Block">
+                              <div className="piechart-box row mt-4 align-items-center">
+                                  <div className="col-md-3">
+                                    <div className="chart-left-text">
+                                      <h6>KPI</h6>
+                                      <h2 className="heading-md">
+                                        Functional Electricity
+                                      </h2>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-9">
+                                    <HighchartsReact
+                                      highcharts={Highcharts}
+                                      options={
+                                        {
+                                          chart: {
+                                            type: 'packedbubble',
+                                            // height: '80%'
+                                          },
+                                          title: {
+                                            text: 'KPI Functional Electricity'
+                                          },
+                                          subTitle: {
+                                            text: 'Coffee consumption'
+                                          },
+                                          tooltip: {
+                                            valueSuffix: '%'
+                                          },
+                                          credits: {
+                                            enabled: false
+                                          },
+                                          plotOptions: {
+                                            packedbubble: {
+                                              minSize: 50,
+                                              maxSize: 320,
+                                              dataLabels: {
+                                                enabled: true,
+                                                format: '{point.name}',
+                                                style: {
+                                                  color: 'black',
+                                                  textOutline: 'none',
+                                                  fontWeight: 'normal'
+                                                }
+                                              },
+                                              minPointSize: 5
+                                            }
+                                          },
+                                          series: [{
+                                            showInLegend: false,
+                                            name: 'Uttar Pradesh',
+                                            color: "#bce263",
+                                            data: [{
+                                              value: 65,
+                                              // name: 'Uttar Pradesh',
+                                              name: '65%',
+                                              color: "#bce263",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Goa',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              // name: 'Goa',
+                                              name: '5%',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Assam',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 10,
+                                              name: '10%',
+                                              // name: 'Assam',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Bihar',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              name: '5%',
+                                              // name: 'Bihar',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Arunanchal Pradesh',
+                                            color: '#f5bf55',
+                                            data: [{
+                                              value: 15,
+                                              name: '15%',
+                                              // name: 'Arunanchal Pradesh',
+                                              color: '#f5bf55'
+                                            }]
+                                          }]
+
+                                        }
+                                      }
+                                      // allowChartUpdate={true}
+                                      immutable={true}
+                                    />
+                                  </div>
+                                </div>
+                              </Tab>
+
+                            </Tabs>
 
 
                           </div>
@@ -1536,104 +1771,339 @@ export default function Infrastructure({ id, type }) {
 
                         </div>
 
-                        <div className="col-md-6 col-lg-6">
+                        <div className="col-md-12 col-lg-12">
                           <div className="impact-box-content-education">
                             <div className="text-btn-d">
-                              <h2 className="heading-sm">Chart Heading</h2>
+                              <h2 className="heading-sm">Performance By School Management</h2>
                             </div>
 
-                            <div className="piechart-box row mt-4">
-                              <div className="col-md-12">
-                                <HighchartsReact
-                                  highcharts={Highcharts}
-                                  options={
-                                    {
-                                      chart: {
-                                        type: 'packedbubble',
-                                        // height: '80%'
-                                      },
-                                      title: {
-                                        text: 'Simple packed bubble'
-                                      },
-                                      // subTitle: {
-                                      //   text: 'Coffee consumption'
-                                      // },
-                                      tooltip: {
-                                        valueSuffix: '%'
-                                      },
-                                      credits: {
-                                        enabled: false
-                                      },
-                                      plotOptions: {
-                                        packedbubble: {
-                                          minSize: 50,
-                                          maxSize: 280,
-                                          dataLabels: {
-                                            enabled: true,
-                                            format: '{point.name}',
-                                            style: {
-                                              color: 'black',
-                                              textOutline: 'none',
-                                              fontWeight: 'normal'
+                            <Tabs defaultActiveKey="State" id="uncontrolled-tab-example" className="">
+
+                              <Tab eventKey="State" title="State">
+
+                                <div className="piechart-box row mt-4 align-items-center">
+                                  <div className="col-md-3">
+                                    <div className="chart-left-text">
+                                      <h6>KPI</h6>
+                                      <h2 className="heading-md">
+                                        Functional Electricity
+                                      </h2>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-9">
+                                    <HighchartsReact
+                                      highcharts={Highcharts}
+                                      options={
+                                        {
+                                          chart: {
+                                            type: 'packedbubble',
+                                            // height: '80%'
+                                          },
+                                          title: {
+                                            text: 'KPI Functional Electricity'
+                                          },
+                                          subTitle: {
+                                            text: 'Coffee consumption'
+                                          },
+                                          tooltip: {
+                                            valueSuffix: '%'
+                                          },
+                                          credits: {
+                                            enabled: false
+                                          },
+                                          plotOptions: {
+                                            packedbubble: {
+                                              minSize: 50,
+                                              maxSize: 320,
+                                              dataLabels: {
+                                                enabled: true,
+                                                format: '{point.name}',
+                                                style: {
+                                                  color: 'black',
+                                                  textOutline: 'none',
+                                                  fontWeight: 'normal'
+                                                }
+                                              },
+                                              minPointSize: 5
                                             }
                                           },
-                                          minPointSize: 5
-                                        }
-                                      },
-                                      series: [{
-                                        name: 'Uttar Pradesh',
-                                        color: "#bce263",
-                                        data: [{
-                                          value: 65,
-                                          // name: 'Uttar Pradesh',
-                                          name: '65%',
-                                          color: "#bce263",
-                                        }]
-                                      }, {
-                                        name: 'Goa',
-                                        color: "#e6694a",
-                                        data: [{
-                                          value: 5,
-                                          // name: 'Goa',
-                                          name: '5%',
-                                          color: "#e6694a",
-                                        }]
-                                      }, {
-                                        name: 'Assam',
-                                        color: "#e6694a",
-                                        data: [{
-                                          value: 10,
-                                          name: '10%',
-                                          // name: 'Assam',
-                                          color: "#e6694a",
-                                        }]
-                                      }, {
-                                        name: 'Bihar',
-                                        color: "#e6694a",
-                                        data: [{
-                                          value: 5,
-                                          name: '5%',
-                                          // name: 'Bihar',
-                                          color: "#e6694a",
-                                        }]
-                                      }, {
-                                        name: 'Arunanchal Pradesh',
-                                        color: '#f5bf55',
-                                        data: [{
-                                          value: 15,
-                                          name: '15%',
-                                          // name: 'Arunanchal Pradesh',
-                                          color: '#f5bf55'
-                                        }]
-                                      }]
+                                          series: [{
+                                            showInLegend: false,
+                                            name: 'Uttar Pradesh',
+                                            color: "#bce263",
+                                            data: [{
+                                              value: 65,
+                                              // name: 'Uttar Pradesh',
+                                              name: '65%',
+                                              color: "#bce263",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Goa',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              // name: 'Goa',
+                                              name: '5%',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Assam',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 10,
+                                              name: '10%',
+                                              // name: 'Assam',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Bihar',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              name: '5%',
+                                              // name: 'Bihar',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Arunanchal Pradesh',
+                                            color: '#f5bf55',
+                                            data: [{
+                                              value: 15,
+                                              name: '15%',
+                                              // name: 'Arunanchal Pradesh',
+                                              color: '#f5bf55'
+                                            }]
+                                          }]
 
-                                    }
-                                  }
-                                  // allowChartUpdate={true}
-                                  immutable={true}
-                                />
-                              </div>
-                            </div>
+                                        }
+                                      }
+                                      // allowChartUpdate={true}
+                                      immutable={true}
+                                    />
+                                  </div>
+                                </div>
+
+                              </Tab>
+                              <Tab eventKey="District" title="District">
+                              <div className="piechart-box row mt-4 align-items-center">
+                                  <div className="col-md-3">
+                                    <div className="chart-left-text">
+                                      <h6>KPI</h6>
+                                      <h2 className="heading-md">
+                                        Functional Electricity
+                                      </h2>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-9">
+                                    <HighchartsReact
+                                      highcharts={Highcharts}
+                                      options={
+                                        {
+                                          chart: {
+                                            type: 'packedbubble',
+                                            // height: '80%'
+                                          },
+                                          title: {
+                                            text: 'KPI Functional Electricity'
+                                          },
+                                          subTitle: {
+                                            text: 'Coffee consumption'
+                                          },
+                                          tooltip: {
+                                            valueSuffix: '%'
+                                          },
+                                          credits: {
+                                            enabled: false
+                                          },
+                                          plotOptions: {
+                                            packedbubble: {
+                                              minSize: 50,
+                                              maxSize: 320,
+                                              dataLabels: {
+                                                enabled: true,
+                                                format: '{point.name}',
+                                                style: {
+                                                  color: 'black',
+                                                  textOutline: 'none',
+                                                  fontWeight: 'normal'
+                                                }
+                                              },
+                                              minPointSize: 5
+                                            }
+                                          },
+                                          series: [{
+                                            showInLegend: false,
+                                            name: 'Uttar Pradesh',
+                                            color: "#bce263",
+                                            data: [{
+                                              value: 65,
+                                              // name: 'Uttar Pradesh',
+                                              name: '65%',
+                                              color: "#bce263",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Goa',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              // name: 'Goa',
+                                              name: '5%',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Assam',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 10,
+                                              name: '10%',
+                                              // name: 'Assam',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Bihar',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              name: '5%',
+                                              // name: 'Bihar',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Arunanchal Pradesh',
+                                            color: '#f5bf55',
+                                            data: [{
+                                              value: 15,
+                                              name: '15%',
+                                              // name: 'Arunanchal Pradesh',
+                                              color: '#f5bf55'
+                                            }]
+                                          }]
+
+                                        }
+                                      }
+                                      // allowChartUpdate={true}
+                                      immutable={true}
+                                    />
+                                  </div>
+                                </div>
+                              </Tab>
+                              <Tab eventKey="Block" title="Block">
+                              <div className="piechart-box row mt-4 align-items-center">
+                                  <div className="col-md-3">
+                                    <div className="chart-left-text">
+                                      <h6>KPI</h6>
+                                      <h2 className="heading-md">
+                                        Functional Electricity
+                                      </h2>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-9">
+                                    <HighchartsReact
+                                      highcharts={Highcharts}
+                                      options={
+                                        {
+                                          chart: {
+                                            type: 'packedbubble',
+                                            // height: '80%'
+                                          },
+                                          title: {
+                                            text: 'KPI Functional Electricity'
+                                          },
+                                          subTitle: {
+                                            text: 'Coffee consumption'
+                                          },
+                                          tooltip: {
+                                            valueSuffix: '%'
+                                          },
+                                          credits: {
+                                            enabled: false
+                                          },
+                                          plotOptions: {
+                                            packedbubble: {
+                                              minSize: 50,
+                                              maxSize: 320,
+                                              dataLabels: {
+                                                enabled: true,
+                                                format: '{point.name}',
+                                                style: {
+                                                  color: 'black',
+                                                  textOutline: 'none',
+                                                  fontWeight: 'normal'
+                                                }
+                                              },
+                                              minPointSize: 5
+                                            }
+                                          },
+                                          series: [{
+                                            showInLegend: false,
+                                            name: 'Uttar Pradesh',
+                                            color: "#bce263",
+                                            data: [{
+                                              value: 65,
+                                              // name: 'Uttar Pradesh',
+                                              name: '65%',
+                                              color: "#bce263",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Goa',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              // name: 'Goa',
+                                              name: '5%',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Assam',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 10,
+                                              name: '10%',
+                                              // name: 'Assam',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Bihar',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              name: '5%',
+                                              // name: 'Bihar',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Arunanchal Pradesh',
+                                            color: '#f5bf55',
+                                            data: [{
+                                              value: 15,
+                                              name: '15%',
+                                              // name: 'Arunanchal Pradesh',
+                                              color: '#f5bf55'
+                                            }]
+                                          }]
+
+                                        }
+                                      }
+                                      // allowChartUpdate={true}
+                                      immutable={true}
+                                    />
+                                  </div>
+                                </div>
+                              </Tab>
+
+                            </Tabs>
 
 
                           </div>
