@@ -527,6 +527,60 @@ export default function FilterDropdown() {
           </div>
        
         <div className="box-cont-cust">
+          <div className="search-box-div mb-3">
+            <span className="select-lable-title">Select Year</span>
+            <Select
+              mode="single"
+              showSearch={true}
+              placeholder="Inserted are removed"
+              value={selectedItems}
+              onChange={setSelectedItems}
+              style={{
+                width: '100%',
+              }}
+              options={filteredOptions.map((item) => ({
+                value: item,
+                label: item,
+              }))}
+            />
+          </div>
+
+          <div className="search-box-div mb-3">
+            <span className="select-lable-title">Select Year</span>
+            <Select
+              mode="single"
+              showSearch={true}
+              placeholder="Inserted are removed"
+              value={selectedItems}
+              onChange={setSelectedItems}
+              style={{
+                width: '100%',
+              }}
+              options={filteredOptions.map((item) => ({
+                value: item,
+                label: item,
+              }))}
+            />
+          </div>
+
+          <div className="search-box-div mb-3">
+            <span className="select-lable-title">Location</span>
+            <Select
+              mode="single"
+              showSearch={true}
+              placeholder="Inserted are removed"
+              value={selectedItems}
+              onChange={setSelectedItems}
+              style={{
+                width: '100%',
+              }}
+              options={filteredOptions.map((item) => ({
+                value: item,
+                label: item,
+              }))}
+            />
+          </div>
+
           <div className="search-box-div">
             <span className="select-lable-title">Select Year</span>
             <Select
@@ -544,6 +598,10 @@ export default function FilterDropdown() {
               }))}
             />
           </div>
+
+
+
+
         </div>
           </div>
 

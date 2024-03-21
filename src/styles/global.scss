@@ -1286,6 +1286,19 @@ ul {
         padding: 25px 0;
     }
     h4.brudcrumb_heading{margin-bottom: 12px !important;font-size: 14px !important;}
+
+    .Side_filter{
+        height: 45px !important;
+        width: 45px !important;
+        span.material-icons-round {
+            font-size: 30px !important;
+        }
+    }
+
+    .custmize-filter-column{
+        width: 250px !important;
+    }
+
 }
 
 @media (max-width: 991px) {
@@ -1545,7 +1558,7 @@ h4.brudcrumb_heading {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    position: absolute;
+    position: fixed;
     bottom: 2%;
     right: 2%;
     z-index: 99999999999999999999999;
@@ -1565,14 +1578,62 @@ h4.brudcrumb_heading {
         border-top-left-radius: 10px;
         color: #fff;
         font-size: 18px;
+
+        @media (max-width:1399px) and (min-width: 1024px){
+            font-size: 15px;
+            padding: 10px 20px;
+        }
     }
     .box-cont-cust {
-        padding: 15px 20px;
+        padding: 25px 20px;
+
+        @media (max-width:1399px) and (min-width: 1024px){
+            padding: 17px 20px;
+        }
+
+        .search-box-div {
+            background: #F7F7F7;
+            padding: 5px 10px 8px;
+            border-radius: 10px;
+
+            span.select-lable-title {
+                font-size: 13px;
+                padding-left: 10px;
+                color: #000;
+
+                @media (max-width:1399px) and (min-width: 1024px){
+                    font-size: 10px;
+                }
+            }
+        }
     }
     :where(.css-dev-only-do-not-override-djtmh8).ant-select-single {
         font-size: 14px;
-        height: 50px;
+        height: 22px;
+        @media (max-width:1399px) and (min-width: 1024px){
+            height: 15px;
+        }
     }
+
+    :where(.css-dev-only-do-not-override-djtmh8).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+        border: 1px solid transparent !important;
+        background: transparent !important;
+        color: #000;
+        box-shadow: none !important;
+    }
+
+    :focus-visible {
+        outline:none;
+    }
+
+    span.ant-select-selection-item {
+        color: #000;
+        font-weight: 700 !important;
+        @media (max-width:1399px) and (min-width: 1024px){
+            font-size: 12px;
+        }
+    }
+
 }
 
 :where(.css-dev-only-do-not-override-djtmh8).ant-select-dropdown{z-index: 9999999999999999999 !important;}
