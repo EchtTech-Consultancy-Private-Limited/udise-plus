@@ -783,7 +783,36 @@ export default function Infrastructure({ id, type }) {
       const primaryKey = Object.keys(groupKeys).filter((key) => groupKeys[key]);
       // filter_query && primaryKey.push("regionName");
       const groupedData = groupByKey(data, primaryKey);
-      console.log(groupedData,' groupedData')
+      /*Grouperd data*/
+      const updatedArrGroupedData = [];
+      if (groupedData && typeof groupedData === "object") {
+        Object.keys(groupedData).forEach((item) => {
+          const itemsArray = groupedData[item];
+          let totalSchoolsHaveElectricity = 0;
+          let totalFunElectricity = 0;
+          let totalSchools = 0;
+          let regionName = "";
+          itemsArray.forEach((dataItem) => {
+            regionName = dataItem.regionName;
+            totalSchoolsHaveElectricity += parseInt(dataItem.totSchElectricity);
+            totalSchools += parseInt(dataItem.totSch);
+            totalFunElectricity += parseInt(dataItem.totSchFuncElectricity);
+          });
+          const appended = {};
+          primaryKey.forEach((key, index) => {
+            appended.regionName = regionName;
+            appended[key] = item.split("@")[index];
+          });
+          appended.totSchElectricity = totalSchoolsHaveElectricity;
+          appended.totSch = totalSchools;
+          appended.totSchFuncElectricity = totalFunElectricity;
+          updatedArrGroupedData.push(appended);
+        });
+      //  console.log(updatedArrGroupedData,'grouperd data')
+      }
+
+      /*end groupedData*/
+
       cloneFilterData.forEach((row) => {
         let location;
         let key;
@@ -831,12 +860,12 @@ export default function Infrastructure({ id, type }) {
         "Total",
       ];
 
-      console.log(columnHeaders.flat(),' column header')
+      // console.log(columnHeaders.flat(),' column header')
      
       const newArr = arr.map((item) => {
         return { ...item, Total: countTotalPinnedWithRight(item) };
       });
-      console.log(newArr,' new Array ')
+      // console.log(newArr,' new Array ')
      
   }
   
