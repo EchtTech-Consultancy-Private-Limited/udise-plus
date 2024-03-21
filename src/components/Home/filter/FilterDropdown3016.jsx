@@ -254,8 +254,8 @@ export default function FilterDropdown() {
   const [show, setShow] = useState(false);
   return (
     <>
-      <div className="Side_filter">
-        <div className="open-btn" onClick={() => setShow(!show)}>
+      <div className="Side_filter" onClick={() => setShow(!show)}>
+        <div className="open-btn">
           {!show ? (
             <span className="material-icons-round">sort</span>
           ) : (
