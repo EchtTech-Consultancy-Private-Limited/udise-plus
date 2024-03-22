@@ -789,14 +789,11 @@ export default function Infrastructure({ id, type }) {
         Object.keys(groupedData).forEach((item) => {
           const itemsArray = groupedData[item];
           let totalSchoolsHaveElectricity = 0;
-          let totalFunElectricity = 0;
-          let totalSchools = 0;
+         
           let regionName = "";
           itemsArray.forEach((dataItem) => {
             regionName = dataItem.regionName;
             totalSchoolsHaveElectricity += parseInt(dataItem.totSchElectricity);
-            totalSchools += parseInt(dataItem.totSch);
-            totalFunElectricity += parseInt(dataItem.totSchFuncElectricity);
           });
           const appended = {};
           primaryKey.forEach((key, index) => {
@@ -804,11 +801,9 @@ export default function Infrastructure({ id, type }) {
             appended[key] = item.split("@")[index];
           });
           appended.totSchElectricity = totalSchoolsHaveElectricity;
-          appended.totSch = totalSchools;
-          appended.totSchFuncElectricity = totalFunElectricity;
           updatedArrGroupedData.push(appended);
         });
-      //  console.log(updatedArrGroupedData,'grouperd data')
+       console.log(updatedArrGroupedData,'grouperd data')
       }
 
       /*end groupedData*/
@@ -816,19 +811,25 @@ export default function Infrastructure({ id, type }) {
       cloneFilterData.forEach((row) => {
         let location;
         let key;
-        if (groupKeys.schManagementBroad) {
-          location = row.schManagementBroad;
-          customColumnName = "School Management(Broad)";
-          setCustomColumn("School Management(Broad)");
-        } else if (groupKeys.schManagementDesc) {
-          location = row.schManagementDesc;
-          customColumnName = "School Management(Detailed)";
-          setCustomColumn("School Management(Detailed)");
-        } else {
-          location = row.regionName;
-          customColumnName = "Location";
-          setCustomColumn("Location");
+        
+        /*----If school type and Urban/Rural are false-----*/
+        if(groupKeys.schTypeDesc===false && groupKeys.schLocationDesc===false){
+          if (groupKeys.schManagementBroad) {
+            location = row.schManagementBroad;
+            customColumnName = "School Management(Broad)";
+            setCustomColumn("School Management(Broad)");
+          } else if (groupKeys.schManagementDesc) {
+            location = row.schManagementDesc;
+            customColumnName = "School Management(Detailed)";
+            setCustomColumn("School Management(Detailed)");
+          } else {
+            location = row.regionName;
+            customColumnName = "Location";
+            setCustomColumn("Location");
+          }
         }
+      /*end if block here*/        
+
         /*row wise data for category*/
         if (groupKeys.schCategoryBroad) {
           key = row.schCategoryBroad;
@@ -841,32 +842,63 @@ export default function Infrastructure({ id, type }) {
         if (!uniqueKeys.has(key)) {
           uniqueKeys.add(key);
         }
-        const existingDataIndex = arr.findIndex((data) => data[customColumnName] === location);
-        if (existingDataIndex !== -1) {
-          arr[existingDataIndex][key] = (arr[existingDataIndex][key] || 0) + parseInt(row.totSchElectricity, 10);
-        } else {
-          let newData = { [customColumnName]: location, Total: 0 };
-          newData[key] = parseInt(row.totSchElectricity, 10);
-          arr.push(newData);
-        }
       });
 
       const primaryKeys = Object.keys(groupKeys).filter((key) => groupKeys[key] && (key === 'schTypeDesc' || key === 'schLocationDesc'));
-
+      let newArrayCol = primaryKeys.filter(value => value !=='');
       const columnHeaders = [
         customColumnName,
-        primaryKeys,
+        newArrayCol,
         ...Array.from(uniqueKeys),
         "Total",
       ];
 
-      // console.log(columnHeaders.flat(),' column header')
+      console.log(columnHeaders.flat(),' column header')
      
-      const newArr = arr.map((item) => {
-        return { ...item, Total: countTotalPinnedWithRight(item) };
-      });
-      // console.log(newArr,' new Array ')
-     
+    
+
+
+      /*static grouped data*/
+
+      /*without selecting school type and urban /rural*/
+      let counts = {};
+      updatedArrGroupedData.forEach(entry => {
+        const { schCategoryBroad, schManagementBroad, totSchElectricity } = entry;
+        
+        // If the management type does not exist in the counts object, create it
+        if (!counts[schManagementBroad]) {
+            counts[schManagementBroad] = {};
+        }
+    
+        // If the category does not exist in the management type, create it
+        if (!counts[schManagementBroad][schCategoryBroad]) {
+            counts[schManagementBroad][schCategoryBroad] = 0;
+        }
+    
+        // Increment the total electricity count
+        counts[schManagementBroad][schCategoryBroad] += totSchElectricity;
+    });
+    console.log(counts,' counts')
+    /*end here*/
+
+    const newArr = arr.map((item) => {
+      return { ...item, Total: countTotalPinnedWithRight(item) };
+    });
+
+
+
+
+//when school type urban/rural selected
+// updatedArrGroupedData.forEach(entry => {
+//       const { schCategoryBroad, totSchElectricity } = entry;
+  
+//       entry[schCategoryBroad] = totSchElectricity;
+//       delete entry.totSchElectricity;
+//       delete entry.schCategoryBroad;
+//   });
+//     console.log(updatedArrGroupedData,' after selecting type or urban/rural')
+      /*static grouped data end here*/
+
   }
   
   
@@ -1873,9 +1905,9 @@ export default function Infrastructure({ id, type }) {
                               <h2 className="heading-sm">Performance By School Management</h2>
                             </div>
 
-                            <Tabs defaultActiveKey="School Category" id="uncontrolled-tab-example" className="">
+                            <Tabs defaultActiveKey="State" id="uncontrolled-tab-example" className="">
 
-                              <Tab eventKey="School Category" title="School Category">
+                              <Tab eventKey="State" title="State">
 
                                 <div className="piechart-box row mt-4 align-items-center">
                                   <div className="col-md-3">
@@ -1984,7 +2016,7 @@ export default function Infrastructure({ id, type }) {
                                 </div>
 
                               </Tab>
-                              <Tab eventKey="School Management" title="School Management">
+                              <Tab eventKey="District" title="District">
                               <div className="piechart-box row mt-4 align-items-center">
                                   <div className="col-md-3">
                                     <div className="chart-left-text">
@@ -2091,7 +2123,114 @@ export default function Infrastructure({ id, type }) {
                                   </div>
                                 </div>
                               </Tab>
-                            
+                              <Tab eventKey="Block" title="Block">
+                              <div className="piechart-box row mt-4 align-items-center">
+                                  <div className="col-md-3">
+                                    <div className="chart-left-text">
+                                      <h6>KPI</h6>
+                                      <h2 className="heading-md">
+                                        Functional Electricity
+                                      </h2>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-9">
+                                    <HighchartsReact
+                                      highcharts={Highcharts}
+                                      options={
+                                        {
+                                          chart: {
+                                            type: 'packedbubble',
+                                            // height: '80%'
+                                          },
+                                          title: {
+                                            text: 'KPI Functional Electricity'
+                                          },
+                                          subTitle: {
+                                            text: 'Coffee consumption'
+                                          },
+                                          tooltip: {
+                                            valueSuffix: '%'
+                                          },
+                                          credits: {
+                                            enabled: false
+                                          },
+                                          plotOptions: {
+                                            packedbubble: {
+                                              minSize: 50,
+                                              maxSize: 320,
+                                              dataLabels: {
+                                                enabled: true,
+                                                format: '{point.name}',
+                                                style: {
+                                                  color: 'black',
+                                                  textOutline: 'none',
+                                                  fontWeight: 'normal'
+                                                }
+                                              },
+                                              minPointSize: 5
+                                            }
+                                          },
+                                          series: [{
+                                            showInLegend: false,
+                                            name: 'Uttar Pradesh',
+                                            color: "#bce263",
+                                            data: [{
+                                              value: 65,
+                                              // name: 'Uttar Pradesh',
+                                              name: '65%',
+                                              color: "#bce263",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Goa',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              // name: 'Goa',
+                                              name: '5%',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Assam',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 10,
+                                              name: '10%',
+                                              // name: 'Assam',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Bihar',
+                                            color: "#e6694a",
+                                            data: [{
+                                              value: 5,
+                                              name: '5%',
+                                              // name: 'Bihar',
+                                              color: "#e6694a",
+                                            }]
+                                          }, {
+                                            showInLegend: false,
+                                            name: 'Arunanchal Pradesh',
+                                            color: '#f5bf55',
+                                            data: [{
+                                              value: 15,
+                                              name: '15%',
+                                              // name: 'Arunanchal Pradesh',
+                                              color: '#f5bf55'
+                                            }]
+                                          }]
+
+                                        }
+                                      }
+                                      // allowChartUpdate={true}
+                                      immutable={true}
+                                    />
+                                  </div>
+                                </div>
+                              </Tab>
+
                             </Tabs>
 
 
