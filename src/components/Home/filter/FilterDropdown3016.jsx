@@ -64,7 +64,7 @@ export default function FilterDropdown() {
   window.localStorage.setItem("district", selectedDistrict);
   window.localStorage.setItem("block", selectedBlock);
   window.localStorage.setItem("year", selectedYear);
- 
+
   useEffect(() => {
     dispatch(fetchStateData(filterObj.yearId));
     dispatch(fetchYearData());
@@ -76,12 +76,18 @@ export default function FilterDropdown() {
       filter_drodown?.classList?.remove("small-filter-box");
     }
 
-    document.getElementById('content').addEventListener("click",function(e){
+    const handleEvent = () => {
       setShow(false);
-    })
-    return ()=>{
-      document.getElementById('content').removeEventListener('click');
-    }
+    };
+    const targetElement = document.getElementById("content");
+    targetElement.removeEventListener("click", handleEvent);
+
+    targetElement.addEventListener("click", function (e) {
+      handleEvent();
+    });
+    return () => {
+      document.removeEventListener("click", handleEvent);
+    };
   }, []);
 
   const handleSchoolFilterYear = (e) => {
@@ -265,7 +271,8 @@ export default function FilterDropdown() {
       </div>
       <div
         className={`custmize-filter-column ${show ? "show" : ""}`}
-        id="customize_filter">
+        id="customize_filter"
+      >
         <div className="search-f-box">
           <div className="heading-sm main-title d-flex align-items-center">
             <span className="material-icons-round text-blue me-3">sort</span>{" "}

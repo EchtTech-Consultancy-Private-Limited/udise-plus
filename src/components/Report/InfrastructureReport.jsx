@@ -804,7 +804,7 @@ export default function Infrastructure({ id, type }) {
           appended.totSchElectricity = totalSchoolsHaveElectricity;
           updatedArrGroupedData.push(appended);
         });
-       console.log(updatedArrGroupedData,'grouperd data')
+      //  console.log(updatedArrGroupedData,'grouperd data')
       }
 
       /*end groupedData*/
@@ -854,7 +854,7 @@ export default function Infrastructure({ id, type }) {
         "Total",
       ];
 
-      console.log(columnHeaders.flat(),' column header')
+      // console.log(columnHeaders.flat(),' column header')
      
     
 
@@ -879,7 +879,7 @@ export default function Infrastructure({ id, type }) {
         // Increment the total electricity count
         counts[schManagementBroad][schCategoryBroad] += totSchElectricity;
     });
-    console.log(counts,' counts')
+    // console.log(counts,' counts')
     /*end here*/
 
     const newArr = arr.map((item) => {
