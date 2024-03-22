@@ -18,7 +18,8 @@ import HighchartsReact from 'highcharts-react-official'
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 require("highcharts/modules/export-data.js")(Highcharts);
-require("highcharts/highcharts-more")(Highcharts)
+require("highcharts/highcharts-more")(Highcharts);
+require('highcharts/modules/treemap')(Highcharts);
 
 export default function Infrastructure({ id, type }) {
   const dispatch = useDispatch();
@@ -1910,105 +1911,54 @@ export default function Infrastructure({ id, type }) {
                               <Tab eventKey="State" title="State">
 
                                 <div className="piechart-box row mt-4 align-items-center">
-                                  <div className="col-md-3">
-                                    <div className="chart-left-text">
-                                      <h6>KPI</h6>
-                                      <h2 className="heading-md">
-                                        Functional Electricity
-                                      </h2>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-9">
+                                  <div className="col-md-12">
                                     <HighchartsReact
                                       highcharts={Highcharts}
-                                      options={
-                                        {
-                                          chart: {
-                                            type: 'packedbubble',
-                                            // height: '80%'
-                                          },
-                                          title: {
-                                            text: 'KPI Functional Electricity'
-                                          },
-                                          subTitle: {
-                                            text: 'Coffee consumption'
-                                          },
-                                          tooltip: {
-                                            valueSuffix: '%'
-                                          },
-                                          credits: {
-                                            enabled: false
-                                          },
-                                          plotOptions: {
-                                            packedbubble: {
-                                              minSize: 50,
-                                              maxSize: 320,
-                                              dataLabels: {
-                                                enabled: true,
-                                                format: '{point.name}',
-                                                style: {
-                                                  color: 'black',
-                                                  textOutline: 'none',
-                                                  fontWeight: 'normal'
-                                                }
-                                              },
-                                              minPointSize: 5
-                                            }
-                                          },
-                                          series: [{
-                                            showInLegend: false,
-                                            name: 'Uttar Pradesh',
-                                            color: "#bce263",
+                                    options={
+                                      {
+                                        colorAxis: {
+                                            minColor: '#FFFFFF',
+                                            maxColor: Highcharts.getOptions().colors[0]
+                                        },
+                                        series: [{
+                                            type: 'treemap',
+                                            layoutAlgorithm: 'squarified',
+                                            clip: false,
                                             data: [{
-                                              value: 65,
-                                              // name: 'Uttar Pradesh',
-                                              name: '65%',
-                                              color: "#bce263",
+                                                name: 'A',
+                                                value: 6,
+                                                colorValue: 1
+                                            }, {
+                                                name: 'B',
+                                                value: 6,
+                                                colorValue: 2
+                                            }, {
+                                                name: 'C',
+                                                value: 4,
+                                                colorValue: 3
+                                            }, {
+                                                name: 'D',
+                                                value: 3,
+                                                colorValue: 4
+                                            }, {
+                                                name: 'E',
+                                                value: 2,
+                                                colorValue: 5
+                                            }, {
+                                                name: 'F',
+                                                value: 2,
+                                                colorValue: 6
+                                            }, {
+                                                name: 'G',
+                                                value: 1,
+                                                colorValue: 7
                                             }]
-                                          }, {
-                                            showInLegend: false,
-                                            name: 'Goa',
-                                            color: "#e6694a",
-                                            data: [{
-                                              value: 5,
-                                              // name: 'Goa',
-                                              name: '5%',
-                                              color: "#e6694a",
-                                            }]
-                                          }, {
-                                            showInLegend: false,
-                                            name: 'Assam',
-                                            color: "#e6694a",
-                                            data: [{
-                                              value: 10,
-                                              name: '10%',
-                                              // name: 'Assam',
-                                              color: "#e6694a",
-                                            }]
-                                          }, {
-                                            showInLegend: false,
-                                            name: 'Bihar',
-                                            color: "#e6694a",
-                                            data: [{
-                                              value: 5,
-                                              name: '5%',
-                                              // name: 'Bihar',
-                                              color: "#e6694a",
-                                            }]
-                                          }, {
-                                            showInLegend: false,
-                                            name: 'Arunanchal Pradesh',
-                                            color: '#f5bf55',
-                                            data: [{
-                                              value: 15,
-                                              name: '15%',
-                                              // name: 'Arunanchal Pradesh',
-                                              color: '#f5bf55'
-                                            }]
-                                          }]
-
+                                        }],
+                                        title: {
+                                            text: 'Highcharts Treemap'
                                         }
-                                      }
+                                    }
+                                    }
                                       // allowChartUpdate={true}
                                       immutable={true}
                                     />

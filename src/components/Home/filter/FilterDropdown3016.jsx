@@ -265,8 +265,7 @@ export default function FilterDropdown() {
       </div>
       <div
         className={`custmize-filter-column ${show ? "show" : ""}`}
-        id="customize_filter"
-      >
+        id="customize_filter">
         <div className="search-f-box">
           <div className="heading-sm main-title d-flex align-items-center">
             <span className="material-icons-round text-blue me-3">sort</span>{" "}

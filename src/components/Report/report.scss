@@ -512,10 +512,10 @@ th.report-name-width-50 {
     background: #EBE9FA;
     border-color: #EBE9FA;
     color: #000 !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
     padding: 12px 15px !important;
     white-space: nowrap;
-    font-size: 14px !important;
+    font-size: 13px !important;
 }
 
 .ag-header-cell,
@@ -625,6 +625,20 @@ img.dropicon {
     &:before {
         content: "";
         background: url('../../assets/images/table_cells.png');
+        width: 15px;
+        height: 15px;
+        background-size: cover;
+        display: block;
+        margin-right: 6px;
+    }
+}
+.table-text-i button#uncontrolled-tab-example-tab-graph {
+    display: flex;
+    align-items: center;
+
+    &:before {
+        content: "";
+        background: url('../../assets/images/circular-graphic.png');
         width: 15px;
         height: 15px;
         background-size: cover;
