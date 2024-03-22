@@ -20,6 +20,7 @@ require('highcharts/modules/accessibility')(Highcharts);
 require("highcharts/modules/export-data.js")(Highcharts);
 require("highcharts/highcharts-more")(Highcharts);
 require('highcharts/modules/treemap')(Highcharts);
+require('highcharts/modules/treegraph')(Highcharts);
 
 export default function Infrastructure({ id, type }) {
   const dispatch = useDispatch();
@@ -1167,6 +1168,234 @@ export default function Infrastructure({ id, type }) {
     },
   ];
 
+// Treegraph data
+
+const data_tree = [
+  {
+      id: '0.0',
+      parent: '',
+      name: 'INDIA',
+      color:'#EBEBEB'
+  },
+  {
+      id: '1.3',
+      parent: '0.0',
+      name: 'Jammu and Kashmir',
+      color:'#E6694A'
+  },
+  {
+      id: '1.1',
+      parent: '0.0',
+      name: 'Delhi',
+      color:'#BCE263'
+  },
+  {
+      id: '1.2',
+      parent: '0.0',
+      name: 'Uttar Pradesh',
+      color:'#F5BF55'
+  },
+  {
+      id: '1.4',
+      parent: '0.0',
+      name: 'Haryana',
+      color:'#F5BF55'
+  },
+  {
+      id: '1.5',
+      parent: '0.0',
+      name: 'Rajasthan',
+      color:'#BCE263'
+  },
+
+  /* Delhi */
+  // {
+  //     id: '2.1',
+  //     parent: '1.1',
+  //     name: 'Eastern Africa'
+  // },
+
+  // {
+  //     id: '2.5',
+  //     parent: '1.1',
+  //     name: 'Western Africa'
+  // },
+
+  // {
+  //     id: '2.3',
+  //     parent: '1.1',
+  //     name: 'North Africa'
+  // },
+
+  // {
+  //     id: '2.2',
+  //     parent: '1.1',
+  //     name: 'Central Africa'
+  // },
+
+  // {
+  //     id: '2.4',
+  //     parent: '1.1',
+  //     name: 'South America'
+  // },
+
+  // /* Uttar Pradesh */
+  // {
+  //     id: '2.9',
+  //     parent: '1.2',
+  //     name: 'South America'
+  // },
+
+  // {
+  //     id: '2.8',
+  //     parent: '1.2',
+  //     name: 'Northern America'
+  // },
+
+  // {
+  //     id: '2.7',
+  //     parent: '1.2',
+  //     name: 'Central America'
+  // },
+
+  // {
+  //     id: '2.6',
+  //     parent: '1.2',
+  //     name: 'Caribbean'
+  // },
+
+  /* Jammu and Kashmir */
+  
+//   {
+//     id: '2.13',
+//     parent: '1.3',
+//     name: 'Central Tibetan School',
+//     color:'#BCE263'
+// },
+
+// {
+//     id: '2.14',
+//     parent: '1.3',
+//     name: 'Government Aided',
+//     color:'#BCE263'
+// },
+
+// {
+//     id: '2.15',
+//     parent: '1.3',
+//     name: 'Jawahar Navodaya Vidyalaya',
+//     color:'#BCE263'
+// },
+
+// {
+//     id: '2.16',
+//     parent: '1.3',
+//     name: 'Kendriya Vidyalaya / Central School',
+//     color:'#E6694A'
+// },
+// {
+//     id: '2.17',
+//     parent: '1.3',
+//     name: 'Central Tibetan School',
+//     color:'#F5BF55'
+// },
+// {
+//     id: '2.18',
+//     parent: '1.3',
+//     name: 'Government Aided',
+//     color:'#F5BF55'
+// },
+
+  // /* Haryana */
+  // {
+  //     id: '2.15',
+  //     parent: '1.4',
+  //     name: 'Eastern Europe'
+  // },
+
+  // {
+  //     id: '2.16',
+  //     parent: '1.4',
+  //     name: 'Northern Europe'
+  // },
+
+  // {
+  //     id: '2.17',
+  //     parent: '1.4',
+  //     name: 'Southern Europe'
+  // },
+
+  // {
+  //     id: '2.18',
+  //     parent: '1.4',
+  //     name: 'Western Europe'
+  // },
+  /* Rajasthan */
+  {
+      id: '2.19',
+      parent: '1.5',
+      name: 'Central Tibetan School',
+      color:'#BCE263'
+  },
+
+  {
+      id: '2.20',
+      parent: '1.5',
+      name: 'Government Aided',
+      color:'#BCE263'
+  },
+
+  {
+      id: '2.21',
+      parent: '1.5',
+      name: 'Jawahar Navodaya Vidyalaya',
+      color:'#BCE263'
+  },
+
+  {
+      id: '2.22',
+      parent: '1.5',
+      name: 'Kendriya Vidyalaya / Central School',
+      color:'#E6694A'
+  },
+  {
+      id: '2.23',
+      parent: '1.5',
+      name: 'Central Tibetan School',
+      color:'#F5BF55'
+  },
+  {
+      id: '2.24',
+      parent: '1.5',
+      name: 'Government Aided',
+      color:'#F5BF55'
+  },
+  {
+      id: '2.25',
+      parent: '1.5',
+      name: 'Jawahar Navodaya Vidyalaya',
+      color:'#BCE263'
+  },
+  {
+      id: '2.26',
+      parent: '1.5',
+      name: 'Ministry of Labor',
+      color:'#E6694A'
+  },
+  {
+      id: '2.27',
+      parent: '1.5',
+      name: 'Private Schools',
+      color:'#BCE263'
+  },
+  {
+      id: '2.28',
+      parent: '1.5',
+      name: 'Madarsa',
+      color:'#E6694A'
+  },
+];
+
   return (
     <>
       <ScrollToTopOnMount />
@@ -1906,9 +2135,9 @@ export default function Infrastructure({ id, type }) {
                               <h2 className="heading-sm">Performance By School Management</h2>
                             </div>
 
-                            <Tabs defaultActiveKey="State" id="uncontrolled-tab-example" className="">
+                            <Tabs defaultActiveKey="School Category" id="uncontrolled-tab-example" className="">
 
-                              <Tab eventKey="State" title="State">
+                              <Tab eventKey="School Category" title="School Category">
 
                                 <div className="piechart-box row mt-4 align-items-center">
                                   <div className="col-md-12">
@@ -1920,38 +2149,70 @@ export default function Infrastructure({ id, type }) {
                                             minColor: '#FFFFFF',
                                             maxColor: Highcharts.getOptions().colors[0]
                                         },
+                                        tooltip: {
+                                          valueSuffix: '%'
+                                        },
+                                        credits: {
+                                          enabled: false
+                                        },
                                         series: [{
                                             type: 'treemap',
                                             layoutAlgorithm: 'squarified',
                                             clip: false,
                                             data: [{
-                                                name: 'A',
+                                                name: 'Departmnet of Education',
                                                 value: 6,
-                                                colorValue: 1
+                                                colorValue: 1,
+                                                color:'#BCE263'
                                             }, {
-                                                name: 'B',
-                                                value: 6,
-                                                colorValue: 2
-                                            }, {
-                                                name: 'C',
+                                                name: 'Madarsa recognized',
                                                 value: 4,
-                                                colorValue: 3
+                                                colorValue: 2,
+                                                color:'#E6694A',  
                                             }, {
-                                                name: 'D',
+                                                name: 'Madarsa unrecognized',
+                                                value: 2,
+                                                colorValue: 3,
+                                                color:'#E6694A',  
+                                            }, {
+                                                name: 'Private Schools',
+                                                value: 6,
+                                                colorValue: 4,
+                                                color:'#F5BF55',
+                                            }, {
+                                                name: 'Local Body',
                                                 value: 3,
-                                                colorValue: 4
+                                                colorValue: 5,
+                                                color:'#F5BF55'
                                             }, {
-                                                name: 'E',
+                                                name: 'Central Schools',
                                                 value: 2,
-                                                colorValue: 5
+                                                colorValue: 6,
+                                                color:'#E6694A'
                                             }, {
-                                                name: 'F',
+                                            }, {
+                                                name: 'Jawahar Navodaya Vidyalaya',
+                                                value: 4,
+                                                colorValue: 6,
+                                                color:'#F5BF55'
+                                            }, {
+                                            }, {
+                                                name: 'Government Aided',
                                                 value: 2,
-                                                colorValue: 6
+                                                colorValue: 6,
+                                                color:'#F5BF55',
                                             }, {
-                                                name: 'G',
-                                                value: 1,
-                                                colorValue: 7
+                                            }, {
+                                                name: 'Central Tibetan School',
+                                                value: 6,
+                                                colorValue: 6,
+                                                color:'#ADDD40'
+                                            }, {
+                                            }, {
+                                                name: 'Ministry of Labor',
+                                                value: 2,
+                                                colorValue: 6,
+                                                color:'#F5BF55'
                                             }]
                                         }],
                                         title: {
@@ -1966,221 +2227,249 @@ export default function Infrastructure({ id, type }) {
                                 </div>
 
                               </Tab>
-                              <Tab eventKey="District" title="District">
-                              <div className="piechart-box row mt-4 align-items-center">
-                                  <div className="col-md-3">
-                                    <div className="chart-left-text">
-                                      <h6>KPI</h6>
-                                      <h2 className="heading-md">
-                                        Functional Electricity
-                                      </h2>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-9">
-                                    <HighchartsReact
+                              <Tab eventKey="School Management" title="School Management">
+                              <div className="piechart-box row mt-4 align-items-center">                                 
+                                  <div className="col-md-12">
+                                  <HighchartsReact
                                       highcharts={Highcharts}
-                                      options={
-                                        {
-                                          chart: {
-                                            type: 'packedbubble',
-                                            // height: '80%'
-                                          },
-                                          title: {
-                                            text: 'KPI Functional Electricity'
-                                          },
-                                          subTitle: {
-                                            text: 'Coffee consumption'
-                                          },
-                                          tooltip: {
-                                            valueSuffix: '%'
-                                          },
-                                          credits: {
-                                            enabled: false
-                                          },
-                                          plotOptions: {
-                                            packedbubble: {
-                                              minSize: 50,
-                                              maxSize: 320,
-                                              dataLabels: {
-                                                enabled: true,
-                                                format: '{point.name}',
-                                                style: {
-                                                  color: 'black',
-                                                  textOutline: 'none',
-                                                  fontWeight: 'normal'
-                                                }
-                                              },
-                                              minPointSize: 5
-                                            }
-                                          },
-                                          series: [{
-                                            showInLegend: false,
-                                            name: 'Uttar Pradesh',
-                                            color: "#bce263",
-                                            data: [{
-                                              value: 65,
-                                              // name: 'Uttar Pradesh',
-                                              name: '65%',
-                                              color: "#bce263",
-                                            }]
+                                    options={
+                                      {
+                                        colorAxis: {
+                                            minColor: '#FFFFFF',
+                                            maxColor: Highcharts.getOptions().colors[0]
+                                        },
+                                        tooltip: {
+                                          valueSuffix: '%'
+                                        },
+                                        credits: {
+                                          enabled: false
+                                        },
+                                        series: [{
+                                          type: 'treemap',
+                                          layoutAlgorithm: 'squarified',
+                                          clip: false,
+                                          data: [{
+                                              name: 'Departmnet of Education',
+                                              value: 6,
+                                              colorValue: 1,
+                                              color:'#BCE263'
                                           }, {
-                                            showInLegend: false,
-                                            name: 'Goa',
-                                            color: "#e6694a",
-                                            data: [{
-                                              value: 5,
-                                              // name: 'Goa',
-                                              name: '5%',
-                                              color: "#e6694a",
-                                            }]
+                                              name: 'Madarsa recognized',
+                                              value: 4,
+                                              colorValue: 2,
+                                              color:'#E6694A',  
                                           }, {
-                                            showInLegend: false,
-                                            name: 'Assam',
-                                            color: "#e6694a",
-                                            data: [{
-                                              value: 10,
-                                              name: '10%',
-                                              // name: 'Assam',
-                                              color: "#e6694a",
-                                            }]
+                                              name: 'Madarsa unrecognized',
+                                              value: 2,
+                                              colorValue: 3,
+                                              color:'#E6694A',  
                                           }, {
-                                            showInLegend: false,
-                                            name: 'Bihar',
-                                            color: "#e6694a",
-                                            data: [{
-                                              value: 5,
-                                              name: '5%',
-                                              // name: 'Bihar',
-                                              color: "#e6694a",
-                                            }]
+                                              name: 'Private Schools',
+                                              value: 6,
+                                              colorValue: 4,
+                                              color:'#F5BF55',
                                           }, {
-                                            showInLegend: false,
-                                            name: 'Arunanchal Pradesh',
-                                            color: '#f5bf55',
-                                            data: [{
-                                              value: 15,
-                                              name: '15%',
-                                              // name: 'Arunanchal Pradesh',
-                                              color: '#f5bf55'
-                                            }]
+                                              name: 'Local Body',
+                                              value: 3,
+                                              colorValue: 5,
+                                              color:'#F5BF55'
+                                          }, {
+                                              name: 'Central Schools',
+                                              value: 2,
+                                              colorValue: 6,
+                                              color:'#E6694A'
+                                          }, {
+                                          }, {
+                                              name: 'Jawahar Navodaya Vidyalaya',
+                                              value: 4,
+                                              colorValue: 6,
+                                              color:'#F5BF55'
+                                          }, {
+                                          }, {
+                                              name: 'Government Aided',
+                                              value: 2,
+                                              colorValue: 6,
+                                              color:'#F5BF55',
+                                          }, {
+                                          }, {
+                                              name: 'Central Tibetan School',
+                                              value: 6,
+                                              colorValue: 6,
+                                              color:'#ADDD40'
+                                          }, {
+                                          }, {
+                                              name: 'Ministry of Labor',
+                                              value: 2,
+                                              colorValue: 6,
+                                              color:'#F5BF55'
                                           }]
-
+                                      }],
+                                        title: {
+                                            text: 'Highcharts Treemap'
                                         }
-                                      }
+                                    }
+                                    }
                                       // allowChartUpdate={true}
                                       immutable={true}
                                     />
                                   </div>
                                 </div>
                               </Tab>
-                              <Tab eventKey="Block" title="Block">
-                              <div className="piechart-box row mt-4 align-items-center">
-                                  <div className="col-md-3">
-                                    <div className="chart-left-text">
-                                      <h6>KPI</h6>
-                                      <h2 className="heading-md">
-                                        Functional Electricity
-                                      </h2>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-9">
+                              
+                            </Tabs>
+
+
+                          </div>
+
+
+                        </div>
+
+                        <div className="col-md-12 col-lg-12">
+                          <div className="impact-box-content-education">
+                            <div className="text-btn-d">
+                              <h2 className="heading-sm">Electricty Connection Overview</h2>
+                            </div>
+
+                            <Tabs defaultActiveKey="School Category" id="uncontrolled-tab-example" className="">
+
+                              <Tab eventKey="School Category" title="School Category">
+
+                                <div className="piechart-box row mt-4 align-items-center">
+                                  <div className="col-md-12">
+
+
+
                                     <HighchartsReact
                                       highcharts={Highcharts}
-                                      options={
-                                        {
-                                          chart: {
-                                            type: 'packedbubble',
-                                            // height: '80%'
-                                          },
-                                          title: {
-                                            text: 'KPI Functional Electricity'
-                                          },
-                                          subTitle: {
-                                            text: 'Coffee consumption'
-                                          },
-                                          tooltip: {
-                                            valueSuffix: '%'
-                                          },
-                                          credits: {
-                                            enabled: false
-                                          },
-                                          plotOptions: {
-                                            packedbubble: {
-                                              minSize: 50,
-                                              maxSize: 320,
-                                              dataLabels: {
-                                                enabled: true,
-                                                format: '{point.name}',
-                                                style: {
-                                                  color: 'black',
-                                                  textOutline: 'none',
-                                                  fontWeight: 'normal'
-                                                }
-                                              },
-                                              minPointSize: 5
+                                    options={
+                                      {
+                                        title: {
+                                            text: 'Treegraph with box layout'
+                                        },
+                                        credits: {
+                                          enabled: false
+                                        },
+                                        series: [
+                                            {
+                                                type: 'treegraph',
+                                                data:data_tree,
+                                                tooltip: {
+                                                    pointFormat: '{point.name}'
+                                                },
+                                                marker: {
+                                                    symbol: 'rect',
+                                                    width: '25%'
+                                                },
+                                                borderRadius: 0,
+                                                dataLabels: {
+                                                    pointFormat: '{point.name}',
+                                                    style: {
+                                                        whiteSpace: 'nowrap'
+                                                    }
+                                                },
+                                               
+                                                levels: [
+                                                    {
+                                                        level: 1,
+                                                        levelIsConstant: false
+                                                    },
+                                                    {
+                                                        level: 2,
+                                                        colorByPoint: false,
+                                                    },
+                                                    {
+                                                        level: 3,
+                                                        colorVariation: {
+                                                            key: 'brightness',
+                                                            to: -0.5
+                                                        }
+                                                    },
+                                                    {
+                                                        level: 4,
+                                                        colorVariation: {
+                                                            key: 'brightness',
+                                                            to: 0.5
+                                                        }
+                                                    }
+                                                ]
                                             }
-                                          },
-                                          series: [{
-                                            showInLegend: false,
-                                            name: 'Uttar Pradesh',
-                                            color: "#bce263",
-                                            data: [{
-                                              value: 65,
-                                              // name: 'Uttar Pradesh',
-                                              name: '65%',
-                                              color: "#bce263",
-                                            }]
-                                          }, {
-                                            showInLegend: false,
-                                            name: 'Goa',
-                                            color: "#e6694a",
-                                            data: [{
-                                              value: 5,
-                                              // name: 'Goa',
-                                              name: '5%',
-                                              color: "#e6694a",
-                                            }]
-                                          }, {
-                                            showInLegend: false,
-                                            name: 'Assam',
-                                            color: "#e6694a",
-                                            data: [{
-                                              value: 10,
-                                              name: '10%',
-                                              // name: 'Assam',
-                                              color: "#e6694a",
-                                            }]
-                                          }, {
-                                            showInLegend: false,
-                                            name: 'Bihar',
-                                            color: "#e6694a",
-                                            data: [{
-                                              value: 5,
-                                              name: '5%',
-                                              // name: 'Bihar',
-                                              color: "#e6694a",
-                                            }]
-                                          }, {
-                                            showInLegend: false,
-                                            name: 'Arunanchal Pradesh',
-                                            color: '#f5bf55',
-                                            data: [{
-                                              value: 15,
-                                              name: '15%',
-                                              // name: 'Arunanchal Pradesh',
-                                              color: '#f5bf55'
-                                            }]
-                                          }]
+                                        ]
+                                    }
+                                    }
+                                      // allowChartUpdate={true}
+                                      immutable={true}
+                                    />
+                                  </div>
+                                </div>
 
-                                        }
-                                      }
+                              </Tab>
+                              <Tab eventKey="School Management" title="School Management">
+                              <div className="piechart-box row mt-4 align-items-center">                                 
+                                  <div className="col-md-12">
+                                  <HighchartsReact
+                                      highcharts={Highcharts}
+                                    options={
+                                      {
+                                        title: {
+                                            text: 'Treegraph with box layout'
+                                        },
+                                        credits: {
+                                          enabled: false
+                                        },
+                                        series: [
+                                            {
+                                                type: 'treegraph',
+                                                data:data_tree,
+                                                tooltip: {
+                                                    pointFormat: '{point.name}'
+                                                },
+                                                marker: {
+                                                    symbol: 'rect',
+                                                    width: '25%'
+                                                },
+                                                borderRadius: 10,
+                                                dataLabels: {
+                                                    pointFormat: '{point.name}',
+                                                    style: {
+                                                        whiteSpace: 'nowrap'
+                                                    }
+                                                },
+                                               
+                                                levels: [
+                                                    {
+                                                        level: 1,
+                                                        levelIsConstant: false
+                                                    },
+                                                    {
+                                                        level: 2,
+                                                        colorByPoint: true
+                                                    },
+                                                    {
+                                                        level: 3,
+                                                        colorVariation: {
+                                                            key: 'brightness',
+                                                            to: -0.5
+                                                        }
+                                                    },
+                                                    {
+                                                        level: 4,
+                                                        colorVariation: {
+                                                            key: 'brightness',
+                                                            to: 0.5
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                    }
                                       // allowChartUpdate={true}
                                       immutable={true}
                                     />
                                   </div>
                                 </div>
                               </Tab>
-
+                              
                             </Tabs>
 
 
